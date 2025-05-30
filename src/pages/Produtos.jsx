@@ -4,7 +4,7 @@ import { FloatLabel } from "primereact/floatlabel";
 import Content from "../components/Content";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const Produtos = () => {
   const [produtos, setProdutos] = useState([]);
@@ -20,9 +20,37 @@ const Produtos = () => {
     window.electronApi?.searchProduto(produto);
     window.electronApi?.onSearchProdutoResponse((produtos) => {
       setProdutos(produtos);
-      console.log(produtos);
+      // Limpa os inputs após a pesquisa
+      document.getElementById("inputReferencia").value = "";
+      document.getElementById("inputCodigoInterno").value = "";
+      document.getElementById("inputNome").value = "";
+      document.getElementById("inputCodigoBarras").value = "";
     });
   };
+
+  // Permite pesquisar ao pressionar Enter em qualquer campo
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Enter") {
+      search();
+    }
+  }, []);
+
+  useEffect(() => {
+    const inputs = [
+      document.getElementById("inputReferencia"),
+      document.getElementById("inputCodigoInterno"),
+      document.getElementById("inputNome"),
+      document.getElementById("inputCodigoBarras"),
+    ];
+    inputs.forEach((input) => {
+      if (input) input.addEventListener("keydown", handleKeyDown);
+    });
+    return () => {
+      inputs.forEach((input) => {
+        if (input) input.removeEventListener("keydown", handleKeyDown);
+      });
+    };
+  }, [handleKeyDown]);
 
   return (
     <div className="flex">
