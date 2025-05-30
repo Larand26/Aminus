@@ -1,8 +1,13 @@
 import BarraLateral from "../components/BarraLateral";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
+import Content from "../components/Content";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
+import { useState } from "react";
 
 const Produtos = () => {
+  const [produtos, setProdutos] = useState([]);
   const search = () => {
     const produto = {
       referencia: document.getElementById("inputReferencia").value || null,
@@ -14,7 +19,8 @@ const Produtos = () => {
 
     window.electronApi?.searchProduto(produto);
     window.electronApi?.onSearchProdutoResponse((produtos) => {
-      console.log("Produtos encontrados:", produtos);
+      setProdutos(produtos);
+      console.log(produtos);
     });
   };
 
@@ -38,6 +44,40 @@ const Produtos = () => {
           <label htmlFor="inputCodigoBarras">Código de Barras</label>
         </FloatLabel>
       </BarraLateral>
+      <Content>
+        <DataTable
+          value={produtos}
+          paginator
+          rows={10}
+          emptyMessage="Nenhum produto encontrado"
+          sortMode="multiple"
+          showGridlines
+        >
+          <Column field="ID_CODPRODUTO" header="Código Interno" sortable />
+          <Column field="PROD_CODFABRIC" header="Referência" sortable />
+          <Column field="PROD_DESCRCOMPLETA" header="Nome" sortable />
+          <Column field="PROD_CODBARRA" header="Código de Barras" sortable />
+          <Column
+            header="Endereço"
+            body={(rowData) => {
+              return `${rowData.PRDE_RUA.substring(
+                0,
+                1
+              )} - ${rowData.PRDE_FILEIRA.substring(0, 2)}`;
+            }}
+            sortable
+          />
+          <Column
+            header="Quantidade"
+            body={(rowData) => {
+              const total = Number(rowData.PROD_ESTATUAL) || 0;
+              const reserva = Number(rowData.EST_QUANTIDADE) || 0;
+              return total - reserva;
+            }}
+            sortable
+          />
+        </DataTable>
+      </Content>
     </div>
   );
 };

@@ -30,6 +30,16 @@ const searchProduto = async (produto) => {
       `SELECT [ID_CODPRODUTO], [PRO_ATIVO_ECOMMERCE], [PRO_INTEGRACAO_ECOMMERCE] FROM [PRODUTOS_EMPRESASFILIAIS] WHERE ID_CODPRODUTO IN 
         (SELECT [ID_CODPRODUTO] ${query}) AND ID_CODFILIAIS = 1`
     );
+    const quantidadeReservaResult = await connection
+      .request()
+      .query(
+        `SELECT * FROM [EST_RESERVA_PED] WHERE [ID_CODARMAZEN] = 2 AND [ID_CODPRODUTO] IN(SELECT [ID_CODPRODUTO] ${query})`
+      );
+    const enderecoResult = await connection
+      .request()
+      .query(
+        `SELECT * FROM [PRODUTODEPOSITO] WHERE [ID_CODFILIAIS] = 1 AND [ID_CODPRODUTO] IN(SELECT [ID_CODPRODUTO] ${query})`
+      );
 
     produtosCompletos.push(
       ...vwItemResult.recordset.map((item) => {
@@ -39,11 +49,19 @@ const searchProduto = async (produto) => {
         const empresaFilialInfo = empresasFiliaisResult.recordset.find(
           (emp) => emp.ID_CODPRODUTO === item.ID_CODPRODUTO
         );
+        const reservaInfo = quantidadeReservaResult.recordset.find(
+          (res) => res.ID_CODPRODUTO === item.ID_CODPRODUTO
+        );
+        const enderecoInfo = enderecoResult.recordset.find(
+          (end) => end.ID_CODPRODUTO === item.ID_CODPRODUTO
+        );
 
         return {
           ...item,
           ...produtoInfo,
           ...empresaFilialInfo,
+          ...reservaInfo,
+          ...enderecoInfo,
         };
       })
     );
