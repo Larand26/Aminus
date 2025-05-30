@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const env = require("dotenv");
+const { searchProduto } = require("./db/produtos");
 
 env.config();
 
@@ -34,6 +35,6 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-ipcMain.on("search-produto", (event, arg) => {
-  console.log(arg);
+ipcMain.on("search-produto", async (event, arg) => {
+  const produtos = await searchProduto(arg);
 });
