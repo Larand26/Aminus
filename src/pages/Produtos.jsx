@@ -3,9 +3,21 @@ import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 
 const Produtos = () => {
+  const search = () => {
+    const produto = {
+      referencia: document.getElementById("inputReferencia").value || null,
+      codigoInterno:
+        document.getElementById("inputCodigoInterno").value || null,
+      nome: document.getElementById("inputNome").value || null,
+      codigoBarras: document.getElementById("inputCodigoBarras").value || null,
+    };
+
+    window.electronApi?.searchProduto(produto);
+  };
+
   return (
     <div className="flex">
-      <BarraLateral>
+      <BarraLateral search={search}>
         <FloatLabel>
           <InputText id="inputReferencia" />
           <label htmlFor="inputReferencia">Referência</label>

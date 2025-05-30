@@ -1,5 +1,5 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld("electronAPI", {
-  sendOi: () => ipcRenderer.send("oi-do-frontend"),
+contextBridge.exposeInMainWorld("electronApi", {
+  searchProduto: (arg) => ipcRenderer.send("search-produto", arg),
 });

@@ -34,6 +34,6 @@ app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
 
-ipcMain.on("oi-do-frontend", () => {
-  console.log('Recebido "oi" do frontend!');
+ipcMain.on("search-produto", (event, arg) => {
+  console.log(arg);
 });

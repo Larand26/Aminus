@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import logoDanielBranco from "../assets/img/svg/logo-daniel-branco.svg";
 import { Button } from "primereact/button";
 import "../styles/barra-lateral.css";
-const BarraLateral = ({ children }) => {
+const BarraLateral = ({ children, search }) => {
   const navigate = useNavigate();
   return (
     <div className="barra-lateral flex flex-column align-items-center justify-content-around bg-primary w-11 max-w-13rem h-screen p-4 bg-primary pt-6 pb-6">
@@ -23,14 +23,10 @@ const BarraLateral = ({ children }) => {
         <Button
           icon="pi pi-search"
           rounded
-          severity="prymary"
+          severity="primary"
           aria-label="Search"
           onClick={() => {
-            if (window.electronAPI && window.electronAPI.sendOi) {
-              window.electronAPI.sendOi();
-            } else {
-              console.warn("API do Electron não disponível");
-            }
+            if (search) search();
           }}
         />
       </div>
