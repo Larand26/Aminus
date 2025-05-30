@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "Bebas Neue";
+  src: url("./assets/fonts/Bebas_Neue/BebasNeue-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.barra-lateral input {
+  width: 100%;
+  border-radius: 10rem;
+}
+.barra-lateral label {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.1rem;
+  color: #0b3892;
+}

@@ -8,7 +8,13 @@ const Home = () => {
       <div className="p-4 flex flex-column align-items-center justify-content-around bg-primary w-11 max-w-30rem h-6 max-h-20rem ">
         <div></div>
         <div className="w-10 flex flex-wrap align-items-center justify-content-around">
-          <Button icon="pi pi-box" rounded severity="info" aria-label="Box" />
+          <Button
+            icon="pi pi-box"
+            rounded
+            severity="info"
+            aria-label="Box"
+            onClick={() => navigate("/produtos")}
+          />
           <Button icon="pi pi-book" rounded severity="info" aria-label="Book" />
           <Button icon="pi pi-user" rounded severity="info" aria-label="User" />
           <Button
