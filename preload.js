@@ -6,4 +6,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("search-produto-response", (event, arg) => {
       callback(arg);
     }),
+  searchNota: (arg) => ipcRenderer.send("search-nota", arg),
+  onSearchNotaResponse: (callback) =>
+    ipcRenderer.on("search-nota-response", (event, arg) => {
+      callback(arg);
+    }),
 });

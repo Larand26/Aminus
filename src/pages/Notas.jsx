@@ -16,9 +16,32 @@ const Notas = () => {
   const [vendedor, setVendedor] = useState(null);
   const vendedores = vendedoresJson;
 
+  const search = () => {
+    const nota = {
+      numero: document.getElementById("inputNumero").value || null,
+      cnpj: document.getElementById("inputCnpj").value || null,
+      dataInicial: document.getElementById("inputDataInicial").value || null,
+      dataFinal: document.getElementById("inputDataFinal").value || null,
+      uf: uf ? uf.sigla : null,
+      vendedor: vendedor ? vendedor.id : null,
+    };
+    window.electronApi?.searchNota(nota);
+    window.electronApi?.onSearchNotaResponse((notas) => {
+      // Aqui você pode atualizar o estado com as notas recebidas
+      console.log(notas);
+      // Limpa os inputs após a pesquisa
+      document.getElementById("inputNumero").value = "";
+      document.getElementById("inputCnpj").value = "";
+      document.getElementById("inputDataInicial").value = "";
+      document.getElementById("inputDataFinal").value = "";
+      setUf(null);
+      setVendedor(null);
+    });
+  };
+
   return (
-    <div>
-      <BarraLateral>
+    <div className="flex">
+      <BarraLateral search={search}>
         <FloatLabel>
           <InputText id="inputNumero" />
           <label htmlFor="inputNumero">Número</label>
@@ -56,6 +79,23 @@ const Notas = () => {
           <label htmlFor="inputVendedor">Vendedor</label>
         </FloatLabel>
       </BarraLateral>
+      <Content>
+        <DataTable
+          id="tabelaNotas"
+          value={[]}
+          paginator
+          rows={10}
+          emptyMessage="Nenhum produto encontrado"
+          sortMode="multiple"
+          showGridlines
+        >
+          <Column field="numero" header="Número" />
+          <Column field="cnpj" header="CNPJ" />
+          <Column field="dataEmissao" header="Data de Emissão" />
+          <Column field="valorTotal" header="Valor Total" />
+          <Column field="situacao" header="Situação" />
+        </DataTable>
+      </Content>
     </div>
   );
 };
