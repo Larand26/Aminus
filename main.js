@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
 const env = require("dotenv");
 
@@ -17,6 +17,7 @@ const homeWindow = () => {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
@@ -31,4 +32,8 @@ app.whenReady().then(homeWindow);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
+});
+
+ipcMain.on("oi-do-frontend", () => {
+  console.log('Recebido "oi" do frontend!');
 });

@@ -25,6 +25,13 @@ const BarraLateral = ({ children }) => {
           rounded
           severity="prymary"
           aria-label="Search"
+          onClick={() => {
+            if (window.electronAPI && window.electronAPI.sendOi) {
+              window.electronAPI.sendOi();
+            } else {
+              console.warn("API do Electron não disponível");
+            }
+          }}
         />
       </div>
     </div>
