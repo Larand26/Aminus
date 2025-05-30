@@ -8,7 +8,7 @@ const searchProduto = async (produto) => {
       if (produto.codigoInterno)
         query += ` AND [ID_CODPRODUTO] = '${produto.codigoInterno}'`;
       if (produto.referencia)
-        query += ` AND [PROD_CODFABRICANTE] = '${produto.referencia}'`;
+        query += ` AND [PROD_CODFABRIC] = '${produto.referencia}'`;
       if (produto.nome)
         query += ` AND [PROD_DESCRCOMPLETA] LIKE '%${produto.nome}%'`;
       if (produto.codigoBarras)
@@ -51,7 +51,9 @@ const searchProduto = async (produto) => {
     connection.close();
     return produtosCompletos;
   } catch (error) {
-    console.log("Erro ao buscar produtos:", error);
+    connection.close();
+    // console.log("Erro ao buscar produtos:", error);
+    return [];
   }
 };
 

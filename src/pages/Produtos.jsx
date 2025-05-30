@@ -13,6 +13,9 @@ const Produtos = () => {
     };
 
     window.electronApi?.searchProduto(produto);
+    window.electronApi?.onSearchProdutoResponse((produtos) => {
+      console.log("Produtos encontrados:", produtos);
+    });
   };
 
   return (
