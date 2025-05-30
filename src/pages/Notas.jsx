@@ -25,6 +25,8 @@ const Notas = () => {
       uf: uf ? uf.sigla : null,
       vendedor: vendedor ? vendedor.id : null,
     };
+    console.log(nota);
+
     window.electronApi?.searchNota(nota);
     window.electronApi?.onSearchNotaResponse((notas) => {
       // Aqui você pode atualizar o estado com as notas recebidas
