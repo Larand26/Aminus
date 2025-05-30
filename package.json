@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "env": "^0.0.2",
+    "primeflex": "^4.0.0",
+    "primeicons": "^7.0.0",
+    "primereact": "^10.9.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
