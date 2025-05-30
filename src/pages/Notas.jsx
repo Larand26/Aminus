@@ -15,17 +15,18 @@ const Notas = () => {
   const ufs = ufsJson;
   const [vendedor, setVendedor] = useState(null);
   const vendedores = vendedoresJson;
+  const [dataInicial, setDataInicial] = useState(null);
+  const [dataFinal, setDataFinal] = useState(null);
 
   const search = () => {
     const nota = {
       numero: document.getElementById("inputNumero").value || null,
       cnpj: document.getElementById("inputCnpj").value || null,
-      dataInicial: document.getElementById("inputDataInicial").value || null,
-      dataFinal: document.getElementById("inputDataFinal").value || null,
-      uf: uf ? uf.sigla : null,
-      vendedor: vendedor ? vendedor.id : null,
+      dataInicial: dataInicial || null,
+      dataFinal: dataFinal || null,
+      uf: uf || null,
+      vendedor: vendedor || null,
     };
-    console.log(nota);
 
     window.electronApi?.searchNota(nota);
     window.electronApi?.onSearchNotaResponse((notas) => {
@@ -53,11 +54,21 @@ const Notas = () => {
           <label htmlFor="inputCnpj">CNPJ</label>
         </FloatLabel>
         <FloatLabel>
-          <Calendar id="inputDataInicial" dateFormat="dd/mm/yy" />
+          <Calendar
+            id="inputDataInicial"
+            dateFormat="dd/mm/yy"
+            value={dataInicial}
+            onChange={(e) => setDataInicial(e.value)}
+          />
           <label htmlFor="inputDataInicial">Data inicial</label>
         </FloatLabel>
         <FloatLabel>
-          <Calendar id="inputDataFinal" dateFormat="dd/mm/yy" />
+          <Calendar
+            id="inputDataFinal"
+            dateFormat="dd/mm/yy"
+            value={dataFinal}
+            onChange={(e) => setDataFinal(e.value)}
+          />
           <label htmlFor="inputDataFinal">Data Final</label>
         </FloatLabel>
         <FloatLabel>

@@ -47,7 +47,7 @@ ipcMain.on("search-produto", async (event, arg) => {
 
 ipcMain.on("search-nota", async (event, arg) => {
   try {
-    const notas = await searchNota(arg);
+    const notas = await searchNotas(arg);
     event.reply("search-nota-response", notas);
   } catch (error) {
     console.error("Erro ao buscar notas:", error);

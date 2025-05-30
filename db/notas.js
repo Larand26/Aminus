@@ -1,13 +1,13 @@
 const conectarSql = require("./database");
 
-const notas = async (nota) => {
+const searchNotas = async (nota) => {
   const connection = await conectarSql();
   try {
     // Busca todos os ID_CODNOTA relevantes
     let query = "FROM [NOTAFISCAL] WHERE [ID_CODFILIAIS] = '1'";
     if (nota) {
       if (nota.numero) query += ` AND [NF_NUMDOCUM] = '${nota.numero}'`;
-      if (nota.cnpj) query += ` AND [NF_CGCCPFENTIDADE] '${nota.cnpj}'`;
+      if (nota.cnpj) query += ` AND [NF_CGCCPFENTIDADE] = '${nota.cnpj}'`;
       if (nota.dataInicial)
         query += ` AND [NF_DATAEMIS] >= '${nota.dataInicial}'`;
       if (nota.dataFinal) query += ` AND [NF_DATAEMIS] <= '${nota.dataFinal}'`;
@@ -25,4 +25,4 @@ const notas = async (nota) => {
   }
 };
 
-module.exports = notas;
+module.exports = { searchNotas };
