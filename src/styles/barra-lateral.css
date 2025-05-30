@@ -14,3 +14,16 @@
   font-size: 1.1rem;
   color: #0b3892;
 }
+.barra-lateral .p-dropdown {
+  min-width: 0 !important;
+  box-sizing: border-box;
+  font-size: 1rem;
+
+  border-radius: 6px;
+  border: 1px solid #ced4da;
+  background: #fff;
+  border-radius: 50px;
+}
+.barra-lateral .p-dropdown input {
+  color: black;
+}
