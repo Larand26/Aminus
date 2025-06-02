@@ -7,9 +7,31 @@ import { Column } from "primereact/column";
 import { useState } from "react";
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
+  const search = () => {
+    const cliente = {
+      nome: document.getElementById("inputNome").value || null,
+      cnpj: document.getElementById("inputCnpj").value || null,
+      id: document.getElementById("inputId").value || null,
+      celular: document.getElementById("inputCelular").value || null,
+      email: document.getElementById("inputEmail").value || null,
+    };
+    console.log("Pesquisando cliente:", cliente);
+
+    window.electronApi?.searchCliente(cliente);
+    window.electronApi?.onSearchClienteResponse((clientes) => {
+      setClientes(clientes);
+      console.log("Clientes recebidos:", clientes);
+      // Limpa os inputs após a pesquisa
+      document.getElementById("inputNome").value = "";
+      document.getElementById("inputCnpj").value = "";
+      document.getElementById("inputId").value = "";
+      document.getElementById("inputCelular").value = "";
+      document.getElementById("inputEmail").value = "";
+    });
+  };
   return (
     <div className="flex">
-      <BarraLateral>
+      <BarraLateral search={search}>
         <FloatLabel>
           <InputText id="inputNome" />
           <label htmlFor="inputNome">Nome</label>
