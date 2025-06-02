@@ -9,6 +9,7 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import vendedoresJson from "../assets/json/vendedores.json";
 const Pedidos = () => {
+  const [pedidos, setPedidos] = useState([]);
   return (
     <div className="flex">
       <BarraLateral>
@@ -41,6 +42,15 @@ const Pedidos = () => {
           <label htmlFor="inputVendedor">Vendedor</label>
         </FloatLabel>
       </BarraLateral>
+      <Content>
+        <DataTable value={pedidos} id="tabelaPedidos">
+          <Column field="numero" header="Número" />
+          <Column field="cnpj" header="CNPJ" />
+          <Column field="data" header="Data" />
+          <Column field="situacao" header="Situação" />
+          <Column field="vendedor" header="Vendedor" />
+        </DataTable>
+      </Content>
     </div>
   );
 };
