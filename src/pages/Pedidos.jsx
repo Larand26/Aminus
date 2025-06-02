@@ -25,6 +25,17 @@ const Pedidos = () => {
       vendedor: vendedor || null,
     };
     console.log("Pesquisando pedido:", pedido);
+    if (
+      !pedido.numero &&
+      !pedido.cnpj &&
+      !pedido.dataInicial &&
+      !pedido.dataFinal &&
+      !pedido.situacao &&
+      !pedido.vendedor
+    ) {
+      console.warn("Nenhum filtro aplicado.");
+      return;
+    }
 
     window.electronApi?.searchPedido(pedido);
     window.electronApi?.onSearchPedidoResponse((pedidos) => {
@@ -51,11 +62,17 @@ const Pedidos = () => {
           <label htmlFor="inputCnpj">CNPJ</label>
         </FloatLabel>
         <FloatLabel>
-          <Calendar id="inputDataInicial" />
+          <Calendar
+            id="inputDataInicial"
+            onChange={(e) => setDataInicial(e.value)}
+          />
           <label htmlFor="inputDataInicial">Data Inicial</label>
         </FloatLabel>
         <FloatLabel>
-          <Calendar id="inputDataFinal" />
+          <Calendar
+            id="inputDataFinal"
+            onChange={(e) => setDataFinal(e.value)}
+          />
           <label htmlFor="inputDataFinal">Data Final</label>
         </FloatLabel>
         <FloatLabel>
@@ -66,6 +83,7 @@ const Pedidos = () => {
               { label: "Cancelado", value: "Cancelado" },
               { label: "Atendido", value: "Atendido" },
             ]}
+            onChange={(e) => setSituacao(e.value)}
             id="inputSituacao"
           />
           <label htmlFor="inputSituacao">Situação</label>
@@ -73,6 +91,7 @@ const Pedidos = () => {
         <FloatLabel>
           <Dropdown
             options={vendedoresJson}
+            onChange={(e) => setVendedor(e.value)}
             id="inputVendedor"
             className="md:w-12rem "
           />
@@ -90,6 +109,8 @@ const Pedidos = () => {
           id="tabelaPedidos"
         >
           <Column field="ID_NUMPEDORC" header="Número" />
+          <Column field="ID_CODENTIDADE" header="ID do cliente" />
+          <Column field="PEDOR_RAZAOSOCIAL" header="Nome" />
           <Column
             body={(rowData) => {
               if (!rowData.PEDOR_DATA) return "";
