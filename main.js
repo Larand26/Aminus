@@ -4,6 +4,7 @@ const env = require("dotenv");
 const { searchProduto } = require("./db/produtos");
 const { searchNotas } = require("./db/notas");
 const { searchCliente } = require("./db/clientes");
+const { searchPedido } = require("./db/pedidos");
 
 env.config();
 
@@ -65,6 +66,18 @@ ipcMain.on("search-cliente", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao buscar clientes:", error);
     event.reply("search-cliente-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("search-pedido", async (event, arg) => {
+  try {
+    const pedidos = await searchPedido(arg);
+    event.reply("search-pedido-response", pedidos);
+  } catch (error) {
+    console.error("Erro ao buscar pedidos:", error);
+    event.reply("search-pedido-response", {
       error: error.message || "Erro desconhecido",
     });
   }
