@@ -53,7 +53,7 @@ const Clientes = () => {
           <label htmlFor="inputEmail">Email</label>
         </FloatLabel>
       </BarraLateral>
-      <Content>
+      <Content titulo={"Clientes"}>
         <DataTable value={clientes} paginator rows={10}>
           <Column field="ENTI_RAZAOSOCIAL" header="Nome" />
           <Column field="ENTI_CNPJCPF" header="CNPJ" />

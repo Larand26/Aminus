@@ -72,7 +72,7 @@ const Produtos = () => {
           <label htmlFor="inputCodigoBarras">Código de Barras</label>
         </FloatLabel>
       </BarraLateral>
-      <Content>
+      <Content titulo={"Produtos"}>
         <DataTable
           value={produtos}
           paginator

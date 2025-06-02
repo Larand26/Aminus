@@ -96,7 +96,7 @@ const Notas = () => {
           <label htmlFor="inputVendedor">Vendedor</label>
         </FloatLabel>
       </BarraLateral>
-      <Content>
+      <Content titulo={"Notas Fiscais"}>
         <DataTable
           id="tabelaNotas"
           value={notas}

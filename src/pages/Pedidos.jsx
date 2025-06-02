@@ -102,7 +102,7 @@ const Pedidos = () => {
           <label htmlFor="inputVendedor">Vendedor</label>
         </FloatLabel>
       </BarraLateral>
-      <Content>
+      <Content titulo={"Pedidos"}>
         <DataTable
           paginator
           rows={10}

@@ -22,7 +22,17 @@ body {
 
 .titulo {
   font-family: "Bebas Neue", cursive;
+  font-size: 3rem;
+}
+.titulo p {
+  margin: 0;
 }
 .p-row-odd {
   background-color: #c7c7c7;
+}
+table {
+  width: 100%;
+  min-width: 80rem;
+  height: 25rem;
+  border-collapse: collapse;
 }
