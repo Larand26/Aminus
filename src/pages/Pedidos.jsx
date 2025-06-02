@@ -80,12 +80,42 @@ const Pedidos = () => {
         </FloatLabel>
       </BarraLateral>
       <Content>
-        <DataTable value={pedidos} id="tabelaPedidos">
-          <Column field="numero" header="Número" />
-          <Column field="cnpj" header="CNPJ" />
-          <Column field="data" header="Data" />
-          <Column field="situacao" header="Situação" />
-          <Column field="vendedor" header="Vendedor" />
+        <DataTable
+          paginator
+          rows={10}
+          emptyMessage="Nenhum produto encontrado"
+          value={pedidos}
+          sortMode="multiple"
+          showGridlines
+          id="tabelaPedidos"
+        >
+          <Column field="ID_NUMPEDORC" header="Número" />
+          <Column
+            body={(rowData) => {
+              if (!rowData.PEDOR_DATA) return "";
+              if (rowData.PEDOR_DATA instanceof Date) {
+                return rowData.PEDOR_DATA.toLocaleDateString("pt-BR");
+              }
+              if (
+                typeof rowData.PEDOR_DATA === "string" ||
+                typeof rowData.PEDOR_DATA === "number"
+              ) {
+                const d = new Date(rowData.PEDOR_DATA);
+                if (!isNaN(d)) return d.toLocaleDateString("pt-BR");
+                return rowData.PEDOR_DATA;
+              }
+              return rowData.PEDOR_DATA;
+            }}
+            header="Data"
+          />
+          <Column field="PEDOR_SITUACAO" header="Situação" />
+          <Column
+            body={(rowData) =>
+              vendedoresJson.find((v) => v.value === rowData.ID_CODVENDEDOR)
+                ?.label || "Desconhecido"
+            }
+            header="Vendedor"
+          />
         </DataTable>
       </Content>
     </div>
