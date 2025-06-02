@@ -22,7 +22,13 @@ const Home = () => {
             aria-label="Book"
             onClick={() => navigate("/notas")}
           />
-          <Button icon="pi pi-user" rounded severity="info" aria-label="User" />
+          <Button
+            icon="pi pi-user"
+            rounded
+            severity="info"
+            aria-label="User"
+            onClick={() => navigate("/clientes")}
+          />
           <Button
             icon="pi pi-list"
             rounded

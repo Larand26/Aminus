@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Sobre from "./pages/Sobre";
 import Produtos from "./pages/Produtos";
 import Notas from "./pages/Notas";
+import Clientes from "./pages/Clientes";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/produtos" element={<Produtos />} />
         <Route path="/notas" element={<Notas />} />
         <Route path="/sobre" element={<Sobre />} />
+        <Route path="/clientes" element={<Clientes />} />
       </Routes>
     </Router>
   );
