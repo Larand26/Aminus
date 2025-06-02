@@ -9,11 +9,13 @@ const searchNotas = async (nota) => {
       if (nota.numero) query += ` AND [NF_NUMDOCUM] = '${nota.numero}'`;
       if (nota.cnpj) query += ` AND [NF_CGCCPFENTIDADE] = '${nota.cnpj}'`;
       if (nota.dataInicial)
-        query += ` AND [NF_DATAEMIS] >= '${nota.dataInicial}'`;
-      if (nota.dataFinal) query += ` AND [NF_DATAEMIS] <= '${nota.dataFinal}'`;
-      if (nota.uf) query += ` AND [NF_UNIDFEDENT] = '${nota.uf}'`;
+        query += ` AND [NF_DATAEMIS] >= CONVERT(date, '${nota.dataInicial}', 126)`;
+      if (nota.dataFinal)
+        query += ` AND [NF_DATAEMIS] <= CONVERT(date, '${nota.dataFinal}', 126)`;
+      if (nota.uf) query += ` AND [NF_UNIDFEDENTD] = '${nota.uf}'`;
       if (nota.vendedor) query += ` AND [ID_CODVENDEDOR] = '${nota.vendedor}'`;
     }
+    console.log("SELECT * " + query);
 
     const vwNotaResult = await connection.request().query("SELECT * " + query);
 

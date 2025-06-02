@@ -23,3 +23,6 @@ body {
 .titulo {
   font-family: "Bebas Neue", cursive;
 }
+.p-row-odd {
+  background-color: #c7c7c7;
+}

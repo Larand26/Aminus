@@ -1,0 +1,2082 @@
+{
+  "transportadoras": [
+    {
+      "id": 1,
+      "nome": "EXPRESSO MARINGA",
+      "tel": "2146-9500"
+    },
+    {
+      "id": 2,
+      "nome": "RIO PRETAO",
+      "tel": "2292-5427"
+    },
+    {
+      "id": 3,
+      "nome": "EXPRESSO MERCURIO",
+      "tel": "3622-3100"
+    },
+    {
+      "id": 5,
+      "nome": "CATALANA",
+      "tel": "2412-6916"
+    },
+    {
+      "id": 6,
+      "nome": "CAMILO DOS SANTOS",
+      "tel": "2633-8000"
+    },
+    {
+      "id": 7,
+      "nome": "BOZO",
+      "tel": "2631-6000"
+    },
+    {
+      "id": 8,
+      "nome": "EXPRESSO BRASIL",
+      "tel": "2303-1852"
+    },
+    {
+      "id": 9,
+      "nome": "GENEROSO",
+      "tel": "4020-3567"
+    },
+    {
+      "id": 10,
+      "nome": "PRINCESA DO NORTE",
+      "tel": "3392-1887"
+    },
+    {
+      "id": 11,
+      "nome": "RODOVIARIO AFONSO",
+      "tel": "3682-7963"
+    },
+    {
+      "id": 12,
+      "nome": "RODONAVES",
+      "tel": "2192-3103"
+    },
+    {
+      "id": 13,
+      "nome": "TATUI",
+      "tel": "2951-0373"
+    },
+    {
+      "id": 14,
+      "nome": "RAITO",
+      "tel": "3857-8711"
+    },
+    {
+      "id": 15,
+      "nome": "BERNARDES",
+      "tel": "3687-7516"
+    },
+    {
+      "id": 16,
+      "nome": "BRASPRESS",
+      "tel": "2188-9000"
+    },
+    {
+      "id": 17,
+      "nome": "MAF",
+      "tel": "2967-3211"
+    },
+    {
+      "id": 18,
+      "nome": "REMAC",
+      "tel": "3465-7777"
+    },
+    {
+      "id": 19,
+      "nome": "REIS",
+      "tel": "2482-1344"
+    },
+    {
+      "id": 20,
+      "nome": "RODA PRETA",
+      "tel": "3227-0713"
+    },
+    {
+      "id": 21,
+      "nome": "NOVA UNIAO",
+      "tel": "2423-5200"
+    },
+    {
+      "id": 22,
+      "nome": "RODOVIARIO CAMPINAS",
+      "tel": "3311-6854"
+    },
+    {
+      "id": 23,
+      "nome": "MG",
+      "tel": "2989-3716"
+    },
+    {
+      "id": 24,
+      "nome": "AUTO VIACAO CAMBUI",
+      "tel": "2221-4165"
+    },
+    {
+      "id": 25,
+      "nome": "MAXIMA",
+      "tel": "2636-6464"
+    },
+    {
+      "id": 26,
+      "nome": "TRANS SOUZA TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 27,
+      "nome": "PASSARO MARROM",
+      "tel": "3775-3888"
+    },
+    {
+      "id": 28,
+      "nome": "VALE DO RIBEIRA",
+      "tel": "2097-4252"
+    },
+    {
+      "id": 29,
+      "nome": "EUREKA",
+      "tel": "2413-1211"
+    },
+    {
+      "id": 30,
+      "nome": "O MESMO",
+      "tel": null
+    },
+    {
+      "id": 31,
+      "nome": "EXPRESSO CAMBUI",
+      "tel": "2221-4165"
+    },
+    {
+      "id": 32,
+      "nome": "RODO JABOTI",
+      "tel": "2954-4300"
+    },
+    {
+      "id": 33,
+      "nome": "ITAPIRENCE",
+      "tel": "3936-8055"
+    },
+    {
+      "id": 34,
+      "nome": "TRANSPRESS",
+      "tel": "2482-1145"
+    },
+    {
+      "id": 35,
+      "nome": "ALFA",
+      "tel": "2595-0880"
+    },
+    {
+      "id": 36,
+      "nome": "TRANSVILE",
+      "tel": "2413-5500"
+    },
+    {
+      "id": 37,
+      "nome": "EXPRESSO EUROPEU",
+      "tel": "2954-0770"
+    },
+    {
+      "id": 38,
+      "nome": "CENTRAL",
+      "tel": "3037-8509"
+    },
+    {
+      "id": 39,
+      "nome": "ARACATUBA",
+      "tel": "3622-2990"
+    },
+    {
+      "id": 40,
+      "nome": "CONEXAO BAHIA",
+      "tel": "2207-1975"
+    },
+    {
+      "id": 41,
+      "nome": "APUCARANA",
+      "tel": "3929-1163"
+    },
+    {
+      "id": 42,
+      "nome": "TRANSPORTADORA CAIRU",
+      "tel": "2488-0455"
+    },
+    {
+      "id": 43,
+      "nome": "FIGUEIREDO",
+      "tel": "2635-1632"
+    },
+    {
+      "id": 44,
+      "nome": "TNT MERCURIO",
+      "tel": "3622-3100"
+    },
+    {
+      "id": 45,
+      "nome": "LEANDRO",
+      "tel": "2636-4019"
+    },
+    {
+      "id": 46,
+      "nome": "TRANS BERNARDES",
+      "tel": "3696-9553"
+    },
+    {
+      "id": 47,
+      "nome": "AMARAL",
+      "tel": "2905-3264"
+    },
+    {
+      "id": 48,
+      "nome": "BRUSVILE",
+      "tel": "2446-1938"
+    },
+    {
+      "id": 49,
+      "nome": "SOPRO DIVINO",
+      "tel": "3858-7422"
+    },
+
+    {
+      "id": 50,
+      "nome": "LIDER TUR",
+      "tel": "3392-2067"
+    },
+    {
+      "id": 51,
+      "nome": "AFONSO",
+      "tel": "3682-7963"
+    },
+    {
+      "id": 52,
+      "nome": "VAN SUL",
+      "tel": "2412-5431"
+    },
+    {
+      "id": 53,
+      "nome": "NEPOMUCENO",
+      "tel": "4537-3305"
+    },
+    {
+      "id": 54,
+      "nome": "RODOMAX",
+      "tel": "3973-7944"
+    },
+    {
+      "id": 55,
+      "nome": "TLB",
+      "tel": "2241-6074"
+    },
+    {
+      "id": 56,
+      "nome": "PICOLI",
+      "tel": "3988-5120"
+    },
+    {
+      "id": 57,
+      "nome": "VIA ONIBUS NOVO HORIZONTE",
+      "tel": null
+    },
+    {
+      "id": 58,
+      "nome": "TRANSGENIO",
+      "tel": "3311-0515"
+    },
+    {
+      "id": 59,
+      "nome": "TRANSCOMPRAS",
+      "tel": "3227-2152"
+    },
+    {
+      "id": 60,
+      "nome": "EXPRESSO PRINCIPAL",
+      "tel": "2901-1222"
+    },
+    {
+      "id": 61,
+      "nome": "TRANS CABANOS",
+      "tel": "6412-2371"
+    },
+    {
+      "id": 62,
+      "nome": "RAPIDO ALEM PARAIBA",
+      "tel": "2085-7534"
+    },
+    {
+      "id": 63,
+      "nome": "TRANS UNI",
+      "tel": "4535-2708"
+    },
+    {
+      "id": 64,
+      "nome": "SANTA LUZIA",
+      "tel": "4035-1097"
+    },
+    {
+      "id": 65,
+      "nome": "TDN",
+      "tel": "2085-6002"
+    },
+    {
+      "id": 66,
+      "nome": "BOAS NOVAS",
+      "tel": "2764-2600"
+    },
+    {
+      "id": 67,
+      "nome": "SANTA TEREZINHA",
+      "tel": "3931-2272"
+    },
+    {
+      "id": 68,
+      "nome": "COMAM",
+      "tel": "2544-0404"
+    },
+    {
+      "id": 69,
+      "nome": "EUCATUR",
+      "tel": "3858-0206"
+    },
+    {
+      "id": 70,
+      "nome": "SOROCABA TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 71,
+      "nome": "CONEXAO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 72,
+      "nome": "NOVO VALE",
+      "tel": "2304-9100"
+    },
+    {
+      "id": 73,
+      "nome": "SCARPATO",
+      "tel": "3936-3175"
+    },
+    {
+      "id": 74,
+      "nome": "BRUMADO",
+      "tel": "2481-5594"
+    },
+    {
+      "id": 75,
+      "nome": "NOVO HORIZONTE",
+      "tel": "2201-7199"
+    },
+    {
+      "id": 76,
+      "nome": "PRINCESA DOS CAMPOS",
+      "tel": "3392-6677"
+    },
+    {
+      "id": 77,
+      "nome": "ACEVILLE",
+      "tel": "2085-7233"
+    },
+    {
+      "id": 78,
+      "nome": "PITUTA",
+      "tel": "2402-7500"
+    },
+    {
+      "id": 79,
+      "nome": "TAMOYO",
+      "tel": "2273-8411"
+    },
+    {
+      "id": 80,
+      "nome": "GRANÇUCAR",
+      "tel": "2905-1771"
+    },
+    {
+      "id": 81,
+      "nome": "VIAÇÃO GARCIA",
+      "tel": "3612-1600"
+    },
+    {
+      "id": 82,
+      "nome": "V B",
+      "tel": "3351-2020"
+    },
+    {
+      "id": 83,
+      "nome": "TBT",
+      "tel": "2412-5988"
+    },
+    {
+      "id": 84,
+      "nome": "OURO SUL",
+      "tel": "2412-6688"
+    },
+    {
+      "id": 85,
+      "nome": "VIACAO GARCIA TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 86,
+      "nome": "TRANSITO",
+      "tel": "2138-7700"
+    },
+    {
+      "id": 87,
+      "nome": "DIAS ARAUJO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 88,
+      "nome": "T G M TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 89,
+      "nome": "ITAPIRENSE BERTINI TIB",
+      "tel": "3936-8055"
+    },
+    {
+      "id": 90,
+      "nome": "B V",
+      "tel": "2492-2766"
+    },
+    {
+      "id": 91,
+      "nome": "PIRACICABANA",
+      "tel": "2089-0010"
+    },
+    {
+      "id": 92,
+      "nome": "SAO RAFAEL",
+      "tel": "3392-1666"
+    },
+    {
+      "id": 93,
+      "nome": "TRANS LIGUE",
+      "tel": "3929-9088"
+    },
+    {
+      "id": 94,
+      "nome": "IDEAL EXPRESSO",
+      "tel": "2954-8223"
+    },
+    {
+      "id": 95,
+      "nome": "TRANSCOMAP",
+      "tel": "2905-4636/2905-4673"
+    },
+    {
+      "id": 96,
+      "nome": "DANUBIO AZUL",
+      "tel": "3856-7815"
+    },
+    {
+      "id": 97,
+      "nome": "EXPRESSO GUANAMBI",
+      "tel": "2412-3898"
+    },
+
+    {
+      "id": 98,
+      "nome": "ZERO GRAU",
+      "tel": "3687-5866"
+    },
+    {
+      "id": 99,
+      "nome": "CENTRAL FELIX",
+      "tel": "2954-1776"
+    },
+    {
+      "id": 100,
+      "nome": "SANTA CRUZ ENCOMENDAS RODOVIARIAS ",
+      "tel": null
+    },
+    {
+      "id": 101,
+      "nome": "EXPRESSO JUNDIAI",
+      "tel": "2131-7474"
+    },
+    {
+      "id": 102,
+      "nome": "BRUMADO",
+      "tel": null
+    },
+    {
+      "id": 103,
+      "nome": "ARACATUBA",
+      "tel": null
+    },
+    {
+      "id": 104,
+      "nome": "TRANS NORTE TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 105,
+      "nome": "SUICA BRASILEIRA",
+      "tel": "3662-2627"
+    },
+    {
+      "id": 106,
+      "nome": "TRANSPEN",
+      "tel": "3392-5691"
+    },
+    {
+      "id": 107,
+      "nome": "TRANS ALETE TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 108,
+      "nome": "LUNA",
+      "tel": "2952-8752"
+    },
+    {
+      "id": 109,
+      "nome": "BRASIL SUL",
+      "tel": "2631-1323"
+    },
+    {
+      "id": 110,
+      "nome": "TEL",
+      "tel": "2983-2404"
+    },
+    {
+      "id": 111,
+      "nome": "RODOVIA SUL",
+      "tel": "2412-6572"
+    },
+    {
+      "id": 112,
+      "nome": "POMAP TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 113,
+      "nome": "GRATIVOL",
+      "tel": "2481-9346"
+    },
+    {
+      "id": 114,
+      "nome": "DANIELA",
+      "tel": "2085-4200"
+    },
+    {
+      "id": 115,
+      "nome": "1001",
+      "tel": "4004-5001"
+    },
+    {
+      "id": 116,
+      "nome": "C&C",
+      "tel": "2905-4626"
+    },
+    {
+      "id": 117,
+      "nome": "RODONASA",
+      "tel": "2909-4603"
+    },
+    {
+      "id": 118,
+      "nome": "ROMA",
+      "tel": "2905-1988"
+    },
+    {
+      "id": 119,
+      "nome": "COMETEX",
+      "tel": "2633-8116"
+    },
+    {
+      "id": 120,
+      "nome": "ITAMARATI",
+      "tel": "2125-1276"
+    },
+    {
+      "id": 121,
+      "nome": "ATLAS",
+      "tel": "2795-3000"
+    },
+    {
+      "id": 122,
+      "nome": "RAMOS",
+      "tel": "2955-1500"
+    },
+    {
+      "id": 123,
+      "nome": "PETROLINA",
+      "tel": "2482-4624"
+    },
+    {
+      "id": 124,
+      "nome": "TRANSUL",
+      "tel": "2951-2427"
+    },
+    {
+      "id": 125,
+      "nome": "M V",
+      "tel": "2677-6883"
+    },
+    {
+      "id": 126,
+      "nome": "ROMA MONTE ALTA TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 127,
+      "nome": "GIRO CERTO",
+      "tel": "2085-2850"
+    },
+    {
+      "id": 128,
+      "nome": "BOSS EXPRESS",
+      "tel": "2955-6667"
+    },
+    {
+      "id": 129,
+      "nome": "CHAPECO",
+      "tel": "2088-6530"
+    },
+    {
+      "id": 130,
+      "nome": "P G M TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 131,
+      "nome": "R. DOS ANJOS SANTOS ROTAY",
+      "tel": null
+    },
+    {
+      "id": 132,
+      "nome": "GUARAMIRIM",
+      "tel": "2949-0450"
+    },
+    {
+      "id": 133,
+      "nome": "RODO JABOTICABAL TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 134,
+      "nome": "M V TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 135,
+      "nome": "BELMOK",
+      "tel": "3488-3301"
+    },
+    {
+      "id": 136,
+      "nome": "SOLIDEZ",
+      "tel": "2201-1707"
+    },
+    {
+      "id": 137,
+      "nome": "RGR TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 138,
+      "nome": "CAMPINENSE TRANSPORTE DE CARGAS",
+      "tel": null
+    },
+    {
+      "id": 139,
+      "nome": "V&R LOG TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 140,
+      "nome": "RAPIDO TRES PONTAS TRASNPORTE",
+      "tel": null
+    },
+    {
+      "id": 141,
+      "nome": "RODORAP TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 142,
+      "nome": "MARINGA",
+      "tel": "2146-9500"
+    },
+    {
+      "id": 143,
+      "nome": "TRANS CACHOEIRO",
+      "tel": null
+    },
+    {
+      "id": 144,
+      "nome": "REUNIDAS",
+      "tel": null
+    },
+    {
+      "id": 145,
+      "nome": "RAPIDO TAMBAU",
+      "tel": "9 9325-3662"
+    },
+    {
+      "id": 146,
+      "nome": "CORREIOS",
+      "tel": null
+    },
+
+    {
+      "id": 147,
+      "nome": "FRI LOG",
+      "tel": "2901-1007"
+    },
+    {
+      "id": 148,
+      "nome": "TRANSGERAIS",
+      "tel": "(19) 3703-1879"
+    },
+    {
+      "id": 149,
+      "nome": "DESTAK TRANSPORTES",
+      "tel": "(11) 2901-3288"
+    },
+    {
+      "id": 150,
+      "nome": "TRANSEIS",
+      "tel": "6488-8624 / 6412-5466"
+    },
+    {
+      "id": 151,
+      "nome": "PATRUS",
+      "tel": null
+    },
+    {
+      "id": 152,
+      "nome": "TRANSPIONEIRA",
+      "tel": "2413-0556/2411-1605"
+    },
+    {
+      "id": 153,
+      "nome": "SOCARGA",
+      "tel": "2904-8080"
+    },
+    {
+      "id": 154,
+      "nome": "BRASIL CARGAS",
+      "tel": null
+    },
+    {
+      "id": 155,
+      "nome": "TRANSLOVATO",
+      "tel": "2413-2727"
+    },
+    {
+      "id": 156,
+      "nome": "EXPRESSO PETROLINA",
+      "tel": null
+    },
+    {
+      "id": 157,
+      "nome": "CRUZEIRO DO SUL",
+      "tel": "3931-4900"
+    },
+    {
+      "id": 158,
+      "nome": "ESTRELA TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 159,
+      "nome": "YURI TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 160,
+      "nome": "RODO FUZIL TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 161,
+      "nome": "PLIMOR TRANSPORTE",
+      "tel": "2131-8000"
+    },
+    {
+      "id": 162,
+      "nome": "RAPIDO MONTES CLARO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 163,
+      "nome": "LEALDADE TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 164,
+      "nome": "SICALL TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 165,
+      "nome": "TRANSLOG TRANSPORTE",
+      "tel": "2242-7759"
+    },
+    {
+      "id": 166,
+      "nome": "J B TURISMO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 167,
+      "nome": "PRIMEIRA DO NORDESTE TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 168,
+      "nome": "LOG TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 169,
+      "nome": "EXPRESSO M2000 TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 170,
+      "nome": "M2000 TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 171,
+      "nome": "EXPRESSO JAVALI TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 172,
+      "nome": "JAMEF TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 173,
+      "nome": "SAO JOSE TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 174,
+      "nome": "J D TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 175,
+      "nome": "TRANSMINEIRO TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 176,
+      "nome": "ENTRAM",
+      "tel": "2146-8000"
+    },
+    {
+      "id": 177,
+      "nome": "STAREX",
+      "tel": "(17) 3218-6786"
+    },
+    {
+      "id": 178,
+      "nome": "USA ENCOMENDAS",
+      "tel": "4803-0036"
+    },
+    {
+      "id": 179,
+      "nome": "ZIRANLOG",
+      "tel": "2499-6369 / 2486-7548"
+    },
+    {
+      "id": 180,
+      "nome": "SOLIDA TRANSPORTES",
+      "tel": "3936-1258"
+    },
+    {
+      "id": 181,
+      "nome": "TRANS HOF CARGAS LIMITADAS",
+      "tel": "3392-4952"
+    },
+    {
+      "id": 182,
+      "nome": "SAO JOAO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 183,
+      "nome": "ATUAL CARGAS TRANSPORTE",
+      "tel": "3908-0600"
+    },
+    {
+      "id": 184,
+      "nome": "VAPT VUPT TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 185,
+      "nome": "NASCIMENTO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 186,
+      "nome": "RAPIDO FIGUEIREDO",
+      "tel": "2483-2267"
+    },
+    {
+      "id": 187,
+      "nome": "COLATINENSE TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 188,
+      "nome": "BAUER CARGAS",
+      "tel": "243056078"
+    },
+    {
+      "id": 189,
+      "nome": "CONTINENTAL TRANSPORTE",
+      "tel": "2085-7220"
+    },
+    {
+      "id": 190,
+      "nome": "EXPRESSO BR",
+      "tel": null
+    },
+    {
+      "id": 191,
+      "nome": "RRC TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 192,
+      "nome": "TRANSPAULO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 193,
+      "nome": "T W TRANSPORTE",
+      "tel": "2142-0001"
+    },
+    {
+      "id": 194,
+      "nome": "BELA VISTA TRANSPORTE",
+      "tel": "2636-4262"
+    },
+    {
+      "id": 195,
+      "nome": "EXPRESSO IMPERIAL",
+      "tel": "3628-2410"
+    },
+    {
+      "id": 196,
+      "nome": "RODOVARIS TRANSPORTE",
+      "tel": "2446-1193"
+    },
+
+    {
+      "id": 197,
+      "nome": "ONCA TRANSPORTES",
+      "tel": "2954-7100"
+    },
+    {
+      "id": 198,
+      "nome": "TRANS PEPERI GUACU",
+      "tel": "2412-0112"
+    },
+    {
+      "id": 199,
+      "nome": "RETIRADA NA LOJA",
+      "tel": null
+    },
+    {
+      "id": 200,
+      "nome": "COSTA E OLIVEIRA TRANSPORTE",
+      "tel": "2412-0601 / 2805-690"
+    },
+    {
+      "id": 201,
+      "nome": "SETE LAGOAS TRANSPORTES",
+      "tel": "2279-3574"
+    },
+    {
+      "id": 202,
+      "nome": "RODOSUL TRANSPORTES",
+      "tel": "2085-6506"
+    },
+    {
+      "id": 203,
+      "nome": "MINAS STAR TRANSPORTES",
+      "tel": "2412-1453"
+    },
+    {
+      "id": 204,
+      "nome": "YURI TRANSPORTES",
+      "tel": "3988-3660"
+    },
+    {
+      "id": 205,
+      "nome": "NACIONAL EXPRESSO TRANSPORTES",
+      "tel": "3512-2000"
+    },
+    {
+      "id": 206,
+      "nome": "RODOCARGAS TRANSPORTES",
+      "tel": "(11) 2482-0942"
+    },
+    {
+      "id": 207,
+      "nome": "SÃO GERALDO TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 208,
+      "nome": "ITAQUA TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 209,
+      "nome": "VIAÇÃO COMETA TRANSPORTES",
+      "tel": "4004-9600"
+    },
+    {
+      "id": 210,
+      "nome": "FLECHA AZUL TRANSPORTES",
+      "tel": "2412-5193"
+    },
+    {
+      "id": 211,
+      "nome": "EXPRESSO NORDESTE",
+      "tel": "3224-8500"
+    },
+    {
+      "id": 212,
+      "nome": "RODOVIARIO GARRA",
+      "tel": "2482-0771"
+    },
+    {
+      "id": 213,
+      "nome": "WILSON TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 214,
+      "nome": "TRANS-CACHOEIRO",
+      "tel": "2482-0735"
+    },
+    {
+      "id": 215,
+      "nome": "RAPIDÃO COMETA",
+      "tel": "4133-7322"
+    },
+    {
+      "id": 216,
+      "nome": "TRANSMANN",
+      "tel": "2104-2000"
+    },
+    {
+      "id": 217,
+      "nome": "BY BUS TRANSPORTES",
+      "tel": "3856-9872"
+    },
+    {
+      "id": 218,
+      "nome": "GLOBAL CARGO",
+      "tel": "3017-8990"
+    },
+    {
+      "id": 219,
+      "nome": "JORTEX TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 220,
+      "nome": "INTEGRA LOG",
+      "tel": "2087-6600"
+    },
+    {
+      "id": 221,
+      "nome": "REBECHE TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 222,
+      "nome": "TORRES TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 223,
+      "nome": "TRANSPARANORTE",
+      "tel": "2488-0030 / 24832056"
+    },
+    {
+      "id": 224,
+      "nome": "CDC CARGAS E LOGISTICAS",
+      "tel": "3348-6733"
+    },
+    {
+      "id": 225,
+      "nome": "TRANSAMILPE",
+      "tel": "4226-3385"
+    },
+    {
+      "id": 226,
+      "nome": "RODA VIVA",
+      "tel": null
+    },
+    {
+      "id": 227,
+      "nome": "RJJ TRANSPORTES",
+      "tel": "2954-4565 / 2954-1891"
+    },
+    {
+      "id": 228,
+      "nome": "UNIÃO EXPRESS",
+      "tel": null
+    },
+    {
+      "id": 229,
+      "nome": "EXPRESSO REGE",
+      "tel": null
+    },
+    {
+      "id": 230,
+      "nome": "FRENTE LOG",
+      "tel": "2411-1363"
+    },
+    {
+      "id": 231,
+      "nome": "HD LOG TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 232,
+      "nome": "GIROTTO",
+      "tel": null
+    },
+    {
+      "id": 233,
+      "nome": "MIRIM TRANSPORTES",
+      "tel": "2412-4579"
+    },
+    {
+      "id": 234,
+      "nome": "COOPERBIG",
+      "tel": "3611-7041/ 3611-8099"
+    },
+    {
+      "id": 235,
+      "nome": "SCHERAIIBER",
+      "tel": null
+    },
+    {
+      "id": 236,
+      "nome": "EXPRESSO VERA CRUZ",
+      "tel": null
+    },
+    {
+      "id": 237,
+      "nome": "RODOVIARIO ROMA",
+      "tel": "2905-1995 / 2905-1996"
+    },
+    {
+      "id": 238,
+      "nome": "YANO TRANSPORTES",
+      "tel": "2085-6681"
+    },
+    {
+      "id": 239,
+      "nome": "VARGINHA",
+      "tel": null
+    },
+    {
+      "id": 240,
+      "nome": "RODOFRIOS",
+      "tel": "2901-3600 / 2901-2175"
+    },
+    {
+      "id": 241,
+      "nome": "TRANSMINATO",
+      "tel": "2431-0790"
+    },
+    {
+      "id": 242,
+      "nome": "ARLETE",
+      "tel": null
+    },
+    {
+      "id": 243,
+      "nome": "JORTEK",
+      "tel": "2412-1343"
+    },
+    {
+      "id": 244,
+      "nome": "SOL A SOL TRANSP",
+      "tel": "2086-7784 / 2241-9693"
+    },
+
+    {
+      "id": 245,
+      "nome": "TRANSDUARTE",
+      "tel": "3643-0404"
+    },
+    {
+      "id": 246,
+      "nome": "M 10",
+      "tel": "2304-3225"
+    },
+    {
+      "id": 247,
+      "nome": "CIDADE EXPRESS",
+      "tel": "2954-1683"
+    },
+    {
+      "id": 248,
+      "nome": "LAMOUNIER",
+      "tel": "2467-7663"
+    },
+    {
+      "id": 249,
+      "nome": "ACTUAL CARGO",
+      "tel": "2414-2988"
+    },
+    {
+      "id": 250,
+      "nome": "EXPRESSO DALVA",
+      "tel": "3326-0140"
+    },
+    {
+      "id": 251,
+      "nome": "MTR TRANSPORTES",
+      "tel": "3915-8888"
+    },
+    {
+      "id": 252,
+      "nome": "E T TRANSPORTE",
+      "tel": "2905-3566"
+    },
+    {
+      "id": 253,
+      "nome": "LASTRO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 254,
+      "nome": "TERMACO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 255,
+      "nome": "TRANSITO BRASIL TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 256,
+      "nome": "ANDORINHA",
+      "tel": null
+    },
+    {
+      "id": 257,
+      "nome": "RAPIDO BRASILEIRO",
+      "tel": "2446-0997"
+    },
+    {
+      "id": 258,
+      "nome": "TRANSPORTADORA CRISTINA",
+      "tel": "2636-1698"
+    },
+    {
+      "id": 259,
+      "nome": "ZIYAD TRANSP",
+      "tel": "2412-8381"
+    },
+    {
+      "id": 260,
+      "nome": "MAY TRANSP",
+      "tel": "2401-3073"
+    },
+    {
+      "id": 261,
+      "nome": "RAPIDO MINEIRO",
+      "tel": "2412-8372"
+    },
+    {
+      "id": 262,
+      "nome": "TBB CARGO",
+      "tel": "2179-3000"
+    },
+    {
+      "id": 263,
+      "nome": "REBOUÇAS",
+      "tel": null
+    },
+    {
+      "id": 264,
+      "nome": "MAX EXPRESS",
+      "tel": "4113-6466"
+    },
+    {
+      "id": 265,
+      "nome": "TRANSMAICI",
+      "tel": "2085-2318"
+    },
+    {
+      "id": 266,
+      "nome": "VOO TRANSPORTES",
+      "tel": "2446-4276"
+    },
+    {
+      "id": 267,
+      "nome": "GERBI TRANSP",
+      "tel": "2955-8041"
+    },
+    {
+      "id": 268,
+      "nome": "JBT TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 269,
+      "nome": "TRANS CICERO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 270,
+      "nome": "CARVALIMA TRANSP",
+      "tel": "2141-3100"
+    },
+    {
+      "id": 271,
+      "nome": "CONEXAO BRASIL",
+      "tel": null
+    },
+    {
+      "id": 272,
+      "nome": "TRANSLAN",
+      "tel": "2088-8301"
+    },
+    {
+      "id": 273,
+      "nome": "EXCELENCE",
+      "tel": "(43) 9853-7900"
+    },
+    {
+      "id": 274,
+      "nome": "GARCIA TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 275,
+      "nome": "AZUL CARGO",
+      "tel": "3224-8927/8909"
+    },
+    {
+      "id": 276,
+      "nome": "SDS TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 277,
+      "nome": "TEMPO REAL",
+      "tel": "2085-6874 / 2772-7443"
+    },
+    {
+      "id": 278,
+      "nome": "BEMTRACK",
+      "tel": "2436-4848"
+    },
+    {
+      "id": 279,
+      "nome": "PLIMOR TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 280,
+      "nome": "3P TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 281,
+      "nome": "ZONA DA MATA",
+      "tel": null
+    },
+    {
+      "id": 282,
+      "nome": "CARRION TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 283,
+      "nome": "YANO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 284,
+      "nome": "TRANSPARANORTE",
+      "tel": null
+    },
+    {
+      "id": 285,
+      "nome": "REGI TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 286,
+      "nome": "SOLUCAO TRANS",
+      "tel": "4788-9500"
+    },
+    {
+      "id": 287,
+      "nome": "SANTA CLAUDIA TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 288,
+      "nome": "OURO NEGRO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 289,
+      "nome": "CARGO TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 290,
+      "nome": "FERRAZ TRINDADE",
+      "tel": null
+    },
+    {
+      "id": 291,
+      "nome": "TOTAL EXPRESS",
+      "tel": null
+    },
+    {
+      "id": 292,
+      "nome": "TSV TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 293,
+      "nome": "WRJ TRANSPORTES",
+      "tel": "(11) 2967-1731"
+    },
+    {
+      "id": 294,
+      "nome": "TRANSHIZZA",
+      "tel": "(11) 2967-1377 / 2967-2131"
+    },
+
+    {
+      "id": 295,
+      "nome": "OLIVEIROS TRANS",
+      "tel": "29557552"
+    },
+    {
+      "id": 296,
+      "nome": "EXPRESSO RIO VERMELHO",
+      "tel": null
+    },
+    {
+      "id": 297,
+      "nome": "JANUARIO",
+      "tel": null
+    },
+    {
+      "id": 298,
+      "nome": "TOCANTINS TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 299,
+      "nome": "DRP TRANSPORTE",
+      "tel": "2085-0144"
+    },
+    {
+      "id": 300,
+      "nome": "EXPRESSO TUBIENSE",
+      "tel": null
+    },
+    {
+      "id": 301,
+      "nome": "EXPRESSO VALE",
+      "tel": "2401-5027"
+    },
+    {
+      "id": 302,
+      "nome": "AF TRANSPORTES",
+      "tel": "11 24124315"
+    },
+    {
+      "id": 303,
+      "nome": "TRANSMAICI TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 304,
+      "nome": "SOLIDEZ TRANSP",
+      "tel": "2949-6149"
+    },
+    {
+      "id": 305,
+      "nome": "TRANSPADUA",
+      "tel": null
+    },
+    {
+      "id": 306,
+      "nome": "T D R TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 307,
+      "nome": "T T R TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 308,
+      "nome": "TRANSPORTADORA LUDEX",
+      "tel": "2584-4417"
+    },
+    {
+      "id": 309,
+      "nome": "MIRA TRANS",
+      "tel": null
+    },
+    {
+      "id": 310,
+      "nome": "VARISUL TRANSPORTE",
+      "tel": "3656-5488"
+    },
+    {
+      "id": 311,
+      "nome": "TRANSPRESS",
+      "tel": "2482-1145"
+    },
+    {
+      "id": 312,
+      "nome": "ETS TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 313,
+      "nome": "D MARI LOGISTICA",
+      "tel": null
+    },
+    {
+      "id": 314,
+      "nome": "3P TRANSPORTE",
+      "tel": "2954-3530 / 2954-3436"
+    },
+    {
+      "id": 315,
+      "nome": "MERIDIONAL",
+      "tel": "(11) 2989-1515"
+    },
+    {
+      "id": 316,
+      "nome": "CORREIO SEDEX",
+      "tel": null
+    },
+    {
+      "id": 317,
+      "nome": "TPL TRANSPORTE",
+      "tel": "4970-6902 / 4970-6903"
+    },
+    {
+      "id": 318,
+      "nome": "NORDESTE TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 319,
+      "nome": "CRISTINA TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 320,
+      "nome": "RAPIDÃO FORTALEZA",
+      "tel": null
+    },
+    {
+      "id": 321,
+      "nome": "NOVO ESTILO TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 322,
+      "nome": "TRANSPORTE CARGAS NORTE",
+      "tel": null
+    },
+    {
+      "id": 323,
+      "nome": "MF LOGISTICA",
+      "tel": null
+    },
+    {
+      "id": 325,
+      "nome": "NORTE CARGAS",
+      "tel": "(11) 2481-9121"
+    },
+    {
+      "id": 326,
+      "nome": "CASTELO TURISMO",
+      "tel": null
+    },
+    {
+      "id": 327,
+      "nome": "TRANSPORTADORA ATIVA",
+      "tel": null
+    },
+    {
+      "id": 328,
+      "nome": "CAETITE",
+      "tel": null
+    },
+    {
+      "id": 329,
+      "nome": "FOX EXPRESS",
+      "tel": null
+    },
+    {
+      "id": 330,
+      "nome": "TRANS CARGAS",
+      "tel": null
+    },
+    {
+      "id": 331,
+      "nome": "EMPRESA CRUZ",
+      "tel": null
+    },
+    {
+      "id": 332,
+      "nome": "TRANSPORTADORA 2001 - WARTHA",
+      "tel": "2243-2001"
+    },
+    {
+      "id": 333,
+      "nome": "INTRACARGO",
+      "tel": "2247-1965"
+    },
+    {
+      "id": 334,
+      "nome": "TRANSPOTADORA THOR",
+      "tel": null
+    },
+    {
+      "id": 335,
+      "nome": "TRANSPORTADORA TMS",
+      "tel": "2905-1855"
+    },
+    {
+      "id": 336,
+      "nome": "EXPRESSO TUBIENSE",
+      "tel": "4970-4142"
+    },
+    {
+      "id": 337,
+      "nome": "TRANSNORTE",
+      "tel": "2401-6037"
+    },
+    {
+      "id": 338,
+      "nome": "RÁPIDO RORAIMA",
+      "tel": null
+    },
+    {
+      "id": 339,
+      "nome": "SÃO PAULO MINAS TRANSPORTADORA",
+      "tel": null
+    },
+    {
+      "id": 340,
+      "nome": "NOVATOS",
+      "tel": "2631-8892/2631-8782"
+    },
+    {
+      "id": 341,
+      "nome": "TRANSPORTADORA UNIDOS",
+      "tel": "2631-1495"
+    },
+    {
+      "id": 342,
+      "nome": "DIRECT ESPRESS LOGISTICA INTEGRADA S/A",
+      "tel": null
+    },
+    {
+      "id": 343,
+      "nome": "TRANSMARINHO",
+      "tel": "11 2432 4219 11 24324214"
+    },
+    {
+      "id": 344,
+      "nome": "TADEX TRANSPORTES",
+      "tel": "2207-1978"
+    },
+    {
+      "id": 345,
+      "nome": "RAPIDO RORAIMA",
+      "tel": "2465-6030"
+    },
+    {
+      "id": 346,
+      "nome": "JADLOG",
+      "tel": null
+    },
+
+    {
+      "id": 347,
+      "nome": "GOLLOG",
+      "tel": null
+    },
+    {
+      "id": 348,
+      "nome": "VIAÇÃO MOTTA ",
+      "tel": null
+    },
+    {
+      "id": 349,
+      "nome": "BINHO TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 350,
+      "nome": "TRANSMAIS",
+      "tel": "2303-7388"
+    },
+    {
+      "id": 351,
+      "nome": "CAIRU TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 352,
+      "nome": "ITALIA TRANSPORTES E LOGISTICA ",
+      "tel": null
+    },
+    {
+      "id": 353,
+      "nome": "EXPRESSO LEOMAR",
+      "tel": "2291-1776 2291-1566"
+    },
+    {
+      "id": 354,
+      "nome": "RODOVIARIO FRUTALENSE",
+      "tel": "3227-5478"
+    },
+    {
+      "id": 355,
+      "nome": "ITATIBENSE -EMP.TRANSP..",
+      "tel": null
+    },
+    {
+      "id": 356,
+      "nome": "TRANSLIGUE TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 357,
+      "nome": "EXPRESSO SÃO MANOEL",
+      "tel": null
+    },
+    {
+      "id": 358,
+      "nome": "J MENDES TRANSPORTE",
+      "tel": null
+    },
+    {
+      "id": 359,
+      "nome": "TRANSPALLET - TRANSPORTES E LOGISTICA ",
+      "tel": null
+    },
+    {
+      "id": 360,
+      "nome": "TRANSALFA",
+      "tel": "(11) 2412-0444"
+    },
+    {
+      "id": 361,
+      "nome": "VALE SUL",
+      "tel": "3656-5487 3656-5488"
+    },
+    {
+      "id": 362,
+      "nome": "TRANSCOMPRAS",
+      "tel": "(11) 3927-2050 (11) 2908-2050"
+    },
+    {
+      "id": 363,
+      "nome": "TRANSMETELLO",
+      "tel": "2411-2266"
+    },
+    {
+      "id": 364,
+      "nome": "TRANSFELL TRANSPORTES",
+      "tel": "4964-5776"
+    },
+    {
+      "id": 365,
+      "nome": "TRANSPORTADORA GADLE",
+      "tel": null
+    },
+    {
+      "id": 366,
+      "nome": "TRANSPORTADORA VUXX",
+      "tel": null
+    },
+    {
+      "id": 367,
+      "nome": "TRANSFIGUEREDO",
+      "tel": "2462-1200"
+    },
+    {
+      "id": 368,
+      "nome": "R R TRANSPORTES ",
+      "tel": "(16) 3618-1818"
+    },
+    {
+      "id": 369,
+      "nome": "SETEX DO BRASIL",
+      "tel": "2218-8999"
+    },
+    {
+      "id": 370,
+      "nome": "RODOVIARIO WILSON",
+      "tel": "(11) 2636-3176"
+    },
+    {
+      "id": 371,
+      "nome": "RODOEXPRESS",
+      "tel": "2209-9820"
+    },
+    {
+      "id": 372,
+      "nome": "L & N AMARAL TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 373,
+      "nome": "EXPRESSO LEOMAR",
+      "tel": "(11) 2291-1776"
+    },
+    {
+      "id": 374,
+      "nome": "TRANSPORTES RODOVIÁRIO TTR",
+      "tel": null
+    },
+    {
+      "id": 375,
+      "nome": "JR TRANSPORTES",
+      "tel": "11 3976-5244 OU 4105-4444"
+    },
+    {
+      "id": 376,
+      "nome": "TRANSPORTADORA GADLE",
+      "tel": null
+    },
+    {
+      "id": 377,
+      "nome": "EXCELLENCE TRANSPORTES",
+      "tel": "(11) 2085-0307"
+    },
+    {
+      "id": 378,
+      "nome": "TRANSPEROLA TRANSPORTES RODOVIÁRIOS",
+      "tel": null
+    },
+    {
+      "id": 379,
+      "nome": "TRANSPORTADORA REBECCHI",
+      "tel": "(11) 3832-7166"
+    },
+    {
+      "id": 380,
+      "nome": "TRANSCARGAS",
+      "tel": null
+    },
+    {
+      "id": 381,
+      "nome": "JP BELA VISTA",
+      "tel": "(11) 2636-4262"
+    },
+    {
+      "id": 382,
+      "nome": "GERALOG",
+      "tel": null
+    },
+    {
+      "id": 383,
+      "nome": "TRANSPORTADORA SUIÇA",
+      "tel": "(11) 3522-8360"
+    },
+    {
+      "id": 384,
+      "nome": "DU NONDAS TRANSPORTES",
+      "tel": "(11) 2088-3897"
+    },
+    {
+      "id": 385,
+      "nome": "DU NONDAS TRANSPORTES",
+      "tel": "(11) 2088-3897"
+    },
+    {
+      "id": 386,
+      "nome": "TRANSPORTADORA MAGALHAES",
+      "tel": null
+    },
+    {
+      "id": 387,
+      "nome": "TRANSPORTE 3 ESTRELAS",
+      "tel": "11 26924355"
+    },
+    {
+      "id": 388,
+      "nome": "HJ PADUA",
+      "tel": "(11) 2446-0809"
+    },
+    {
+      "id": 389,
+      "nome": "DSL TRANSPORTES",
+      "tel": "(11) 2303-0503"
+    },
+    {
+      "id": 390,
+      "nome": "BRASILIA EXPRESS",
+      "tel": null
+    },
+    {
+      "id": 391,
+      "nome": "TRANSPORTADORA PLIMOR",
+      "tel": "(11) 2131-8000"
+    },
+    {
+      "id": 392,
+      "nome": "TRANSPORTADORA SERIEMA TURISMO EXCURSÃO",
+      "tel": null
+    },
+    {
+      "id": 393,
+      "nome": "TRANSPORTADORA ALIANÇA",
+      "tel": "(11) 2177-4700"
+    },
+
+    {
+      "id": 394,
+      "nome": "RAPIDO XAPURI",
+      "tel": null
+    },
+    {
+      "id": 395,
+      "nome": "TRANSPORTADORA RIOPRETÃO CARGA",
+      "tel": "(11) 2292-5427"
+    },
+    {
+      "id": 396,
+      "nome": "FRANCAL TRANSPORTE",
+      "tel": "(11) 2412-7393"
+    },
+    {
+      "id": 397,
+      "nome": "RÁPIDO ITAQUÁ",
+      "tel": "(11) 2482-4710"
+    },
+    {
+      "id": 398,
+      "nome": "LOCALL EXPRESS EIRELI - ME",
+      "tel": null
+    },
+    {
+      "id": 399,
+      "nome": "WARTHA TRANSPORTES",
+      "tel": "(11) 2243-2001"
+    },
+    {
+      "id": 400,
+      "nome": "KR TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 401,
+      "nome": "TRANS APUCARANA - TRANSPORTES RODOVIÁRIOS ",
+      "tel": null
+    },
+    {
+      "id": 402,
+      "nome": "METAR LOGISTICA ",
+      "tel": "(11)26338100"
+    },
+    {
+      "id": 403,
+      "nome": "TRANSPLAC TRP",
+      "tel": null
+    },
+    {
+      "id": 404,
+      "nome": "FEDEX BRASIL",
+      "tel": null
+    },
+    {
+      "id": 405,
+      "nome": "FRETE DESTINO CLIENTE",
+      "tel": null
+    },
+    {
+      "id": 406,
+      "nome": "MARSUL TRANSPORTES",
+      "tel": "(11) 2481-7544 | 2482-3475"
+    },
+    {
+      "id": 407,
+      "nome": "SKY LOGÍSTICA TRANSPORTE",
+      "tel": "(11) 3977-2354"
+    },
+    {
+      "id": 408,
+      "nome": "TRANS AFONSO",
+      "tel": "5641-6725"
+    },
+    {
+      "id": 409,
+      "nome": "RAWA TRANSPORTES",
+      "tel": null
+    },
+    {
+      "id": 410,
+      "nome": "DATALOG TRANSPORTES E LOGISTICA ",
+      "tel": null
+    },
+    {
+      "id": 411,
+      "nome": "TELECARGAS",
+      "tel": "2411-1117"
+    },
+    {
+      "id": 413,
+      "nome": "MEYVIS TRANSPORTES EIRELI",
+      "tel": null
+    },
+    {
+      "id": 414,
+      "nome": "NULL",
+      "tel": null
+    },
+    {
+      "id": 415,
+      "nome": "GLIA - LOGISTICA E INTERATIVIDADE",
+      "tel": null
+    },
+    {
+      "id": 416,
+      "nome": "BUSLOG",
+      "tel": null
+    },
+    {
+      "id": 417,
+      "nome": "O C T TRANSPORTES DE CARGAS E LOGISTICA ",
+      "tel": null
+    }
+  ]
+}
