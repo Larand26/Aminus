@@ -83,10 +83,8 @@ const searchReserva = async (reserva) => {
 
           return {
             ...reservaItem,
-            PROD_CODFABRIC: vwItem ? vwItem.PROD_CODFABRIC : null,
-            ID_CODPRODUTO: vwItem ? vwItem.ID_CODPRODUTO : null,
-            ID_NUMPEDORC: pedido ? pedido.ID_NUMPEDORC : null,
-            ID_CODVENDEDOR: pedido ? pedido.ID_CODVENDEDOR : null,
+            ...vwItem,
+            ...pedido,
           };
         })
       );

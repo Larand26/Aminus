@@ -5,6 +5,7 @@ import { FloatLabel } from "primereact/floatlabel";
 import { useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import vendedoresJson from "../assets/json/vendedores.json";
 
 const Reserva = () => {
   const [reservas, setReservas] = useState([]);
@@ -20,6 +21,8 @@ const Reserva = () => {
     window.electronApi?.searchReserva(reserva);
     window.electronApi?.onSearchReservaResponse((reservas) => {
       setReservas(reservas);
+      console.log(reservas);
+
       // Limpa os inputs após a pesquisa
       document.getElementById("inputReferencia").value = "";
       document.getElementById("inputCodigoInterno").value = "";
@@ -53,13 +56,26 @@ const Reserva = () => {
           className="w-full"
           emptyMessage="Nenhuma reserva encontrada."
         >
-          <Column field="codigoInterno" header="Código Interno" />
-          <Column field="referencia" header="Referência" />
-          <Column field="numeroPedido" header="Número do Pedido" />
-          <Column field="nome" header="Nome" />
-          <Column field="vendedor" header="Vendedor" />
-          <Column field="quantidade" header="Quantidade" />
-          <Column field="dataReserva" header="Data da Reserva" />
+          <Column field="ID_CODPRODUTO" header="Código Interno" />
+          <Column field="PROD_CODFABRIC" header="Referência" />
+          <Column field="ID_NUMPEDORC" header="Número do Pedido" />
+          <Column field="PEDOR_RAZAOSOCIAL" header="Nome" />
+          <Column
+            body={(rowData) => {
+              const vendedor = vendedoresJson.find(
+                (v) => v.value === rowData.ID_CODVENDEDOR
+              );
+              return vendedor ? vendedor.label : "";
+            }}
+            header="Vendedor"
+          />
+          <Column field="EST_QUANTIDADE" header="Quantidade" />
+          <Column
+            body={(rowData) =>
+              rowData.DATAALTERACAO.toLocaleDateString("pt-BR")
+            }
+            header="Data da Reserva"
+          />
         </DataTable>
       </Content>
     </div>
