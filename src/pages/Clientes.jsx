@@ -55,11 +55,12 @@ const Clientes = () => {
       </BarraLateral>
       <Content>
         <DataTable value={clientes} paginator rows={10}>
-          <Column field="nome" header="Nome" />
-          <Column field="cnpj" header="CNPJ" />
-          <Column field="id" header="ID" />
-          <Column field="celular" header="Celular" />
-          <Column field="email" header="Email" />
+          <Column field="ENTI_RAZAOSOCIAL" header="Nome" />
+          <Column field="ENTI_CNPJCPF" header="CNPJ" />
+          <Column field="ID_CODENTIDADE" header="ID" />
+          <Column field="ENTI_CELULAR" header="Celular" />
+          <Column field="ENTI_EMAIL" header="Email" />
+          <Column field="ENTI_CEP" header="CEP" />
         </DataTable>
       </Content>
     </div>
