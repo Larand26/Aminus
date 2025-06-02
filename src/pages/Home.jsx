@@ -30,11 +30,11 @@ const Home = () => {
             onClick={() => navigate("/clientes")}
           />
           <Button
-            icon="pi pi-list"
+            icon="fa fa-cart-shopping"
             rounded
             severity="info"
             aria-label="List"
-            onClick={() => navigate("/sobre")}
+            onClick={() => navigate("/pedidos")}
           />
         </div>
       </div>
