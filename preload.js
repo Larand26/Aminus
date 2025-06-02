@@ -21,4 +21,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("search-pedido-response", (event, arg) => {
       callback(arg);
     }),
+  searchReserva: (arg) => ipcRenderer.send("search-reserva", arg),
+  onSearchReservaResponse: (callback) =>
+    ipcRenderer.on("search-reserva-response", (event, arg) => {
+      callback(arg);
+    }),
 });

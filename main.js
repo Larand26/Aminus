@@ -5,6 +5,7 @@ const { searchProduto } = require("./db/produtos");
 const { searchNotas } = require("./db/notas");
 const { searchCliente } = require("./db/clientes");
 const { searchPedido } = require("./db/pedidos");
+const { searchReserva } = require("./db/reservas");
 
 env.config();
 
@@ -78,6 +79,18 @@ ipcMain.on("search-pedido", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao buscar pedidos:", error);
     event.reply("search-pedido-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("search-reserva", async (event, arg) => {
+  try {
+    const reservas = await searchReserva(arg);
+    event.reply("search-reserva-response", reservas);
+  } catch (error) {
+    console.error("Erro ao buscar reservas:", error);
+    event.reply("search-reserva-response", {
       error: error.message || "Erro desconhecido",
     });
   }

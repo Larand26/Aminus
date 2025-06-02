@@ -8,9 +8,28 @@ import { Column } from "primereact/column";
 
 const Reserva = () => {
   const [reservas, setReservas] = useState([]);
+  const search = () => {
+    const reserva = {
+      referencia: document.getElementById("inputReferencia").value || null,
+      codigoInterno:
+        document.getElementById("inputCodigoInterno").value || null,
+      nome: document.getElementById("inputNome").value || null,
+      numeroPedido: document.getElementById("inputNumeroPedido").value || null,
+    };
+
+    window.electronApi?.searchReserva(reserva);
+    window.electronApi?.onSearchReservaResponse((reservas) => {
+      setReservas(reservas);
+      // Limpa os inputs após a pesquisa
+      document.getElementById("inputReferencia").value = "";
+      document.getElementById("inputCodigoInterno").value = "";
+      document.getElementById("inputNome").value = "";
+      document.getElementById("inputNumeroPedido").value = "";
+    });
+  };
   return (
     <div className="flex">
-      <BarraLateral>
+      <BarraLateral search={search}>
         <FloatLabel>
           <InputText id="inputReferencia" />
           <label htmlFor="inputReferencia">Referência</label>
