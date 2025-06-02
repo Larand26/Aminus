@@ -64,6 +64,7 @@ const Pedidos = () => {
         <FloatLabel>
           <Calendar
             id="inputDataInicial"
+            value={dataInicial}
             onChange={(e) => setDataInicial(e.value)}
           />
           <label htmlFor="inputDataInicial">Data Inicial</label>
@@ -71,6 +72,7 @@ const Pedidos = () => {
         <FloatLabel>
           <Calendar
             id="inputDataFinal"
+            value={dataFinal}
             onChange={(e) => setDataFinal(e.value)}
           />
           <label htmlFor="inputDataFinal">Data Final</label>
@@ -83,17 +85,19 @@ const Pedidos = () => {
               { label: "Cancelado", value: "Cancelado" },
               { label: "Atendido", value: "Atendido" },
             ]}
-            onChange={(e) => setSituacao(e.value)}
             id="inputSituacao"
+            value={situacao}
+            onChange={(e) => setSituacao(e.value)}
           />
           <label htmlFor="inputSituacao">Situação</label>
         </FloatLabel>
         <FloatLabel>
           <Dropdown
             options={vendedoresJson}
-            onChange={(e) => setVendedor(e.value)}
             id="inputVendedor"
             className="md:w-12rem "
+            value={vendedor}
+            onChange={(e) => setVendedor(e.value)}
           />
           <label htmlFor="inputVendedor">Vendedor</label>
         </FloatLabel>
