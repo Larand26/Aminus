@@ -36,6 +36,13 @@ const Home = () => {
             aria-label="List"
             onClick={() => navigate("/pedidos")}
           />
+          <Button
+            icon="fa fa-box-archive"
+            rounded
+            severity="info"
+            aria-label="List"
+            onClick={() => navigate("/reservas")}
+          />
         </div>
       </div>
     </div>
