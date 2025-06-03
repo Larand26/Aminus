@@ -5,10 +5,14 @@ import { FloatLabel } from "primereact/floatlabel";
 import { useState } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { FilterMatchMode } from "primereact/api";
 import vendedoresJson from "../assets/json/vendedores.json";
 
 const Reserva = () => {
   const [reservas, setReservas] = useState([]);
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  });
   const search = () => {
     const reserva = {
       referencia: document.getElementById("inputReferencia").value || null,
@@ -55,6 +59,30 @@ const Reserva = () => {
           value={reservas}
           className="w-full"
           emptyMessage="Nenhuma reserva encontrada."
+          showGridlines
+          filters={filters}
+          onFilter={(e) => setFilters(e.filters)}
+          globalFilterFields={[
+            "ID_CODPRODUTO",
+            "PROD_CODFABRIC",
+            "ID_NUMPEDORC",
+            "PEDOR_RAZAOSOCIAL",
+          ]}
+          header={
+            <InputText
+              type="search"
+              onInput={(e) =>
+                setFilters({
+                  ...filters,
+                  global: {
+                    value: e.target.value,
+                    matchMode: FilterMatchMode.CONTAINS,
+                  },
+                })
+              }
+              placeholder="Filtrar reservas"
+            />
+          }
         >
           <Column field="ID_CODPRODUTO" header="Código Interno" />
           <Column field="PROD_CODFABRIC" header="Referência" />

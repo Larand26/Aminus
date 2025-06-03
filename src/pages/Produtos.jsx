@@ -5,9 +5,18 @@ import Content from "../components/Content";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useState, useEffect, useCallback } from "react";
+import { FilterMatchMode } from "primereact/api";
 
 const Produtos = () => {
   const [produtos, setProdutos] = useState([]);
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    ID_CODPRODUTO: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    PROD_CODFABRIC: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    PROD_DESCRCOMPLETA: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    PROD_CODBARRA: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  });
+
   const search = () => {
     const produto = {
       referencia: document.getElementById("inputReferencia").value || null,
@@ -78,22 +87,44 @@ const Produtos = () => {
           paginator
           rows={10}
           emptyMessage="Nenhum produto encontrado"
-          sortMode="multiple"
           showGridlines
+          filters={filters}
+          onFilter={(e) => setFilters(e.filters)}
+          globalFilterFields={[
+            "ID_CODPRODUTO",
+            "PROD_CODFABRIC",
+            "PROD_DESCRCOMPLETA",
+            "PROD_CODBARRA",
+          ]}
+          header={
+            <span>
+              <InputText
+                type="search"
+                onInput={(e) =>
+                  setFilters({
+                    ...filters,
+                    global: {
+                      value: e.target.value,
+                      matchMode: FilterMatchMode.CONTAINS,
+                    },
+                  })
+                }
+                placeholder="Filtrar produtos"
+              />
+            </span>
+          }
         >
-          <Column field="ID_CODPRODUTO" header="Código Interno" sortable />
-          <Column field="PROD_CODFABRIC" header="Referência" sortable />
-          <Column field="PROD_DESCRCOMPLETA" header="Nome" sortable />
-          <Column field="PROD_CODBARRA" header="Código de Barras" sortable />
+          <Column field="ID_CODPRODUTO" header="Código Interno" />
+          <Column field="PROD_CODFABRIC" header="Referência" />
+          <Column field="PROD_DESCRCOMPLETA" header="Nome" />
+          <Column field="PROD_CODBARRA" header="Código de Barras" />
           <Column
             header="Endereço"
             body={(rowData) => {
-              return `${rowData.PRDE_RUA.substring(
-                0,
-                1
-              )} - ${rowData.PRDE_FILEIRA.substring(0, 2)}`;
+              return `${rowData.PRDE_RUA?.substring(0, 1) || ""} - ${
+                rowData.PRDE_FILEIRA?.substring(0, 2) || ""
+              }`;
             }}
-            sortable
           />
           <Column
             header="Quantidade"
@@ -102,7 +133,6 @@ const Produtos = () => {
               const reserva = Number(rowData.EST_QUANTIDADE) || 0;
               return total - reserva;
             }}
-            sortable
           />
         </DataTable>
       </Content>

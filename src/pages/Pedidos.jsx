@@ -7,9 +7,13 @@ import { Column } from "primereact/column";
 import { useState } from "react";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
+import { FilterMatchMode } from "primereact/api";
 import vendedoresJson from "../assets/json/vendedores.json";
 const Pedidos = () => {
   const [pedidos, setPedidos] = useState([]);
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  });
   const [dataInicial, setDataInicial] = useState(null);
   const [dataFinal, setDataFinal] = useState(null);
   const [vendedor, setVendedor] = useState(null);
@@ -108,8 +112,30 @@ const Pedidos = () => {
           rows={10}
           emptyMessage="Nenhum produto encontrado"
           value={pedidos}
-          sortMode="multiple"
           showGridlines
+          filters={filters}
+          onFilter={(e) => setFilters(e.filters)}
+          globalFilterFields={[
+            "ID_NUMPEDORC",
+            "ID_CODENTIDADE",
+            "PEDOR_RAZAOSOCIAL",
+            "PEDOR_SITUACAO",
+          ]}
+          header={
+            <InputText
+              type="search"
+              onInput={(e) =>
+                setFilters({
+                  ...filters,
+                  global: {
+                    value: e.target.value,
+                    matchMode: FilterMatchMode.CONTAINS,
+                  },
+                })
+              }
+              placeholder="Filtrar pedidos"
+            />
+          }
           id="tabelaPedidos"
         >
           <Column field="ID_NUMPEDORC" header="Número" />

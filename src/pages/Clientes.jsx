@@ -5,8 +5,14 @@ import { FloatLabel } from "primereact/floatlabel";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useState } from "react";
+import { FilterMatchMode } from "primereact/api";
+
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  });
+
   const search = () => {
     const cliente = {
       nome: document.getElementById("inputNome").value || null,
@@ -15,13 +21,9 @@ const Clientes = () => {
       celular: document.getElementById("inputCelular").value || null,
       email: document.getElementById("inputEmail").value || null,
     };
-    console.log("Pesquisando cliente:", cliente);
-
     window.electronApi?.searchCliente(cliente);
     window.electronApi?.onSearchClienteResponse((clientes) => {
       setClientes(clientes);
-      console.log("Clientes recebidos:", clientes);
-      // Limpa os inputs após a pesquisa
       document.getElementById("inputNome").value = "";
       document.getElementById("inputCnpj").value = "";
       document.getElementById("inputId").value = "";
@@ -29,6 +31,7 @@ const Clientes = () => {
       document.getElementById("inputEmail").value = "";
     });
   };
+
   return (
     <div className="flex">
       <BarraLateral search={search}>
@@ -54,7 +57,37 @@ const Clientes = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Clientes"}>
-        <DataTable value={clientes} paginator rows={10}>
+        <DataTable
+          value={clientes}
+          paginator
+          rows={10}
+          showGridlines
+          filters={filters}
+          onFilter={(e) => setFilters(e.filters)}
+          globalFilterFields={[
+            "ENTI_RAZAOSOCIAL",
+            "ENTI_CNPJCPF",
+            "ID_CODENTIDADE",
+            "ENTI_CELULAR",
+            "ENTI_EMAIL",
+            "ENTI_CEP",
+          ]}
+          header={
+            <InputText
+              type="search"
+              onInput={(e) =>
+                setFilters({
+                  ...filters,
+                  global: {
+                    value: e.target.value,
+                    matchMode: FilterMatchMode.CONTAINS,
+                  },
+                })
+              }
+              placeholder="Filtrar clientes"
+            />
+          }
+        >
           <Column field="ENTI_RAZAOSOCIAL" header="Nome" />
           <Column field="ENTI_CNPJCPF" header="CNPJ" />
           <Column field="ID_CODENTIDADE" header="ID" />

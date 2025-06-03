@@ -10,6 +10,7 @@ import { useState, useEffect, useCallback } from "react";
 import ufsJson from "../assets/json/ufs.json";
 import vendedoresJson from "../assets/json/vendedores.json";
 import transportadorasJson from "../assets/json/transportadoras.json";
+import { FilterMatchMode } from "primereact/api";
 
 const Notas = () => {
   const [notas, setNotas] = useState([]);
@@ -19,6 +20,9 @@ const Notas = () => {
   const vendedores = vendedoresJson;
   const [dataInicial, setDataInicial] = useState(null);
   const [dataFinal, setDataFinal] = useState(null);
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  });
 
   const search = () => {
     // Não converta para Date aqui, apenas envie o valor do estado
@@ -103,8 +107,31 @@ const Notas = () => {
           paginator
           rows={10}
           emptyMessage="Nenhum produto encontrado"
-          sortMode="multiple"
           showGridlines
+          filters={filters}
+          onFilter={(e) => setFilters(e.filters)}
+          globalFilterFields={[
+            "NF_NUMDOCUM",
+            "ID_PEDIDO",
+            "NF_CGCCPFENTIDADE",
+            "NF_NOMEENTIDADE",
+            "NF_UNIDFEDENTD",
+          ]}
+          header={
+            <InputText
+              type="search"
+              onInput={(e) =>
+                setFilters({
+                  ...filters,
+                  global: {
+                    value: e.target.value,
+                    matchMode: FilterMatchMode.CONTAINS,
+                  },
+                })
+              }
+              placeholder="Filtrar notas fiscais"
+            />
+          }
         >
           <Column field="NF_NUMDOCUM" header="Número" />
           <Column field="ID_PEDIDO" header="Pedido" />
