@@ -1,7 +1,20 @@
+import BarraLateral from "../components/BarraLateral";
+import { InputText } from "primereact/inputtext";
+import { FloatLabel } from "primereact/floatlabel";
+
 const Fotos = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h1 className="text-4xl font-bold mb-4">Fotos</h1>
+    <div className="flex">
+      <BarraLateral>
+        <FloatLabel>
+          <InputText id="inputReferencia" />
+          <label htmlFor="inputReferencia">Referência</label>
+        </FloatLabel>
+        <FloatLabel>
+          <InputText id="inputCodigoCor" />
+          <label htmlFor="inputCodigoCor">Código da Cor</label>
+        </FloatLabel>
+      </BarraLateral>
     </div>
   );
 };
