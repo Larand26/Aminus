@@ -26,4 +26,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("search-reserva-response", (event, arg) => {
       callback(arg);
     }),
+  searchFoto: (arg) => ipcRenderer.send("search-foto", arg),
+  onSearchFotoResponse: (callback) =>
+    ipcRenderer.on("search-foto-response", (event, arg) => {
+      callback(arg);
+    }),
 });

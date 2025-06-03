@@ -5,6 +5,7 @@ const { searchNotas } = require("./db/notas");
 const { searchCliente } = require("./db/clientes");
 const { searchPedido } = require("./db/pedidos");
 const { searchReserva } = require("./db/reservas");
+const { searchFoto } = require("./db/fotos");
 
 function isDev() {
   return (
@@ -88,6 +89,19 @@ ipcMain.on("search-reserva", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao buscar reservas:", error);
     event.reply("search-reserva-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("search-foto", async (event, arg) => {
+  try {
+    // Simulação de busca de fotos, substitua com a lógica real
+    const fotos = await searchFoto(arg);
+    event.reply("search-foto-response", fotos);
+  } catch (error) {
+    console.error("Erro ao buscar fotos:", error);
+    event.reply("search-foto-response", {
       error: error.message || "Erro desconhecido",
     });
   }
