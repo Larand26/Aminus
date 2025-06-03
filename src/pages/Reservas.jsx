@@ -50,7 +50,7 @@ const Reserva = () => {
           <label htmlFor="inputNumeroPedido">Número do Pedido</label>
         </FloatLabel>
       </BarraLateral>
-      <Content>
+      <Content titulo="Produtos na reserva">
         <DataTable
           value={reservas}
           className="w-full"

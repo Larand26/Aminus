@@ -27,3 +27,27 @@
 .barra-lateral .p-dropdown input {
   color: black;
 }
+
+@media (max-width: 900px) {
+  .barra-lateral {
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    margin-bottom: 1rem;
+    border-radius: 0 0 20px 20px;
+  }
+  .barra-lateral input,
+  .barra-lateral .p-dropdown {
+    font-size: 1rem;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .barra-lateral {
+    padding: 0.5rem !important;
+  }
+  .barra-lateral label {
+    font-size: 0.95rem;
+  }
+}

@@ -18,11 +18,14 @@ body {
   padding: 0;
   box-sizing: border-box;
   font-family: "Inter", Arial, sans-serif;
+  background: #f5f6fa;
 }
 
 .titulo {
   font-family: "Bebas Neue", cursive;
-  font-size: 3rem;
+  font-size: 2.5rem;
+  text-align: center;
+  word-break: break-word;
 }
 .titulo p {
   margin: 0;
@@ -35,4 +38,44 @@ table {
   min-width: 80rem;
   height: 25rem;
   border-collapse: collapse;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 900px) {
+  .content {
+    padding: 0.5rem;
+    min-width: unset;
+  }
+  .titulo {
+    font-size: 2rem;
+  }
+  table {
+    min-width: 600px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .content {
+    padding: 0.2rem;
+  }
+  .titulo {
+    font-size: 1.5rem;
+  }
+  table {
+    min-width: 350px;
+    font-size: 0.85rem;
+  }
+}
+
+/* DataTable responsivo */
+.p-datatable-wrapper {
+  overflow-x: auto;
 }
