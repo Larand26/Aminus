@@ -17,7 +17,6 @@ const sqlParametros = {
 const conectarSql = async () => {
   try {
     const connection = await sql.connect(sqlParametros);
-    // console.log("Conexão bem-sucedida ao banco de dados SQL Server!");
     return connection;
   } catch (err) {
     console.error("Erro ao conectar ao banco de dados:", err);

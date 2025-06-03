@@ -1,13 +1,10 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const env = require("dotenv");
 const { searchProduto } = require("./db/produtos");
 const { searchNotas } = require("./db/notas");
 const { searchCliente } = require("./db/clientes");
 const { searchPedido } = require("./db/pedidos");
 const { searchReserva } = require("./db/reservas");
-
-env.config();
 
 function isDev() {
   return (
