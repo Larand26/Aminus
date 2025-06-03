@@ -49,6 +49,28 @@ const Notas = () => {
       setVendedor(null);
     });
   };
+  const handleKeyDown = useCallback((e) => {
+    if (e.key === "Enter") {
+      search();
+    }
+  }, []);
+
+  useEffect(() => {
+    const inputs = [
+      document.getElementById("inputReferencia"),
+      document.getElementById("inputCodigoInterno"),
+      document.getElementById("inputNome"),
+      document.getElementById("inputCodigoBarras"),
+    ];
+    inputs.forEach((input) => {
+      if (input) input.addEventListener("keydown", handleKeyDown);
+    });
+    return () => {
+      inputs.forEach((input) => {
+        if (input) input.removeEventListener("keydown", handleKeyDown);
+      });
+    };
+  }, [handleKeyDown]);
 
   return (
     <div className="flex">
