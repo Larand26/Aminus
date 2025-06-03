@@ -79,3 +79,20 @@ table {
 .p-datatable-wrapper {
   overflow-x: auto;
 }
+
+/* Evita quebra feia de palavras e melhora responsividade das tabelas */
+.p-datatable .p-column-header,
+.p-datatable .p-cell {
+  word-break: break-word;
+  white-space: normal;
+  max-width: 180px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+  .p-datatable .p-column-header,
+  .p-datatable .p-cell {
+    max-width: 100px;
+    font-size: 0.85rem;
+  }
+}
