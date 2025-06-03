@@ -3,6 +3,7 @@ import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Card } from "primereact/card";
 import React, { useState } from "react";
+import JSZip from "jszip";
 
 const Fotos = () => {
   const [fotos, setFotos] = useState([]);
@@ -15,12 +16,29 @@ const Fotos = () => {
     window.electronApi?.searchFoto(foto);
     window.electronApi?.onSearchFotoResponse((fotos) => {
       setFotos(fotos);
-      console.log("Fotos recebidas:", fotos);
       // Limpa os inputs após a pesquisa
       document.getElementById("inputReferencia").value = "";
       document.getElementById("inputCodigoCor").value = "";
     });
   };
+
+  // Substitua a função handleDownload por esta:
+  const handleDownload = async (fotosObj, nome) => {
+    const zip = new JSZip();
+    Object.entries(fotosObj).forEach(([key, base64]) => {
+      if (base64) {
+        zip.file(`${nome}_${key}.jpg`, base64, { base64: true });
+      }
+    });
+    const content = await zip.generateAsync({ type: "blob" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(content);
+    link.download = `${nome || "fotos"}.zip`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="flex">
       <BarraLateral search={search}>
@@ -33,24 +51,40 @@ const Fotos = () => {
           <label htmlFor="inputCodigoCor">Código da Cor</label>
         </FloatLabel>
       </BarraLateral>
-      <div className="content flex flex-wrap align-items-center justify-content-around w-full min-h-screen bg-gray-200 p-4">
-        <Card title="25122" subTitle="09064" className="md:w-13rem">
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis
-          </p>
-        </Card>
-        <Card title="25122" subTitle="09064" className="md:w-13rem">
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis
-          </p>
-        </Card>
-        <Card title="25122" subTitle="09064" className="md:w-13rem">
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facilis
-          </p>
-        </Card>
+      <div
+        className="content flex flex-wrap align-items-center justify-content-center gap-4 w-full bg-gray-200 p-4"
+        style={{
+          maxHeight: "100vh",
+          overflowY: "auto",
+          minHeight: "300px",
+        }}
+      >
+        {fotos.map((foto, index) => (
+          <Card
+            key={index}
+            title={foto.referencia}
+            subTitle={foto.codigo_cor}
+            className="md:w-13rem"
+            footer={
+              <button
+                className="p-button p-component w-full flex justify-content-center"
+                onClick={() => handleDownload(foto.fotos, foto.referencia)}
+              >
+                <span>Download </span>
+                <i className="pi pi-download"></i>
+              </button>
+            }
+          >
+            <img
+              src={`data:image/jpeg;base64,${foto.fotos.foto_principal}`}
+              alt=""
+              className="w-full h-auto"
+            />
+          </Card>
+        ))}
       </div>
     </div>
   );
 };
+
 export default Fotos;
