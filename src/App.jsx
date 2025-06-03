@@ -5,6 +5,7 @@ import Produtos from "./pages/Produtos";
 import Notas from "./pages/Notas";
 import Clientes from "./pages/Clientes";
 import Reservas from "./pages/Reservas";
+import Fotos from "./pages/Fotos";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/pedidos" element={<Pedidos />} />
         <Route path="/clientes" element={<Clientes />} />
         <Route path="/reservas" element={<Reservas />} />
+        <Route path="/fotos" element={<Fotos />} />
       </Routes>
     </Router>
   );

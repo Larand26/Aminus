@@ -43,6 +43,13 @@ const Home = () => {
             aria-label="List"
             onClick={() => navigate("/reservas")}
           />
+          <Button
+            icon="fa fa-camera"
+            rounded
+            severity="info"
+            aria-label="List"
+            onClick={() => navigate("/fotos")}
+          />
         </div>
       </div>
     </div>
