@@ -62,10 +62,12 @@ const Pedidos = () => {
 
   useEffect(() => {
     const inputs = [
-      document.getElementById("inputReferencia"),
-      document.getElementById("inputCodigoInterno"),
-      document.getElementById("inputNome"),
-      document.getElementById("inputCodigoBarras"),
+      document.getElementById("inputNumero"),
+      document.getElementById("inputCnpj"),
+      document.getElementById("inputDataInicial"),
+      document.getElementById("inputDataFinal"),
+      document.getElementById("inputSituacao"),
+      document.getElementById("inputVendedor"),
     ];
     inputs.forEach((input) => {
       if (input) input.addEventListener("keydown", handleKeyDown);
