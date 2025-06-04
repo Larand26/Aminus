@@ -216,7 +216,7 @@ const Pedidos = () => {
         <DataTable
           value={itensPedido}
           emptyMessage="Nenhum item encontrado"
-          className="overflow-y-scroll h-full"
+          scrollHeight="500px"
         >
           <Column field="ID_CODPRODUTO" header="Código" />
           <Column field="ITPEDOR_DESCRPROD" header="Descrição" />

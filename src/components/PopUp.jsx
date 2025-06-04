@@ -1,3 +1,4 @@
+import { Button } from "primereact/button";
 const PopUp = ({ children, onClose }) => {
   return (
     <div
@@ -8,20 +9,19 @@ const PopUp = ({ children, onClose }) => {
         transition: "transform 0.3s ease-in-out",
       }}
     >
-      <div className="bg-white p-6 rounded shadow-lg relative w-8 h-8">
-        <button
-          onClick={onClose}
-          className="absolute text-gray-500 hover:text-gray-700"
+      <div className="bg-white p-6 rounded shadow-lg relative w-8 h-8 ">
+        <Button
+          icon="pi pi-times"
+          rounded
+          severity="danger"
+          aria-label="Cancel"
           style={{
+            position: "absolute",
             top: "10px",
             right: "10px",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
           }}
-        >
-          &times;
-        </button>
+          onClick={onClose}
+        />
         {children}
       </div>
     </div>
