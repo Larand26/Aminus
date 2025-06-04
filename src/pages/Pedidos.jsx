@@ -11,6 +11,7 @@ import { Dropdown } from "primereact/dropdown";
 import { FilterMatchMode } from "primereact/api";
 import vendedoresJson from "../assets/json/vendedores.json";
 import { Button } from "primereact/button";
+import createPDF from "../utils/createPDF";
 const Pedidos = () => {
   const [pedidos, setPedidos] = useState([]);
   const [filters, setFilters] = useState({
@@ -96,12 +97,13 @@ const Pedidos = () => {
       console.log("Itens do pedido recebidos:", itensPedido);
     });
   };
-  const makeCubagem = () => {
+  const makeCubagem = async () => {
     window.electronApi?.makeCubagem(itensPedido);
     window.electronApi?.onMakeCubagemResponse((cubagemItens) => {
       console.log("Cubagem realizada:", cubagemItens);
       setCubagemItens(cubagemItens);
     });
+    await createPDF(cubagemItens);
   };
   return (
     <div className="flex">
