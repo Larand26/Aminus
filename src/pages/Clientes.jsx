@@ -4,7 +4,7 @@ import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { FilterMatchMode } from "primereact/api";
 
 const Clientes = () => {
