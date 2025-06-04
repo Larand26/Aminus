@@ -3,12 +3,12 @@ const makeCubagem = async (arg) => {
   const connection = await conectarSql();
   try {
     const codigos = arg.map((item) => item.ID_CODPRODUTO).join(",");
-    const query = `SELECT [PROD_COMPRIMENTO], [PROD_LARGURA], [PROD_ALTURA] FROM [PRODUTOS] WHERE ID_CODPRODUTO IN (${codigos})`;
+    const query = `SELECT [ID_CODPRODUTO], [PROD_COMPRIMENTO], [PROD_LARGURA], [PROD_ALTURA] FROM [PRODUTOS] WHERE ID_CODPRODUTO IN (${codigos})`;
     const result = await connection.request().query(query);
     const resultvwItem = await connection
       .request()
       .query(
-        `SELECT [ID_CODPRODUTO], [PROD_CODFABRIC] FROM [VW_ITEM] WHERE ID_CODPRODUTO IN (${codigos})`
+        `SELECT [ID_CODPRODUTO], [PROD_CODFABRIC] FROM [vwITEM] WHERE ID_DEPOSITOS = 2 AND ID_CODPRODUTO IN (${codigos})`
       );
     //junta o arg com o resultado da consulta
     const produtosComCubagem = arg.map((item) => {
