@@ -3,7 +3,7 @@ const path = require("path");
 const { searchProduto } = require("./db/produtos");
 const { searchNotas } = require("./db/notas");
 const { searchCliente } = require("./db/clientes");
-const { searchPedido } = require("./db/pedidos");
+const { searchPedido, getPedido } = require("./db/pedidos");
 const { searchReserva } = require("./db/reservas");
 const { searchFoto } = require("./db/fotos");
 
@@ -102,6 +102,19 @@ ipcMain.on("search-foto", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao buscar fotos:", error);
     event.reply("search-foto-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("get-pedido", async (event, arg) => {
+  try {
+    // Simulação de busca de pedido, substitua com a lógica real
+    const pedido = await getPedido(arg);
+    event.reply("get-pedido-response", pedido);
+  } catch (error) {
+    console.error("Erro ao buscar pedido:", error);
+    event.reply("get-pedido-response", {
       error: error.message || "Erro desconhecido",
     });
   }

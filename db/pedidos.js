@@ -35,4 +35,20 @@ const searchPedido = async (pedido) => {
   }
 };
 
-module.exports = { searchPedido };
+const getPedido = async (numero) => {
+  const connection = await conectarSql();
+  try {
+    const result = await connection
+      .request()
+      .query(
+        `SELECT * FROM [ITENSPEDIDOORCAMENTO] WHERE [ID_NUMPEDORC] = '${numero}'`
+      );
+    return result.recordset;
+  } catch (error) {
+    console.error("Erro ao buscar pedido:", error);
+  } finally {
+    connection.close();
+  }
+};
+
+module.exports = { searchPedido, getPedido };

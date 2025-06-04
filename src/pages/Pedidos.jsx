@@ -87,6 +87,12 @@ const Pedidos = () => {
   };
   const getPedido = (numero) => {
     openPopup();
+    window.electronApi?.getPedido(numero);
+    window.electronApi?.onGetPedidoResponse((pedido) => {
+      console.log("Pedido recebido:", pedido);
+      // Aqui você pode manipular o pedido recebido, por exemplo, exibir em um modal
+      // ou preencher um formulário com os dados do pedido.
+    });
   };
   return (
     <div className="flex">
