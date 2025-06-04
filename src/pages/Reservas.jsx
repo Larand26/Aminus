@@ -2,7 +2,7 @@ import BarraLateral from "../components/BarraLateral";
 import Content from "../components/Content";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
@@ -44,7 +44,7 @@ const Reserva = () => {
     const inputs = [
       document.getElementById("inputReferencia"),
       document.getElementById("inputCodigoInterno"),
-      document.getElementById("inputNome"),
+      document.getElementById("inputNumeroPedido"),
       document.getElementById("inputCodigoBarras"),
     ];
     inputs.forEach((input) => {

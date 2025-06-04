@@ -2,7 +2,7 @@ import BarraLateral from "../components/BarraLateral";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Card } from "primereact/card";
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import JSZip from "jszip";
 
 const Fotos = () => {
@@ -47,9 +47,7 @@ const Fotos = () => {
   useEffect(() => {
     const inputs = [
       document.getElementById("inputReferencia"),
-      document.getElementById("inputCodigoInterno"),
-      document.getElementById("inputNome"),
-      document.getElementById("inputCodigoBarras"),
+      document.getElementById("inputCodigoCor"),
     ];
     inputs.forEach((input) => {
       if (input) input.addEventListener("keydown", handleKeyDown);
