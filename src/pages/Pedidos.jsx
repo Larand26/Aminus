@@ -1,5 +1,6 @@
 import BarraLateral from "../components/BarraLateral";
 import Content from "../components/Content";
+import PopUp from "../components/PopUp";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { DataTable } from "primereact/datatable";
@@ -161,6 +162,9 @@ const Pedidos = () => {
             />
           }
           id="tabelaPedidos"
+          onRowClick={(e) => {
+            console.log("Linha clicada:", e.data);
+          }}
         >
           <Column field="ID_NUMPEDORC" header="Número" />
           <Column field="ID_CODENTIDADE" header="ID do cliente" />
@@ -193,6 +197,7 @@ const Pedidos = () => {
           />
         </DataTable>
       </Content>
+      <PopUp></PopUp>
     </div>
   );
 };
