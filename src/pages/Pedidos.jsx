@@ -33,7 +33,6 @@ const Pedidos = () => {
       situacao: situacao || null,
       vendedor: vendedor || null,
     };
-    console.log("Pesquisando pedido:", pedido);
     if (
       !pedido.numero &&
       !pedido.cnpj &&
@@ -49,7 +48,6 @@ const Pedidos = () => {
     window.electronApi?.searchPedido(pedido);
     window.electronApi?.onSearchPedidoResponse((pedidos) => {
       setPedidos(pedidos);
-      console.log("Pedidos recebidos:", pedidos);
       // Limpa os inputs após a pesquisa
       document.getElementById("inputNumero").value = "";
       document.getElementById("inputCnpj").value = "";
@@ -94,16 +92,59 @@ const Pedidos = () => {
     window.electronApi?.getPedido(numero);
     window.electronApi?.onGetPedidoResponse((itensPedido) => {
       setItensPedido(itensPedido || []);
-      console.log("Itens do pedido recebidos:", itensPedido);
     });
   };
+  useEffect(() => {
+    if (!window.electronApi) return;
+
+    const handleCubagem = (cubagemItens) => {
+      // Agrupa por PROD_CODFABRIC e soma a quantidade
+      const agrupado = {};
+      cubagemItens.forEach((item) => {
+        const cod = item.PROD_CODFABRIC;
+        if (!agrupado[cod]) {
+          agrupado[cod] = {
+            PROD_CODFABRIC: item.PROD_CODFABRIC,
+            PROD_ALTURA: item.PROD_ALTURA,
+            PROD_COMPRIMENTO: item.PROD_COMPRIMENTO,
+            PROD_LARGURA: item.PROD_LARGURA,
+            ITPEDOR_QUANTID: item.ITPEDOR_QUANTID,
+          };
+        } else {
+          agrupado[cod].ITPEDOR_QUANTID += item.ITPEDOR_QUANTID;
+        }
+      });
+
+      const cubagemComSoma = Object.values(agrupado);
+      console.log("Dados de cubagem recebidos:", cubagemComSoma);
+
+      let cubagem = 0;
+      cubagemComSoma.forEach((item) => {
+        const volume =
+          (item.PROD_ALTURA * item.PROD_COMPRIMENTO * item.PROD_LARGURA) /
+          1000000;
+        cubagem += volume * (item.ITPEDOR_QUANTID / 12);
+      });
+
+      setCubagemItens(cubagemComSoma);
+      createPDF(cubagemComSoma, cubagem);
+    };
+
+    // Remova antes de adicionar (se existir esse método)
+    if (window.electronApi.removeMakeCubagemResponse) {
+      window.electronApi.removeMakeCubagemResponse(handleCubagem);
+    }
+    window.electronApi.onMakeCubagemResponse(handleCubagem);
+
+    return () => {
+      if (window.electronApi.removeMakeCubagemResponse) {
+        window.electronApi.removeMakeCubagemResponse(handleCubagem);
+      }
+    };
+  }, []);
+
   const makeCubagem = async () => {
     window.electronApi?.makeCubagem(itensPedido);
-    window.electronApi?.onMakeCubagemResponse((cubagemItens) => {
-      console.log("Cubagem realizada:", cubagemItens);
-      setCubagemItens(cubagemItens);
-    });
-    await createPDF(cubagemItens);
   };
   return (
     <div className="flex">
