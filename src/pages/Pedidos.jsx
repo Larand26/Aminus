@@ -19,6 +19,7 @@ const Pedidos = () => {
   const [dataFinal, setDataFinal] = useState(null);
   const [vendedor, setVendedor] = useState(null);
   const [situacao, setSituacao] = useState(null);
+  const [itensPedido, setItensPedido] = useState([]);
 
   const search = () => {
     const pedido = {
@@ -88,10 +89,9 @@ const Pedidos = () => {
   const getPedido = (numero) => {
     openPopup();
     window.electronApi?.getPedido(numero);
-    window.electronApi?.onGetPedidoResponse((pedido) => {
-      console.log("Pedido recebido:", pedido);
-      // Aqui você pode manipular o pedido recebido, por exemplo, exibir em um modal
-      // ou preencher um formulário com os dados do pedido.
+    window.electronApi?.onGetPedidoResponse((itensPedido) => {
+      setItensPedido(itensPedido || []);
+      console.log("Itens do pedido recebidos:", itensPedido);
     });
   };
   return (
@@ -212,7 +212,19 @@ const Pedidos = () => {
           />
         </DataTable>
       </Content>
-      <PopUp onClose={closePopup}></PopUp>
+      <PopUp onClose={closePopup}>
+        <DataTable
+          value={itensPedido}
+          emptyMessage="Nenhum item encontrado"
+          className="overflow-y-scroll h-full"
+        >
+          <Column field="ID_CODPRODUTO" header="Código" />
+          <Column field="ITPEDOR_DESCRPROD" header="Descrição" />
+          <Column field="ITPEDOR_QUANTID" header="Quantidade" />
+          <Column field="ITPEDOR_VLRUNIT" header="Valor unitário" />
+          <Column field="ITPEDOR_VLRLIQU" header="Valor líquido" />
+        </DataTable>
+      </PopUp>
     </div>
   );
 };
