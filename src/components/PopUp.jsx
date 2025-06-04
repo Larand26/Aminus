@@ -1,6 +1,13 @@
 const PopUp = ({ children, onClose }) => {
   return (
-    <div className="bg-popup fixed inset-0 flex align-items-center justify-content-center bg-black bg-opacity-50 z-50 w-full h-screen">
+    <div
+      id="popup"
+      className=" ease-in-out bg-popup fixed inset-0 flex align-items-center justify-content-center bg-black bg-opacity-50 z-50 w-full h-screen"
+      style={{
+        transform: "scale(0)",
+        transition: "transform 0.3s ease-in-out",
+      }}
+    >
       <div className="bg-white p-6 rounded shadow-lg relative w-8 h-8">
         <button
           onClick={onClose}

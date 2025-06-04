@@ -79,6 +79,15 @@ const Pedidos = () => {
       });
     };
   }, [handleKeyDown]);
+  const closePopup = () => {
+    document.getElementById("popup").style.transform = "scale(0)";
+  };
+  const openPopup = () => {
+    document.getElementById("popup").style.transform = "scale(1)";
+  };
+  const getPedido = (numero) => {
+    openPopup();
+  };
   return (
     <div className="flex">
       <BarraLateral search={search}>
@@ -163,7 +172,7 @@ const Pedidos = () => {
           }
           id="tabelaPedidos"
           onRowClick={(e) => {
-            console.log("Linha clicada:", e.data);
+            getPedido(e.data.ID_NUMPEDORC);
           }}
         >
           <Column field="ID_NUMPEDORC" header="Número" />
@@ -197,7 +206,7 @@ const Pedidos = () => {
           />
         </DataTable>
       </Content>
-      <PopUp></PopUp>
+      <PopUp onClose={closePopup}></PopUp>
     </div>
   );
 };
