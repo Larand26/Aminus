@@ -236,6 +236,7 @@ const Pedidos = () => {
           <Column field="ID_NUMPEDORC" header="Número" />
           <Column field="ID_CODENTIDADE" header="ID do cliente" />
           <Column field="PEDOR_RAZAOSOCIAL" header="Nome" />
+          <Column field="PEDOR_PESOBRUTO" header="Peso Bruto" />
           <Column
             body={(rowData) => {
               if (!rowData.PEDOR_DATA) return "";
