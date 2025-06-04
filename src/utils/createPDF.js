@@ -74,5 +74,5 @@ export default (data, cubagem) => {
   doc.setTextColor(255, 255, 255);
   doc.text(cubagemText, x, y);
 
-  doc.save("documento.pdf");
+  doc.save(data[0].ID_NUMPEDORC + ".pdf");
 };

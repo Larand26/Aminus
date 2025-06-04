@@ -104,6 +104,7 @@ const Pedidos = () => {
         const cod = item.PROD_CODFABRIC;
         if (!agrupado[cod]) {
           agrupado[cod] = {
+            ID_NUMPEDORC: item.ID_NUMPEDORC,
             PROD_CODFABRIC: item.PROD_CODFABRIC,
             PROD_ALTURA: item.PROD_ALTURA,
             PROD_COMPRIMENTO: item.PROD_COMPRIMENTO,
