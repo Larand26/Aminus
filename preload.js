@@ -36,4 +36,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("get-pedido-response", (event, arg) => {
       callback(arg);
     }),
+  makeCubagem: (arg) => ipcRenderer.send("make-cubagem", arg),
+  onMakeCubagemResponse: (callback) =>
+    ipcRenderer.on("make-cubagem-response", (event, arg) => {
+      callback(arg);
+    }),
 });

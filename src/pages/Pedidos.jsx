@@ -10,6 +10,7 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { FilterMatchMode } from "primereact/api";
 import vendedoresJson from "../assets/json/vendedores.json";
+import { Button } from "primereact/button";
 const Pedidos = () => {
   const [pedidos, setPedidos] = useState([]);
   const [filters, setFilters] = useState({
@@ -20,6 +21,7 @@ const Pedidos = () => {
   const [vendedor, setVendedor] = useState(null);
   const [situacao, setSituacao] = useState(null);
   const [itensPedido, setItensPedido] = useState([]);
+  const [cubagemItens, setCubagemItens] = useState([]);
 
   const search = () => {
     const pedido = {
@@ -92,6 +94,13 @@ const Pedidos = () => {
     window.electronApi?.onGetPedidoResponse((itensPedido) => {
       setItensPedido(itensPedido || []);
       console.log("Itens do pedido recebidos:", itensPedido);
+    });
+  };
+  const makeCubagem = () => {
+    window.electronApi?.makeCubagem(itensPedido);
+    window.electronApi?.onMakeCubagemResponse((cubagemItens) => {
+      console.log("Cubagem realizada:", cubagemItens);
+      setCubagemItens(cubagemItens);
     });
   };
   return (
@@ -224,6 +233,7 @@ const Pedidos = () => {
           <Column field="ITPEDOR_VLRUNIT" header="Valor unitário" />
           <Column field="ITPEDOR_VLRLIQU" header="Valor líquido" />
         </DataTable>
+        <Button icon="fa fa-box" label="Cubagem" onClick={makeCubagem} />
       </PopUp>
     </div>
   );

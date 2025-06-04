@@ -6,6 +6,7 @@ const { searchCliente } = require("./db/clientes");
 const { searchPedido, getPedido } = require("./db/pedidos");
 const { searchReserva } = require("./db/reservas");
 const { searchFoto } = require("./db/fotos");
+const { makeCubagem } = require("./db/cubagem");
 
 function isDev() {
   return (
@@ -115,6 +116,18 @@ ipcMain.on("get-pedido", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao buscar pedido:", error);
     event.reply("get-pedido-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("make-cubagem", async (event, arg) => {
+  try {
+    const cubagem = await makeCubagem(arg);
+    event.reply("make-cubagem-response", cubagem);
+  } catch (error) {
+    console.error("Erro ao calcular cubagem:", error);
+    event.reply("make-cubagem-response", {
       error: error.message || "Erro desconhecido",
     });
   }

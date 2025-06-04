@@ -9,7 +9,7 @@ const PopUp = ({ children, onClose }) => {
         transition: "transform 0.3s ease-in-out",
       }}
     >
-      <div className="bg-white p-6 rounded shadow-lg relative w-8 h-8 ">
+      <div className="bg-white p-6 rounded shadow-lg relative gap-4 h-8 flex flex-column justify-content-center align-items-center">
         <Button
           icon="pi pi-times"
           rounded
