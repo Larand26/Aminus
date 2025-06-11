@@ -106,23 +106,25 @@ const Reserva = () => {
             />
           }
         >
-          <Column field="ID_CODPRODUTO" header="Código Interno" />
-          <Column field="PROD_CODFABRIC" header="Referência" />
-          <Column field="ID_NUMPEDORC" header="Número do Pedido" />
-          <Column field="PEDOR_RAZAOSOCIAL" header="Nome" />
+          <Column body={(rowData) => rowData.ID_CODPRODUTO || "U"} header="Código Interno" />
+          <Column body={(rowData) => rowData.PROD_CODFABRIC || "U"} header="Referência" />
+          <Column body={(rowData) => rowData.ID_NUMPEDORC || "U"} header="Número do Pedido" />
+          <Column body={(rowData) => rowData.PEDOR_RAZAOSOCIAL || "U"} header="Nome" />
           <Column
             body={(rowData) => {
               const vendedor = vendedoresJson.find(
                 (v) => v.value === rowData.ID_CODVENDEDOR
               );
-              return vendedor ? vendedor.label : "";
+              return vendedor ? vendedor.label : "U";
             }}
             header="Vendedor"
           />
-          <Column field="EST_QUANTIDADE" header="Quantidade" />
+          <Column body={(rowData) => rowData.EST_QUANTIDADE || "U"} header="Quantidade" />
           <Column
             body={(rowData) =>
-              rowData.DATAALTERACAO.toLocaleDateString("pt-BR")
+              rowData.DATAALTERACAO
+                ? rowData.DATAALTERACAO.toLocaleDateString("pt-BR")
+                : "U"
             }
             header="Data da Reserva"
           />

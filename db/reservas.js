@@ -11,7 +11,7 @@ const searchReserva = async (reserva) => {
         if (reserva.codigoInterno)
           query += ` AND [ID_CODPRODUTO] = '${reserva.codigoInterno}'`;
         if (reserva.numeroPedido)
-          query += ` AND [PROD_CODFABRIC] = '${reserva.numeroPedido}'`;
+          query += ` AND [ID_NUMPEDORC] = '${reserva.numeroPedido}'`;
       }
       console.log("SELECT * " + query);
 
