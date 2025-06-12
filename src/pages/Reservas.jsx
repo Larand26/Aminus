@@ -137,8 +137,8 @@ const Reserva = () => {
           />
           <Column
             body={(rowData) =>
-              rowData.DATAALTERACAO
-                ? rowData.DATAALTERACAO.toLocaleDateString("pt-BR")
+              rowData.PEDOR_DATAALTERACAO
+                ? rowData.PEDOR_DATAALTERACAO.toLocaleDateString("pt-BR")
                 : "U"
             }
             header="Data da Reserva"

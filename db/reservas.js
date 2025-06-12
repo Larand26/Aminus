@@ -41,10 +41,12 @@ const searchReserva = async (reserva) => {
 
           return {
             ...reservaItem,
-            ID_CODFABRIC: vwItem ? vwItem.PROD : null,
+            PROD_CODFABRIC: vwItem ? vwItem.PROD_CODFABRIC : null,
             ID_CODPRODUTO: vwItem ? vwItem.ID_CODPRODUTO : null,
             ID_NUMPEDORC: pedido ? pedido.ID_NUMPEDORC : null,
             ID_CODVENDEDOR: pedido ? pedido.ID_CODVENDEDOR : null,
+            PEDOR_DATAALTERACAO: pedido ? pedido.PEDOR_DATAALTERACAO : null,
+            PEDOR_RAZAOSOCIAL: pedido ? pedido.PEDOR_RAZAOSOCIAL : null,
           };
         })
       );
