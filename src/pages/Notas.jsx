@@ -18,8 +18,7 @@ const Notas = () => {
   const ufs = ufsJson;
   const [vendedor, setVendedor] = useState(null);
   const vendedores = vendedoresJson;
-  const [dataInicial, setDataInicial] = useState(null);
-  const [dataFinal, setDataFinal] = useState(null);
+  const [data, setData] = useState(null);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
@@ -29,8 +28,8 @@ const Notas = () => {
     const nota = {
       numero: document.getElementById("inputNumero").value || null,
       cnpj: document.getElementById("inputCnpj").value || null,
-      dataInicial: dataInicial ? dataInicial.toISOString() : null,
-      dataFinal: dataFinal && dataInicial ? dataFinal.toISOString() : null,
+      dataInicial: data[0] ? data[0].toISOString() : null,
+      dataFinal: data[1] ? data[1].toISOString() : null,
       uf: uf || null,
       vendedor: vendedor || null,
     };
@@ -43,8 +42,7 @@ const Notas = () => {
       // Limpa os inputs após a pesquisa
       document.getElementById("inputNumero").value = "";
       document.getElementById("inputCnpj").value = "";
-      setDataInicial(null);
-      setDataFinal(null);
+      setData(null);
       setUf(null);
       setVendedor(null);
     });
@@ -88,20 +86,12 @@ const Notas = () => {
         <FloatLabel>
           <Calendar
             id="inputDataInicial"
-            dateFormat="dd/mm/yy"
-            value={dataInicial}
-            onChange={(e) => setDataInicial(e.value)}
+            dateFormat="dd/mm"
+            selectionMode="range"
+            value={data}
+            onChange={(e) => setData(e.value)}
           />
-          <label htmlFor="inputDataInicial">Data inicial</label>
-        </FloatLabel>
-        <FloatLabel>
-          <Calendar
-            id="inputDataFinal"
-            dateFormat="dd/mm/yy"
-            value={dataFinal}
-            onChange={(e) => setDataFinal(e.value)}
-          />
-          <label htmlFor="inputDataFinal">Data Final</label>
+          <label htmlFor="inputDataInicial">Data</label>
         </FloatLabel>
         <FloatLabel>
           <Dropdown

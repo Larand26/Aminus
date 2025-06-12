@@ -17,8 +17,7 @@ const Pedidos = () => {
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
-  const [dataInicial, setDataInicial] = useState(null);
-  const [dataFinal, setDataFinal] = useState(null);
+  const [data, setData] = useState(null);
   const [vendedor, setVendedor] = useState(null);
   const [situacao, setSituacao] = useState(null);
   const [itensPedido, setItensPedido] = useState([]);
@@ -28,8 +27,8 @@ const Pedidos = () => {
     const pedido = {
       numero: document.getElementById("inputNumero").value || null,
       cnpj: document.getElementById("inputCnpj").value || null,
-      dataInicial: dataInicial ? dataInicial.toISOString() : null,
-      dataFinal: dataFinal && dataInicial ? dataFinal.toISOString() : null,
+      dataInicial: data[0] ? data[0].toISOString() : null,
+      dataFinal: data[1] ? data[1].toISOString() : null,
       situacao: situacao || null,
       vendedor: vendedor || null,
     };
@@ -161,18 +160,12 @@ const Pedidos = () => {
         <FloatLabel>
           <Calendar
             id="inputDataInicial"
-            value={dataInicial}
-            onChange={(e) => setDataInicial(e.value)}
+            value={data}
+            selectionMode="range"
+            dateFormat="dd/mm"
+            onChange={(e) => setData(e.value)}
           />
-          <label htmlFor="inputDataInicial">Data Inicial</label>
-        </FloatLabel>
-        <FloatLabel>
-          <Calendar
-            id="inputDataFinal"
-            value={dataFinal}
-            onChange={(e) => setDataFinal(e.value)}
-          />
-          <label htmlFor="inputDataFinal">Data Final</label>
+          <label htmlFor="inputDataInicial">Data</label>
         </FloatLabel>
         <FloatLabel>
           <Dropdown

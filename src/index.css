@@ -34,7 +34,7 @@ body {
 .p-row-odd {
   background-color: #c7c7c7;
 }
-table {
+.content table {
   width: 100%;
   min-width: 80rem;
   height: 25rem;
@@ -57,7 +57,7 @@ table {
   .titulo {
     font-size: 2rem;
   }
-  table {
+  .content table {
     min-width: 600px;
     font-size: 0.95rem;
   }
@@ -98,7 +98,7 @@ table {
   }
 }
 
-td {
+.content td {
   padding: 0.5rem;
 }
 

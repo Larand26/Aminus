@@ -106,10 +106,22 @@ const Reserva = () => {
             />
           }
         >
-          <Column body={(rowData) => rowData.ID_CODPRODUTO || "U"} header="Código Interno" />
-          <Column body={(rowData) => rowData.PROD_CODFABRIC || "U"} header="Referência" />
-          <Column body={(rowData) => rowData.ID_NUMPEDORC || "U"} header="Número do Pedido" />
-          <Column body={(rowData) => rowData.PEDOR_RAZAOSOCIAL || "U"} header="Nome" />
+          <Column
+            body={(rowData) => rowData.ID_CODPRODUTO || "U"}
+            header="Código Interno"
+          />
+          <Column
+            body={(rowData) => rowData.PROD_CODFABRIC || "U"}
+            header="Referência"
+          />
+          <Column
+            body={(rowData) => rowData.ID_NUMPEDORC || "U"}
+            header="Número do Pedido"
+          />
+          <Column
+            body={(rowData) => rowData.PEDOR_RAZAOSOCIAL || "U"}
+            header="Nome"
+          />
           <Column
             body={(rowData) => {
               const vendedor = vendedoresJson.find(
@@ -119,7 +131,10 @@ const Reserva = () => {
             }}
             header="Vendedor"
           />
-          <Column body={(rowData) => rowData.EST_QUANTIDADE || "U"} header="Quantidade" />
+          <Column
+            body={(rowData) => rowData.EST_QUANTIDADE || "U"}
+            header="Quantidade"
+          />
           <Column
             body={(rowData) =>
               rowData.DATAALTERACAO
