@@ -22,6 +22,10 @@ body {
   overflow-y: hidden;
 }
 
+.bebas {
+  font-family: "Bebas Neue", cursive;
+}
+
 .titulo {
   font-family: "Bebas Neue", cursive;
   font-size: 2.5rem;
