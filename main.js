@@ -26,6 +26,8 @@ const homeWindow = () => {
     },
   });
 
+  win.setMenuBarVisibility(isDev());
+
   if (isDev()) {
     win.loadURL("http://localhost:5173");
   } else {
