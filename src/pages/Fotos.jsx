@@ -9,6 +9,8 @@ import { FileUpload } from "primereact/fileupload";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 
+import "../styles/cadastro-fotos.css";
+
 const Fotos = () => {
   // UseStates
   const [fotos, setFotos] = useState([]);
@@ -120,48 +122,59 @@ const Fotos = () => {
         </TabPanel>
         <TabPanel header="Cadastro">
           <div
-            className="content flex flex-wrap align-items-center justify-content-center gap-4 w-full bg-gray-200 p-4 h-screen"
+            className="content flex flex-wrap justify-content-center w-full bg-gray-200 p-4 h-screen"
             style={{
-              maxHeight: "100vh",
               overflowY: "auto",
               minHeight: "300px",
             }}
           >
-            <FileUpload
-              name="fotos"
-              url="/upload"
-              accept="image/*"
-              multiple
-              maxFileSize={1000000}
-            />
-            <FloatLabel>
-              <InputText id="inputCadastroReferencia" />
-              <label htmlFor="inputCadastroReferencia">Referência</label>
-            </FloatLabel>
-            <FloatLabel>
-              <InputText id="inputCadastroCodigoCor" />
-              <label htmlFor="inputCadastroCodigoCor">Código da Cor</label>
-            </FloatLabel>
-            <FloatLabel>
-              <InputText id="inputCadastroPreco" />
-              <label htmlFor="inputCadastroPreco">Preço</label>
-            </FloatLabel>
-            <FloatLabel>
-              <Dropdown
-                id="inputCadastroEmbalagem"
-                options={embalagemOptions}
-                placeholder="Selecione a embalagem"
-                value={embalagem}
-                onChange={(e) => setEmbalagem(e.value)}
+            <div className="flex justify-content-center w-6">
+              <FileUpload
+                name="fotos"
+                url="/upload"
+                accept="image/*"
+                multiple
+                maxFileSize={1000000}
+                className="w-10"
+                chooseLabel="Selecionar"
+                uploadLabel="Cadastrar"
+                cancelIcon="pi pi-trash"
+                cancelLabel="Limpar"
               />
-              <label htmlFor="inputCadastroEmbalagem">Embalagem</label>
-            </FloatLabel>
-            <InputTextarea
-              value={null}
-              onChange={(e) => {}}
-              rows={5}
-              cols={30}
-            />
+            </div>
+            <div className=" w-6">
+              <div className="inputs-cadastro-fotos flex flex-wrap gap-4 mb-4">
+                <FloatLabel>
+                  <InputText id="inputCadastroReferencia" />
+                  <label htmlFor="inputCadastroReferencia">Referência</label>
+                </FloatLabel>
+                <FloatLabel>
+                  <InputText id="inputCadastroCodigoCor" />
+                  <label htmlFor="inputCadastroCodigoCor">Código da Cor</label>
+                </FloatLabel>
+                <FloatLabel>
+                  <InputText id="inputCadastroPreco" />
+                  <label htmlFor="inputCadastroPreco">Preço</label>
+                </FloatLabel>
+                <FloatLabel>
+                  <Dropdown
+                    id="inputCadastroEmbalagem"
+                    options={embalagemOptions}
+                    placeholder="Selecione a embalagem"
+                    value={embalagem}
+                    onChange={(e) => setEmbalagem(e.value)}
+                  />
+                  <label htmlFor="inputCadastroEmbalagem">Embalagem</label>
+                </FloatLabel>
+              </div>
+              <InputTextarea
+                value={null}
+                onChange={(e) => {}}
+                rows={5}
+                cols={30}
+                className="w-full h-10"
+              />
+            </div>
           </div>
         </TabPanel>
       </TabView>

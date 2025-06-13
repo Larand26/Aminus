@@ -1,0 +1,4 @@
+.inputs-cadastro-fotos input,
+.inputs-cadastro-fotos .p-dropdown {
+  min-width: 15rem;
+}
