@@ -7,6 +7,7 @@ const { searchPedido, getPedido } = require("./db/pedidos");
 const { searchReserva } = require("./db/reservas");
 const { searchFoto } = require("./db/fotos");
 const { makeCubagem } = require("./db/cubagem");
+const { getDataReserva } = require("./db/dataReserva");
 
 function isDev() {
   return (
@@ -128,6 +129,19 @@ ipcMain.on("make-cubagem", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao calcular cubagem:", error);
     event.reply("make-cubagem-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("get-data-reserva", async (event, { idCodProduto, idNumPedOrc }) => {
+  try {
+    // Simulação de busca de dados de reserva, substitua com a lógica real
+    const data = await getDataReserva(idCodProduto, idNumPedOrc);
+    event.reply("get-data-reserva-response", data);
+  } catch (error) {
+    console.error("Erro ao buscar dados de reserva:", error);
+    event.reply("get-data-reserva-response", {
       error: error.message || "Erro desconhecido",
     });
   }

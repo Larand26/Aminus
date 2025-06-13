@@ -14,6 +14,7 @@ const Reserva = () => {
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
+  const [dataReserva, setDataReserva] = useState({});
   const search = () => {
     const reserva = {
       referencia: document.getElementById("inputReferencia").value || null,
@@ -63,6 +64,16 @@ const Reserva = () => {
   const openPopup = () => {
     document.getElementById("popup").style.transform = "scale(1)";
   };
+  const getDataReserva = (idCodProduto, idNumPedOrc) => {
+    window.electronApi?.getDataReserva(idCodProduto, idNumPedOrc);
+    window.electronApi?.onGetDataReservaResponse((data) => {
+      if (data.length === 0) {
+        setDataReserva({ DATA: "Nenhuma reserva encontrada." });
+        return;
+      }
+      setDataReserva(data[0].DATA);
+    });
+  };
   return (
     <div className="flex">
       <BarraLateral search={search}>
@@ -101,6 +112,7 @@ const Reserva = () => {
           ]}
           onRowClick={(e) => {
             openPopup();
+            getDataReserva(e.data.ID_CODPRODUTO, e.data.ID_NUMPEDORC);
           }}
           header={
             <InputText
