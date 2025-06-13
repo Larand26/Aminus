@@ -8,13 +8,17 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { FilterMatchMode } from "primereact/api";
 import vendedoresJson from "../assets/json/vendedores.json";
+import { Calendar } from "primereact/calendar";
+import { Button } from "primereact/button";
 
 const Reserva = () => {
   const [reservas, setReservas] = useState([]);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
-  const [dataReserva, setDataReserva] = useState({});
+  const [dataReserva, setDataReserva] = useState("");
+  const [dataPesquisa, setDataPesquisa] = useState(null);
+  const [produtoPesquisa, setProdutoPesquisa] = useState(null);
   const search = () => {
     const reserva = {
       referencia: document.getElementById("inputReferencia").value || null,
@@ -27,7 +31,6 @@ const Reserva = () => {
     window.electronApi?.searchReserva(reserva);
     window.electronApi?.onSearchReservaResponse((reservas) => {
       setReservas(reservas);
-      console.log(reservas);
 
       // Limpa os inputs após a pesquisa
       document.getElementById("inputReferencia").value = "";
@@ -60,15 +63,18 @@ const Reserva = () => {
   }, [handleKeyDown]);
   const closePopup = () => {
     document.getElementById("popup").style.transform = "scale(0)";
+    setDataReserva(""); // Limpa os dados da reserva ao fechar o popup
   };
   const openPopup = () => {
     document.getElementById("popup").style.transform = "scale(1)";
   };
-  const getDataReserva = (idCodProduto, idNumPedOrc) => {
-    window.electronApi?.getDataReserva(idCodProduto, idNumPedOrc);
+  const getDataReserva = (idCodProduto, idNumPedOrc, dataPesquisa) => {
+    window.electronApi?.getDataReserva(idCodProduto, idNumPedOrc, dataPesquisa);
     window.electronApi?.onGetDataReservaResponse((data) => {
+      console.log(data);
+
       if (data.length === 0) {
-        setDataReserva({ DATA: "Nenhuma reserva encontrada." });
+        setDataReserva("Nenhuma reserva encontrada nesta data.");
         return;
       }
       setDataReserva(data[0].DATA);
@@ -112,7 +118,10 @@ const Reserva = () => {
           ]}
           onRowClick={(e) => {
             openPopup();
-            getDataReserva(e.data.ID_CODPRODUTO, e.data.ID_NUMPEDORC);
+            setProdutoPesquisa({
+              ID_CODPRODUTO: e.data.ID_CODPRODUTO,
+              ID_NUMPEDORC: e.data.ID_NUMPEDORC,
+            });
           }}
           header={
             <InputText
@@ -169,7 +178,41 @@ const Reserva = () => {
           />
         </DataTable>
       </Content>
-      <PopUp onClose={closePopup} onOpen={openPopup}></PopUp>
+      <PopUp onClose={closePopup} onOpen={openPopup}>
+        <div className="flex items-center gap-2 mb-4">
+          <Calendar
+            value={dataPesquisa}
+            onChange={(e) => setDataPesquisa(e.value)}
+            showIcon
+            selectionMode="range"
+            dateFormat="dd/mm/yy"
+          />
+          <Button
+            icon="pi pi-search"
+            rounded
+            severity="primary"
+            aria-label="Search"
+            onClick={() => {
+              getDataReserva(
+                produtoPesquisa.ID_CODPRODUTO,
+                produtoPesquisa.ID_NUMPEDORC,
+                dataPesquisa
+              );
+            }}
+          />
+        </div>
+        <p>
+          {dataReserva
+            ? dataReserva.toLocaleString("pt-BR", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "Coloque uma data"}
+        </p>
+      </PopUp>
     </div>
   );
 };

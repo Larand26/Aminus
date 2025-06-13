@@ -134,15 +134,22 @@ ipcMain.on("make-cubagem", async (event, arg) => {
   }
 });
 
-ipcMain.on("get-data-reserva", async (event, { idCodProduto, idNumPedOrc }) => {
-  try {
-    // Simulação de busca de dados de reserva, substitua com a lógica real
-    const data = await getDataReserva(idCodProduto, idNumPedOrc);
-    event.reply("get-data-reserva-response", data);
-  } catch (error) {
-    console.error("Erro ao buscar dados de reserva:", error);
-    event.reply("get-data-reserva-response", {
-      error: error.message || "Erro desconhecido",
-    });
+ipcMain.on(
+  "get-data-reserva",
+  async (event, { idCodProduto, idNumPedOrc, dataPesquisa }) => {
+    try {
+      // Simulação de busca de dados de reserva, substitua com a lógica real
+      const data = await getDataReserva(
+        idCodProduto,
+        idNumPedOrc,
+        dataPesquisa
+      );
+      event.reply("get-data-reserva-response", data);
+    } catch (error) {
+      console.error("Erro ao buscar dados de reserva:", error);
+      event.reply("get-data-reserva-response", {
+        error: error.message || "Erro desconhecido",
+      });
+    }
   }
-});
+);
