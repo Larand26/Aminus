@@ -1,5 +1,6 @@
 import BarraLateral from "../components/BarraLateral";
 import Content from "../components/Content";
+import PopUp from "../components/PopUp";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { useState, useCallback, useEffect } from "react";
@@ -56,6 +57,12 @@ const Reserva = () => {
       });
     };
   }, [handleKeyDown]);
+  const closePopup = () => {
+    document.getElementById("popup").style.transform = "scale(0)";
+  };
+  const openPopup = () => {
+    document.getElementById("popup").style.transform = "scale(1)";
+  };
   return (
     <div className="flex">
       <BarraLateral search={search}>
@@ -82,6 +89,8 @@ const Reserva = () => {
           className="w-full"
           emptyMessage="Nenhuma reserva encontrada."
           showGridlines
+          paginator
+          rows={10}
           filters={filters}
           onFilter={(e) => setFilters(e.filters)}
           globalFilterFields={[
@@ -90,6 +99,9 @@ const Reserva = () => {
             "ID_NUMPEDORC",
             "PEDOR_RAZAOSOCIAL",
           ]}
+          onRowClick={(e) => {
+            openPopup();
+          }}
           header={
             <InputText
               type="search"
@@ -141,10 +153,11 @@ const Reserva = () => {
                 ? rowData.PEDOR_DATAALTERACAO.toLocaleDateString("pt-BR")
                 : "U"
             }
-            header="Data da Reserva"
+            header="Alteração do pedido"
           />
         </DataTable>
       </Content>
+      <PopUp onClose={closePopup} onOpen={openPopup}></PopUp>
     </div>
   );
 };
