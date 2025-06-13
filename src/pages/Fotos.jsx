@@ -24,7 +24,7 @@ const Fotos = () => {
 
     window.electronApi?.searchFoto(foto);
     window.electronApi?.onSearchFotoResponse((fotos) => {
-      setFotos(fotos);
+      setFotos(Array.isArray(fotos) ? fotos : fotos ? [fotos] : []);
       // Limpa os inputs após a pesquisa
       document.getElementById("inputReferencia").value = "";
       document.getElementById("inputCodigoCor").value = "";
@@ -72,6 +72,50 @@ const Fotos = () => {
       });
     };
   }, [handleKeyDown]);
+
+  const cadastraFotos = async (files) => {
+    //Coverte files para base64
+    const convertToBase64 = async (file) => {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.onerror = (error) => reject(error);
+      });
+    };
+    if (!files) return;
+    const fotos = {
+      foto_principal: files[0] ? await convertToBase64(files[0]) : null,
+      foto_produto_1: files[1] ? await convertToBase64(files[1]) : null,
+      foto_produto_2: files[2] ? await convertToBase64(files[2]) : null,
+      foto_produto_3: files[3] ? await convertToBase64(files[3]) : null,
+      foto_produto_4: files[4] ? await convertToBase64(files[4]) : null,
+      foto_produto_5: files[5] ? await convertToBase64(files[5]) : null,
+      foto_complementar: null,
+    };
+    const produto = {
+      referencia: document.getElementById("inputCadastroReferencia").value,
+      codigo_cor: document.getElementById("inputCadastroCodigoCor").value,
+      preco: document.getElementById("inputCadastroPreco").value,
+      embalagem: embalagem,
+      fotos: fotos,
+      descricao_produto: document.getElementById("inputCadastroDescricao")
+        ? document.getElementById("inputCadastroDescricao").value
+        : "",
+      nome_cor: document.getElementById("inputNomeCor")
+        ? document.getElementById("inputNomeCor").value
+        : "",
+    };
+
+    window.electronApi?.cadastraFotos(produto);
+    window.electronApi?.onCadastraFotosResponse((response) => {
+      if (response.success) {
+        console.log("Fotos cadastradas com sucesso!");
+      } else {
+        console.error("Erro ao cadastrar fotos:", response.error);
+      }
+    });
+  };
 
   return (
     <div className="flex">
@@ -131,7 +175,6 @@ const Fotos = () => {
             <div className="flex justify-content-center w-6">
               <FileUpload
                 name="fotos"
-                url="/upload"
                 accept="image/*"
                 multiple
                 maxFileSize={1000000}
@@ -140,6 +183,8 @@ const Fotos = () => {
                 uploadLabel="Cadastrar"
                 cancelIcon="pi pi-trash"
                 cancelLabel="Limpar"
+                customUpload={true}
+                uploadHandler={(e) => cadastraFotos(e.files)}
               />
             </div>
             <div className=" w-6">
@@ -151,6 +196,10 @@ const Fotos = () => {
                 <FloatLabel>
                   <InputText id="inputCadastroCodigoCor" />
                   <label htmlFor="inputCadastroCodigoCor">Código da Cor</label>
+                </FloatLabel>
+                <FloatLabel>
+                  <InputText id="inputNomeCor" />
+                  <label htmlFor="inputNomeCor">Nome da Cor</label>
                 </FloatLabel>
                 <FloatLabel>
                   <InputText id="inputCadastroPreco" />
@@ -173,6 +222,7 @@ const Fotos = () => {
                 rows={5}
                 cols={30}
                 className="w-full h-10"
+                id="inputCadastroDescricao"
               />
             </div>
           </div>

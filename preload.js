@@ -51,4 +51,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("get-data-reserva-response", (event, arg) => {
       callback(arg);
     }),
+  cadastraFotos: (produto) => ipcRenderer.send("cadastra-fotos", produto),
+  onCadastraFotosResponse: (callback) =>
+    ipcRenderer.on("cadastra-fotos-response", (event, arg) => {
+      callback(arg);
+    }),
 });

@@ -8,6 +8,7 @@ const { searchReserva } = require("./db/reservas");
 const { searchFoto } = require("./db/fotos");
 const { makeCubagem } = require("./db/cubagem");
 const { getDataReserva } = require("./db/dataReserva");
+const { cadastraFotos } = require("./db/cadastraFotos");
 
 function isDev() {
   return (
@@ -155,3 +156,16 @@ ipcMain.on(
     }
   }
 );
+
+ipcMain.on("cadastra-fotos", async (event, produto) => {
+  try {
+    // Simulação de cadastro de fotos, substitua com a lógica real
+    await cadastraFotos(produto);
+    event.reply("cadastra-fotos-response", { success: true });
+  } catch (error) {
+    console.error("Erro ao cadastrar fotos:", error);
+    event.reply("cadastra-fotos-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
