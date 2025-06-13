@@ -147,11 +147,11 @@ const Fotos = () => {
                 className="md:w-13rem"
                 footer={
                   <button
-                    className="p-button p-component w-full flex justify-content-center"
+                    className="p-button p-component w-full flex justify-content-center gap-2"
                     onClick={() => handleDownload(foto.fotos, foto.referencia)}
                   >
-                    <span>Download </span>
                     <i className="pi pi-download"></i>
+                    <span>Download</span>
                   </button>
                 }
               >
