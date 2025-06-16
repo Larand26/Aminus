@@ -9,6 +9,7 @@ const { searchFoto } = require("./db/fotos");
 const { makeCubagem } = require("./db/cubagem");
 const { getDataReserva } = require("./db/dataReserva");
 const { cadastraFotos } = require("./db/cadastraFotos");
+const { deleteFoto } = require("./db/deleteFoto");
 
 function isDev() {
   return (
@@ -165,6 +166,18 @@ ipcMain.on("cadastra-fotos", async (event, produto) => {
   } catch (error) {
     console.error("Erro ao cadastrar fotos:", error);
     event.reply("cadastra-fotos-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+ipcMain.on("delete-foto", async (event, foto) => {
+  try {
+    // Simulação de exclusão de foto, substitua com a lógica real
+    await deleteFoto(foto);
+    event.reply("delete-foto-response", { success: true });
+  } catch (error) {
+    console.error("Erro ao excluir foto:", error);
+    event.reply("delete-foto-response", {
       error: error.message || "Erro desconhecido",
     });
   }

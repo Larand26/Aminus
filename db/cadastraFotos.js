@@ -1,31 +1,12 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
-
-const produtoSchema = new mongoose.Schema({
-  referencia: String,
-  codigo_cor: String,
-  nome_cor: String,
-  descricao_produto: String,
-  preco_revenda: String,
-  embalamento: String,
-  fotos: {
-    foto_principal: Buffer,
-    foto_produto_1: Buffer,
-    foto_produto_2: Buffer,
-    foto_produto_3: Buffer,
-    foto_produto_4: Buffer,
-    foto_produto_5: Buffer,
-    foto_complementar: Buffer,
-  },
-});
+const Produto = require("./produtoModel");
+const { MONGODB_URI } = require("../globals");
 
 const cadastraFotos = async (produto) => {
-  const Produto = mongoose.model("Produto", produtoSchema, "FOTOS_COLLECTION");
-
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log(produto);
+    await mongoose.connect(MONGODB_URI);
 
     // Verifica se produto com mesma referência + cor já existe
     const produtoExistente = await Produto.findOne({
@@ -37,6 +18,7 @@ const cadastraFotos = async (produto) => {
       console.log(
         `${produto.referencia} - ${produto.codigo_cor} já cadastrado.`
       );
+      mongoose.connection.close();
       return;
     }
 
@@ -67,8 +49,10 @@ const cadastraFotos = async (produto) => {
     console.log(
       "Produto salvo :" + produto.referencia + " - " + produto.nome_cor
     );
+    mongoose.connection.close();
   } catch (err) {
     console.error("Erro:", err);
+    mongoose.connection.close();
   }
 };
 

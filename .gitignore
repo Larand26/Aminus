@@ -27,3 +27,4 @@ dist-ssr
 db/database.js
 db/fotos.js
 db/cadastraFotos.js
+globals.js

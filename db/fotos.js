@@ -1,29 +1,11 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
-
-const produtoSchema = new mongoose.Schema({
-  referencia: String,
-  codigo_cor: String,
-  nome_cor: String,
-  descricao_produto: String,
-  preco_revenda: String,
-  embalamento: String,
-  fotos: {
-    foto_principal: Buffer,
-    foto_produto_1: Buffer,
-    foto_produto_2: Buffer,
-    foto_produto_3: Buffer,
-    foto_produto_4: Buffer,
-    foto_produto_5: Buffer,
-    foto_complementar: Buffer,
-  },
-});
+const Produto = require("./produtoModel");
+const { MONGODB_URI } = require("../globals");
 
 const searchFoto = async (produto) => {
-  const Produto = mongoose.model("Produto", produtoSchema, "FOTOS_COLLECTION");
-
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(MONGODB_URI);
 
     let pesquisa;
     if (produto.referencia === "") {
