@@ -8,6 +8,8 @@ import { TabView, TabPanel } from "primereact/tabview";
 import { FileUpload } from "primereact/fileupload";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
+import { ConfirmPopup } from "primereact/confirmpopup"; // To use <ConfirmPopup> tag
+import { confirmPopup } from "primereact/confirmpopup"; // To use confirmPopup method
 
 import "../styles/cadastro-fotos.css";
 
@@ -16,9 +18,9 @@ const Fotos = () => {
   const [fotos, setFotos] = useState([]);
   const [embalagem, setEmbalagem] = useState(null);
 
-  const search = () => {
+  const search = (ref) => {
     const foto = {
-      referencia: document.getElementById("inputReferencia").value,
+      referencia: ref ? ref : document.getElementById("inputReferencia").value,
       codigo_cor: document.getElementById("inputCodigoCor").value,
     };
 
@@ -117,6 +119,35 @@ const Fotos = () => {
     });
   };
 
+  const deleteFotos = async (foto) => {
+    console.log("Excluindo foto:", foto);
+
+    window.electronApi?.deleteFoto(foto);
+    window.electronApi?.onDeleteFotoResponse((response) => {
+      if (response.success) {
+        search(foto.referencia);
+        console.log("Foto excluída com sucesso!");
+      } else {
+        console.error("Erro ao excluir foto:", response.error);
+      }
+    });
+  };
+
+  const confirmDelete = (event, foto) => {
+    confirmPopup({
+      target: event.currentTarget, // Agora o target é o botão clicado
+      message: `Você tem certeza que deseja excluir a foto ${foto.referencia}?`,
+      icon: "pi pi-exclamation-triangle",
+      acceptLabel: "Sim",
+      rejectLabel: "Não",
+      acceptClassName: "p-button-danger",
+      accept: () => deleteFotos(foto),
+      reject: () => {
+        console.log("Exclusão cancelada");
+      },
+    });
+  };
+
   return (
     <div className="flex">
       <BarraLateral search={search}>
@@ -146,13 +177,24 @@ const Fotos = () => {
                 subTitle={foto.codigo_cor}
                 className="md:w-13rem"
                 footer={
-                  <button
-                    className="p-button p-component w-full flex justify-content-center gap-2"
-                    onClick={() => handleDownload(foto.fotos, foto.referencia)}
-                  >
-                    <i className="pi pi-download"></i>
-                    <span>Download</span>
-                  </button>
+                  <div className="flex gap-2">
+                    <ConfirmPopup />
+                    <button
+                      className="p-button p-component w-full flex justify-content-center gap-2"
+                      onClick={() =>
+                        handleDownload(foto.fotos, foto.referencia)
+                      }
+                    >
+                      <i className="pi pi-download"></i>
+                    </button>
+                    <button
+                      className="p-button p-button-danger p-component w-full flex justify-content-center gap-2"
+                      type="button"
+                      onClick={(e) => confirmDelete(e, foto)}
+                    >
+                      <i className="pi pi-trash"></i>
+                    </button>
+                  </div>
                 }
               >
                 <img

@@ -56,4 +56,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("cadastra-fotos-response", (event, arg) => {
       callback(arg);
     }),
+  deleteFoto: (foto) => ipcRenderer.send("delete-foto", foto),
+  onDeleteFotoResponse: (callback) =>
+    ipcRenderer.on("delete-foto-response", (event, arg) => {
+      callback(arg);
+    }),
 });
