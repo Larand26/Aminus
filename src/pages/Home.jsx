@@ -68,6 +68,16 @@ const Home = () => {
             />
             <p className="bebas">Fotos</p>
           </div>
+          <div className={styleLinks}>
+            <Button
+              icon="fa fa-table"
+              rounded
+              severity="info"
+              aria-label="List"
+              onClick={() => navigate("/controle-plaza")}
+            />
+            <p className="bebas">Controle Plaza</p>
+          </div>
         </div>
       </div>
     </div>

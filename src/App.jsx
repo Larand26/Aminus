@@ -6,6 +6,7 @@ import Notas from "./pages/Notas";
 import Clientes from "./pages/Clientes";
 import Reservas from "./pages/Reservas";
 import Fotos from "./pages/Fotos";
+import ControlePlaza from "./pages/ControlePlaza";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/clientes" element={<Clientes />} />
         <Route path="/reservas" element={<Reservas />} />
         <Route path="/fotos" element={<Fotos />} />
+        <Route path="/controle-plaza" element={<ControlePlaza />} />
       </Routes>
     </Router>
   );
