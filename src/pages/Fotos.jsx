@@ -10,26 +10,34 @@ import { InputTextarea } from "primereact/inputtextarea";
 import { Dropdown } from "primereact/dropdown";
 import { ConfirmPopup } from "primereact/confirmpopup"; // To use <ConfirmPopup> tag
 import { confirmPopup } from "primereact/confirmpopup"; // To use confirmPopup method
+import cadastraFotos from "../utils/cadastraFotos";
 
 import "../styles/cadastro-fotos.css";
 
 const Fotos = () => {
   // UseStates
-  const [fotos, setFotos] = useState([]);
-  const [embalagem, setEmbalagem] = useState(null);
+  const [fotos, setFotos] = useState([]); // Fotos
+  // Estados para os inputs de pesquisa
+  const [referenciaSearch, setReferenciaSearch] = useState("");
+  const [codigoCorSearch, setCodigoCorSearch] = useState("");
+  // Estados para os inputs de cadastro
+  const [referenciaCadastro, setReferenciaCadastro] = useState("");
+  const [codigoCorCadastro, setCodigoCorCadastro] = useState("");
+  const [nomeCorCadastro, setNomeCorCadastro] = useState("");
+  const [precoCadastro, setPrecoCadastro] = useState("");
+  const [embalagemCadastro, setEmbalagemCadastro] = useState(null);
+  const [descricaoCadastro, setDescricaoCadastro] = useState("");
 
-  const search = (ref) => {
+  // search agora recebe sempre os valores como argumento
+  const search = (ref, cor) => {
+    if (ref.length < 5) return;
     const foto = {
-      referencia: ref ? ref : document.getElementById("inputReferencia").value,
-      codigo_cor: document.getElementById("inputCodigoCor").value,
+      referencia: ref,
+      codigo_cor: cor,
     };
-
     window.electronApi?.searchFoto(foto);
     window.electronApi?.onSearchFotoResponse((fotos) => {
       setFotos(Array.isArray(fotos) ? fotos : fotos ? [fotos] : []);
-      // Limpa os inputs após a pesquisa
-      document.getElementById("inputReferencia").value = "";
-      document.getElementById("inputCodigoCor").value = "";
     });
   };
 
@@ -56,7 +64,9 @@ const Fotos = () => {
   };
   const handleKeyDown = useCallback((e) => {
     if (e.key === "Enter") {
-      search();
+      const ref = document.getElementById("inputReferencia").value;
+      const cor = document.getElementById("inputCodigoCor").value;
+      search(ref, cor);
     }
   }, []);
 
@@ -74,50 +84,6 @@ const Fotos = () => {
       });
     };
   }, [handleKeyDown]);
-
-  const cadastraFotos = async (files) => {
-    //Coverte files para base64
-    const convertToBase64 = async (file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result.split(",")[1]);
-        reader.onerror = (error) => reject(error);
-      });
-    };
-    if (!files) return;
-    const fotos = {
-      foto_principal: files[0] ? await convertToBase64(files[0]) : null,
-      foto_produto_1: files[1] ? await convertToBase64(files[1]) : null,
-      foto_produto_2: files[2] ? await convertToBase64(files[2]) : null,
-      foto_produto_3: files[3] ? await convertToBase64(files[3]) : null,
-      foto_produto_4: files[4] ? await convertToBase64(files[4]) : null,
-      foto_produto_5: files[5] ? await convertToBase64(files[5]) : null,
-      foto_complementar: null,
-    };
-    const produto = {
-      referencia: document.getElementById("inputCadastroReferencia").value,
-      codigo_cor: document.getElementById("inputCadastroCodigoCor").value,
-      preco: document.getElementById("inputCadastroPreco").value,
-      embalagem: embalagem,
-      fotos: fotos,
-      descricao_produto: document.getElementById("inputCadastroDescricao")
-        ? document.getElementById("inputCadastroDescricao").value
-        : "",
-      nome_cor: document.getElementById("inputNomeCor")
-        ? document.getElementById("inputNomeCor").value
-        : "",
-    };
-
-    window.electronApi?.cadastraFotos(produto);
-    window.electronApi?.onCadastraFotosResponse((response) => {
-      if (response.success) {
-        console.log("Fotos cadastradas com sucesso!");
-      } else {
-        console.error("Erro ao cadastrar fotos:", response.error);
-      }
-    });
-  };
 
   const deleteFotos = async (foto) => {
     console.log("Excluindo foto:", foto);
@@ -148,15 +114,51 @@ const Fotos = () => {
     });
   };
 
+  const handleCadastroFotos = async (files) => {
+    if (!files || files.length === 0) {
+      return "Nenhum arquivo selecionado.";
+    }
+
+    const produto = {
+      referencia: referenciaCadastro,
+      codigo_cor: codigoCorCadastro,
+      nome_cor: nomeCorCadastro,
+      preco: precoCadastro,
+      embalagem: embalagemCadastro,
+      descricao_produto: descricaoCadastro,
+    };
+
+    const result = await cadastraFotos(files, produto);
+    console.log("Resultado do cadastro:", result);
+
+    alert(result);
+    return result;
+  };
+
   return (
     <div className="flex">
       <BarraLateral search={search}>
         <FloatLabel>
-          <InputText id="inputReferencia" />
+          <InputText
+            id="inputReferencia"
+            value={referenciaSearch}
+            onChange={(e) => {
+              setReferenciaSearch(e.target.value);
+              search(e.target.value, codigoCorSearch); // sempre usa o valor mais recente
+            }}
+          />
           <label htmlFor="inputReferencia">Referência</label>
         </FloatLabel>
+        <p>{referenciaSearch}</p>
         <FloatLabel>
-          <InputText id="inputCodigoCor" />
+          <InputText
+            id="inputCodigoCor"
+            value={codigoCorSearch}
+            onChange={(e) => {
+              setCodigoCorSearch(e.target.value);
+              search(referenciaSearch, e.target.value); // sempre usa o valor mais recente
+            }}
+          />
           <label htmlFor="inputCodigoCor">Código da Cor</label>
         </FloatLabel>
       </BarraLateral>
@@ -226,25 +228,37 @@ const Fotos = () => {
                 cancelIcon="pi pi-trash"
                 cancelLabel="Limpar"
                 customUpload={true}
-                uploadHandler={(e) => cadastraFotos(e.files)}
+                uploadHandler={(e) => handleCadastroFotos(e.files)}
               />
             </div>
             <div className=" w-6">
               <div className="inputs-cadastro-fotos flex flex-wrap gap-4 mb-4">
                 <FloatLabel>
-                  <InputText id="inputCadastroReferencia" />
+                  <InputText
+                    id="inputCadastroReferencia"
+                    onChange={(e) => setReferenciaCadastro(e.target.value)}
+                  />
                   <label htmlFor="inputCadastroReferencia">Referência</label>
                 </FloatLabel>
                 <FloatLabel>
-                  <InputText id="inputCadastroCodigoCor" />
+                  <InputText
+                    id="inputCadastroCodigoCor"
+                    onChange={(e) => setCodigoCorCadastro(e.target.value)}
+                  />
                   <label htmlFor="inputCadastroCodigoCor">Código da Cor</label>
                 </FloatLabel>
                 <FloatLabel>
-                  <InputText id="inputNomeCor" />
+                  <InputText
+                    id="inputNomeCor"
+                    onChange={(e) => setNomeCorCadastro(e.target.value)}
+                  />
                   <label htmlFor="inputNomeCor">Nome da Cor</label>
                 </FloatLabel>
                 <FloatLabel>
-                  <InputText id="inputCadastroPreco" />
+                  <InputText
+                    id="inputCadastroPreco"
+                    onChange={(e) => setPrecoCadastro(e.target.value)}
+                  />
                   <label htmlFor="inputCadastroPreco">Preço</label>
                 </FloatLabel>
                 <FloatLabel>
@@ -252,15 +266,17 @@ const Fotos = () => {
                     id="inputCadastroEmbalagem"
                     options={embalagemOptions}
                     placeholder="Selecione a embalagem"
-                    value={embalagem}
-                    onChange={(e) => setEmbalagem(e.value)}
+                    value={embalagemCadastro}
+                    onChange={(e) => setEmbalagemCadastro(e.value)}
                   />
                   <label htmlFor="inputCadastroEmbalagem">Embalagem</label>
                 </FloatLabel>
               </div>
               <InputTextarea
                 value={null}
-                onChange={(e) => {}}
+                onChange={(e) => {
+                  setDescricaoCadastro(e.target.value);
+                }}
                 rows={5}
                 cols={30}
                 className="w-full h-10"

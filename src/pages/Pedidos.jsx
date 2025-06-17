@@ -91,6 +91,7 @@ const Pedidos = () => {
     window.electronApi?.getPedido(numero);
     window.electronApi?.onGetPedidoResponse((itensPedido) => {
       setItensPedido(itensPedido || []);
+      console.log("Itens do pedido recebidos:", itensPedido);
     });
   };
   useEffect(() => {
@@ -268,6 +269,13 @@ const Pedidos = () => {
           <Column field="ID_CODPRODUTO" header="Código" />
           <Column field="ITPEDOR_DESCRPROD" header="Descrição" />
           <Column field="ITPEDOR_QUANTID" header="Quantidade" />
+          <Column
+            body={(rowData) => {
+              const peso = parseFloat(rowData.PROD_PESOLIQUIDO);
+              return isNaN(peso) ? "0 kg" : `${(peso * 12).toFixed(2)} kg`;
+            }}
+            header="Peso"
+          />
           <Column field="ITPEDOR_VLRUNIT" header="Valor unitário" />
           <Column field="ITPEDOR_VLRLIQU" header="Valor líquido" />
         </DataTable>

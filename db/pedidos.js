@@ -43,7 +43,24 @@ const getPedido = async (numero) => {
       .query(
         `SELECT * FROM [ITENSPEDIDOORCAMENTO] WHERE [ID_NUMPEDORC] = '${numero}'`
       );
-    return result.recordset;
+
+    const produtosResult = await connection
+      .request()
+      .query(
+        `SELECT [ID_CODPRODUTO], [PROD_PESOLIQUIDO] FROM [PRODUTOS] WHERE [ID_CODPRODUTO] IN (SELECT [ID_CODPRODUTO] FROM [ITENSPEDIDOORCAMENTO] WHERE [ID_NUMPEDORC] = '${numero}')`
+      );
+    const produtos = produtosResult.recordset.reduce((acc, prod) => {
+      acc[prod.ID_CODPRODUTO] = prod.PROD_PESOLIQUIDO;
+      return acc;
+    }, {});
+    const itensPedido = result.recordset.map((item) => {
+      return {
+        ...item,
+        PROD_PESOLIQUIDO: produtos[item.ID_CODPRODUTO] || 0,
+      };
+    });
+
+    return itensPedido;
   } catch (error) {
     console.error("Erro ao buscar pedido:", error);
   } finally {
