@@ -30,11 +30,13 @@ const Fotos = () => {
 
   // search agora recebe sempre os valores como argumento
   const search = (ref, cor) => {
-    if (ref.length < 5) return;
+    if ((ref && ref.length < 5) || (cor && cor.length < 5)) return;
     const foto = {
       referencia: ref,
       codigo_cor: cor,
     };
+    console.log("Buscando foto:", foto);
+
     window.electronApi?.searchFoto(foto);
     window.electronApi?.onSearchFotoResponse((fotos) => {
       setFotos(Array.isArray(fotos) ? fotos : fotos ? [fotos] : []);
@@ -149,7 +151,6 @@ const Fotos = () => {
           />
           <label htmlFor="inputReferencia">Referência</label>
         </FloatLabel>
-        <p>{referenciaSearch}</p>
         <FloatLabel>
           <InputText
             id="inputCodigoCor"
