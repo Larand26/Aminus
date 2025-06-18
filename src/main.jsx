@@ -14,8 +14,4 @@ import "primeflex/themes/primeone-light.css"; // dark theme
 // Import do font awesome
 import "@fortawesome/fontawesome-free/css/all.min.css"; // Font Awesome
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+createRoot(document.getElementById("root")).render(<App />);
