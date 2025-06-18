@@ -6,8 +6,6 @@ import { Button } from "primereact/button";
 
 const ControlePlaza = () => {
   const [csv, setCsv] = useState([]);
-  const taxaPlaza = 0.06;
-  const taxaLiber = 0.05;
 
   const getCsv = async () => {
     try {
@@ -31,14 +29,40 @@ const ControlePlaza = () => {
         <DataTable scrollable scrollHeight="400px" value={csv} showGridlines>
           <Column
             body={(rowData) => {
-              return (
-                <Button
-                  label="Ação"
-                  onClick={() => {
-                    console.log("Ação clicked for:", rowData);
-                  }}
-                />
-              );
+              switch (rowData.ACAO) {
+                case 0:
+                  return (
+                    <Button
+                      label="Confirmar Crédito"
+                      onClick={() => {
+                        console.log("Ação clicked for:", rowData);
+                      }}
+                    />
+                  );
+                  break;
+                case 1:
+                  return (
+                    <Button
+                      label="Transferir Crédito"
+                      onClick={() => {
+                        console.log("Ação 1 clicked for:", rowData);
+                      }}
+                    />
+                  );
+                  break;
+                case 2:
+                  return (
+                    <Button
+                      label="Repasse Finalizado"
+                      disabled
+                      onClick={() => {
+                        console.log("Ação 2 clicked for:", rowData);
+                      }}
+                    />
+                  );
+                default:
+                  break;
+              }
             }}
             header="Ação"
           />
