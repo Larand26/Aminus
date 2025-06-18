@@ -78,7 +78,6 @@ const insertCsvMysql = async (csvData) => {
     }
 
     await connection.end();
-    console.log("CSV inserido com sucesso no MySQL!");
   } catch (error) {
     console.error("Erro ao inserir CSV no MySQL:", error);
     throw error;

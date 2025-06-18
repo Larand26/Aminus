@@ -42,57 +42,71 @@ const ControlePlaza = () => {
             }}
             header="Ação"
           />
-          <Column field="status" header="Status" />
-          <Column
-            body={(rowData) =>
-              "R$ " +
-              (
-                rowData["Valor Nominal"] -
-                rowData["Valor Nominal"] * taxaPlaza -
-                rowData["Valor Nominal"] * taxaLiber
-              ).toFixed(2)
-            }
-            header="Transferido ao seller"
-          />
-          <Column
-            body={(rowData) => rowData.parcelas.join(" | ")}
-            header="Parcelas"
-          />
+          <Column field="STATUS" header="Status" />
+          <Column field="TRANSFERIDO_SELLER" header="Transferido ao seller" />
+          <Column field="VALOR_NOMINAL" header="Parcelas" />
           <Column field="CNPJ" header="CNPJ" />
-          <Column field="Razão Social" header="Razão Social" />
-          <Column field="Seller" header="Seller" />
-          <Column field="Data da Operação" header="Data da operação" />
-          <Column field="Nº da NF" header="Nota fiscal" />
+          <Column field="RAZAO_SOCIAL" header="Razão Social" />
+          <Column field="SELLER" header="Seller" />
           <Column
+            field="DATA_OPERACAO"
+            header="Data da operação"
             body={(rowData) =>
-              "R$ " + (rowData["Valor Nominal"] * taxaPlaza).toFixed(2)
+              rowData.DATA_OPERACAO instanceof Date
+                ? rowData.DATA_OPERACAO.toLocaleDateString()
+                : rowData.DATA_OPERACAO || ""
             }
-            header="Taxa Plaza"
+          />
+          <Column field="NUMERO_NF" header="Nota fiscal" />
+          <Column field="TAXA_PLAZA" header="Taxa Plaza" />
+          <Column field="TAXA_LIBER" header="Taxa Antecipação" />
+          <Column
+            field="DATA_VENCIMENTO"
+            header="Data de Vencimento"
+            body={(rowData) =>
+              rowData.DATA_VENCIMENTO instanceof Date
+                ? rowData.DATA_VENCIMENTO.toLocaleDateString()
+                : rowData.DATA_VENCIMENTO || ""
+            }
           />
           <Column
-            body={(rowData) =>
-              "R$ " + (rowData["Valor Nominal"] * taxaLiber).toFixed(2)
-            }
-            header="Taxa Antecipação"
-          />
-          <Column field="Data de Vencimento" header="Data de Vencimento" />
-          <Column
-            body={(rowData) =>
-              "R$ " + rowData.valoresRepasse.join(" | ") || "R$ 0,00"
-            }
+            field="VALOR_REPASSE"
             header="Valor de Repasse"
+            body={(rowData) =>
+              typeof rowData.VALOR_REPASSE === "number"
+                ? rowData.VALOR_REPASSE.toFixed(2).replace(".", ",")
+                : rowData.VALOR_REPASSE || ""
+            }
           />
           <Column
-            field="Repasse final do Lote"
+            field="REPASSE_FINAL"
             header="Repasse final do lote"
+            body={(rowData) =>
+              typeof rowData.REPASSE_FINAL === "number"
+                ? rowData.REPASSE_FINAL.toFixed(2).replace(".", ",")
+                : rowData.REPASSE_FINAL || ""
+            }
           />
-          <Column field="Data do pagamento" header="Data do Pagamento" />
           <Column
-            field="Número do Pedido (Plaza)"
-            header="Número do Pedido (Plaza)"
+            field="DATA_PAGAMENTO"
+            header="Data do Pagamento"
+            body={(rowData) =>
+              rowData.DATA_PAGAMENTO instanceof Date
+                ? rowData.DATA_PAGAMENTO.toLocaleDateString()
+                : rowData.DATA_PAGAMENTO || ""
+            }
           />
-          <Column field="Data de Entrega" header="Data de Entrega" />
-          <Column field="Transportadora" header="Transportadora" />
+          <Column field="NUMERO_PEDIDO" header="Número do Pedido (Plaza)" />
+          <Column
+            field="DATA_ENTREGA"
+            header="Data de Entrega"
+            body={(rowData) =>
+              rowData.DATA_ENTREGA instanceof Date
+                ? rowData.DATA_ENTREGA.toLocaleDateString()
+                : rowData.DATA_ENTREGA || ""
+            }
+          />
+          <Column field="TRANSPORTADORA" header="Transportadora" />
         </DataTable>
       </Content>
     </div>

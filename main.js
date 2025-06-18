@@ -12,6 +12,7 @@ const { cadastraFotos } = require("./db/cadastraFotos");
 const { deleteFoto } = require("./db/deleteFoto");
 const { getCsv } = require("./excel/getCsv");
 const { insertCsvMysql } = require("./db/insertCsvMysql");
+const { getControlePlaza } = require("./db/getControlePlaza");
 
 function isDev() {
   return (
@@ -190,7 +191,8 @@ ipcMain.on("get-csv", async (event, arg) => {
     // Simulação de busca de CSV, substitua com a lógica real
     const csvData = await getCsv(arg);
     await insertCsvMysql(csvData);
-    event.reply("get-csv-response", csvData);
+    const result = await getControlePlaza();
+    event.reply("get-csv-response", result);
   } catch (error) {
     console.error("Erro ao buscar CSV:", error);
     event.reply("get-csv-response", {
