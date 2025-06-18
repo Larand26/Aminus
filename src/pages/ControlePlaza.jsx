@@ -23,6 +23,16 @@ const ControlePlaza = () => {
     getCsv(); // Chama a função ao montar o componente
   }, []);
 
+  const changeAcao = async (acao, id) => {
+    try {
+      await window.electronApi?.changeAcao(acao, id);
+      console.log(`Ação ${acao} alterada para o ID ${id}`);
+      getCsv();
+    } catch (error) {
+      console.error("Error changing action:", error);
+    }
+  };
+
   return (
     <div className="flex">
       <Content titulo={"Controle Plaza"}>
@@ -35,7 +45,7 @@ const ControlePlaza = () => {
                     <Button
                       label="Confirmar Crédito"
                       onClick={() => {
-                        console.log("Ação clicked for:", rowData);
+                        changeAcao(rowData.ACAO, rowData.id);
                       }}
                     />
                   );
@@ -45,7 +55,7 @@ const ControlePlaza = () => {
                     <Button
                       label="Transferir Crédito"
                       onClick={() => {
-                        console.log("Ação 1 clicked for:", rowData);
+                        changeAcao(rowData.ACAO, rowData.id);
                       }}
                     />
                   );
@@ -56,7 +66,7 @@ const ControlePlaza = () => {
                       label="Repasse Finalizado"
                       disabled
                       onClick={() => {
-                        console.log("Ação 2 clicked for:", rowData);
+                        changeAcao(rowData.ACAO, rowData.id);
                       }}
                     />
                   );

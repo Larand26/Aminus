@@ -13,6 +13,7 @@ const { deleteFoto } = require("./db/deleteFoto");
 const { getCsv } = require("./excel/getCsv");
 const { insertCsvMysql } = require("./db/insertCsvMysql");
 const { getControlePlaza } = require("./db/getControlePlaza");
+const { changeAcao } = require("./db/changeAcao");
 
 function isDev() {
   return (
@@ -196,6 +197,19 @@ ipcMain.on("get-csv", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao buscar CSV:", error);
     event.reply("get-csv-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("change-acao", async (event, arg) => {
+  try {
+    // Simulação de alteração de ação, substitua com a lógica real
+    const result = await changeAcao(arg);
+    event.reply("change-acao-response", result);
+  } catch (error) {
+    console.error("Erro ao alterar ação:", error);
+    event.reply("change-acao-response", {
       error: error.message || "Erro desconhecido",
     });
   }

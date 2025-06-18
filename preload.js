@@ -66,4 +66,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("get-csv-response", (event, arg) => {
       callback(arg);
     }),
+  changeAcao: (acao, id) => ipcRenderer.send("change-acao", { acao, id }),
+  onChangeAcaoResponse: (callback) =>
+    ipcRenderer.on("change-acao-response", (event, arg) => {
+      callback(arg);
+    }),
 });
