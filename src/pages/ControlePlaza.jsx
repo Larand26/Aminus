@@ -25,24 +25,33 @@ const ControlePlaza = () => {
   return (
     <div className="flex">
       <Content titulo={"Controle Plaza"}>
-        <DataTable scrollable scrollHeight="400px">
+        <DataTable scrollable scrollHeight="400px" value={csv}>
           <Column field="acao" header="Ação" />
           <Column field="status" header="Status" />
-          <Column field="transferidoSeller" header="Transferido ao seller" />
-          <Column field="cnpj" header="CNPJ" />
-          <Column field="razaoSocial" header="Razão Social" />
-          <Column field="seller" header="Seller" />
-          <Column field="data" header="Data da operação" />
-          <Column field="nota" header="Nota fiscal" />
-          <Column field="taxaPlaza" header="Taxa Plaza" />
-          <Column field="taxaAntecipacao" header="Taxa Antecipação" />
-          <Column field="dataVencimento" header="Data de Vencimento" />
-          <Column field="valordeRepasse" header="Valor de Repasse" />
-          <Column field="repasseTotal" header="Repasse Total do lote" />
-          <Column field="dataDoPagamento" header="Data do Pagamento" />
-          <Column field="numPedido" header="Número do Pedido (Plaza)" />
-          <Column field="dataEntrega" header="Data de Entrega" />
-          <Column field="transportadora" header="Transportadora" />
+          <Column
+            field="Transferido ao seller"
+            header="Transferido ao seller"
+          />
+          <Column field="CNPJ" header="CNPJ" />
+          <Column field="Razão Social" header="Razão Social" />
+          <Column field="Seller" header="Seller" />
+          <Column field="Data da Operação" header="Data da operação" />
+          <Column field="Nº da NF" header="Nota fiscal" />
+          <Column field="Taxa Plaza" header="Taxa Plaza" />
+          <Column field="Taxa Antecipação" header="Taxa Antecipação" />
+          <Column field="Data de Vencimento" header="Data de Vencimento" />
+          <Column field="Valor de Repasse" header="Valor de Repasse" />
+          <Column
+            field="Repasse Total do lote"
+            header="Repasse Total do lote"
+          />
+          <Column field="Data do pagamento" header="Data do Pagamento" />
+          <Column
+            field="Número do Pedido (Plaza)"
+            header="Número do Pedido (Plaza)"
+          />
+          <Column field="Data de Entrega" header="Data de Entrega" />
+          <Column field="Transportadora" header="Transportadora" />
         </DataTable>
       </Content>
     </div>

@@ -47,7 +47,6 @@ body {
 
 .content {
   width: 100%;
-  max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
   box-sizing: border-box;
@@ -92,6 +91,11 @@ body {
   white-space: normal;
   max-width: 180px;
   overflow-wrap: anywhere;
+}
+
+.p-datatable .p-datatable-tbody > tr > td,
+.p-datatable .p-datatable-thead > tr > th {
+  white-space: nowrap;
 }
 
 @media (max-width: 600px) {
