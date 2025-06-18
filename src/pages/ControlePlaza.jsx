@@ -1,8 +1,27 @@
 import { DataTable } from "primereact/datatable";
 import Content from "../components/Content";
 import { Column } from "primereact/column";
+import { useEffect, useState } from "react";
 
 const ControlePlaza = () => {
+  const [csv, setCsv] = useState([]);
+
+  const getCsv = async () => {
+    try {
+      window.electronApi?.getCsv();
+      window.electronApi?.onGetCsvResponse((data) => {
+        setCsv(data);
+        console.log("CSV data received:", data);
+      });
+    } catch (error) {
+      console.error("Error fetching CSV data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getCsv(); // Chama a função ao montar o componente
+  }, []);
+
   return (
     <div className="flex">
       <Content titulo={"Controle Plaza"}>

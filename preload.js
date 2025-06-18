@@ -61,4 +61,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("delete-foto-response", (event, arg) => {
       callback(arg);
     }),
+  getCsv: (arg) => ipcRenderer.send("get-csv", arg),
+  onGetCsvResponse: (callback) =>
+    ipcRenderer.on("get-csv-response", (event, arg) => {
+      callback(arg);
+    }),
 });

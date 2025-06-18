@@ -10,6 +10,7 @@ const { makeCubagem } = require("./db/cubagem");
 const { getDataReserva } = require("./db/dataReserva");
 const { cadastraFotos } = require("./db/cadastraFotos");
 const { deleteFoto } = require("./db/deleteFoto");
+const { getCsv } = require("./excel/getCsv");
 
 function isDev() {
   return (
@@ -178,6 +179,19 @@ ipcMain.on("delete-foto", async (event, foto) => {
   } catch (error) {
     console.error("Erro ao excluir foto:", error);
     event.reply("delete-foto-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("get-csv", async (event, arg) => {
+  try {
+    // Simulação de busca de CSV, substitua com a lógica real
+    const csvData = await getCsv(arg);
+    event.reply("get-csv-response", csvData);
+  } catch (error) {
+    console.error("Erro ao buscar CSV:", error);
+    event.reply("get-csv-response", {
       error: error.message || "Erro desconhecido",
     });
   }
