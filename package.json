@@ -29,6 +29,7 @@
     "jszip": "^3.10.1",
     "mongoose": "^8.15.1",
     "mssql": "^11.0.1",
+    "mysql2": "^3.14.1",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.5",
