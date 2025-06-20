@@ -44,6 +44,7 @@ const ControlePlaza = () => {
                   return (
                     <Button
                       label="Confirmar Crédito"
+                      className="bg-green-500	border-none"
                       onClick={() => {
                         changeAcao(rowData.ACAO, rowData.id);
                       }}
@@ -54,6 +55,7 @@ const ControlePlaza = () => {
                   return (
                     <Button
                       label="Transferir Crédito"
+                      className="bg-yellow-600	border-none"
                       onClick={() => {
                         changeAcao(rowData.ACAO, rowData.id);
                       }}
@@ -65,6 +67,7 @@ const ControlePlaza = () => {
                     <Button
                       label="Repasse Finalizado"
                       disabled
+                      className="surface-400 border-none"
                       onClick={() => {
                         changeAcao(rowData.ACAO, rowData.id);
                       }}
