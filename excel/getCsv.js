@@ -1,16 +1,29 @@
 const fs = require("fs");
 const path = require("path");
 const { parse } = require("csv-parse/sync");
+const ospath = require("ospath"); // alterado aqui
 
 const getCsv = async (arg) => {
   try {
-    const caminho =
-      arg ||
-      path.join(
-        process.env.HOME || process.env.USERPROFILE,
-        "Desktop",
-        "CSV dos repasses.csv"
-      );
+    // Lista de possíveis caminhos para a área de trabalho
+    const userProfile = process.env.USERPROFILE;
+    const pathsToTry = [
+      arg,
+      path.join(ospath.desktop(), "CSV dos repasses.csv"),
+      path.join(userProfile, "Desktop", "CSV dos repasses.csv"),
+      path.join(userProfile, "Área de Trabalho", "CSV dos repasses.csv"),
+      path.join(userProfile, "OneDrive", "Desktop", "CSV dos repasses.csv"),
+      path.join(userProfile, "OneDrive", "Área de Trabalho", "CSV dos repasses.csv"),
+    ].filter(Boolean);
+
+    let caminho;
+    for (const p of pathsToTry) {
+      if (fs.existsSync(p)) {
+        caminho = p;
+        break;
+      }
+    }
+    if (!caminho) throw new Error("Arquivo CSV dos repasses não encontrado.");
 
     // Lê o conteúdo do arquivo
     const fileContent = fs.readFileSync(caminho, "utf-8");

@@ -14,6 +14,7 @@ const { getCsv } = require("./excel/getCsv");
 const { insertCsvMysql } = require("./db/insertCsvMysql");
 const { getControlePlaza } = require("./db/getControlePlaza");
 const { changeAcao } = require("./db/changeAcao");
+require("dotenv").config();
 
 function isDev() {
   return (

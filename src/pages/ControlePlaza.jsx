@@ -13,6 +13,10 @@ const ControlePlaza = () => {
     try {
       window.electronApi?.getCsv();
       window.electronApi?.onGetCsvResponse((data) => {
+        if (!data || data.length === 0) {
+          console.warn("No CSV data received or data is empty.");
+          return;
+        }
         setCsv(data);
         console.log("CSV data received:", data);
       });

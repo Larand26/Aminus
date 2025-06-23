@@ -1,6 +1,6 @@
 const mysql = require("mysql2/promise");
 const path = require("path");
-const globals = require(path.join(__dirname, "../../globals"));
+const globals = require(path.join(__dirname, "../globals"));
 
 const sqlParametros = {
   host: globals.DB_HOST_MYSQL,
