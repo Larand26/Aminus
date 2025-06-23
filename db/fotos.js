@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 const Produto = require("./produtoModel");
-const { MONGODB_URI } = require("../globals");
 
 const searchFoto = async (produto) => {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI);
 
     let pesquisa;
     if (produto.referencia === "") {

@@ -2,11 +2,10 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
 const Produto = require("./produtoModel");
-const { MONGODB_URI } = require("../globals");
 
 const cadastraFotos = async (produto) => {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI);
 
     // Verifica se produto com mesma referência + cor já existe
     const produtoExistente = await Produto.findOne({

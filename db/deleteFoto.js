@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 require("dotenv").config();
 const Produto = require("./produtoModel");
-const { MONGODB_URI } = require("../globals");
 
 const deleteFoto = async (produto) => {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(process.env.MONGODB_URI);
 
     if (!produto._id) {
       console.log("ID do produto não informado.");

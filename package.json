@@ -53,10 +53,8 @@
     "appId": "com.aminus.app",
     "productName": "Aminus",
     "files": [
-      "dist/**/*",
-      "main.js",
-      "preload.js",
-      "db/**/*"
+      "**/*",
+      ".env"
     ],
     "directories": {
       "buildResources": "public"

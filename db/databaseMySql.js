@@ -1,18 +1,12 @@
 const mysql = require("mysql2/promise");
-const {
-  DB_HOST_MYSQL,
-  DB_USER_MYSQL,
-  DB_PASSWORD_MYSQL,
-  DB_DATABASE_MYSQL,
-  DB_PORT_MYSQL,
-} = require("../globals");
+require("dotenv").config();
 
 const sqlParametros = {
-  host: DB_HOST_MYSQL,
-  user: DB_USER_MYSQL,
-  password: DB_PASSWORD_MYSQL,
-  database: DB_DATABASE_MYSQL,
-  port: DB_PORT_MYSQL,
+  host: process.env.DB_HOST_MYSQL,
+  user: process.env.DB_USER_MYSQL,
+  password: process.env.DB_PASSWORD_MYSQL,
+  database: process.env.DB_DATABASE_MYSQL,
+  port: Number(process.env.DB_PORT_MYSQL),
 };
 
 const connectMySql = async () => {

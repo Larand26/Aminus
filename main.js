@@ -14,11 +14,15 @@ const { getCsv } = require("./excel/getCsv");
 const { insertCsvMysql } = require("./db/insertCsvMysql");
 const { getControlePlaza } = require("./db/getControlePlaza");
 const { changeAcao } = require("./db/changeAcao");
+let MODE = "production";
+try {
+  MODE = require("./globals").MODE;
+} catch (e) {
+  // globals.js não encontrado, segue com o padrão "production"
+}
 
 function isDev() {
-  return (
-    process.env.NODE_ENV === "development" || process.argv.includes("--dev")
-  );
+  return MODE === "development" || process.argv.includes("--dev");
 }
 
 const homeWindow = () => {
