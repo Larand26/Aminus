@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { DataTable } from "primereact/datatable";
 import Content from "../components/Content";
 import { Column } from "primereact/column";
@@ -5,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Button } from "primereact/button";
 
 const ControlePlaza = () => {
+  const navigate = useNavigate();
   const [csv, setCsv] = useState([]);
 
   const getCsv = async () => {
@@ -35,6 +37,12 @@ const ControlePlaza = () => {
 
   return (
     <div className="flex">
+      <Button
+        icon="fa fa-home"
+        className="bg-blue-500 border-none absolute"
+        style={{ top: "1rem", left: "1rem" }}
+        onClick={() => navigate("/")}
+      />
       <Content titulo={"Controle Plaza"}>
         <DataTable scrollable scrollHeight="400px" value={csv} showGridlines>
           <Column
@@ -79,7 +87,15 @@ const ControlePlaza = () => {
             }}
             header="Ação"
           />
-          <Column field="STATUS" header="Status" />
+          <Column
+            body={(rowData) => {
+              if (rowData.ACAO == 2) {
+                return "Crédito Transferido";
+              }
+              return rowData.STATUS;
+            }}
+            header="Status"
+          />
           <Column field="TRANSFERIDO_SELLER" header="Transferido ao seller" />
           <Column field="VALOR_NOMINAL" header="Parcelas" />
           <Column field="CNPJ" header="CNPJ" />
