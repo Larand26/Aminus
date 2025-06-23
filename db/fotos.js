@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-require("dotenv").config();
+const path = require("path");
+const globals = require(path.join(__dirname, "../../globals"));
 const Produto = require("./produtoModel");
-const { MONGODB_URI } = require("../globals");
 
 const searchFoto = async (produto) => {
   try {
-    await mongoose.connect(MONGODB_URI);
+    await mongoose.connect(globals.MONGODB_URI);
 
     let pesquisa;
     if (produto.referencia === "") {

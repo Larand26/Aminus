@@ -1,25 +1,19 @@
 const mysql = require("mysql2/promise");
-const {
-  DB_HOST_MYSQL,
-  DB_USER_MYSQL,
-  DB_PASSWORD_MYSQL,
-  DB_DATABASE_MYSQL,
-  DB_PORT_MYSQL,
-} = require("../globals");
+const path = require("path");
+const globals = require(path.join(__dirname, "../../globals"));
 
 const sqlParametros = {
-  host: DB_HOST_MYSQL,
-  user: DB_USER_MYSQL,
-  password: DB_PASSWORD_MYSQL,
-  database: DB_DATABASE_MYSQL,
-  port: DB_PORT_MYSQL,
+  host: globals.DB_HOST_MYSQL,
+  user: globals.DB_USER_MYSQL,
+  password: globals.DB_PASSWORD_MYSQL,
+  database: globals.DB_DATABASE_MYSQL,
+  port: Number(globals.DB_PORT_MYSQL),
 };
 
 const connectMySql = async () => {
   try {
     const connection = await mysql.createConnection(sqlParametros);
     await connection.connect();
-    // console.log("Conexão bem-sucedida ao banco de dados!");
     return connection;
   } catch (err) {
     console.log("Erro ao se conectar com o banco de dados " + err);

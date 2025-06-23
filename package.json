@@ -56,7 +56,9 @@
       "dist/**/*",
       "main.js",
       "preload.js",
-      "db/**/*"
+      "db/**/*",
+      "excel/**/*",
+      "globals.js"
     ],
     "directories": {
       "buildResources": "public"
