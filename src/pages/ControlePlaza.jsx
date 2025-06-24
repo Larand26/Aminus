@@ -41,12 +41,18 @@ const ControlePlaza = () => {
 
   return (
     <div className="flex">
-      <Button
-        icon="fa fa-home"
-        className="bg-blue-500 border-none absolute"
-        style={{ top: "1rem", left: "1rem" }}
-        onClick={() => navigate("/")}
-      />
+      <div className="absolute top-0 left-0 p-2 flex gap-2">
+        <Button
+          icon="fa fa-home"
+          className="bg-blue-500 border-none"
+          onClick={() => navigate("/")}
+        />
+        <Button
+          icon="fa fa-refresh"
+          className="bg-blue-500 border-none"
+          onClick={() => getCsv()}
+        />
+      </div>
       <Content titulo={"Controle Plaza"}>
         <DataTable scrollable scrollHeight="400px" value={csv} showGridlines>
           <Column
