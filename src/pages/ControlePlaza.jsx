@@ -152,7 +152,16 @@ const ControlePlaza = () => {
           />
           <Column
             field="DATA_PAGAMENTO"
-            header="Data do Pagamento"
+            header="Data do Pagamento Líber"
+            body={(rowData) =>
+              rowData.DATA_PAGAMENTO instanceof Date
+                ? rowData.DATA_PAGAMENTO.toLocaleDateString()
+                : rowData.DATA_PAGAMENTO || ""
+            }
+          />
+          <Column
+            field="DATA_REPASSE"
+            header="Data do Repasse Plaza"
             body={(rowData) =>
               rowData.DATA_PAGAMENTO instanceof Date
                 ? rowData.DATA_PAGAMENTO.toLocaleDateString()
