@@ -223,6 +223,9 @@ const Fotos = () => {
                     alt=""
                     className="w-full h-auto"
                   />
+                  <p className="text-xs text-center text-overflow-ellipsis">
+                    {foto.nome_cor}
+                  </p>
                 </Card>
               ))
             )}
