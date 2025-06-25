@@ -63,7 +63,7 @@ const Fotos = () => {
     const content = await zip.generateAsync({ type: "blob" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(content);
-    link.download = `${nome || "fotos"}.zip`;
+    link.download = `${nome || "cor"}_${fotosObj.codigo_cor || "cor"}.zip`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
