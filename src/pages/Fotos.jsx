@@ -11,6 +11,7 @@ import { Dropdown } from "primereact/dropdown";
 import { ConfirmPopup } from "primereact/confirmpopup"; // To use <ConfirmPopup> tag
 import { confirmPopup } from "primereact/confirmpopup"; // To use confirmPopup method
 import cadastraFotos from "../utils/cadastraFotos";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 import "../styles/cadastro-fotos.css";
 
@@ -27,10 +28,12 @@ const Fotos = () => {
   const [precoCadastro, setPrecoCadastro] = useState("");
   const [embalagemCadastro, setEmbalagemCadastro] = useState(null);
   const [descricaoCadastro, setDescricaoCadastro] = useState("");
+  const [loading, setLoading] = useState(false); // novo estado
 
   // search agora recebe sempre os valores como argumento
   const search = (ref, cor) => {
     if ((ref && ref.length < 5) || (cor && cor.length < 5)) return;
+    setLoading(true); // inicia carregamento
     const foto = {
       referencia: ref,
       codigo_cor: cor,
@@ -40,6 +43,7 @@ const Fotos = () => {
     window.electronApi?.searchFoto(foto);
     window.electronApi?.onSearchFotoResponse((fotos) => {
       setFotos(Array.isArray(fotos) ? fotos : fotos ? [fotos] : []);
+      setLoading(false); // finaliza carregamento
     });
   };
 
@@ -173,40 +177,49 @@ const Fotos = () => {
               minHeight: "300px",
             }}
           >
-            {fotos.map((foto, index) => (
-              <Card
-                key={index}
-                title={foto.referencia}
-                subTitle={foto.codigo_cor}
-                className="md:w-13rem"
-                footer={
-                  <div className="flex gap-2">
-                    <ConfirmPopup />
-                    <button
-                      className="p-button p-component w-full flex justify-content-center gap-2"
-                      onClick={() =>
-                        handleDownload(foto.fotos, foto.referencia)
-                      }
-                    >
-                      <i className="pi pi-download"></i>
-                    </button>
-                    <button
-                      className="p-button p-button-danger p-component w-full flex justify-content-center gap-2"
-                      type="button"
-                      onClick={(e) => confirmDelete(e, foto)}
-                    >
-                      <i className="pi pi-trash"></i>
-                    </button>
-                  </div>
-                }
+            {loading ? (
+              <div
+                className="flex justify-content-center align-items-center w-full"
+                style={{ minHeight: 200 }}
               >
-                <img
-                  src={`data:image/jpeg;base64,${foto.fotos.foto_principal}`}
-                  alt=""
-                  className="w-full h-auto"
-                />
-              </Card>
-            ))}
+                <ProgressSpinner />
+              </div>
+            ) : (
+              fotos.map((foto, index) => (
+                <Card
+                  key={index}
+                  title={foto.referencia}
+                  subTitle={foto.codigo_cor}
+                  className="md:w-13rem"
+                  footer={
+                    <div className="flex gap-2">
+                      <ConfirmPopup />
+                      <button
+                        className="p-button p-component w-full flex justify-content-center gap-2"
+                        onClick={() =>
+                          handleDownload(foto.fotos, foto.referencia)
+                        }
+                      >
+                        <i className="pi pi-download"></i>
+                      </button>
+                      <button
+                        className="p-button p-button-danger p-component w-full flex justify-content-center gap-2"
+                        type="button"
+                        onClick={(e) => confirmDelete(e, foto)}
+                      >
+                        <i className="pi pi-trash"></i>
+                      </button>
+                    </div>
+                  }
+                >
+                  <img
+                    src={`data:image/jpeg;base64,${foto.fotos.foto_principal}`}
+                    alt=""
+                    className="w-full h-auto"
+                  />
+                </Card>
+              ))
+            )}
           </div>
         </TabPanel>
         <TabPanel header="Cadastro">
