@@ -53,17 +53,19 @@ const Fotos = () => {
   ];
 
   // Substitua a função handleDownload por esta:
-  const handleDownload = async (fotosObj, nome) => {
+  const handleDownload = async (fotosObj, nome, codigoCor) => {
+    console.log("Iniciando download para:", nome, fotosObj);
+
     const zip = new JSZip();
     Object.entries(fotosObj).forEach(([key, base64]) => {
       if (base64) {
-        zip.file(`${nome}_${key}.jpg`, base64, { base64: true });
+        zip.file(`${nome}_${key}_${codigoCor}.jpg`, base64, { base64: true });
       }
     });
     const content = await zip.generateAsync({ type: "blob" });
     const link = document.createElement("a");
     link.href = URL.createObjectURL(content);
-    link.download = `${nome || "cor"}_${fotosObj.codigo_cor || "cor"}.zip`;
+    link.download = `${nome || "cor"}_${codigoCor || "cor"}.zip`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -197,7 +199,11 @@ const Fotos = () => {
                       <button
                         className="p-button p-component w-full flex justify-content-center gap-2"
                         onClick={() =>
-                          handleDownload(foto.fotos, foto.referencia)
+                          handleDownload(
+                            foto.fotos,
+                            foto.referencia,
+                            foto.codigo_cor
+                          )
                         }
                       >
                         <i className="pi pi-download"></i>
