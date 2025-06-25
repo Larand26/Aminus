@@ -163,9 +163,9 @@ const ControlePlaza = () => {
             field="DATA_REPASSE"
             header="Data do Repasse Plaza"
             body={(rowData) =>
-              rowData.DATA_PAGAMENTO instanceof Date
-                ? rowData.DATA_PAGAMENTO.toLocaleDateString()
-                : rowData.DATA_PAGAMENTO || ""
+              rowData.DATA_REPASSE instanceof Date
+                ? rowData.DATA_REPASSE.toLocaleDateString()
+                : rowData.DATA_REPASSE || ""
             }
           />
           <Column field="NUMERO_PEDIDO" header="Número do Pedido (Plaza)" />

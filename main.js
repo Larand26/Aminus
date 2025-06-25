@@ -14,6 +14,7 @@ const { getCsv } = require("./excel/getCsv");
 const { insertCsvMysql } = require("./db/insertCsvMysql");
 const { getControlePlaza } = require("./db/getControlePlaza");
 const { changeAcao } = require("./db/changeAcao");
+const { changeDataRepasse } = require("./db/changeDataRepasse");
 require("dotenv").config();
 
 function isDev() {
@@ -207,6 +208,9 @@ ipcMain.on("change-acao", async (event, arg) => {
   try {
     // Simulação de alteração de ação, substitua com a lógica real
     const result = await changeAcao(arg);
+    if (arg.acao === 1) {
+      await changeDataRepasse(arg.id);
+    }
     event.reply("change-acao-response", result);
   } catch (error) {
     console.error("Erro ao alterar ação:", error);
