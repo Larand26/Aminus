@@ -15,6 +15,7 @@ const { insertCsvMysql } = require("./db/insertCsvMysql");
 const { getControlePlaza } = require("./db/getControlePlaza");
 const { changeAcao } = require("./db/changeAcao");
 const { changeDataRepasse } = require("./db/changeDataRepasse");
+const { trackTNT } = require("./transportadoras/trackTNT");
 require("dotenv").config();
 
 function isDev() {

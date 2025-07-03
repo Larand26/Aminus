@@ -15,4 +15,7 @@ const trackTNT = async (data) => {
     console.error(error);
   }
 };
-trackTNT();
+
+module.exports = {
+  trackTNT,
+};
