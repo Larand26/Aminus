@@ -16,6 +16,7 @@ const { getControlePlaza } = require("./db/getControlePlaza");
 const { changeAcao } = require("./db/changeAcao");
 const { changeDataRepasse } = require("./db/changeDataRepasse");
 const { trackTNT } = require("./transportadoras/trackTNT");
+const { searchCadastroProdutos } = require("./db/cadastroProdutos");
 require("dotenv").config();
 
 function isDev() {
@@ -216,6 +217,19 @@ ipcMain.on("change-acao", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao alterar ação:", error);
     event.reply("change-acao-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("search-cadastro-produtos", async (event, referencia) => {
+  try {
+    // Simulação de busca de produtos, substitua com a lógica real
+    const produtos = await searchCadastroProdutos(referencia);
+    event.reply("search-cadastro-produtos-response", produtos);
+  } catch (error) {
+    console.error("Erro ao buscar produtos:", error);
+    event.reply("search-cadastro-produtos-response", {
       error: error.message || "Erro desconhecido",
     });
   }

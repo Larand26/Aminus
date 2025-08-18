@@ -71,4 +71,10 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("change-acao-response", (event, arg) => {
       callback(arg);
     }),
+  searchCadastroProdutos: (referencia) =>
+    ipcRenderer.send("search-cadastro-produtos", referencia),
+  onSearchCadastroProdutosResponse: (callback) =>
+    ipcRenderer.on("search-cadastro-produtos-response", (event, arg) => {
+      callback(arg);
+    }),
 });
