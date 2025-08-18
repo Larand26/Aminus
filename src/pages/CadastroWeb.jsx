@@ -12,10 +12,9 @@ const CadastroWeb = () => {
   const search = () => {
     setCarregando(true);
     window.electronApi?.searchCadastroProdutos(referencia);
-    window.electronApi?.onSearchProdutoResponse((produtos) => {
+    window.electronApi?.onSearchCadastroProdutosResponse((produtos) => {
       setProdutos(produtos);
       setCarregando(false);
-      console.log(produtos);
     });
   };
 
