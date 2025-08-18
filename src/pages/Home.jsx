@@ -68,6 +68,16 @@ const Home = () => {
             />
             <p className="bebas">Fotos</p>
           </div>
+          <div className={styleLinks}>
+            <Button
+              icon="fa fa-table"
+              rounded
+              severity="info"
+              aria-label="List"
+              onClick={() => navigate("/cadastro-web")}
+            />
+            <p className="bebas">Cadastro Web</p>
+          </div>
         </div>
       </div>
     </div>
