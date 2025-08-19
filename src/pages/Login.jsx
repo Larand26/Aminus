@@ -6,14 +6,20 @@ import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 
 const Login = () => {
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState(localStorage.getItem("user") || "");
+  const [password, setPassword] = useState(
+    localStorage.getItem("userPassword") || ""
+  );
   const navigate = useNavigate();
 
   const handleLogin = () => {
     window.electronApi?.login(user, password);
     window.electronApi?.onLoginResponse((response) => {
       if (response.success) {
+        localStorage.setItem("user", response.data.NOME);
+        localStorage.setItem("userId", response.data.ID_USUARIO);
+        localStorage.setItem("userPassword", response.data.SENHA);
+        localStorage.setItem("userFuncao", response.data.ID_FUNCAO_USUARIO);
         navigate("/home");
       } else {
         // Tratar erro de login
