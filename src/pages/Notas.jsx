@@ -22,6 +22,11 @@ const Notas = () => {
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
+  // Recupera função do usuário do localStorage
+  let idFuncaoUsuario = null;
+  try {
+    idFuncaoUsuario = parseInt(localStorage.getItem("userFuncao"));
+  } catch {}
 
   const search = () => {
     // Não converta para Date aqui, apenas envie o valor do estado
@@ -44,7 +49,6 @@ const Notas = () => {
       document.getElementById("inputCnpj").value = "";
       setData(null);
       setUf(null);
-      setVendedor(null);
     });
   };
   const handleKeyDown = useCallback((e) => {
@@ -71,6 +75,14 @@ const Notas = () => {
       });
     };
   }, [handleKeyDown]);
+
+  useEffect(() => {
+    if (idFuncaoUsuario === 2) {
+      const nome = localStorage.getItem("user");
+      const v = vendedoresJson.find((v) => v.label === nome)?.value;
+      setVendedor(v);
+    }
+  }, [idFuncaoUsuario]);
 
   return (
     <div className="flex">
@@ -103,16 +115,18 @@ const Notas = () => {
           />
           <label htmlFor="inputUf">UF</label>
         </FloatLabel>
-        <FloatLabel>
-          <Dropdown
-            id="inputVendedor"
-            options={vendedores}
-            className="md:w-12rem "
-            value={vendedor}
-            onChange={(e) => setVendedor(e.value)}
-          />
-          <label htmlFor="inputVendedor">Vendedor</label>
-        </FloatLabel>
+        {idFuncaoUsuario !== 2 && (
+          <FloatLabel>
+            <Dropdown
+              id="inputVendedor"
+              options={vendedores}
+              className="md:w-12rem "
+              value={vendedor}
+              onChange={(e) => setVendedor(e.value)}
+            />
+            <label htmlFor="inputVendedor">Vendedor</label>
+          </FloatLabel>
+        )}
       </BarraLateral>
       <Content titulo={"Notas Fiscais"}>
         <DataTable

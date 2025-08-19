@@ -18,19 +18,45 @@ const Pedidos = () => {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
   const [data, setData] = useState(null);
-  const [vendedor, setVendedor] = useState(null);
+  const [vendedor, setVendedor] = useState(() => {
+    let idFuncaoUsuario = null;
+    try {
+      idFuncaoUsuario = parseInt(localStorage.getItem("userFuncao"));
+    } catch {}
+    if (idFuncaoUsuario === 2) {
+      const nome = localStorage.getItem("user");
+      return vendedoresJson.find((v) => v.label === nome)?.value || null;
+    }
+    return null;
+  });
   const [situacao, setSituacao] = useState(null);
   const [itensPedido, setItensPedido] = useState([]);
   const [cubagemItens, setCubagemItens] = useState([]);
+  // Recupera função do usuário do localStorage
+  let idFuncaoUsuario = null;
+  try {
+    idFuncaoUsuario = parseInt(localStorage.getItem("userFuncao"));
+  } catch {}
 
   const search = () => {
+    let idFuncaoUsuario = null;
+    try {
+      idFuncaoUsuario = parseInt(localStorage.getItem("userFuncao"));
+    } catch {}
+    let vendedorFinal = vendedor;
+    if (idFuncaoUsuario === 2) {
+      const nome = localStorage.getItem("user");
+      vendedorFinal =
+        vendedoresJson.find((v) => v.label === nome)?.value || null;
+      setVendedor(vendedorFinal);
+    }
     const pedido = {
       numero: document.getElementById("inputNumero").value || null,
       cnpj: document.getElementById("inputCnpj").value || null,
       dataInicial: data ? (data[0] ? data[0].toISOString() : null) : null,
       dataFinal: data ? (data[1] ? data[1].toISOString() : null) : null,
       situacao: situacao || null,
-      vendedor: vendedor || null,
+      vendedor: vendedorFinal,
     };
     if (
       !pedido.numero &&
@@ -50,10 +76,8 @@ const Pedidos = () => {
       // Limpa os inputs após a pesquisa
       document.getElementById("inputNumero").value = "";
       document.getElementById("inputCnpj").value = "";
-      setDataInicial(null);
-      setDataFinal(null);
+      setData(null);
       document.getElementById("inputSituacao").value = "";
-      setVendedor(null);
     });
   };
   const handleKeyDown = useCallback((e) => {
@@ -182,16 +206,18 @@ const Pedidos = () => {
           />
           <label htmlFor="inputSituacao">Situação</label>
         </FloatLabel>
-        <FloatLabel>
-          <Dropdown
-            options={vendedoresJson}
-            id="inputVendedor"
-            className="md:w-12rem "
-            value={vendedor}
-            onChange={(e) => setVendedor(e.value)}
-          />
-          <label htmlFor="inputVendedor">Vendedor</label>
-        </FloatLabel>
+        {idFuncaoUsuario !== 2 && (
+          <FloatLabel>
+            <Dropdown
+              options={vendedoresJson}
+              id="inputVendedor"
+              className="md:w-12rem "
+              value={vendedor}
+              onChange={(e) => setVendedor(e.value)}
+            />
+            <label htmlFor="inputVendedor">Vendedor</label>
+          </FloatLabel>
+        )}
       </BarraLateral>
       <Content titulo={"Pedidos"}>
         <DataTable
