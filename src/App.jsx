@@ -8,12 +8,14 @@ import Reservas from "./pages/Reservas";
 import Fotos from "./pages/Fotos";
 import ControlePlaza from "./pages/ControlePlaza";
 import CadastroWeb from "./pages/CadastroWeb";
+import Login from "./pages/Login";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/produtos" element={<Produtos />} />
         <Route path="/notas" element={<Notas />} />
         <Route path="/pedidos" element={<Pedidos />} />
