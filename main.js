@@ -22,6 +22,7 @@ const { insertCsvMysql } = require("./db/mysql/insertCsvMysql");
 const { getControlePlaza } = require("./db/mysql/getControlePlaza");
 const { changeAcao } = require("./db/mysql/changeAcao");
 const { changeDataRepasse } = require("./db/mysql/changeDataRepasse");
+const { login } = require("./db/mysql/login");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
@@ -247,12 +248,8 @@ ipcMain.on("search-cadastro-produtos", async (event, referencia) => {
 
 ipcMain.on("login", async (event, { user, password }) => {
   try {
-    // Simulação de autenticação, substitua com a lógica real
-    if (user === "admin" && password === "admin") {
-      event.reply("login-response", { success: true });
-    } else {
-      throw new Error("Usuário ou senha inválidos");
-    }
+    const result = await login(user, password);
+    event.reply("login-response", result);
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     event.reply("login-response", {
