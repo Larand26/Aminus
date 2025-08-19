@@ -9,7 +9,7 @@ const BarraLateral = ({ children, search }) => {
       <div
         style={{ height: "10%" }}
         className="cursor-pointer"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/home")}
       >
         <img src={logoDanielBranco} alt="Logo Daniel Branco" />
       </div>
