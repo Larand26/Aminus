@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Password } from "primereact/password";
@@ -7,13 +8,13 @@ import { Button } from "primereact/button";
 const Login = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     window.electronApi?.login(user, password);
     window.electronApi?.onLoginResponse((response) => {
       if (response.success) {
-        // Login bem-sucedido
-        console.log("Login realizado com sucesso:", response.data);
+        navigate("/home");
       } else {
         // Tratar erro de login
         console.error("Erro de login:", response.error);
