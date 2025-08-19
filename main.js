@@ -1,22 +1,32 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("path");
-const { searchProduto } = require("./db/produtos");
-const { searchNotas } = require("./db/notas");
-const { searchCliente } = require("./db/clientes");
-const { searchPedido, getPedido } = require("./db/pedidos");
-const { searchReserva } = require("./db/reservas");
-const { searchFoto } = require("./db/fotos");
-const { makeCubagem } = require("./db/cubagem");
-const { getDataReserva } = require("./db/dataReserva");
-const { cadastraFotos } = require("./db/cadastraFotos");
-const { deleteFoto } = require("./db/deleteFoto");
+
+// SQL Server
+const { searchProduto } = require("./db/sqlserver/produtos");
+const { searchNotas } = require("./db/sqlserver/notas");
+const { searchCliente } = require("./db/sqlserver/clientes");
+const { searchPedido, getPedido } = require("./db/sqlserver/pedidos");
+const { searchReserva } = require("./db/sqlserver/reservas");
+const { searchCadastroProdutos } = require("./db/sqlserver/cadastroProdutos");
+const { getDataReserva } = require("./db/sqlserver/dataReserva");
+const { makeCubagem } = require("./db/sqlserver/cubagem");
+
+// Mongo DB
+const { searchFoto } = require("./db/mongodb/fotos");
+const { cadastraFotos } = require("./db/mongodb/cadastraFotos");
+const { deleteFoto } = require("./db/mongodb/deleteFoto");
+
+// My SQL
 const { getCsv } = require("./excel/getCsv");
-const { insertCsvMysql } = require("./db/insertCsvMysql");
-const { getControlePlaza } = require("./db/getControlePlaza");
-const { changeAcao } = require("./db/changeAcao");
-const { changeDataRepasse } = require("./db/changeDataRepasse");
+const { insertCsvMysql } = require("./db/mysql/insertCsvMysql");
+const { getControlePlaza } = require("./db/mysql/getControlePlaza");
+const { changeAcao } = require("./db/mysql/changeAcao");
+const { changeDataRepasse } = require("./db/mysql/changeDataRepasse");
+
+// Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
-const { searchCadastroProdutos } = require("./db/cadastroProdutos");
+
+// ENV
 require("dotenv").config();
 
 function isDev() {

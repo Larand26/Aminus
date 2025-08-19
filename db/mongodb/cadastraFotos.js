@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const path = require("path");
-const globals = require(path.join(__dirname, "../globals"));
+const globals = require(path.join(__dirname, "../../globals"));
 const Produto = require("./produtoModel");
 
 const cadastraFotos = async (produto) => {

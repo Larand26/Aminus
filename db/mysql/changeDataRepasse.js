@@ -1,4 +1,4 @@
-const connectMySql = require("../config/databaseMySql");
+const connectMySql = require("../../config/databaseMySql");
 
 const changeDataRepasse = async (id) => {
   try {
