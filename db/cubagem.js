@@ -1,4 +1,4 @@
-const conectarSql = require("./database");
+const conectarSql = require("../config/database");
 const makeCubagem = async (arg) => {
   const connection = await conectarSql();
   try {

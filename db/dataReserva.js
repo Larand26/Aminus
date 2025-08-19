@@ -1,4 +1,4 @@
-const conectarSql = require("./database");
+const conectarSql = require("../config/database");
 
 const getDataReserva = async (idCodProduto, idNumPedOrc, dataPesquisa) => {
   const connection = await conectarSql();
