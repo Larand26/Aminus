@@ -244,3 +244,19 @@ ipcMain.on("search-cadastro-produtos", async (event, referencia) => {
     });
   }
 });
+
+ipcMain.on("login", async (event, { user, password }) => {
+  try {
+    // Simulação de autenticação, substitua com a lógica real
+    if (user === "admin" && password === "admin") {
+      event.reply("login-response", { success: true });
+    } else {
+      throw new Error("Usuário ou senha inválidos");
+    }
+  } catch (error) {
+    console.error("Erro ao fazer login:", error);
+    event.reply("login-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});

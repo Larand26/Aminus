@@ -77,4 +77,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("search-cadastro-produtos-response", (event, arg) => {
       callback(arg);
     }),
+  login: (user, password) => ipcRenderer.send("login", { user, password }),
+  onLoginResponse: (callback) =>
+    ipcRenderer.on("login-response", (event, arg) => {
+      callback(arg);
+    }),
 });

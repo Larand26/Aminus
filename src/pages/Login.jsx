@@ -8,6 +8,19 @@ const Login = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleLogin = () => {
+    window.electronApi?.login(user, password);
+    window.electronApi?.onLoginResponse((response) => {
+      if (response.success) {
+        // Login bem-sucedido
+        console.log("Login realizado com sucesso:", response.data);
+      } else {
+        // Tratar erro de login
+        console.error("Erro de login:", response.error);
+      }
+    });
+  };
+
   return (
     <div className="home w-full h-screen flex align-items-center justify-content-center">
       <div className="p-6 flex flex-column align-items-center justify-content-around bg-primary w-11 max-w-30rem h-6 max-h-20rem ">
@@ -29,7 +42,7 @@ const Login = () => {
             />
             <label htmlFor="password">Senha</label>
           </FloatLabel>
-          <Button label="Entrar" />
+          <Button label="Entrar" onClick={handleLogin} />
         </div>
       </div>
     </div>
