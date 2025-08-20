@@ -39,7 +39,7 @@ const itemTemplate = (option) => (
 );
 
 const Tracking = () => {
-  const [selectedTransportadora, setSelectedTransportadora] = useState(null);
+  const [transportadora, setTransportadora] = useState(null);
   const [nota, setNota] = useState("");
   const [result, setResult] = useState({
     nome: "",
@@ -50,19 +50,37 @@ const Tracking = () => {
     cnpj: "",
   });
 
+  const search = () => {
+    if (!nota || !transportadora) {
+      alert("Por favor, preencha todos os campos.");
+      return;
+    }
+    window.electronApi?.searchRastreamento({ nota, transportadora });
+    window.electronApi?.onSearchRastreamentoResponse((data) => {
+      setResult(data);
+      // Limpa os inputs após a pesquisa
+      setNota("");
+      setTransportadora(null);
+    });
+  };
+
   return (
     <div className="flex">
-      <BarraLateral>
+      <BarraLateral search={search}>
         <FloatLabel>
-          <InputText id="input-nota" />
+          <InputText
+            id="input-nota"
+            value={nota}
+            onChange={(e) => setNota(e.target.value)}
+          />
           <label htmlFor="input-nota">Nota</label>
         </FloatLabel>
         <FloatLabel>
           <Dropdown
             className="md:w-12rem"
             id="input-transportadora"
-            value={selectedTransportadora}
-            onChange={(e) => setSelectedTransportadora(e.value)}
+            value={transportadora}
+            onChange={(e) => setTransportadora(e.value)}
             options={transportadoraOptions}
             optionLabel="label"
             placeholder="Selecione a Transportadora"

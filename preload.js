@@ -82,4 +82,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("login-response", (event, arg) => {
       callback(arg);
     }),
+  searchRastreamento: (arg) => ipcRenderer.send("search-rastreamento", arg),
+  onSearchRastreamentoResponse: (callback) =>
+    ipcRenderer.on("search-rastreamento-response", (event, arg) => {
+      callback(arg);
+    }),
 });

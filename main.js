@@ -257,3 +257,15 @@ ipcMain.on("login", async (event, { user, password }) => {
     });
   }
 });
+
+ipcMain.on("search-rastreamento", async (event, { nota, transportadora }) => {
+  try {
+    console.log("Buscando rastreamento:", nota, transportadora);
+    event.reply("search-rastreamento-response", "result");
+  } catch (error) {
+    console.error("Erro ao buscar rastreamento:", error);
+    event.reply("search-rastreamento-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
