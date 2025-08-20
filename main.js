@@ -52,7 +52,7 @@ const homeWindow = () => {
   if (isDev()) {
     win.loadURL("http://localhost:5173");
   } else {
-    win.loadFile(path.join(__dirname, "dist", "index.html"));
+    win.loadFile(path.join(app.getAppPath(), "dist", "index.html"));
   }
 };
 
