@@ -48,6 +48,12 @@ const Home = () => {
       label: "Cadastro Web",
       ids: [1, 3],
     },
+    {
+      icon: "fa fa-truck",
+      link: "/tracking",
+      label: "Tracking",
+      ids: [1, 2, 3],
+    },
   ];
 
   const renderButtons = () => {
