@@ -9,6 +9,7 @@ import Fotos from "./pages/Fotos";
 import ControlePlaza from "./pages/ControlePlaza";
 import CadastroWeb from "./pages/CadastroWeb";
 import Login from "./pages/Login";
+import Tracking from "./pages/Tracking";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/reservas" element={<Reservas />} />
         <Route path="/fotos" element={<Fotos />} />
         <Route path="/cadastro-web" element={<CadastroWeb />} />
+        <Route path="/tracking" element={<Tracking />} />
       </Routes>
     </Router>
   );
