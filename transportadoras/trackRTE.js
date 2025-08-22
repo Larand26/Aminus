@@ -59,7 +59,7 @@ const trackRTE = async (nota) => {
 
     const eventos = result.data.Events.map((evento) => ({
       descricao: evento.Description || "",
-      data: evento.OccurrenceDate || "",
+      data: new Date(evento.Date) || "",
     }));
 
     return {

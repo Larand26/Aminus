@@ -4,12 +4,25 @@ const trackTNT = async (nota) => {
   try {
     const url = `https://radar.tntbrasil.com.br/radar/public/eventoNotaFiscalCliente/json/11984533000171/${nota}-1`;
     const response = await axios.get(url);
-    console.log(response.data.ocorrencias[0].dsDescricaoEvento);
 
-    const eventos = response.data.ocorrencias.map((ocorrencia) => ({
-      descricao: ocorrencia.obComplemento,
-      data: ocorrencia.dhEvento,
-    }));
+    const eventos = response.data.ocorrencias.map((ocorrencia) => {
+      let dataObj = ocorrencia.dhEvento;
+      if (typeof dataObj === "string" && dataObj.includes("/")) {
+        const [datePart, timePart] = dataObj.split(" ");
+        const [day, month, year] = datePart.split("/");
+        const [hour = 0, min = 0, sec = 0] = (timePart || "00:00:00").split(
+          ":"
+        );
+        const date = new Date(year, month - 1, day, hour, min, sec);
+        dataObj = date;
+      } else if (dataObj instanceof Date) {
+        dataObj = dataObj;
+      }
+      return {
+        descricao: ocorrencia.obComplemento,
+        data: dataObj,
+      };
+    });
 
     const dateExpected = response.data.cabecalho.dtPrevEntrega; // Formato DD/MM/AAAA
 
@@ -27,8 +40,7 @@ const trackTNT = async (nota) => {
       nome: response.data.cabecalho.nmPessoaDestinatario,
       eventos: eventos,
       status: status || response.data.cabecalho.status,
-      expectativa: response.data.cabecalho.dtPrevEntrega,
-      nomeDoRecebedor: response.data.cabecalho.nmRecebedor,
+      expectativa: dateExpec,
       cnpj: "",
       sucesso: true,
     };

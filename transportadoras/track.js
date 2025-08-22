@@ -15,7 +15,6 @@ const track = async (nota, transportadora) => {
     default:
       break;
   }
-  console.log(response);
   return response;
 };
 

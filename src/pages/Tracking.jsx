@@ -93,7 +93,15 @@ const Tracking = () => {
         <div>
           <h3>Eventos:</h3>
           <DataTable value={result.eventos}>
-            <Column field="data" header="Data" />
+            <Column
+              field="data"
+              header="Data"
+              body={(rowData) => {
+                return rowData.data instanceof Date
+                  ? rowData.data.toLocaleString()
+                  : rowData.data;
+              }}
+            />
             <Column field="descricao" header="Descrição" />
           </DataTable>
         </div>
@@ -106,7 +114,11 @@ const Tracking = () => {
           <div className={styleCards}>
             Expectativa
             <br />
-            {result.expectativa}
+            {result.expectativa
+              ? result.expectativa instanceof Date
+                ? result.expectativa.toLocaleDateString()
+                : result.expectativa
+              : ""}
           </div>
           <div className={styleCards}>
             CNPJ
