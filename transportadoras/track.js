@@ -1,3 +1,4 @@
+const { trackRTE } = require("./trackRTE");
 const { trackTNT } = require("./trackTNT");
 
 const track = async (nota, transportadora) => {
@@ -6,6 +7,9 @@ const track = async (nota, transportadora) => {
     case "tnt":
       // Lógica para rastrear a nota com a transportadora TNT
       response = await trackTNT(nota);
+      break;
+    case "rte":
+      response = await trackRTE(nota);
       break;
 
     default:
