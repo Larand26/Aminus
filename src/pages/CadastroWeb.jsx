@@ -14,6 +14,7 @@ const CadastroWeb = () => {
     window.electronApi?.searchCadastroProdutos(referencia);
     window.electronApi?.onSearchCadastroProdutosResponse((produtos) => {
       setProdutos(produtos);
+      console.log(produtos);
       setCarregando(false);
     });
   };
