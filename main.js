@@ -26,6 +26,7 @@ const { login } = require("./db/mysql/login");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
+const { track } = require("./transportadoras/track");
 
 // ENV
 require("dotenv").config();
@@ -261,7 +262,8 @@ ipcMain.on("login", async (event, { user, password }) => {
 ipcMain.on("search-rastreamento", async (event, { nota, transportadora }) => {
   try {
     console.log("Buscando rastreamento:", nota, transportadora);
-    event.reply("search-rastreamento-response", "result");
+    const result = await track(nota, transportadora);
+    event.reply("search-rastreamento-response", result);
   } catch (error) {
     console.error("Erro ao buscar rastreamento:", error);
     event.reply("search-rastreamento-response", {

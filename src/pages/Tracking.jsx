@@ -46,7 +46,6 @@ const Tracking = () => {
     eventos: [],
     status: "",
     expectativa: "",
-    nomeDoRecebedor: "",
     cnpj: "",
   });
 
@@ -58,7 +57,7 @@ const Tracking = () => {
     window.electronApi?.searchRastreamento({ nota, transportadora });
     window.electronApi?.onSearchRastreamentoResponse((data) => {
       setResult(data);
-      // Limpa os inputs após a pesquisa
+      console.log(data);
       setNota("");
       setTransportadora(null);
     });
