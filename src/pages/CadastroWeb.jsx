@@ -11,7 +11,7 @@ const CadastroWeb = () => {
   const [referencia, setReferencia] = useState("");
   const [selectedProdutos, setSelectedProdutos] = useState([]);
 
-  const search = () => {
+  const buscarProdutos = () => {
     setCarregando(true);
     window.electronApi?.searchCadastroProdutos(referencia);
     window.electronApi?.onSearchCadastroProdutosResponse((produtos) => {
@@ -21,17 +21,52 @@ const CadastroWeb = () => {
   };
 
   // Handler para selecionar todos ao clicar no primeiro radio
-  const onSelectionChange = (e) => {
+  const selecionarProdutos = (e) => {
     if (e.value.length === 1 && e.value[0] === produtos[0]) {
       setSelectedProdutos(produtos); // Seleciona todos
     } else {
       setSelectedProdutos(e.value);
     }
   };
+  const checked = useCallback((e) => {
+    console.log(e.target.checked);
+  }, []);
+
+  const alternarStatusProduto = useCallback((index) => {
+    setProdutos((prevProdutos) =>
+      prevProdutos.map((prod, i) =>
+        i === index
+          ? {
+              ...prod,
+              PRO_ATIVO_ECOMMERCE: !prod.PRO_ATIVO_ECOMMERCE,
+              PRO_INTEGRACAO_ECOMMERCE: !prod.PRO_INTEGRACAO_ECOMMERCE,
+            }
+          : prod
+      )
+    );
+  }, []);
+
+  const renderizarCheckboxAtivo = (rowData, options) => {
+    const index = produtos.findIndex(
+      (prod) => prod.ID_CODPRODUTO === rowData.ID_CODPRODUTO
+    );
+    const isAtivo =
+      rowData.PRO_ATIVO_ECOMMERCE === true &&
+      rowData.PRO_INTEGRACAO_ECOMMERCE === true;
+
+    return (
+      <input
+        type="checkbox"
+        checked={isAtivo}
+        onChange={() => alternarStatusProduto(index)}
+        style={{ width: "20px", height: "20px", cursor: "pointer" }} // Tamanho aumentado
+      />
+    );
+  };
 
   return (
     <div className="flex">
-      <BarraLateral search={search}>
+      <BarraLateral search={buscarProdutos}>
         <FloatLabel>
           <InputText
             id="inputNome"
@@ -51,16 +86,14 @@ const CadastroWeb = () => {
             scrollHeight="400px" // Defina a altura desejada
             selection={selectedProdutos}
             selectionMode="multiple"
-            onSelectionChange={onSelectionChange}
+            onSelectionChange={selecionarProdutos}
           >
             <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} />
             <Column field="ID_CODPRODUTO" header="SKU" />
             <Column field="PROD_DESCRCOMPLETA" header="Descrição" />
             <Column field="SKU_PRODUTO_PAI" header="Pai" />
             <Column field="COR_DESCRICAO" header="Cor" />
-            <Column body={"aa"} header="Ativo" />
-            <Column field="PRO_ATIVO_ECOMMERCE" header="Ativo" />
-            <Column field="PRO_INTEGRACAO_ECOMMERCE" header="Integração" />
+            <Column body={renderizarCheckboxAtivo} header="Ativo" />
           </DataTable>
         </div>
       </div>
