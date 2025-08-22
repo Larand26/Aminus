@@ -31,17 +31,44 @@ const getToken = async () => {
 const trackRTE = async (nota) => {
   try {
     const token = await getToken();
-    console.log(token);
+
+    const result = await axios.get(
+      `https://tracking-apigateway.rte.com.br/api/v1/tracking?TaxIdRegistration=11984533000171&InvoiceNumber=${nota}`,
+      {
+        headers: { accept: "application/json", Authorization: token },
+        timeout: 15000, // 15 segundos de timeout
+      }
+    );
+
+    let status = null;
+
+    const dateEmis = new Date(result.data.EmissionDate);
+    const dateExpec = new Date(
+      dateEmis.setDate(
+        dateEmis.getDate() + result.data.ExpectedDeliveryDays + 2
+      )
+    );
+
+    if (new Date() > dateExpec) {
+      status = "Atrasado";
+    }
+    const delivered = result.data.Events.some(
+      (evento) => evento.Reason == "Sua mercadoria foi entregue!"
+    );
+    if (delivered) status = "Entregue";
+
+    const eventos = result.data.Events.map((evento) => ({
+      descricao: evento.Description || "",
+      data: evento.OccurrenceDate || "",
+    }));
 
     return {
-      nome: "",
-      eventos: [],
-      status: "Erro",
-      expectativa: "",
-      nomeDoRecebedor: "",
-      cnpj: "",
+      nome: result.data.RecipientDescription || "",
+      eventos: eventos,
+      status: status || "Em viagem",
+      expectativa: dateExpec,
+      cnpj: result.data.RecipientTaxIdRegistration || "",
       sucesso: false,
-      mensagem: error.message,
     };
   } catch (error) {
     return {
@@ -49,7 +76,6 @@ const trackRTE = async (nota) => {
       eventos: [],
       status: "Erro",
       expectativa: "",
-      nomeDoRecebedor: "",
       cnpj: "",
       sucesso: false,
       mensagem: error.message,
