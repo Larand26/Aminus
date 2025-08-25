@@ -22,6 +22,15 @@ const CadastroWeb = () => {
   const [grade, setGrade] = useState([]);
   const [grupo, setGrupo] = useState([]);
 
+  const changeGrupo = (newGrupo, index) => {
+    // troca o grupo atual pelo novo
+    setGrupo((prevGrupo) => {
+      const updatedGrupo = [...prevGrupo];
+      updatedGrupo[index] = newGrupo;
+      return updatedGrupo;
+    });
+  };
+
   const makeGrade = (numeros, quantidades) => {
     if (!numeros || !quantidades) return;
 
@@ -131,35 +140,40 @@ const CadastroWeb = () => {
                 icon="icon-female"
                 aria-label="Filter"
                 label="Feminino"
-                value={grupo.includes("FEMININO")}
+                value={"FEMININO"}
+                onClick={() => changeGrupo("FEMININO", 2)}
                 {...(!grupo.includes("FEMININO") && { outlined: true })}
               />
               <Button
                 icon="icon-male"
                 aria-label="Filter"
                 label="Masculino"
-                value={grupo.includes("MASCULINO")}
+                value={"MASCULINO"}
+                onClick={() => changeGrupo("MASCULINO", 2)}
                 {...(!grupo.includes("MASCULINO") && { outlined: true })}
               />
               <Button
                 icon="icon-baby"
                 aria-label="Filter"
-                label="Infantil"
-                value={grupo.includes("INFANTIL")}
-                {...(!grupo.includes("INFANTIL") && { outlined: true })}
+                label="Baby"
+                value={"BABY"}
+                onClick={() => changeGrupo("BABY", 2)}
+                {...(!grupo.includes("BABY") && { outlined: true })}
               />
               <Button
                 icon="icon-child"
                 aria-label="Filter"
                 label="Infantil"
-                value={grupo.includes("INFANTIL")}
+                value={"INFANTIL"}
+                onClick={() => changeGrupo("INFANTIL", 2)}
                 {...(!grupo.includes("INFANTIL") && { outlined: true })}
               />
               <Button
                 icon="icon-unisex"
                 aria-label="Filter"
                 label="Unissex"
-                value={grupo.includes("UNISSEX")}
+                value={"UNISSEX"}
+                onClick={() => changeGrupo("UNISSEX", 2)}
                 {...(!grupo.includes("UNISSEX") && { outlined: true })}
               />
             </div>
@@ -169,17 +183,23 @@ const CadastroWeb = () => {
                 icon="icon-chinelo"
                 aria-label="Filter"
                 label="Chinelo"
+                value={"CHINELO DEDO"}
+                onClick={() => changeGrupo("CHINELO DEDO", 3)}
                 {...(!grupo.includes("CHINELO DEDO") && { outlined: true })}
               />
               <Button
                 icon="icon-sandalia"
                 aria-label="Filter"
+                value={"SANDÁLIA"}
+                onClick={() => changeGrupo("SANDÁLIA", 3)}
                 {...(!grupo.includes("SANDÁLIA") && { outlined: true })}
                 label="Sandália"
               />
               <Button
                 icon="icon-slide"
                 aria-label="Filter"
+                value={"CHINELO GÁSPEA/SLIDE"}
+                onClick={() => changeGrupo("CHINELO GÁSPEA/SLIDE", 3)}
                 {...(!grupo.includes("CHINELO GÁSPEA/SLIDE") && {
                   outlined: true,
                 })}
@@ -188,36 +208,48 @@ const CadastroWeb = () => {
               <Button
                 icon="icon-rasteira"
                 aria-label="Filter"
+                value={"RASTEIRA"}
+                onClick={() => changeGrupo("RASTEIRA", 3)}
                 {...(!grupo.includes("RASTEIRA") && { outlined: true })}
                 label="Rasteira"
               />
               <Button
                 icon="icon-tamanco"
                 aria-label="Filter"
+                value={"TAMANCO"}
+                onClick={() => changeGrupo("TAMANCO", 3)}
                 {...(!grupo.includes("TAMANCO") && { outlined: true })}
                 label="Tamanco"
               />
               <Button
                 icon="icon-babuch"
                 aria-label="Filter"
+                value={"BABUCH"}
+                onClick={() => changeGrupo("BABUCH", 3)}
                 {...(!grupo.includes("BABUCH") && { outlined: true })}
                 label="Babuche"
               />
               <Button
                 icon="icon-bota"
                 aria-label="Filter"
+                value={"BOTA"}
+                onClick={() => changeGrupo("BOTA", 3)}
                 {...(!grupo.includes("BOTA") && { outlined: true })}
                 label="Bota"
               />
               <Button
                 icon="icon-sapatilha"
                 aria-label="Filter"
+                value={"SAPATILHA"}
+                onClick={() => changeGrupo("SAPATILHA", 3)}
                 {...(!grupo.includes("SAPATILHA") && { outlined: true })}
                 label="Sapatilha"
               />
               <Button
                 icon="icon-sapato"
                 aria-label="Filter"
+                value={"SAPATO"}
+                onClick={() => changeGrupo("SAPATO", 3)}
                 {...(!grupo.includes("SAPATO") && { outlined: true })}
                 label="Sapato"
               />
