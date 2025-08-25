@@ -118,13 +118,9 @@ const CadastroWeb = () => {
     }
   }, [coresCarregadas]);
 
-  // Handler para selecionar todos ao clicar no primeiro radio
+  // Handler para seleção múltipla normal
   const selecionarProdutos = (e) => {
-    if (e.value.length === 1 && e.value[0] === produtos[0]) {
-      setSelectedProdutos(produtos); // Seleciona todos
-    } else {
-      setSelectedProdutos(e.value);
-    }
+    setSelectedProdutos(e.value);
   };
   const checked = useCallback((e) => {
     console.log(e.target.checked);
