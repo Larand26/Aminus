@@ -30,7 +30,10 @@ const CadastroWeb = () => {
     let tipo = grupo[3] || "";
 
     if (
-      (tipo === "SANDÁLIA" || tipo === "RASTEIRA") &&
+      (tipo === "SANDÁLIA" ||
+        tipo === "RASTEIRINHAS" ||
+        tipo === "SAPATILHA" ||
+        tipo === "BOTA") &&
       (genero === "MASCULINO" || genero === "FEMININO")
     ) {
       genero = genero === "MASCULINO" ? "MASCULINA" : "FEMININA";
@@ -48,6 +51,21 @@ const CadastroWeb = () => {
         break;
       case "BABUCH":
         tipo = "BABUCHE";
+        break;
+      case "RASTEIRINHAS":
+        tipo = "RASTEIRA";
+        break;
+      case "TAMANCO":
+        tipo = "TAMANCO";
+        break;
+      case "BOTA":
+        tipo = "BOTA";
+        break;
+      case "SAPATILHA":
+        tipo = "SAPATILHA";
+        break;
+      case "SAPATO":
+        tipo = "SAPATO";
         break;
       default:
         tipo = "";
@@ -288,7 +306,7 @@ const CadastroWeb = () => {
                 icon="icon-unisex"
                 aria-label="Filter"
                 label="Unissex"
-                value={"UNISSEX"}
+                value={"UNISEX"}
                 onClick={() => changeGrupo("UNISSEX", 2)}
                 {...(!grupo.includes("UNISSEX") && { outlined: true })}
               />
@@ -324,9 +342,9 @@ const CadastroWeb = () => {
               <Button
                 icon="icon-rasteira"
                 aria-label="Filter"
-                value={"RASTEIRA"}
-                onClick={() => changeGrupo("RASTEIRA", 3)}
-                {...(!grupo.includes("RASTEIRA") && { outlined: true })}
+                value={"RASTEIRINHAS"}
+                onClick={() => changeGrupo("RASTEIRINHAS", 3)}
+                {...(!grupo.includes("RASTEIRINHAS") && { outlined: true })}
                 label="Rasteira"
               />
               <Button
