@@ -305,10 +305,10 @@ const CadastroWeb = () => {
               <Button
                 icon="icon-unisex"
                 aria-label="Filter"
-                label="Unissex"
+                label="Unisex"
                 value={"UNISEX"}
-                onClick={() => changeGrupo("UNISSEX", 2)}
-                {...(!grupo.includes("UNISSEX") && { outlined: true })}
+                onClick={() => changeGrupo("UNISEX", 2)}
+                {...(!grupo.includes("UNISEX") && { outlined: true })}
               />
             </div>
             {/* Tipo */}
