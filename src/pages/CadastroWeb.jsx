@@ -93,6 +93,7 @@ const CadastroWeb = () => {
       setGrupo(produtos[0]?.GRUP_DESCRICAO.split(", ") || []);
       setCarregando(false);
       setIdCor(produtos[0]?.ID_CORES_ECOMERCE || 0);
+      buscarCores("");
     };
 
     window.electronApi?.onSearchCadastroProdutosResponse(handler);
@@ -197,6 +198,39 @@ const CadastroWeb = () => {
       />
     );
   };
+
+  // Handler para alterar cor de um produto na tabela
+  const alterarCorProduto = (idProduto, novaCorId) => {
+    setProdutos((prevProdutos) =>
+      prevProdutos.map((prod) =>
+        prod.ID_CODPRODUTO === idProduto
+          ? { ...prod, ID_CORES_ECOMERCE: novaCorId }
+          : prod
+      )
+    );
+  };
+
+  // Adicione handler para limpar cores ao abrir dropdown
+  const handleDropdownShow = () => {
+    setCores([]);
+  };
+
+  // Body para coluna de cor com Dropdown
+  const bodyDropdownCor = (rowData) => (
+    <Dropdown
+      value={rowData.ID_CORES_ECOMERCE}
+      options={cores}
+      optionLabel="DESCRICAO"
+      optionValue="ID_CORES_ECOMERCE"
+      onChange={(e) => alterarCorProduto(rowData.ID_CODPRODUTO, e.value)}
+      placeholder={rowData.COR_DESCRICAO || "Selecione"}
+      filter
+      style={{ width: "100%" }}
+      showClear
+      onShow={handleDropdownShow} // Limpa cores ao abrir
+      onFilter={handleCorFilter}
+    />
+  );
 
   return (
     <div className="flex">
@@ -354,6 +388,7 @@ const CadastroWeb = () => {
               className="w-full"
               filter
               onFilter={handleCorFilter} // Busca cores só ao digitar no filtro
+              onShow={handleDropdownShow} // Limpa cores ao abrir
             />
             <div className="flex w-full gap-2">
               <InputText
@@ -417,7 +452,7 @@ const CadastroWeb = () => {
             <Column field="ID_CODPRODUTO" header="SKU" />
             <Column field="PROD_DESCRCOMPLETA" header="Descrição" />
             <Column field="SKU_PRODUTO_PAI" header="Pai" />
-            <Column field="COR_DESCRICAO" header="Cor" />
+            <Column field="COR_DESCRICAO" header="Cor" body={bodyDropdownCor} />
             <Column
               body={renderizarCheckboxAtivo}
               header={headerCheckboxAtivo}
