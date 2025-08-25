@@ -9,6 +9,7 @@ const { searchPedido, getPedido } = require("./db/sqlserver/pedidos");
 const { searchReserva } = require("./db/sqlserver/reservas");
 const { searchCadastroProdutos } = require("./db/sqlserver/cadastroProdutos");
 const { getDataReserva } = require("./db/sqlserver/dataReserva");
+const { getCores } = require("./db/sqlserver/cores");
 const { makeCubagem } = require("./db/sqlserver/cubagem");
 
 // Mongo DB
@@ -267,6 +268,19 @@ ipcMain.on("search-rastreamento", async (event, { nota, transportadora }) => {
   } catch (error) {
     console.error("Erro ao buscar rastreamento:", error);
     event.reply("search-rastreamento-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("get-cores", async (event) => {
+  try {
+    // Simulação de busca de cores, substitua com a lógica real
+    const cores = await getCores();
+    event.reply("get-cores-response", cores);
+  } catch (error) {
+    console.error("Erro ao buscar cores:", error);
+    event.reply("get-cores-response", {
       error: error.message || "Erro desconhecido",
     });
   }

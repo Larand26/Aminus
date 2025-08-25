@@ -19,6 +19,7 @@ const CadastroWeb = () => {
   const [nome, setNome] = useState("");
   const [cores, setCores] = useState([]);
   const [novaCor, setNovaCor] = useState("");
+  const [idCor, setIdCor] = useState("");
   const [grade, setGrade] = useState([]);
   const [grupo, setGrupo] = useState([]);
   const [nomeFormatado, setNomeFormatado] = useState("");
@@ -90,6 +91,7 @@ const CadastroWeb = () => {
       makeGrade(produtos[0]?.NUMEROS, produtos[0]?.QUANTIDADES);
       setGrupo(produtos[0]?.GRUP_DESCRICAO.split(", ") || []);
       setCarregando(false);
+      setIdCor(produtos[0]?.ID_CORES_ECOMERCE || 0);
     };
 
     window.electronApi?.onSearchCadastroProdutosResponse(handler);
@@ -103,6 +105,18 @@ const CadastroWeb = () => {
     setCarregando(true);
     window.electronApi?.searchCadastroProdutos(referencia);
   };
+
+  const buscarCores = () => {
+    window.electronApi?.getCores();
+    window.electronApi?.onGetCoresResponse?.((coresResponse) => {
+      setCores(coresResponse || []);
+      console.log(coresResponse);
+    });
+  };
+
+  useEffect(() => {
+    buscarCores();
+  }, []);
 
   // Handler para selecionar todos ao clicar no primeiro radio
   const selecionarProdutos = (e) => {
@@ -297,9 +311,9 @@ const CadastroWeb = () => {
               onChange={(e) => setNome(e.target.value)}
             />
             <Dropdown
-              value={cores}
+              value={idCor}
               options={cores}
-              onChange={(e) => setCores(e.value)}
+              onChange={(e) => setIdCor(e.value)}
               placeholder="Selecione uma cor"
               className="w-full"
             />
