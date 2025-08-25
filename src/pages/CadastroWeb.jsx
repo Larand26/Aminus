@@ -9,6 +9,8 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
 
+import "../styles/icons.css";
+
 const CadastroWeb = () => {
   const [produtos, setProdutos] = useState([]);
   const [carregando, setCarregando] = useState(false);
@@ -107,27 +109,101 @@ const CadastroWeb = () => {
           <label htmlFor="inputNome">Referência</label>
         </FloatLabel>
       </BarraLateral>
-      <div className="content flex flex-column align-items-center justify-content-center w-full min-h-screen bg-gray-200 p-4">
-        <div className="p-2 flex w-full justify-content-center">
+      <div className="content flex flex-column align-items-center w-full min-h-screen bg-gray-200 p-4">
+        <div
+          className="p-2 flex w-full justify-content-center"
+          style={{ height: "40%" }}
+        >
           <div className="flex ">
             {/* Gênero */}
             <div className="p-2 flex flex-column gap-2">
-              <Button icon="fa fa-person-dress" aria-label="Filter" outlined />
-              <Button icon="fa fa-person" aria-label="Filter" outlined />
-              <Button icon="fa fa-baby" aria-label="Filter" outlined />
-              <Button icon="fa fa-child" aria-label="Filter" outlined />
-              <Button icon="fa fa-check" aria-label="Filter" outlined />
+              <Button
+                icon="icon-female"
+                aria-label="Filter"
+                outlined
+                label="Feminino"
+              />
+              <Button
+                icon="icon-male"
+                aria-label="Filter"
+                outlined
+                label="Masculino"
+              />
+              <Button
+                icon="icon-baby"
+                aria-label="Filter"
+                outlined
+                label="Infantil"
+              />
+              <Button
+                icon="icon-child"
+                aria-label="Filter"
+                outlined
+                label="Juvenil"
+              />
+              <Button
+                icon="icon-unisex"
+                aria-label="Filter"
+                outlined
+                label="Unissex"
+              />
             </div>
             {/* Tipo */}
             <div className="p-2 flex flex-column gap-2">
-              <Button icon="pi pi-check" aria-label="Filter" outlined />
-              <Button icon="pi pi-check" aria-label="Filter" outlined />
-              <Button icon="pi pi-check" aria-label="Filter" outlined />
-              <Button icon="pi pi-check" aria-label="Filter" outlined />
-              <Button icon="pi pi-check" aria-label="Filter" outlined />
-              <Button icon="pi pi-check" aria-label="Filter" outlined />
-              <Button icon="pi pi-check" aria-label="Filter" outlined />
-              <Button icon="pi pi-check" aria-label="Filter" outlined />
+              <Button
+                icon="icon-chinelo"
+                aria-label="Filter"
+                outlined
+                label="Chinelo"
+              />
+              <Button
+                icon="icon-sandalia"
+                aria-label="Filter"
+                outlined
+                label="Sandália"
+              />
+              <Button
+                icon="icon-slide"
+                aria-label="Filter"
+                outlined
+                label="Slide"
+              />
+              <Button
+                icon="icon-rasteira"
+                aria-label="Filter"
+                outlined
+                label="Rasteira"
+              />
+              <Button
+                icon="icon-tamanco"
+                aria-label="Filter"
+                outlined
+                label="Tamanco"
+              />
+              <Button
+                icon="icon-babuch"
+                aria-label="Filter"
+                outlined
+                label="Babuche"
+              />
+              <Button
+                icon="icon-bota"
+                aria-label="Filter"
+                outlined
+                label="Bota"
+              />
+              <Button
+                icon="icon-sapatilha"
+                aria-label="Filter"
+                outlined
+                label="Sapatilha"
+              />
+              <Button
+                icon="icon-sapato"
+                aria-label="Filter"
+                outlined
+                label="Sapato"
+              />
             </div>
           </div>
           <div
