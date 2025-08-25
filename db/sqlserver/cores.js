@@ -1,13 +1,16 @@
 const conectarSql = require("../../config/database");
 
-const getCores = async () => {
+const getCores = async (descricao) => {
   const connection = await conectarSql();
   try {
     // Busca todos os ID_CODNOTA relevantes
     let query =
-      "SELECT [ID_CHAVE] AS 'value', [DESCRICAO] AS 'label' FROM [CORES_ECOMERCE]";
+      "SELECT [ID_CHAVE] AS 'value', [DESCRICAO] AS 'label' FROM [CORES_ECOMERCE] WHERE [DESCRICAO] LIKE '%' + @descricao + '%'";
 
-    const result = await connection.request().query(query);
+    const result = await connection
+      .request()
+      .input("descricao", descricao)
+      .query(query);
 
     return result.recordset;
   } catch (error) {

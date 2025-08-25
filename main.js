@@ -273,10 +273,10 @@ ipcMain.on("search-rastreamento", async (event, { nota, transportadora }) => {
   }
 });
 
-ipcMain.on("get-cores", async (event) => {
+ipcMain.on("get-cores", async (event, descricao) => {
   try {
     // Simulação de busca de cores, substitua com a lógica real
-    const cores = await getCores();
+    const cores = await getCores(descricao);
     event.reply("get-cores-response", cores);
   } catch (error) {
     console.error("Erro ao buscar cores:", error);

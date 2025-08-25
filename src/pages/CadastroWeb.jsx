@@ -23,6 +23,7 @@ const CadastroWeb = () => {
   const [grade, setGrade] = useState([]);
   const [grupo, setGrupo] = useState([]);
   const [nomeFormatado, setNomeFormatado] = useState("");
+  const [coresCarregadas, setCoresCarregadas] = useState(false); // Novo estado
 
   const makeNomeFormatado = () => {
     let genero = grupo[2] || "";
@@ -106,17 +107,16 @@ const CadastroWeb = () => {
     window.electronApi?.searchCadastroProdutos(referencia);
   };
 
-  const buscarCores = () => {
-    window.electronApi?.getCores();
-    window.electronApi?.onGetCoresResponse?.((coresResponse) => {
-      setCores(coresResponse || []);
-      console.log(coresResponse);
-    });
-  };
-
-  useEffect(() => {
-    buscarCores();
-  }, []);
+  const buscarCores = useCallback(() => {
+    if (!coresCarregadas) {
+      window.electronApi?.getCores();
+      window.electronApi?.onGetCoresResponse?.((coresResponse) => {
+        setCores(coresResponse || []);
+        setCoresCarregadas(true);
+        console.log(coresResponse);
+      });
+    }
+  }, [coresCarregadas]);
 
   // Handler para selecionar todos ao clicar no primeiro radio
   const selecionarProdutos = (e) => {
@@ -160,6 +160,16 @@ const CadastroWeb = () => {
         style={{ width: "20px", height: "20px", cursor: "pointer" }} // Tamanho aumentado
       />
     );
+  };
+
+  // Remova o onShow do Dropdown
+  // Adicione handler para buscar cores ao filtrar
+  const handleCorFilter = (e) => {
+    const termo = e.filter || "";
+    window.electronApi?.getCores(termo);
+    window.electronApi?.onGetCoresResponse?.((coresResponse) => {
+      setCores(coresResponse || []);
+    });
   };
 
   return (
@@ -316,6 +326,8 @@ const CadastroWeb = () => {
               onChange={(e) => setIdCor(e.value)}
               placeholder="Selecione uma cor"
               className="w-full"
+              filter
+              onFilter={handleCorFilter} // Busca cores só ao digitar no filtro
             />
             <div className="flex w-full gap-2">
               <InputText

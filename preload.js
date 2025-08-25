@@ -87,7 +87,7 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("search-rastreamento-response", (event, arg) => {
       callback(arg);
     }),
-  getCores: () => ipcRenderer.send("get-cores"),
+  getCores: (arg) => ipcRenderer.send("get-cores", arg),
   onGetCoresResponse: (callback) =>
     ipcRenderer.on("get-cores-response", (event, arg) => {
       callback(arg);
