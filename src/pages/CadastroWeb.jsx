@@ -168,6 +168,36 @@ const CadastroWeb = () => {
     });
   };
 
+  // Handler para marcar/desmarcar todos como ativos/inativos
+  const alternarTodosAtivos = (checked) => {
+    setProdutos((prevProdutos) =>
+      prevProdutos.map((prod) => ({
+        ...prod,
+        PRO_ATIVO_ECOMMERCE: checked,
+        PRO_INTEGRACAO_ECOMMERCE: checked,
+      }))
+    );
+  };
+
+  // Cabeçalho customizado para coluna "Ativo"
+  const headerCheckboxAtivo = () => {
+    // Verifica se todos estão ativos
+    const todosAtivos =
+      produtos.length > 0 &&
+      produtos.every(
+        (prod) => prod.PRO_ATIVO_ECOMMERCE && prod.PRO_INTEGRACAO_ECOMMERCE
+      );
+    return (
+      <input
+        type="checkbox"
+        checked={todosAtivos}
+        onChange={(e) => alternarTodosAtivos(e.target.checked)}
+        style={{ width: "20px", height: "20px", cursor: "pointer" }}
+        title="Selecionar todos ativos"
+      />
+    );
+  };
+
   return (
     <div className="flex">
       <BarraLateral search={buscarProdutos}>
@@ -388,7 +418,11 @@ const CadastroWeb = () => {
             <Column field="PROD_DESCRCOMPLETA" header="Descrição" />
             <Column field="SKU_PRODUTO_PAI" header="Pai" />
             <Column field="COR_DESCRICAO" header="Cor" />
-            <Column body={renderizarCheckboxAtivo} header="Ativo" />
+            <Column
+              body={renderizarCheckboxAtivo}
+              header={headerCheckboxAtivo}
+              headerStyle={{ textAlign: "center" }}
+            />
           </DataTable>
         </div>
       </div>
