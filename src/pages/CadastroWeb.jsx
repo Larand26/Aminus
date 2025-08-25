@@ -105,7 +105,6 @@ const CadastroWeb = () => {
   useEffect(() => {
     const handler = (produtos) => {
       setProdutos(produtos);
-      console.log(produtos);
       setNome(produtos[0]?.PROD_DESCRCOMPLETA || "");
       makeGrade(produtos[0]?.NUMEROS, produtos[0]?.QUANTIDADES);
       setGrupo(produtos[0]?.GRUP_DESCRICAO.split(", ") || []);
@@ -132,7 +131,6 @@ const CadastroWeb = () => {
       window.electronApi?.onGetCoresResponse?.((coresResponse) => {
         setCores(coresResponse || []);
         setCoresCarregadas(true);
-        console.log(coresResponse);
       });
     }
   }, [coresCarregadas]);
@@ -141,9 +139,7 @@ const CadastroWeb = () => {
   const selecionarProdutos = (e) => {
     setSelectedProdutos(e.value);
   };
-  const checked = useCallback((e) => {
-    console.log(e.target.checked);
-  }, []);
+  const checked = useCallback((e) => {}, []);
 
   const alternarStatusProduto = useCallback((index) => {
     setProdutos((prevProdutos) =>
