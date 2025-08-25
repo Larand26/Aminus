@@ -21,6 +21,38 @@ const CadastroWeb = () => {
   const [novaCor, setNovaCor] = useState("");
   const [grade, setGrade] = useState([]);
   const [grupo, setGrupo] = useState([]);
+  const [nomeFormatado, setNomeFormatado] = useState("");
+
+  const makeNomeFormatado = () => {
+    let genero = grupo[2] || "";
+    let tipo = grupo[3] || "";
+
+    if (
+      (tipo === "SANDÁLIA" || tipo === "RASTEIRA") &&
+      (genero === "MASCULINO" || genero === "FEMININO")
+    ) {
+      genero = genero === "MASCULINO" ? "MASCULINA" : "FEMININA";
+    }
+
+    switch (tipo) {
+      case "SANDÁLIA":
+        tipo = "SANDALIA";
+        break;
+      case "CHINELO DEDO":
+        tipo = "CHINELO";
+        break;
+      case "CHINELO GÁSPEA/SLIDE":
+        tipo = "CHINELO SLIDE";
+        break;
+      case "BABUCH":
+        tipo = "BABUCHE";
+        break;
+      default:
+        tipo = "";
+    }
+
+    return `${tipo} ${genero} ${nome} - ${produtos[0]?.PROD_CODFABRIC || ""}`;
+  };
 
   const changeGrupo = (newGrupo, index) => {
     // troca o grupo atual pelo novo
@@ -291,6 +323,29 @@ const CadastroWeb = () => {
                 style={{ width: "50px", padding: "2px" }}
               />
             </DataTable>
+          </div>
+          <div
+            className="result-card flex align-items-center gap-3 p-3 border-round border-1 surface-border bg-white shadow-2"
+            style={{ minWidth: 300, minHeight: 80, width: 400 }}
+          >
+            <div>
+              <div className="font-bold text-lg mb-2">
+                Nome formatado: <br />
+                <span className="text-primary">{makeNomeFormatado()}</span>
+              </div>
+              <div className="mb-1">
+                Pai: <br />
+                <span className="font-medium">
+                  {produtos[0]?.PROD_CODFABRIC + "-GREN-" + "PAI"}
+                </span>
+              </div>
+              <div>
+                Cor: <br />
+                <span className="font-medium">
+                  {produtos[0]?.COR_DESCRICAO || ""}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
         <div className="p-4 flex w-full justify-content-center">
