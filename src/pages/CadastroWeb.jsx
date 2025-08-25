@@ -20,6 +20,7 @@ const CadastroWeb = () => {
   const [cores, setCores] = useState([]);
   const [novaCor, setNovaCor] = useState("");
   const [grade, setGrade] = useState([]);
+  const [grupo, setGrupo] = useState([]);
 
   const makeGrade = (numeros, quantidades) => {
     if (!numeros || !quantidades) return;
@@ -40,17 +41,26 @@ const CadastroWeb = () => {
     setGrade(novaGrade);
   };
 
-  const buscarProdutos = () => {
-    setCarregando(true);
-    window.electronApi?.searchCadastroProdutos(referencia);
-    window.electronApi?.onSearchCadastroProdutosResponse((produtos) => {
+  useEffect(() => {
+    const handler = (produtos) => {
       setProdutos(produtos);
       console.log(produtos);
       setNome(produtos[0]?.PROD_DESCRCOMPLETA || "");
       makeGrade(produtos[0]?.NUMEROS, produtos[0]?.QUANTIDADES);
-
+      setGrupo(produtos[0]?.GRUP_DESCRICAO.split(", ") || []);
       setCarregando(false);
-    });
+    };
+
+    window.electronApi?.onSearchCadastroProdutosResponse(handler);
+
+    return () => {
+      window.electronApi?.removeSearchCadastroProdutosResponse?.(handler);
+    };
+  }, []); // Executa apenas uma vez
+
+  const buscarProdutos = () => {
+    setCarregando(true);
+    window.electronApi?.searchCadastroProdutos(referencia);
   };
 
   // Handler para selecionar todos ao clicar no primeiro radio
@@ -120,32 +130,37 @@ const CadastroWeb = () => {
               <Button
                 icon="icon-female"
                 aria-label="Filter"
-                outlined
                 label="Feminino"
+                value={grupo.includes("FEMININO")}
+                {...(!grupo.includes("FEMININO") && { outlined: true })}
               />
               <Button
                 icon="icon-male"
                 aria-label="Filter"
-                outlined
                 label="Masculino"
+                value={grupo.includes("MASCULINO")}
+                {...(!grupo.includes("MASCULINO") && { outlined: true })}
               />
               <Button
                 icon="icon-baby"
                 aria-label="Filter"
-                outlined
                 label="Infantil"
+                value={grupo.includes("INFANTIL")}
+                {...(!grupo.includes("INFANTIL") && { outlined: true })}
               />
               <Button
                 icon="icon-child"
                 aria-label="Filter"
-                outlined
-                label="Juvenil"
+                label="Infantil"
+                value={grupo.includes("INFANTIL")}
+                {...(!grupo.includes("INFANTIL") && { outlined: true })}
               />
               <Button
                 icon="icon-unisex"
                 aria-label="Filter"
-                outlined
                 label="Unissex"
+                value={grupo.includes("UNISSEX")}
+                {...(!grupo.includes("UNISSEX") && { outlined: true })}
               />
             </div>
             {/* Tipo */}
@@ -153,55 +168,57 @@ const CadastroWeb = () => {
               <Button
                 icon="icon-chinelo"
                 aria-label="Filter"
-                outlined
                 label="Chinelo"
+                {...(!grupo.includes("CHINELO DEDO") && { outlined: true })}
               />
               <Button
                 icon="icon-sandalia"
                 aria-label="Filter"
-                outlined
+                {...(!grupo.includes("SANDÁLIA") && { outlined: true })}
                 label="Sandália"
               />
               <Button
                 icon="icon-slide"
                 aria-label="Filter"
-                outlined
+                {...(!grupo.includes("CHINELO GÁSPEA/SLIDE") && {
+                  outlined: true,
+                })}
                 label="Slide"
               />
               <Button
                 icon="icon-rasteira"
                 aria-label="Filter"
-                outlined
+                {...(!grupo.includes("RASTEIRA") && { outlined: true })}
                 label="Rasteira"
               />
               <Button
                 icon="icon-tamanco"
                 aria-label="Filter"
-                outlined
+                {...(!grupo.includes("TAMANCO") && { outlined: true })}
                 label="Tamanco"
               />
               <Button
                 icon="icon-babuch"
                 aria-label="Filter"
-                outlined
+                {...(!grupo.includes("BABUCH") && { outlined: true })}
                 label="Babuche"
               />
               <Button
                 icon="icon-bota"
                 aria-label="Filter"
-                outlined
+                {...(!grupo.includes("BOTA") && { outlined: true })}
                 label="Bota"
               />
               <Button
                 icon="icon-sapatilha"
                 aria-label="Filter"
-                outlined
+                {...(!grupo.includes("SAPATILHA") && { outlined: true })}
                 label="Sapatilha"
               />
               <Button
                 icon="icon-sapato"
                 aria-label="Filter"
-                outlined
+                {...(!grupo.includes("SAPATO") && { outlined: true })}
                 label="Sapato"
               />
             </div>
