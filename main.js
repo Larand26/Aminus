@@ -10,6 +10,7 @@ const { searchReserva } = require("./db/sqlserver/reservas");
 const { searchCadastroProdutos } = require("./db/sqlserver/cadastroProdutos");
 const { getDataReserva } = require("./db/sqlserver/dataReserva");
 const { getCores, createCor } = require("./db/sqlserver/cores");
+const { cadastroWeb } = require("./db/sqlserver/cadastroWeb");
 const { makeCubagem } = require("./db/sqlserver/cubagem");
 
 // Mongo DB
@@ -295,6 +296,19 @@ ipcMain.on("create-cor", async (event, cor) => {
   } catch (error) {
     console.error("Erro ao criar cor:", error);
     event.reply("create-cor-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("cadastra-produtos-web", async (event, produtos) => {
+  try {
+    // Simulação de cadastro de produtos, substitua com a lógica real
+    await cadastroWeb(produtos);
+    event.reply("cadastra-produtos-web-response", { success: true });
+  } catch (error) {
+    console.error("Erro ao cadastrar produtos:", error);
+    event.reply("cadastra-produtos-web-response", {
       error: error.message || "Erro desconhecido",
     });
   }

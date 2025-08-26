@@ -93,4 +93,7 @@ contextBridge.exposeInMainWorld("electronApi", {
       callback(arg);
     }),
   createCor: (cor) => ipcRenderer.send("create-cor", cor),
+
+  cadastraProdutosWeb: (produtos) =>
+    ipcRenderer.send("cadastra-produtos-web", produtos),
 });

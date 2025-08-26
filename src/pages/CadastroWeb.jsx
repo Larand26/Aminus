@@ -41,6 +41,7 @@ const CadastroWeb = () => {
         PROD_ATIVO: prod.PRO_ATIVO_ECOMMERCE && prod.PRO_INTEGRACAO_ECOMMERCE, // true ou false
       }));
     console.log(produtosSelecionados);
+    window.electronApi?.cadastraProdutosWeb(produtosSelecionados);
   };
 
   const makePai = () => {
