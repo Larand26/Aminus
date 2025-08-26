@@ -23,7 +23,29 @@ const CadastroWeb = () => {
   const [grade, setGrade] = useState([]);
   const [grupo, setGrupo] = useState([]);
   const [nomeFormatado, setNomeFormatado] = useState("");
+  const [pai, setPai] = useState("");
   const [coresCarregadas, setCoresCarregadas] = useState(false); // Novo estado
+
+  const cadastro = () => {
+    // Seleciona os produtos atuais com checkbox marcado, garantindo cor e status atualizado
+    const produtosSelecionados = produtos
+      .filter((prod) =>
+        selectedProdutos.some((sel) => sel.ID_CODPRODUTO === prod.ID_CODPRODUTO)
+      )
+      .map((prod) => ({
+        ID_CODPRODUTO: prod.ID_CODPRODUTO,
+        PROD_REFERENCIA: referencia,
+        PROD_NOME: makeNomeFormatado(),
+        PROD_PAI: makePai(),
+        PROD_IDCOR: prod.ID_CORES_ECOMMERCE,
+        PROD_ATIVO: prod.PRO_ATIVO_ECOMMERCE && prod.PRO_INTEGRACAO_ECOMMERCE, // true ou false
+      }));
+    console.log(produtosSelecionados);
+  };
+
+  const makePai = () => {
+    return produtos[0]?.PROD_CODFABRIC + "-GREN-" + "PAI";
+  };
 
   const makeNomeFormatado = () => {
     let genero = grupo[2] || "";
@@ -111,12 +133,12 @@ const CadastroWeb = () => {
       makeGrade(produtos[0]?.NUMEROS, produtos[0]?.QUANTIDADES);
       setGrupo(produtos[0]?.GRUP_DESCRICAO.split(", ") || []);
       setCarregando(false);
-      setIdCor(produtos[0]?.ID_CORES_ECOMERCE || 0);
+      setIdCor(produtos[0]?.ID_CORES_ECOMMERCE || 0);
       console.log(produtos[0]);
       setCores([
         {
           label: produtos[0]?.COR_DESCRICAO || "",
-          value: produtos[0]?.ID_CORES_ECOMERCE || 0,
+          value: produtos[0]?.ID_CORES_ECOMMERCE || 0,
         },
       ]);
       buscarCores("");
@@ -228,12 +250,11 @@ const CadastroWeb = () => {
     );
   };
 
-  // Handler para alterar cor de um produto na tabela
   const alterarCorProduto = (idProduto, novaCorId) => {
     setProdutos((prevProdutos) =>
       prevProdutos.map((prod) =>
         prod.ID_CODPRODUTO === idProduto
-          ? { ...prod, ID_CORES_ECOMERCE: novaCorId }
+          ? { ...prod, ID_CORES_ECOMMERCE: novaCorId }
           : prod
       )
     );
@@ -444,9 +465,7 @@ const CadastroWeb = () => {
               </div>
               <div className="mb-1">
                 Pai: <br />
-                <span className="font-medium">
-                  {produtos[0]?.PROD_CODFABRIC + "-GREN-" + "PAI"}
-                </span>
+                <span className="font-medium">{makePai()}</span>
               </div>
               <div>
                 Cor: <br />
@@ -455,7 +474,7 @@ const CadastroWeb = () => {
                 </span>
               </div>
               <div className="w-full flex justify-content-center">
-                <Button label="Cadastrar" />
+                <Button label="Cadastrar" onClick={cadastro} />
               </div>
             </div>
           </div>
@@ -541,9 +560,9 @@ const CadastroWeb = () => {
                       <Dropdown
                         value={prod.ID_CORES_ECOMMERCE}
                         options={cores}
-                        onChange={(e) =>
-                          alterarCorProduto(prod.ID_CODPRODUTO, e.value)
-                        }
+                        onChange={(e) => {
+                          alterarCorProduto(prod.ID_CODPRODUTO, e.value);
+                        }}
                         placeholder={prod.COR_DESCRICAO || "Selecione"}
                         filter
                         style={{ width: "180px" }}
@@ -577,5 +596,4 @@ const CadastroWeb = () => {
     </div>
   );
 };
-
 export default CadastroWeb;
