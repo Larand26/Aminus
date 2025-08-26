@@ -5,7 +5,7 @@ const getCores = async (descricao) => {
   try {
     // Busca todos os ID_CODNOTA relevantes
     let query =
-      "SELECT [ID_CHAVE] AS 'value', [DESCRICAO] AS 'label' FROM [CORES_ECOMERCE] WHERE [DESCRICAO] LIKE '%' + @descricao + '%'";
+      "SELECT TOP 50 [ID_CHAVE] AS 'value', [DESCRICAO] AS 'label' FROM [CORES_ECOMERCE] WHERE [DESCRICAO] LIKE '%' + @descricao + '%'";
 
     const result = await connection
       .request()
