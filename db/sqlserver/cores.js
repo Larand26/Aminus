@@ -20,4 +20,17 @@ const getCores = async (descricao) => {
   }
 };
 
-module.exports = { getCores };
+const createCor = async (descricao) => {
+  const connection = await conectarSql();
+  try {
+    const query =
+      "INSERT INTO [CORES_ECOMERCE] (DESCRICAO) VALUES (@descricao)";
+    await connection.request().input("descricao", descricao).query(query);
+  } catch (error) {
+    console.error("Erro ao criar cor:", error);
+  } finally {
+    connection.close();
+  }
+};
+
+module.exports = { getCores, createCor };

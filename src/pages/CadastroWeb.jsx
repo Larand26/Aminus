@@ -129,6 +129,12 @@ const CadastroWeb = () => {
     };
   }, []); // Executa apenas uma vez
 
+  const createCor = () => {
+    if (!novaCor) return;
+    window.electronApi?.createCor(novaCor);
+    setNovaCor("");
+  };
+
   const buscarProdutos = () => {
     setCarregando(true);
     window.electronApi?.searchCadastroProdutos(referencia);
@@ -421,9 +427,13 @@ const CadastroWeb = () => {
               <InputText
                 className="w-full"
                 value={novaCor}
-                onChange={(e) => setNovaCor(e.target.value)}
+                onChange={(e) => setNovaCor(e.target.value.toUpperCase())}
               />
-              <Button icon="pi pi-plus" aria-label="Filter" />
+              <Button
+                icon="pi pi-plus"
+                aria-label="Filter"
+                onClick={() => createCor()}
+              />
             </div>
             <DataTable className="w-full" scrollHeight="200px" value={grade}>
               <Column

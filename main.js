@@ -9,7 +9,7 @@ const { searchPedido, getPedido } = require("./db/sqlserver/pedidos");
 const { searchReserva } = require("./db/sqlserver/reservas");
 const { searchCadastroProdutos } = require("./db/sqlserver/cadastroProdutos");
 const { getDataReserva } = require("./db/sqlserver/dataReserva");
-const { getCores } = require("./db/sqlserver/cores");
+const { getCores, createCor } = require("./db/sqlserver/cores");
 const { makeCubagem } = require("./db/sqlserver/cubagem");
 
 // Mongo DB
@@ -281,6 +281,20 @@ ipcMain.on("get-cores", async (event, descricao) => {
   } catch (error) {
     console.error("Erro ao buscar cores:", error);
     event.reply("get-cores-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("create-cor", async (event, cor) => {
+  try {
+    // Simulação de criação de cor, substitua com a lógica real
+    await createCor(cor);
+
+    event.reply("create-cor-response", { success: true });
+  } catch (error) {
+    console.error("Erro ao criar cor:", error);
+    event.reply("create-cor-response", {
       error: error.message || "Erro desconhecido",
     });
   }

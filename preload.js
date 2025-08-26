@@ -92,4 +92,5 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("get-cores-response", (event, arg) => {
       callback(arg);
     }),
+  createCor: (cor) => ipcRenderer.send("create-cor", cor),
 });
