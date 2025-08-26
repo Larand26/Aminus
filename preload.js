@@ -96,4 +96,8 @@ contextBridge.exposeInMainWorld("electronApi", {
 
   cadastraProdutosWeb: (produtos) =>
     ipcRenderer.send("cadastra-produtos-web", produtos),
+  onCadastraProdutosWebResponse: (callback) =>
+    ipcRenderer.on("cadastra-produtos-web-response", (event, arg) => {
+      callback(arg);
+    }),
 });

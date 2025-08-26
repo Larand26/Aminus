@@ -42,6 +42,13 @@ const CadastroWeb = () => {
       }));
     console.log(produtosSelecionados);
     window.electronApi?.cadastraProdutosWeb(produtosSelecionados);
+    window.electronApi?.onCadastraProdutosWebResponse((response) => {
+      if (response.success) {
+        alert("Produtos cadastrados com sucesso!");
+      } else {
+        alert("Erro ao cadastrar produtos.");
+      }
+    });
   };
 
   const makePai = () => {
