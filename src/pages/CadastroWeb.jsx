@@ -427,7 +427,7 @@ const CadastroWeb = () => {
             className="result-card flex align-items-center gap-3 p-3 border-round border-1 surface-border bg-white shadow-2"
             style={{ minWidth: 300, minHeight: 80, width: 400 }}
           >
-            <div>
+            <div className="w-full h-full flex flex-column align-items-center justify-content-around">
               <div className="font-bold text-lg mb-2">
                 Nome formatado: <br />
                 <span className="text-primary">{makeNomeFormatado()}</span>
@@ -444,10 +444,13 @@ const CadastroWeb = () => {
                   {produtos[0]?.COR_DESCRICAO || ""}
                 </span>
               </div>
+              <div className="w-full flex justify-content-center">
+                <Button label="Cadastrar" />
+              </div>
             </div>
           </div>
         </div>
-        <div className="p-4 flex w-full justify-content-center">
+        <div className="p-4 flex w-full  justify-content-center">
           {" "}
           {/* w-screen -> w-full */}
           <DataTable
