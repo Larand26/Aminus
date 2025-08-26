@@ -17,7 +17,7 @@ const CadastroWeb = () => {
   const [referencia, setReferencia] = useState("");
   const [selectedProdutos, setSelectedProdutos] = useState([]);
   const [nome, setNome] = useState("");
-  const [cores, setCores] = useState([{ value: 1, label: "Cor 1" }]);
+  const [cores, setCores] = useState([]);
   const [novaCor, setNovaCor] = useState("");
   const [idCor, setIdCor] = useState("");
   const [grade, setGrade] = useState([]);
@@ -112,6 +112,13 @@ const CadastroWeb = () => {
       setGrupo(produtos[0]?.GRUP_DESCRICAO.split(", ") || []);
       setCarregando(false);
       setIdCor(produtos[0]?.ID_CORES_ECOMERCE || 0);
+      console.log(produtos[0]);
+      setCores([
+        {
+          label: produtos[0]?.COR_DESCRICAO || "",
+          value: produtos[0]?.ID_CORES_ECOMERCE || 0,
+        },
+      ]);
       buscarCores("");
     };
 
@@ -228,7 +235,10 @@ const CadastroWeb = () => {
 
   // Adicione handler para limpar cores ao abrir dropdown
   const handleDropdownShow = () => {
-    // Removido para não limpar as opções de cores
+    window.electronApi?.getCores(""); // Busca as primeiras 50 cores
+    window.electronApi?.onGetCoresResponse?.((coresResponse) => {
+      setCores(coresResponse || []);
+    });
   };
 
   // Body para coluna de cor com Dropdown
