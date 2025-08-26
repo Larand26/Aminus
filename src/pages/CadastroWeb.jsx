@@ -17,7 +17,7 @@ const CadastroWeb = () => {
   const [referencia, setReferencia] = useState("");
   const [selectedProdutos, setSelectedProdutos] = useState([]);
   const [nome, setNome] = useState("");
-  const [cores, setCores] = useState([]);
+  const [cores, setCores] = useState([{ value: 1, label: "Cor 1" }]);
   const [novaCor, setNovaCor] = useState("");
   const [idCor, setIdCor] = useState("");
   const [grade, setGrade] = useState([]);
@@ -224,24 +224,17 @@ const CadastroWeb = () => {
     );
   };
 
-  // Adicione handler para limpar cores ao abrir dropdown
-  const handleDropdownShow = () => {
-    setCores([]);
-  };
-
   // Body para coluna de cor com Dropdown
   const bodyDropdownCor = (rowData) => (
     <Dropdown
       value={rowData.ID_CORES_ECOMERCE}
       options={cores}
-      optionLabel="DESCRICAO"
-      optionValue="ID_CORES_ECOMERCE"
       onChange={(e) => alterarCorProduto(rowData.ID_CODPRODUTO, e.value)}
       placeholder={rowData.COR_DESCRICAO || "Selecione"}
       filter
       style={{ width: "100%" }}
       showClear
-      onShow={handleDropdownShow} // Limpa cores ao abrir
+      onShow={handleDropdownShow}
       onFilter={handleCorFilter}
     />
   );
