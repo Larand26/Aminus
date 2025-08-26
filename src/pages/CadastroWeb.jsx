@@ -224,6 +224,11 @@ const CadastroWeb = () => {
     );
   };
 
+  // Adicione handler para limpar cores ao abrir dropdown
+  const handleDropdownShow = () => {
+    // Removido para não limpar as opções de cores
+  };
+
   // Body para coluna de cor com Dropdown
   const bodyDropdownCor = (rowData) => (
     <Dropdown
