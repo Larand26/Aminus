@@ -247,21 +247,6 @@ const CadastroWeb = () => {
     });
   };
 
-  // Body para coluna de cor com Dropdown
-  const bodyDropdownCor = (rowData) => (
-    <Dropdown
-      value={rowData.ID_CORES_ECOMERCE}
-      options={cores}
-      onChange={(e) => alterarCorProduto(rowData.ID_CODPRODUTO, e.value)}
-      placeholder={rowData.COR_DESCRICAO || "Selecione"}
-      filter
-      style={{ width: "100%" }}
-      showClear
-      onShow={handleDropdownShow}
-      onFilter={handleCorFilter}
-    />
-  );
-
   return (
     <div className="flex">
       <BarraLateral search={buscarProdutos}>
@@ -475,30 +460,118 @@ const CadastroWeb = () => {
             </div>
           </div>
         </div>
-        <div className="p-4 flex w-full  justify-content-center">
-          {" "}
-          {/* w-screen -> w-full */}
-          <DataTable
-            value={produtos}
-            loading={carregando}
-            scrollable
-            scrollHeight="400px"
-            selection={selectedProdutos}
-            selectionMode="multiple"
-            onSelectionChange={selecionarProdutos}
-            className="w-full"
-          >
-            <Column selectionMode="multiple" headerStyle={{ width: "3rem" }} />
-            <Column field="ID_CODPRODUTO" header="SKU" />
-            <Column field="PROD_DESCRCOMPLETA" header="Descrição" />
-            <Column field="SKU_PRODUTO_PAI" header="Pai" />
-            <Column field="COR_DESCRICAO" header="Cor" body={bodyDropdownCor} />
-            <Column
-              body={renderizarCheckboxAtivo}
-              header={headerCheckboxAtivo}
-              headerStyle={{ textAlign: "center" }}
-            />
-          </DataTable>
+        <div className="p-4 flex w-full justify-content-center">
+          {/* Container com scroll para a tabela */}
+          <div style={{ maxHeight: "400px", overflow: "auto", width: "100%" }}>
+            <table className="w-full bg-white border-round shadow-1">
+              <thead>
+                <tr>
+                  <th style={{ width: "3rem" }}>
+                    {/* Checkbox para selecionar todos */}
+                    <input
+                      type="checkbox"
+                      checked={
+                        selectedProdutos.length === produtos.length &&
+                        produtos.length > 0
+                      }
+                      onChange={(e) =>
+                        setSelectedProdutos(
+                          e.target.checked ? [...produtos] : []
+                        )
+                      }
+                    />
+                  </th>
+                  <th>SKU</th>
+                  <th>Descrição</th>
+                  <th>Pai</th>
+                  <th>Cor</th>
+                  <th style={{ textAlign: "center" }}>
+                    {/* Checkbox para todos ativos */}
+                    <input
+                      type="checkbox"
+                      checked={
+                        produtos.length > 0 &&
+                        produtos.every(
+                          (prod) =>
+                            prod.PRO_ATIVO_ECOMMERCE &&
+                            prod.PRO_INTEGRACAO_ECOMMERCE
+                        )
+                      }
+                      onChange={(e) => alternarTodosAtivos(e.target.checked)}
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        cursor: "pointer",
+                      }}
+                      title="Selecionar todos ativos"
+                    />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {produtos.map((prod, idx) => (
+                  <tr
+                    key={prod.ID_CODPRODUTO}
+                    style={{ borderBottom: "1px solid #a6d4e4ff" }}
+                    className={idx % 2 === 0 ? "bg-gray-400" : ""}
+                  >
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={selectedProdutos.some(
+                          (p) => p.ID_CODPRODUTO === prod.ID_CODPRODUTO
+                        )}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedProdutos((prev) => [...prev, prod]);
+                          } else {
+                            setSelectedProdutos((prev) =>
+                              prev.filter(
+                                (p) => p.ID_CODPRODUTO !== prod.ID_CODPRODUTO
+                              )
+                            );
+                          }
+                        }}
+                      />
+                    </td>
+                    <td>{prod.ID_CODPRODUTO}</td>
+                    <td>{prod.PROD_DESCRCOMPLETA}</td>
+                    <td>{prod.SKU_PRODUTO_PAI}</td>
+                    <td>
+                      <Dropdown
+                        value={prod.ID_CORES_ECOMMERCE}
+                        options={cores}
+                        onChange={(e) =>
+                          alterarCorProduto(prod.ID_CODPRODUTO, e.value)
+                        }
+                        placeholder={prod.COR_DESCRICAO || "Selecione"}
+                        filter
+                        style={{ width: "180px" }}
+                        showClear
+                        onShow={handleDropdownShow}
+                        onFilter={handleCorFilter}
+                      />
+                    </td>
+                    <td style={{ textAlign: "center" }}>
+                      <input
+                        type="checkbox"
+                        checked={
+                          prod.PRO_ATIVO_ECOMMERCE &&
+                          prod.PRO_INTEGRACAO_ECOMMERCE
+                        }
+                        onChange={() => alternarStatusProduto(idx)}
+                        style={{
+                          width: "20px",
+                          height: "20px",
+                          cursor: "pointer",
+                        }}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
