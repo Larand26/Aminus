@@ -25,6 +25,11 @@ const CadastroWeb = () => {
   const [nomeFormatado, setNomeFormatado] = useState("");
   const [pai, setPai] = useState("");
   const [coresCarregadas, setCoresCarregadas] = useState(false); // Novo estado
+  const [promo, setPromo] = useState(grupo.includes("PROMO")); // valor inicial depende do grupo
+
+  useEffect(() => {
+    setPromo(grupo.includes("PROMO")); // atualiza promo quando grupo muda
+  }, [grupo]);
 
   const cadastro = () => {
     // Seleciona os produtos atuais com checkbox marcado, garantindo cor e status atualizado
@@ -52,7 +57,8 @@ const CadastroWeb = () => {
   };
 
   const makePai = () => {
-    return produtos[0]?.PROD_CODFABRIC + "-GREN-" + "PAI";
+    const sufixo = promo ? "PROMO" : "GREN";
+    return produtos[0]?.PROD_CODFABRIC + "-" + sufixo + "-" + "PAI";
   };
 
   const makeNomeFormatado = () => {
@@ -276,6 +282,10 @@ const CadastroWeb = () => {
     });
   };
 
+  const changePromo = () => {
+    setPromo((prev) => !prev); // Inverte o valor de promo
+  };
+
   return (
     <div className="flex">
       <BarraLateral search={buscarProdutos}>
@@ -338,6 +348,14 @@ const CadastroWeb = () => {
                 value={"UNISEX"}
                 onClick={() => changeGrupo("UNISEX", 2)}
                 {...(!grupo.includes("UNISEX") && { outlined: true })}
+              />
+              <Button
+                aria-label="Filter"
+                label="Promo"
+                value={"PROMO"}
+                severity="danger"
+                onClick={changePromo} // Chama a função para inverter promo
+                {...(!promo && { outlined: true })} // outlined quando promo for false
               />
             </div>
             {/* Tipo */}
