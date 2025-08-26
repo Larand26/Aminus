@@ -70,8 +70,10 @@ const CadastroWeb = () => {
       default:
         tipo = "";
     }
-
-    return `${tipo} ${genero} ${nome} - ${produtos[0]?.PROD_CODFABRIC || ""}`;
+    const nomeFormatado = `${tipo} ${genero} ${nome} - ${
+      produtos[0]?.PROD_CODFABRIC || ""
+    }`;
+    return nomeFormatado.toUpperCase();
   };
 
   const changeGrupo = (newGrupo, index) => {
