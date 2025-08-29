@@ -13,7 +13,6 @@ const searchReserva = async (reserva) => {
         if (reserva.numeroPedido)
           query += ` AND [ID_NUMPEDORC] = '${reserva.numeroPedido}'`;
       }
-      console.log("SELECT * " + query);
 
       const reservaResult = await connection
         .request()

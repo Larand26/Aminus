@@ -14,7 +14,6 @@ const searchCliente = async (cliente) => {
         query += ` AND [ENTI_CELULAR] LIKE '%${cliente.celular}%'`;
       if (cliente.email) query += ` AND [ENTI_EMAIL] LIKE '%${cliente.email}%'`;
     }
-    console.log("SELECT * " + query);
 
     const vwClienteResult = await connection
       .request()
