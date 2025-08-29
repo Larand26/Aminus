@@ -210,11 +210,12 @@ const Fotos = () => {
       <TabView className="w-full h-screen">
         <TabPanel header="Fotos">
           <div
-            className="content flex flex-wrap align-items-center justify-content-center gap-4 w-full bg-gray-200 p-4 h-screen"
+            className="content flex flex-wrap align-items-center justify-content-center gap-4 w-full bg-gray-200 p-4"
             style={{
               maxHeight: "100vh",
               overflowY: "auto",
               minHeight: "300px",
+              paddingBottom: "0px", // pode remover ou deixar pequeno
             }}
           >
             {loading ? (
@@ -225,47 +226,51 @@ const Fotos = () => {
                 <ProgressSpinner />
               </div>
             ) : (
-              fotos.map((foto, index) => (
-                <Card
-                  key={index}
-                  title={foto.referencia}
-                  subTitle={foto.codigo_cor}
-                  className="md:w-13rem"
-                  footer={
-                    <div className="flex gap-2">
-                      <ConfirmPopup />
-                      <button
-                        className="p-button p-component w-full flex justify-content-center gap-2"
-                        onClick={() =>
-                          handleDownload(
-                            foto.fotos,
-                            foto.referencia,
-                            foto.codigo_cor
-                          )
-                        }
-                      >
-                        <i className="pi pi-download"></i>
-                      </button>
-                      <button
-                        className="p-button p-button-danger p-component w-full flex justify-content-center gap-2"
-                        type="button"
-                        onClick={(e) => confirmDelete(e, foto)}
-                      >
-                        <i className="pi pi-trash"></i>
-                      </button>
-                    </div>
-                  }
-                >
-                  <img
-                    src={`data:image/jpeg;base64,${foto.fotos.foto_principal}`}
-                    alt=""
-                    className="w-full h-auto"
-                  />
-                  <p className="text-xs text-center text-overflow-ellipsis">
-                    {foto.nome_cor}
-                  </p>
-                </Card>
-              ))
+              <>
+                {fotos.map((foto, index) => (
+                  <Card
+                    key={index}
+                    title={foto.referencia}
+                    subTitle={foto.codigo_cor}
+                    className="md:w-13rem"
+                    footer={
+                      <div className="flex gap-2">
+                        <ConfirmPopup />
+                        <button
+                          className="p-button p-component w-full flex justify-content-center gap-2"
+                          onClick={() =>
+                            handleDownload(
+                              foto.fotos,
+                              foto.referencia,
+                              foto.codigo_cor
+                            )
+                          }
+                        >
+                          <i className="pi pi-download"></i>
+                        </button>
+                        <button
+                          className="p-button p-button-danger p-component w-full flex justify-content-center gap-2"
+                          type="button"
+                          onClick={(e) => confirmDelete(e, foto)}
+                        >
+                          <i className="pi pi-trash"></i>
+                        </button>
+                      </div>
+                    }
+                  >
+                    <img
+                      src={`data:image/jpeg;base64,${foto.fotos.foto_principal}`}
+                      alt=""
+                      className="w-full h-auto"
+                    />
+                    <p className="text-xs text-center text-overflow-ellipsis">
+                      {foto.nome_cor}
+                    </p>
+                  </Card>
+                ))}
+                {/* Spacer para garantir espaço no final e evitar corte dos botões */}
+                <div style={{ width: "100%", height: 50 }} />
+              </>
             )}
           </div>
         </TabPanel>
