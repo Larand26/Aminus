@@ -19,6 +19,7 @@ const Reserva = () => {
   const [dataReserva, setDataReserva] = useState("");
   const [dataPesquisa, setDataPesquisa] = useState(null);
   const [produtoPesquisa, setProdutoPesquisa] = useState(null);
+  const [loadingReserva, setLoadingReserva] = useState(false);
   const search = () => {
     const reserva = {
       referencia: document.getElementById("inputReferencia").value || null,
@@ -69,9 +70,10 @@ const Reserva = () => {
     document.getElementById("popup").style.transform = "scale(1)";
   };
   const getDataReserva = (idCodProduto, idNumPedOrc, dataPesquisa) => {
+    setLoadingReserva(true);
     window.electronApi?.getDataReserva(idCodProduto, idNumPedOrc, dataPesquisa);
     window.electronApi?.onGetDataReservaResponse((data) => {
-      console.log(data);
+      setLoadingReserva(false);
 
       if (data.length === 0) {
         setDataReserva("Nenhuma reserva encontrada nesta data.");
@@ -201,17 +203,26 @@ const Reserva = () => {
             }}
           />
         </div>
-        <p>
-          {dataReserva
-            ? dataReserva.toLocaleString("pt-BR", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-              })
-            : "Coloque uma data"}
-        </p>
+        {loadingReserva ? (
+          <div className="flex justify-center items-center">
+            <i className="pi pi-spin pi-spinner" style={{ fontSize: "2em" }} />
+            <span className="ml-2">Carregando...</span>
+          </div>
+        ) : (
+          <p>
+            {dataReserva
+              ? typeof dataReserva === "string"
+                ? dataReserva
+                : dataReserva.toLocaleString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+              : "Coloque uma data"}
+          </p>
+        )}
       </PopUp>
     </div>
   );
