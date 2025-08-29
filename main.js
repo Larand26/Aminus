@@ -183,8 +183,8 @@ ipcMain.on(
 ipcMain.on("cadastra-fotos", async (event, produto) => {
   try {
     // Simulação de cadastro de fotos, substitua com a lógica real
-    await cadastraFotos(produto);
-    event.reply("cadastra-fotos-response", { success: true });
+    const response = await cadastraFotos(produto);
+    event.reply("cadastra-fotos-response", response);
   } catch (error) {
     console.error("Erro ao cadastrar fotos:", error);
     event.reply("cadastra-fotos-response", {

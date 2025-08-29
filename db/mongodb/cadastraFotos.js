@@ -7,6 +7,14 @@ const cadastraFotos = async (produto) => {
   try {
     await mongoose.connect(globals.MONGODB_URI);
 
+    if ([produto.referencia, produto.codigo_cor].includes("")) {
+      mongoose.connection.close();
+      return {
+        error: true,
+        message: "Referência e código da cor são obrigatórios.",
+      };
+    }
+
     // Verifica se produto com mesma referência + cor já existe
     const produtoExistente = await Produto.findOne({
       referencia: produto.referencia,
@@ -18,7 +26,7 @@ const cadastraFotos = async (produto) => {
         `${produto.referencia} - ${produto.codigo_cor} já cadastrado.`
       );
       mongoose.connection.close();
-      return;
+      return { error: true, message: "Produto já cadastrado." };
     }
 
     // Verifica se já existe produto com mesma referência
@@ -49,9 +57,11 @@ const cadastraFotos = async (produto) => {
       "Produto salvo :" + produto.referencia + " - " + produto.nome_cor
     );
     mongoose.connection.close();
+    return { success: true, message: "Produto cadastrado com sucesso." };
   } catch (err) {
     console.error("Erro:", err);
     mongoose.connection.close();
+    return { success: false, message: "Erro ao cadastrar produto." };
   }
 };
 

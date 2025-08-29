@@ -30,6 +30,7 @@ const Fotos = () => {
   const [embalagemCadastro, setEmbalagemCadastro] = useState(null);
   const [descricaoCadastro, setDescricaoCadastro] = useState("");
   const [loading, setLoading] = useState(false); // novo estado
+  const [loadingCadastro, setLoadingCadastro] = useState(false); // estado para loading do cadastro
   const toast = useRef(null); // Adicione esta linha
 
   // search agora recebe sempre os valores como argumento
@@ -128,6 +129,7 @@ const Fotos = () => {
     if (!files || files.length === 0) {
       return "Nenhum arquivo selecionado.";
     }
+    setLoadingCadastro(true);
 
     const produto = {
       referencia: referenciaCadastro,
@@ -138,25 +140,44 @@ const Fotos = () => {
       descricao_produto: descricaoCadastro,
     };
 
-    const result = await cadastraFotos(files, produto);
-    console.log("Resultado do cadastro:", result);
+    try {
+      // Aguarda o resultado do cadastro usando Promise
+      const result = await new Promise((resolve) => {
+        cadastraFotos(files, produto).then((res) => {
+          // Se cadastraFotos já retorna erro de validação, resolve imediatamente
+          if (
+            res &&
+            typeof res === "object" &&
+            ("success" in res || "error" in res)
+          ) {
+            resolve(res);
+          } else {
+            window.electronApi?.onCadastraFotosResponse((response) => {
+              resolve(response);
+            });
+          }
+        });
+      });
 
-    if (result.success) {
-      toast.current?.show({
-        severity: "success",
-        summary: "Sucesso",
-        detail: "Fotos cadastradas com sucesso!",
-        life: 3000,
-      });
-    } else {
-      toast.current?.show({
-        severity: "error",
-        summary: "Erro",
-        detail: "Erro ao cadastrar fotos.",
-        life: 3000,
-      });
+      if (result.success) {
+        toast.current?.show({
+          severity: "success",
+          summary: "Sucesso",
+          detail: `Fotos cadastradas com sucesso!`,
+          life: 3000,
+        });
+      } else {
+        toast.current?.show({
+          severity: "error",
+          summary: "Erro",
+          detail: `Erro: ${result.message}`,
+          life: 3000,
+        });
+      }
+      return result;
+    } finally {
+      setLoadingCadastro(false);
     }
-    return result;
   };
 
   return (

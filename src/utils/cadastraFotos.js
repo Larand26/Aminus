@@ -9,6 +9,15 @@ const cadastraFotos = async (files, prod) => {
     });
   };
   if (!files) return;
+
+  // Validação dos campos obrigatórios
+  if (!prod.referencia || !prod.codigo_cor) {
+    return {
+      success: false,
+      message: "Referência e código da cor são obrigatórios.",
+    };
+  }
+
   const fotos = {
     foto_principal: files[0] ? await convertToBase64(files[0]) : null,
     foto_produto_1: files[1] ? await convertToBase64(files[1]) : null,
@@ -29,17 +38,12 @@ const cadastraFotos = async (files, prod) => {
   };
 
   window.electronApi?.cadastraFotos(produto);
-  window.electronApi?.onCadastraFotosResponse((response) => {
-    if (response.success) {
-      console.log("Fotos cadastradas com sucesso!");
-
-      return { response: "Fotos cadastradas com sucesso!" };
-    } else {
-      console.log("Erro ao cadastrar fotos:", response.error);
-
-      return { error: "Erro ao cadastrar fotos:", details: response.error };
+  const result = await window.electronApi?.onCadastraFotosResponse(
+    (response) => {
+      return response;
     }
-  });
+  );
+  return result;
 };
 
 export default cadastraFotos;
