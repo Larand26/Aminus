@@ -3,11 +3,12 @@ import Content from "../components/Content";
 
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
+import { Toast } from "primereact/toast";
 
 import "../styles/icons.css";
 
@@ -26,6 +27,7 @@ const CadastroWeb = () => {
   const [pai, setPai] = useState("");
   const [coresCarregadas, setCoresCarregadas] = useState(false); // Novo estado
   const [promo, setPromo] = useState(grupo.includes("PROMO")); // valor inicial depende do grupo
+  const toast = useRef(null);
 
   useEffect(() => {
     setPromo(grupo.includes("PROMO")); // atualiza promo quando grupo muda
@@ -49,9 +51,19 @@ const CadastroWeb = () => {
     window.electronApi?.cadastraProdutosWeb(produtosSelecionados);
     window.electronApi?.onCadastraProdutosWebResponse((response) => {
       if (response.success) {
-        alert("Produtos cadastrados com sucesso!");
+        toast.current?.show({
+          severity: "success",
+          summary: "Sucesso",
+          detail: "Produtos cadastrados com sucesso!",
+          life: 3000,
+        });
       } else {
-        alert("Erro ao cadastrar produtos.");
+        toast.current?.show({
+          severity: "error",
+          summary: "Erro",
+          detail: "Erro ao cadastrar produtos.",
+          life: 3000,
+        });
       }
     });
   };
@@ -288,6 +300,7 @@ const CadastroWeb = () => {
 
   return (
     <div className="flex">
+      <Toast ref={toast} />
       <BarraLateral search={buscarProdutos}>
         <FloatLabel>
           <InputText

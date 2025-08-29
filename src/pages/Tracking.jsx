@@ -4,9 +4,10 @@ import Content from "../components/Content";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Dropdown } from "primereact/dropdown";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Toast } from "primereact/toast";
 
 import imgTnt from "../assets/img/svg/transportadora/tnt.svg";
 import imgRte from "../assets/img/svg/transportadora/rodonaves.svg";
@@ -48,10 +49,16 @@ const Tracking = () => {
     expectativa: "",
     cnpj: "",
   });
+  const toast = useRef(null);
 
   const search = () => {
     if (!nota || !transportadora) {
-      alert("Por favor, preencha todos os campos.");
+      toast.current?.show({
+        severity: "error",
+        summary: "Campos obrigatórios",
+        detail: "Por favor, preencha todos os campos.",
+        life: 3000,
+      });
       return;
     }
     window.electronApi?.searchRastreamento({ nota, transportadora });
@@ -65,6 +72,7 @@ const Tracking = () => {
 
   return (
     <div className="flex">
+      <Toast ref={toast} />
       <BarraLateral search={search}>
         <FloatLabel>
           <InputText

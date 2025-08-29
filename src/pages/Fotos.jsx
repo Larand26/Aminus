@@ -2,7 +2,7 @@ import BarraLateral from "../components/BarraLateral";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Card } from "primereact/card";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import JSZip from "jszip";
 import { TabView, TabPanel } from "primereact/tabview";
 import { FileUpload } from "primereact/fileupload";
@@ -12,6 +12,7 @@ import { ConfirmPopup } from "primereact/confirmpopup"; // To use <ConfirmPopup>
 import { confirmPopup } from "primereact/confirmpopup"; // To use confirmPopup method
 import cadastraFotos from "../utils/cadastraFotos";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { Toast } from "primereact/toast";
 
 import "../styles/cadastro-fotos.css";
 
@@ -29,6 +30,7 @@ const Fotos = () => {
   const [embalagemCadastro, setEmbalagemCadastro] = useState(null);
   const [descricaoCadastro, setDescricaoCadastro] = useState("");
   const [loading, setLoading] = useState(false); // novo estado
+  const toast = useRef(null); // Adicione esta linha
 
   // search agora recebe sempre os valores como argumento
   const search = (ref, cor) => {
@@ -139,12 +141,27 @@ const Fotos = () => {
     const result = await cadastraFotos(files, produto);
     console.log("Resultado do cadastro:", result);
 
-    alert(result);
+    if (result.success) {
+      toast.current?.show({
+        severity: "success",
+        summary: "Sucesso",
+        detail: "Fotos cadastradas com sucesso!",
+        life: 3000,
+      });
+    } else {
+      toast.current?.show({
+        severity: "error",
+        summary: "Erro",
+        detail: "Erro ao cadastrar fotos.",
+        life: 3000,
+      });
+    }
     return result;
   };
 
   return (
     <div className="flex">
+      <Toast ref={toast} />
       <BarraLateral search={search}>
         <FloatLabel>
           <InputText
