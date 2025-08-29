@@ -77,6 +77,12 @@ const Home = () => {
 
   return (
     <div className="home w-full h-screen flex align-items-center justify-content-center">
+      {/* Botão de voltar para login */}
+      <Button
+        icon="pi pi-sign-out"
+        className="absolute top-0 left-0 m-3"
+        onClick={() => navigate("/")}
+      />
       <div className="p-4 flex flex-column align-items-center justify-content-around bg-primary w-11 max-w-30rem h-6 max-h-20rem ">
         <div className="w-10 flex flex-wrap align-items-center justify-content-around">
           {renderButtons()}
