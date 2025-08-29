@@ -26,6 +26,7 @@ const Login = () => {
         navigate("/home");
       } else {
         // Tratar erro de login
+        alert("SENHA INCORRETA");
         console.error("Erro de login:", response.error);
       }
     });
