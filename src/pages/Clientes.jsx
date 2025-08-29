@@ -6,14 +6,17 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { useState, useCallback, useEffect } from "react";
 import { FilterMatchMode } from "primereact/api";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const Clientes = () => {
   const [clientes, setClientes] = useState([]);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
+  const [loading, setLoading] = useState(false);
 
   const search = () => {
+    setLoading(true);
     const cliente = {
       nome: document.getElementById("inputNome").value || null,
       cnpj:
@@ -25,6 +28,7 @@ const Clientes = () => {
     window.electronApi?.searchCliente(cliente);
     window.electronApi?.onSearchClienteResponse((clientes) => {
       setClientes(clientes);
+      setLoading(false);
       document.getElementById("inputNome").value = "";
       document.getElementById("inputCnpj").value = "";
       document.getElementById("inputId").value = "";
@@ -79,44 +83,53 @@ const Clientes = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Clientes"}>
-        <DataTable
-          value={clientes}
-          paginator
-          rows={10}
-          showGridlines
-          filters={filters}
-          onFilter={(e) => setFilters(e.filters)}
-          globalFilterFields={[
-            "ENTI_RAZAOSOCIAL",
-            "ENTI_CNPJCPF",
-            "ID_CODENTIDADE",
-            "ENTI_CELULAR",
-            "ENTI_EMAIL",
-            "ENTI_CEP",
-          ]}
-          header={
-            <InputText
-              type="search"
-              onInput={(e) =>
-                setFilters({
-                  ...filters,
-                  global: {
-                    value: e.target.value,
-                    matchMode: FilterMatchMode.CONTAINS,
-                  },
-                })
-              }
-              placeholder="Filtrar clientes"
-            />
-          }
-        >
-          <Column field="ENTI_RAZAOSOCIAL" header="Nome" />
-          <Column field="ENTI_CNPJCPF" header="CNPJ" />
-          <Column field="ID_CODENTIDADE" header="ID" />
-          <Column field="ENTI_CELULAR" header="Celular" />
-          <Column field="ENTI_EMAIL" header="Email" />
-          <Column field="ENTI_CEP" header="CEP" />
-        </DataTable>
+        {loading ? (
+          <div
+            className="flex justify-content-center align-items-center w-full"
+            style={{ minHeight: 200 }}
+          >
+            <ProgressSpinner />
+          </div>
+        ) : (
+          <DataTable
+            value={clientes}
+            paginator
+            rows={10}
+            showGridlines
+            filters={filters}
+            onFilter={(e) => setFilters(e.filters)}
+            globalFilterFields={[
+              "ENTI_RAZAOSOCIAL",
+              "ENTI_CNPJCPF",
+              "ID_CODENTIDADE",
+              "ENTI_CELULAR",
+              "ENTI_EMAIL",
+              "ENTI_CEP",
+            ]}
+            header={
+              <InputText
+                type="search"
+                onInput={(e) =>
+                  setFilters({
+                    ...filters,
+                    global: {
+                      value: e.target.value,
+                      matchMode: FilterMatchMode.CONTAINS,
+                    },
+                  })
+                }
+                placeholder="Filtrar clientes"
+              />
+            }
+          >
+            <Column field="ENTI_RAZAOSOCIAL" header="Nome" />
+            <Column field="ENTI_CNPJCPF" header="CNPJ" />
+            <Column field="ID_CODENTIDADE" header="ID" />
+            <Column field="ENTI_CELULAR" header="Celular" />
+            <Column field="ENTI_EMAIL" header="Email" />
+            <Column field="ENTI_CEP" header="CEP" />
+          </DataTable>
+        )}
       </Content>
     </div>
   );

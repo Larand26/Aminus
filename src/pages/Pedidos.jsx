@@ -12,6 +12,8 @@ import { FilterMatchMode } from "primereact/api";
 import vendedoresJson from "../assets/json/vendedores.json";
 import { Button } from "primereact/button";
 import createPDF from "../utils/createPDF";
+import { ProgressSpinner } from "primereact/progressspinner";
+
 const Pedidos = () => {
   const [pedidos, setPedidos] = useState([]);
   const [filters, setFilters] = useState({
@@ -32,6 +34,7 @@ const Pedidos = () => {
   const [situacao, setSituacao] = useState(null);
   const [itensPedido, setItensPedido] = useState([]);
   const [cubagemItens, setCubagemItens] = useState([]);
+  const [loading, setLoading] = useState(false);
   // Recupera função do usuário do localStorage
   let idFuncaoUsuario = null;
   try {
@@ -39,6 +42,7 @@ const Pedidos = () => {
   } catch {}
 
   const search = () => {
+    setLoading(true);
     let idFuncaoUsuario = null;
     try {
       idFuncaoUsuario = parseInt(localStorage.getItem("userFuncao"));
@@ -68,12 +72,14 @@ const Pedidos = () => {
       !pedido.vendedor
     ) {
       console.warn("Nenhum filtro aplicado.");
+      setLoading(false);
       return;
     }
 
     window.electronApi?.searchPedido(pedido);
     window.electronApi?.onSearchPedidoResponse((pedidos) => {
       setPedidos(pedidos);
+      setLoading(false);
       // Limpa os inputs após a pesquisa
       document.getElementById("inputNumero").value = "";
       document.getElementById("inputCnpj").value = "";
@@ -221,71 +227,80 @@ const Pedidos = () => {
         )}
       </BarraLateral>
       <Content titulo={"Pedidos"}>
-        <DataTable
-          paginator
-          rows={10}
-          emptyMessage="Nenhum produto encontrado"
-          value={pedidos}
-          showGridlines
-          filters={filters}
-          onFilter={(e) => setFilters(e.filters)}
-          globalFilterFields={[
-            "ID_NUMPEDORC",
-            "ID_CODENTIDADE",
-            "PEDOR_RAZAOSOCIAL",
-            "PEDOR_SITUACAO",
-          ]}
-          header={
-            <InputText
-              type="search"
-              onInput={(e) =>
-                setFilters({
-                  ...filters,
-                  global: {
-                    value: e.target.value,
-                    matchMode: FilterMatchMode.CONTAINS,
-                  },
-                })
-              }
-              placeholder="Filtrar pedidos"
-            />
-          }
-          id="tabelaPedidos"
-          onRowClick={(e) => {
-            getPedido(e.data.ID_NUMPEDORC);
-          }}
-        >
-          <Column field="ID_NUMPEDORC" header="Número" />
-          <Column field="ID_CODENTIDADE" header="ID do cliente" />
-          <Column field="PEDOR_RAZAOSOCIAL" header="Nome" />
-          <Column field="PEDOR_PESOBRUTO" header="Peso Bruto" />
-          <Column
-            body={(rowData) => {
-              if (!rowData.PEDOR_DATA) return "";
-              if (rowData.PEDOR_DATA instanceof Date) {
-                return rowData.PEDOR_DATA.toLocaleDateString("pt-BR");
-              }
-              if (
-                typeof rowData.PEDOR_DATA === "string" ||
-                typeof rowData.PEDOR_DATA === "number"
-              ) {
-                const d = new Date(rowData.PEDOR_DATA);
-                if (!isNaN(d)) return d.toLocaleDateString("pt-BR");
-                return rowData.PEDOR_DATA;
-              }
-              return rowData.PEDOR_DATA;
-            }}
-            header="Data"
-          />
-          <Column field="PEDOR_SITUACAO" header="Situação" />
-          <Column
-            body={(rowData) =>
-              vendedoresJson.find((v) => v.value === rowData.ID_CODVENDEDOR)
-                ?.label || "Desconhecido"
+        {loading ? (
+          <div
+            className="flex justify-content-center align-items-center w-full"
+            style={{ minHeight: 200 }}
+          >
+            <ProgressSpinner />
+          </div>
+        ) : (
+          <DataTable
+            paginator
+            rows={10}
+            emptyMessage="Nenhum produto encontrado"
+            value={pedidos}
+            showGridlines
+            filters={filters}
+            onFilter={(e) => setFilters(e.filters)}
+            globalFilterFields={[
+              "ID_NUMPEDORC",
+              "ID_CODENTIDADE",
+              "PEDOR_RAZAOSOCIAL",
+              "PEDOR_SITUACAO",
+            ]}
+            header={
+              <InputText
+                type="search"
+                onInput={(e) =>
+                  setFilters({
+                    ...filters,
+                    global: {
+                      value: e.target.value,
+                      matchMode: FilterMatchMode.CONTAINS,
+                    },
+                  })
+                }
+                placeholder="Filtrar pedidos"
+              />
             }
-            header="Vendedor"
-          />
-        </DataTable>
+            id="tabelaPedidos"
+            onRowClick={(e) => {
+              getPedido(e.data.ID_NUMPEDORC);
+            }}
+          >
+            <Column field="ID_NUMPEDORC" header="Número" />
+            <Column field="ID_CODENTIDADE" header="ID do cliente" />
+            <Column field="PEDOR_RAZAOSOCIAL" header="Nome" />
+            <Column field="PEDOR_PESOBRUTO" header="Peso Bruto" />
+            <Column
+              body={(rowData) => {
+                if (!rowData.PEDOR_DATA) return "";
+                if (rowData.PEDOR_DATA instanceof Date) {
+                  return rowData.PEDOR_DATA.toLocaleDateString("pt-BR");
+                }
+                if (
+                  typeof rowData.PEDOR_DATA === "string" ||
+                  typeof rowData.PEDOR_DATA === "number"
+                ) {
+                  const d = new Date(rowData.PEDOR_DATA);
+                  if (!isNaN(d)) return d.toLocaleDateString("pt-BR");
+                  return rowData.PEDOR_DATA;
+                }
+                return rowData.PEDOR_DATA;
+              }}
+              header="Data"
+            />
+            <Column field="PEDOR_SITUACAO" header="Situação" />
+            <Column
+              body={(rowData) =>
+                vendedoresJson.find((v) => v.value === rowData.ID_CODVENDEDOR)
+                  ?.label || "Desconhecido"
+              }
+              header="Vendedor"
+            />
+          </DataTable>
+        )}
       </Content>
       <PopUp onClose={closePopup}>
         <DataTable

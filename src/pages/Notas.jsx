@@ -11,6 +11,7 @@ import ufsJson from "../assets/json/ufs.json";
 import vendedoresJson from "../assets/json/vendedores.json";
 import transportadorasJson from "../assets/json/transportadoras.json";
 import { FilterMatchMode } from "primereact/api";
+import { ProgressSpinner } from "primereact/progressspinner";
 
 const Notas = () => {
   const [notas, setNotas] = useState([]);
@@ -22,6 +23,7 @@ const Notas = () => {
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
   });
+  const [loading, setLoading] = useState(false);
   // Recupera função do usuário do localStorage
   let idFuncaoUsuario = null;
   try {
@@ -29,6 +31,7 @@ const Notas = () => {
   } catch {}
 
   const search = () => {
+    setLoading(true);
     // Não converta para Date aqui, apenas envie o valor do estado
     const nota = {
       numero: document.getElementById("inputNumero").value || null,
@@ -44,6 +47,7 @@ const Notas = () => {
     window.electronApi?.searchNota(nota);
     window.electronApi?.onSearchNotaResponse((notas) => {
       setNotas(notas);
+      setLoading(false);
       console.log("Notas recebidas:", notas);
       // Limpa os inputs após a pesquisa
       document.getElementById("inputNumero").value = "";
@@ -130,108 +134,117 @@ const Notas = () => {
         )}
       </BarraLateral>
       <Content titulo={"Notas Fiscais"}>
-        <DataTable
-          id="tabelaNotas"
-          value={notas}
-          paginator
-          rows={10}
-          emptyMessage="Nenhum produto encontrado"
-          showGridlines
-          filters={filters}
-          onFilter={(e) => setFilters(e.filters)}
-          globalFilterFields={[
-            "NF_NUMDOCUM",
-            "ID_PEDIDO",
-            "NF_CGCCPFENTIDADE",
-            "NF_NOMEENTIDADE",
-            "NF_UNIDFEDENTD",
-          ]}
-          header={
-            <InputText
-              type="search"
-              onInput={(e) =>
-                setFilters({
-                  ...filters,
-                  global: {
-                    value: e.target.value,
-                    matchMode: FilterMatchMode.CONTAINS,
-                  },
-                })
-              }
-              placeholder="Filtrar notas fiscais"
+        {loading ? (
+          <div
+            className="flex justify-content-center align-items-center w-full"
+            style={{ minHeight: 200 }}
+          >
+            <ProgressSpinner />
+          </div>
+        ) : (
+          <DataTable
+            id="tabelaNotas"
+            value={notas}
+            paginator
+            rows={10}
+            emptyMessage="Nenhum produto encontrado"
+            showGridlines
+            filters={filters}
+            onFilter={(e) => setFilters(e.filters)}
+            globalFilterFields={[
+              "NF_NUMDOCUM",
+              "ID_PEDIDO",
+              "NF_CGCCPFENTIDADE",
+              "NF_NOMEENTIDADE",
+              "NF_UNIDFEDENTD",
+            ]}
+            header={
+              <InputText
+                type="search"
+                onInput={(e) =>
+                  setFilters({
+                    ...filters,
+                    global: {
+                      value: e.target.value,
+                      matchMode: FilterMatchMode.CONTAINS,
+                    },
+                  })
+                }
+                placeholder="Filtrar notas fiscais"
+              />
+            }
+          >
+            <Column field="NF_NUMDOCUM" header="Número" />
+            <Column field="ID_PEDIDO" header="Pedido" />
+            <Column field="NF_CGCCPFENTIDADE" header="CNPJ" />
+            <Column
+              body={(rowData) => rowData.NF_NOMEENTIDADE?.substring(0, 20)}
+              header="Nome do Cliente"
             />
-          }
-        >
-          <Column field="NF_NUMDOCUM" header="Número" />
-          <Column field="ID_PEDIDO" header="Pedido" />
-          <Column field="NF_CGCCPFENTIDADE" header="CNPJ" />
-          <Column
-            body={(rowData) => rowData.NF_NOMEENTIDADE?.substring(0, 20)}
-            header="Nome do Cliente"
-          />
-          <Column field="NF_UNIDFEDENTD" header="UF" />
-          <Column
-            field="NF_DATAEMIS"
-            header="Data de Emissão"
-            body={(rowData) => {
-              if (!rowData.NF_DATAEMIS) return "";
-              // Se for Date, converte para string legível
-              if (rowData.NF_DATAEMIS instanceof Date) {
-                return rowData.NF_DATAEMIS.toLocaleDateString();
-              }
-              // Se vier string ISO, formata
-              if (typeof rowData.NF_DATAEMIS === "string") {
-                const d = new Date(rowData.NF_DATAEMIS);
-                if (!isNaN(d)) return d.toLocaleDateString();
+            <Column field="NF_UNIDFEDENTD" header="UF" />
+            <Column
+              field="NF_DATAEMIS"
+              header="Data de Emissão"
+              body={(rowData) => {
+                if (!rowData.NF_DATAEMIS) return "";
+                // Se for Date, converte para string legível
+                if (rowData.NF_DATAEMIS instanceof Date) {
+                  return rowData.NF_DATAEMIS.toLocaleDateString();
+                }
+                // Se vier string ISO, formata
+                if (typeof rowData.NF_DATAEMIS === "string") {
+                  const d = new Date(rowData.NF_DATAEMIS);
+                  if (!isNaN(d)) return d.toLocaleDateString();
+                  return rowData.NF_DATAEMIS;
+                }
                 return rowData.NF_DATAEMIS;
-              }
-              return rowData.NF_DATAEMIS;
-            }}
-          />
-          <Column
-            body={(rowData) => {
-              return (
-                vendedoresJson.find((v) => v.value === rowData.ID_CODVENDEDOR)
-                  ?.label || "Desconhecido"
-              );
-            }}
-            header="Vendedor"
-          />
-          <Column
-            body={(rowData) => {
-              return (
-                rowData.NF_VLRTOTAL?.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }) || "R$ 0,00"
-              );
-            }}
-            header="Valor Total"
-          />
-          <Column
-            body={(rowData) => {
-              return (
-                "kg " +
-                  rowData.NF_PESOBRUTO?.toLocaleString("pt-BR", {
-                    style: "decimal",
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  }) || "kg 0,00"
-              );
-            }}
-            header="Peso bruto"
-          />
-          <Column
-            body={(rowData) => {
-              return (
-                transportadorasJson.transportadoras.find(
-                  (t) => t.id === rowData.ID_CODTRANSP
-                )?.nome || "Desconhecida"
-              );
-            }}
-            header="Transportadora"
-          />
-        </DataTable>
+              }}
+            />
+            <Column
+              body={(rowData) => {
+                return (
+                  vendedoresJson.find((v) => v.value === rowData.ID_CODVENDEDOR)
+                    ?.label || "Desconhecido"
+                );
+              }}
+              header="Vendedor"
+            />
+            <Column
+              body={(rowData) => {
+                return (
+                  rowData.NF_VLRTOTAL?.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }) || "R$ 0,00"
+                );
+              }}
+              header="Valor Total"
+            />
+            <Column
+              body={(rowData) => {
+                return (
+                  "kg " +
+                    rowData.NF_PESOBRUTO?.toLocaleString("pt-BR", {
+                      style: "decimal",
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    }) || "kg 0,00"
+                );
+              }}
+              header="Peso bruto"
+            />
+            <Column
+              body={(rowData) => {
+                return (
+                  transportadorasJson.transportadoras.find(
+                    (t) => t.id === rowData.ID_CODTRANSP
+                  )?.nome || "Desconhecida"
+                );
+              }}
+              header="Transportadora"
+            />
+          </DataTable>
+        )}
       </Content>
     </div>
   );
