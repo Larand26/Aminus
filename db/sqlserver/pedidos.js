@@ -23,8 +23,6 @@ const searchPedido = async (pedido) => {
       if (pedido.vendedor)
         query += ` AND [ID_CODVENDEDOR] = '${pedido.vendedor}'`;
     }
-    console.log("SELECT * " + query);
-
     const vwNotaResult = await connection.request().query("SELECT * " + query);
 
     return vwNotaResult.recordset;

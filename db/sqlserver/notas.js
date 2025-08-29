@@ -15,8 +15,6 @@ const searchNotas = async (nota) => {
       if (nota.uf) query += ` AND [NF_UNIDFEDENTD] = '${nota.uf}'`;
       if (nota.vendedor) query += ` AND [ID_CODVENDEDOR] = '${nota.vendedor}'`;
     }
-    console.log("SELECT * " + query);
-
     const vwNotaResult = await connection.request().query("SELECT * " + query);
 
     return vwNotaResult.recordset;
