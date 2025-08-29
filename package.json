@@ -14,7 +14,8 @@
     "build:electron": "electron-builder",
     "dist": "electron-builder",
     "package": "electron-forge package",
-    "make": "electron-forge make"
+    "make": "electron-forge make",
+    "exe": "npm run build && npm run dist"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
