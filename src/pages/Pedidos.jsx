@@ -52,7 +52,8 @@ const Pedidos = () => {
     }
     const pedido = {
       numero: document.getElementById("inputNumero").value || null,
-      cnpj: document.getElementById("inputCnpj").value || null,
+      cnpj:
+        document.getElementById("inputCnpj").value.replace(/\D/g, "") || null,
       dataInicial: data ? (data[0] ? data[0].toISOString() : null) : null,
       dataFinal: data ? (data[1] ? data[1].toISOString() : null) : null,
       situacao: situacao || null,

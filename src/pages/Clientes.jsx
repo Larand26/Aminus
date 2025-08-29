@@ -16,7 +16,8 @@ const Clientes = () => {
   const search = () => {
     const cliente = {
       nome: document.getElementById("inputNome").value || null,
-      cnpj: document.getElementById("inputCnpj").value || null,
+      cnpj:
+        document.getElementById("inputCnpj").value.replace(/\D/g, "") || null,
       id: document.getElementById("inputId").value || null,
       celular: document.getElementById("inputCelular").value || null,
       email: document.getElementById("inputEmail").value || null,
