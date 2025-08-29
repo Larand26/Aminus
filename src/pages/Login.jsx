@@ -1,10 +1,11 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
 import { Dropdown } from "primereact/dropdown";
+import { Toast } from "primereact/toast";
 
 import usuarios from "../assets/json/usuários.json";
 
@@ -14,6 +15,7 @@ const Login = () => {
     localStorage.getItem("userPassword") || ""
   );
   const navigate = useNavigate();
+  const toast = useRef(null);
 
   const handleLogin = () => {
     window.electronApi?.login(user, password);
@@ -25,8 +27,12 @@ const Login = () => {
         localStorage.setItem("userFuncao", response.data.ID_FUNCAO_USUARIO);
         navigate("/home");
       } else {
-        // Tratar erro de login
-        alert("SENHA INCORRETA");
+        toast.current?.show({
+          severity: "error",
+          summary: "Erro de login",
+          detail: "Senha incorreta",
+          life: 3000,
+        });
         console.error("Erro de login:", response.error);
       }
     });
@@ -34,6 +40,7 @@ const Login = () => {
 
   return (
     <div className="home w-full h-screen flex align-items-center justify-content-center">
+      <Toast ref={toast} />
       <div className="p-6 flex flex-column align-items-center justify-content-around bg-primary w-11 max-w-30rem h-6 max-h-20rem ">
         <div className="w-10 flex flex-column align-items-center justify-content-around gap-5">
           <FloatLabel>
