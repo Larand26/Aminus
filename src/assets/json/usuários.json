@@ -1,1 +1,17 @@
-[{ "label": "ADMIN", "value": "ADMIN" }]
+[
+  { "label": "ADMIN", "value": "ADMIN" },
+  { "label": "ADOLFO", "value": "ADOLFO" },
+  { "label": "BRENDA", "value": "BRENDA" },
+  { "label": "BRUNO", "value": "BRUNO" },
+  { "label": "DOUGLAS", "value": "DOUGLAS" },
+  { "label": "EDSON", "value": "EDSON" },
+  { "label": "FABIO", "value": "FABIO" },
+  { "label": "GUILHERME", "value": "GUILHERME" },
+  { "label": "HENRIQUE", "value": "HENRIQUE" },
+  { "label": "JOAO", "value": "JOAO" },
+  { "label": "JULIO", "value": "JULIO" },
+  { "label": "LETICIA", "value": "LETICIA" },
+  { "label": "LIVIA", "value": "LIVIA" },
+  { "label": "SERGIO", "value": "SERGIO" },
+  { "label": "SHEILA", "value": "SHEILA" }
+]

@@ -4,6 +4,9 @@ import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
+import { Dropdown } from "primereact/dropdown";
+
+import usuarios from "../assets/json/usuários.json";
 
 const Login = () => {
   const [user, setUser] = useState(localStorage.getItem("user") || "");
@@ -33,10 +36,13 @@ const Login = () => {
       <div className="p-6 flex flex-column align-items-center justify-content-around bg-primary w-11 max-w-30rem h-6 max-h-20rem ">
         <div className="w-10 flex flex-column align-items-center justify-content-around gap-5">
           <FloatLabel>
-            <InputText
+            <Dropdown
               id="user"
               value={user}
-              onChange={(e) => setUser(e.target.value)}
+              style={{ width: "200px" }}
+              options={usuarios}
+              onChange={(e) => setUser(e.value)}
+              placeholder="Selecione um usuário"
             />
             <label htmlFor="user">Usuário</label>
           </FloatLabel>
