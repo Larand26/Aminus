@@ -142,108 +142,114 @@ const Notas = () => {
             <ProgressSpinner />
           </div>
         ) : (
-          <DataTable
-            id="tabelaNotas"
-            value={notas}
-            paginator
-            rows={10}
-            emptyMessage="Nenhum produto encontrado"
-            showGridlines
-            filters={filters}
-            onFilter={(e) => setFilters(e.filters)}
-            globalFilterFields={[
-              "NF_NUMDOCUM",
-              "ID_PEDIDO",
-              "NF_CGCCPFENTIDADE",
-              "NF_NOMEENTIDADE",
-              "NF_UNIDFEDENTD",
-            ]}
-            header={
-              <InputText
-                type="search"
-                onInput={(e) =>
-                  setFilters({
-                    ...filters,
-                    global: {
-                      value: e.target.value,
-                      matchMode: FilterMatchMode.CONTAINS,
-                    },
-                  })
-                }
-                placeholder="Filtrar notas fiscais"
+          <div style={{ maxHeight: "500px", overflow: "auto" }}>
+            <DataTable
+              id="tabelaNotas"
+              value={notas}
+              scrollable
+              scrollHeight="400px"
+              rows={10}
+              emptyMessage="Nenhum produto encontrado"
+              showGridlines
+              filters={filters}
+              onFilter={(e) => setFilters(e.filters)}
+              globalFilterFields={[
+                "NF_NUMDOCUM",
+                "ID_PEDIDO",
+                "NF_CGCCPFENTIDADE",
+                "NF_NOMEENTIDADE",
+                "NF_UNIDFEDENTD",
+                "ID_CODTRANSP",
+                "NF_DATAEMIS",
+              ]}
+              header={
+                <InputText
+                  type="search"
+                  onInput={(e) =>
+                    setFilters({
+                      ...filters,
+                      global: {
+                        value: e.target.value,
+                        matchMode: FilterMatchMode.CONTAINS,
+                      },
+                    })
+                  }
+                  placeholder="Filtrar notas fiscais"
+                />
+              }
+            >
+              <Column field="NF_NUMDOCUM" header="Número" />
+              <Column field="ID_PEDIDO" header="Pedido" />
+              <Column field="NF_CGCCPFENTIDADE" header="CNPJ" />
+              <Column
+                body={(rowData) => rowData.NF_NOMEENTIDADE?.substring(0, 20)}
+                header="Nome do Cliente"
               />
-            }
-          >
-            <Column field="NF_NUMDOCUM" header="Número" />
-            <Column field="ID_PEDIDO" header="Pedido" />
-            <Column field="NF_CGCCPFENTIDADE" header="CNPJ" />
-            <Column
-              body={(rowData) => rowData.NF_NOMEENTIDADE?.substring(0, 20)}
-              header="Nome do Cliente"
-            />
-            <Column field="NF_UNIDFEDENTD" header="UF" />
-            <Column
-              field="NF_DATAEMIS"
-              header="Data de Emissão"
-              body={(rowData) => {
-                if (!rowData.NF_DATAEMIS) return "";
-                // Se for Date, converte para string legível
-                if (rowData.NF_DATAEMIS instanceof Date) {
-                  return rowData.NF_DATAEMIS.toLocaleDateString();
-                }
-                // Se vier string ISO, formata
-                if (typeof rowData.NF_DATAEMIS === "string") {
-                  const d = new Date(rowData.NF_DATAEMIS);
-                  if (!isNaN(d)) return d.toLocaleDateString();
+              <Column field="NF_UNIDFEDENTD" header="UF" />
+              <Column
+                field="NF_DATAEMIS"
+                header="Data de Emissão"
+                body={(rowData) => {
+                  if (!rowData.NF_DATAEMIS) return "";
+                  // Se for Date, converte para string legível
+                  if (rowData.NF_DATAEMIS instanceof Date) {
+                    return rowData.NF_DATAEMIS.toLocaleDateString();
+                  }
+                  // Se vier string ISO, formata
+                  if (typeof rowData.NF_DATAEMIS === "string") {
+                    const d = new Date(rowData.NF_DATAEMIS);
+                    if (!isNaN(d)) return d.toLocaleDateString();
+                    return rowData.NF_DATAEMIS;
+                  }
                   return rowData.NF_DATAEMIS;
-                }
-                return rowData.NF_DATAEMIS;
-              }}
-            />
-            <Column
-              body={(rowData) => {
-                return (
-                  vendedoresJson.find((v) => v.value === rowData.ID_CODVENDEDOR)
-                    ?.label || "Desconhecido"
-                );
-              }}
-              header="Vendedor"
-            />
-            <Column
-              body={(rowData) => {
-                return (
-                  rowData.NF_VLRTOTAL?.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }) || "R$ 0,00"
-                );
-              }}
-              header="Valor Total"
-            />
-            <Column
-              body={(rowData) => {
-                return (
-                  "kg " +
-                    rowData.NF_PESOBRUTO?.toLocaleString("pt-BR", {
-                      style: "decimal",
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    }) || "kg 0,00"
-                );
-              }}
-              header="Peso bruto"
-            />
-            <Column
-              body={(rowData) => {
-                return (
-                  transportadorasJson.transportadoras.find(
-                    (t) => t.id === rowData.ID_CODTRANSP
-                  )?.nome || "Desconhecida"
-                );
-              }}
-              header="Transportadora"
-            />
-          </DataTable>
+                }}
+              />
+              <Column
+                body={(rowData) => {
+                  return (
+                    vendedoresJson.find(
+                      (v) => v.value === rowData.ID_CODVENDEDOR
+                    )?.label || "Desconhecido"
+                  );
+                }}
+                header="Vendedor"
+              />
+              <Column
+                body={(rowData) => {
+                  return (
+                    rowData.NF_VLRTOTAL?.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    }) || "R$ 0,00"
+                  );
+                }}
+                header="Valor Total"
+              />
+              <Column
+                body={(rowData) => {
+                  return (
+                    "kg " +
+                      rowData.NF_PESOBRUTO?.toLocaleString("pt-BR", {
+                        style: "decimal",
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }) || "kg 0,00"
+                  );
+                }}
+                header="Peso bruto"
+              />
+              <Column
+                body={(rowData) => {
+                  return (
+                    transportadorasJson.transportadoras.find(
+                      (t) => t.id === rowData.ID_CODTRANSP
+                    )?.nome || "Desconhecida"
+                  );
+                }}
+                header="Transportadora"
+              />
+            </DataTable>
+          </div>
         )}
       </Content>
     </div>
