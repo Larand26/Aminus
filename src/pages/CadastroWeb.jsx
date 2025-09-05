@@ -152,10 +152,42 @@ const CadastroWeb = () => {
     setGrade(novaGrade);
   };
 
+  const palavrasParaRemover = [
+    "FEMININO",
+    "FEMININA",
+    "MASCULINO",
+    "MASCULINA",
+    "INFANTIL",
+    "BABY",
+    "UNISEX",
+    "CHINELO",
+    "SANDALIA",
+    "SLIDE",
+    "RASTEIRA",
+    "TAMANCO",
+    "BABUCHE",
+    "BABUCH",
+    "BOTA",
+    "SAPATILHA",
+    "SAPATO",
+    "PROMO",
+    "TAM",
+    "AD",
+    "SAND",
+    "CHIN",
+    "FABRICA",
+  ];
   useEffect(() => {
     const handler = (produtos) => {
       setProdutos(produtos);
-      setNome(produtos[0]?.PROD_DESCRCOMPLETA || "");
+      let nomeLimpo = produtos[0]?.ECOMMERCE_DESCRICAO || "";
+      palavrasParaRemover.forEach((palavra) => {
+        const regex = new RegExp(`\\b${palavra}\\b`, "gi");
+        nomeLimpo = nomeLimpo.replace(regex, "");
+      });
+      nomeLimpo = nomeLimpo.replace(/-.*$/, "");
+      nomeLimpo = nomeLimpo.replace(/\s{2,}/g, " ").trim();
+      setNome(nomeLimpo);
       makeGrade(produtos[0]?.NUMEROS, produtos[0]?.QUANTIDADES);
       setGrupo(produtos[0]?.GRUP_DESCRICAO.split(", ") || []);
       setCarregando(false);
