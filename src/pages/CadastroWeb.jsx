@@ -27,6 +27,7 @@ const CadastroWeb = () => {
   const [pai, setPai] = useState("");
   const [coresCarregadas, setCoresCarregadas] = useState(false); // Novo estado
   const [promo, setPromo] = useState(grupo.includes("PROMO")); // valor inicial depende do grupo
+  const [coresSelecionadas, setCoresSelecionadas] = useState([]);
   const toast = useRef(null);
 
   useEffect(() => {
@@ -152,6 +153,12 @@ const CadastroWeb = () => {
     setGrade(novaGrade);
   };
 
+  const makeCoresSelecionadas = (produtos) => {
+    // Salva o texto da cor (label) e não o id
+    const novasCores = produtos.map((prod) => prod.COR_DESCRICAO || "");
+    setCoresSelecionadas(novasCores);
+  };
+
   const palavrasParaRemover = [
     "FEMININO",
     "FEMININA",
@@ -191,6 +198,7 @@ const CadastroWeb = () => {
       nomeLimpo = nomeLimpo.replace(/\s{2,}/g, " ").trim();
       setNome(nomeLimpo);
       makeGrade(produtos[0]?.NUMEROS, produtos[0]?.QUANTIDADES);
+      makeCoresSelecionadas(produtos);
       setGrupo(produtos[0]?.GRUP_DESCRICAO.split(", ") || []);
       setCarregando(false);
       setIdCor(produtos[0]?.ID_CORES_ECOMMERCE || 0);
@@ -621,10 +629,21 @@ const CadastroWeb = () => {
                     <td>{prod.SKU_PRODUTO_PAI}</td>
                     <td>
                       <Dropdown
-                        value={prod.ID_CORES_ECOMMERCE}
+                        value={coresSelecionadas[idx] || ""}
                         options={cores}
+                        optionLabel="label"
+                        optionValue="label"
+                        placeholder={coresSelecionadas[idx] || "Selecione..."}
                         onChange={(e) => {
-                          alterarCorProduto(prod.ID_CODPRODUTO, e.value);
+                          const newCores = [...coresSelecionadas];
+                          newCores[idx] = e.value; // e.value é o texto da cor
+                          setCoresSelecionadas(newCores);
+                          // Procura o id correspondente ao texto selecionado
+                          const corObj = cores.find((c) => c.label === e.value);
+                          alterarCorProduto(
+                            prod.ID_CODPRODUTO,
+                            corObj ? corObj.value : null
+                          );
                         }}
                         filter
                         style={{ width: "180px" }}
