@@ -176,6 +176,8 @@ const CadastroWeb = () => {
     "SAND",
     "CHIN",
     "FABRICA",
+    "INF",
+    "DEDO",
   ];
   useEffect(() => {
     const handler = (produtos) => {
@@ -490,16 +492,6 @@ const CadastroWeb = () => {
               value={nome}
               onChange={(e) => setNome(e.target.value)}
             />
-            <Dropdown
-              value={idCor}
-              options={cores}
-              onChange={(e) => setIdCor(e.value)}
-              placeholder="Selecione uma cor"
-              className="w-full"
-              filter
-              onFilter={handleCorFilter} // Busca cores só ao digitar no filtro
-              onShow={handleDropdownShow} // Limpa cores ao abrir
-            />
             <div className="flex w-full gap-2">
               <InputText
                 className="w-full"
@@ -634,7 +626,6 @@ const CadastroWeb = () => {
                         onChange={(e) => {
                           alterarCorProduto(prod.ID_CODPRODUTO, e.value);
                         }}
-                        placeholder={prod.COR_DESCRICAO || "Selecione"}
                         filter
                         style={{ width: "180px" }}
                         showClear
