@@ -28,11 +28,43 @@ const CadastroWeb = () => {
   const [coresCarregadas, setCoresCarregadas] = useState(false); // Novo estado
   const [promo, setPromo] = useState(grupo.includes("PROMO")); // valor inicial depende do grupo
   const [coresSelecionadas, setCoresSelecionadas] = useState([]);
+  const [cadastroResponse, setCadastroResponse] = useState(null);
   const toast = useRef(null);
 
   useEffect(() => {
     setPromo(grupo.includes("PROMO")); // atualiza promo quando grupo muda
   }, [grupo]);
+
+  useEffect(() => {
+    const handler = (response) => {
+      setCadastroResponse(response);
+    };
+    window.electronApi?.onCadastraProdutosWebResponse(handler);
+    return () => {
+      window.electronApi?.removeCadastraProdutosWebResponse?.(handler);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (cadastroResponse) {
+      if (cadastroResponse.success) {
+        toast.current?.show({
+          severity: "success",
+          summary: "Sucesso",
+          detail: "Produtos cadastrados com sucesso!",
+          life: 3000,
+        });
+      } else {
+        toast.current?.show({
+          severity: "error",
+          summary: "Erro",
+          detail: "Erro ao cadastrar produtos.",
+          life: 3000,
+        });
+      }
+      setCadastroResponse(null); // Limpa para não repetir
+    }
+  }, [cadastroResponse]);
 
   const cadastro = () => {
     // Seleciona os produtos atuais com checkbox marcado, garantindo cor e status atualizado
@@ -50,23 +82,6 @@ const CadastroWeb = () => {
       }));
     console.log(produtosSelecionados);
     window.electronApi?.cadastraProdutosWeb(produtosSelecionados);
-    window.electronApi?.onCadastraProdutosWebResponse((response) => {
-      if (response.success) {
-        toast.current?.show({
-          severity: "success",
-          summary: "Sucesso",
-          detail: "Produtos cadastrados com sucesso!",
-          life: 3000,
-        });
-      } else {
-        toast.current?.show({
-          severity: "error",
-          summary: "Erro",
-          detail: "Erro ao cadastrar produtos.",
-          life: 3000,
-        });
-      }
-    });
   };
 
   const makePai = () => {
