@@ -200,6 +200,7 @@ const CadastroWeb = () => {
     "FABRICA",
     "INF",
     "DEDO",
+    "RAST",
   ];
   useEffect(() => {
     const handler = (produtos) => {
