@@ -39,7 +39,7 @@ const Fotos = () => {
     setLoading(true); // inicia carregamento
     const foto = {
       referencia: ref,
-      codigo_cor: cor,
+      codigo_cor: cor.toUpperCase() || "",
     };
     console.log("Buscando foto:", foto);
 
