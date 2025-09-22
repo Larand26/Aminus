@@ -6,11 +6,46 @@ import { Checkbox } from "primereact/checkbox";
 
 import "../styles/tabela-produtos-web.css";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, use } from "react";
 
 const CadastroWeb = () => {
   const [referencia, setReferencia] = useState("");
   const [produtos, setProdutos] = useState([]);
+
+  //Checkboxes
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [activeEcommerce, setActiveEcommerce] = useState([]);
+
+  // Atualiza o estado dos checkboxes quando os produtos mudam
+  useEffect(() => {
+    setSelectedProducts(Array(produtos.length).fill(false));
+  }, [produtos]);
+
+  useEffect(() => {
+    setActiveEcommerce(
+      produtos.map(
+        (produto) =>
+          produto.PRO_ATIVO_ECOMMERCE === true &&
+          produto.PRO_INTEGRACAO_ECOMMERCE === true
+      )
+    );
+  }, [produtos]);
+
+  const handleCheckboxChange = (index) => {
+    setSelectedProducts((prev) => {
+      const updated = [...prev];
+      updated[index] = !updated[index];
+      return updated;
+    });
+  };
+
+  const handleActiveEcommerceChange = (index) => {
+    setActiveEcommerce((prev) => {
+      const updated = [...prev];
+      updated[index] = !updated[index];
+      return updated;
+    });
+  };
 
   // Pesquisa os produtos
   const search = () => {
@@ -26,17 +61,23 @@ const CadastroWeb = () => {
 
   //constroi tabela de produtos
   const renderTableRows = () => {
-    return produtos.map((produto) => (
+    return produtos.map((produto, index) => (
       <tr key={produto.id}>
         <td>
-          <Checkbox />
+          <Checkbox
+            onChange={() => handleCheckboxChange(index)}
+            checked={!!selectedProducts[index]}
+          />
         </td>
         <td>{produto.ID_CODPRODUTO}</td>
         <td>{produto.ECOMMERCE_DESCRICAO}</td>
         <td>{produto.SKU_PRODUTO_PAI}</td>
         <td>{produto.COR_DESCRICAO}</td>
         <td>
-          <Checkbox />
+          <Checkbox
+            checked={!!activeEcommerce[index]}
+            onChange={() => handleActiveEcommerceChange(index)}
+          />
         </td>
       </tr>
     ));
@@ -55,6 +96,8 @@ const CadastroWeb = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
+        <p>{selectedProducts.join(", ")}</p>
+        <p>{activeEcommerce.join(", ")}</p>
         <div className="overflow-y-scroll h-25rem">
           <table className="tabela-produtos-web">
             <thead>
