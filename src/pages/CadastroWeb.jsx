@@ -1,6 +1,8 @@
 import BarraLateral from "../components/BarraLateral";
+import Content from "../components/Content";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
+import { Checkbox } from "primereact/checkbox";
 
 import { useState, useCallback, useEffect } from "react";
 
@@ -27,6 +29,24 @@ const CadastroWeb = () => {
           <label htmlFor="inputReferencia">Referencia</label>
         </FloatLabel>
       </BarraLateral>
+      <Content titulo={"Cadastro Web"}>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                <Checkbox />
+              </th>
+              <th>SKU</th>
+              <th>Descrição</th>
+              <th>Pai</th>
+              <th>Cor</th>
+              <th>
+                <Checkbox />
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </Content>
     </div>
   );
 };
