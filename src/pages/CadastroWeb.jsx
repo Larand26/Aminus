@@ -4,6 +4,8 @@ import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Checkbox } from "primereact/checkbox";
 
+import "../styles/tabela-produtos-web.css";
+
 import { useState, useCallback, useEffect } from "react";
 
 const CadastroWeb = () => {
@@ -54,7 +56,7 @@ const CadastroWeb = () => {
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
         <div className="overflow-y-scroll h-25rem">
-          <table>
+          <table className="tabela-produtos-web">
             <thead>
               <tr>
                 <th>
