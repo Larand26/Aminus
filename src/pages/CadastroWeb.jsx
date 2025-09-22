@@ -47,6 +47,16 @@ const CadastroWeb = () => {
     });
   };
 
+  const handleAllCheckBoxes = () => {
+    const allChecked = selectedProducts.every((val) => val === true);
+    setSelectedProducts(Array(produtos.length).fill(!allChecked));
+  };
+
+  const handleAllActiveEcommerce = () => {
+    const allChecked = activeEcommerce.every((val) => val === true);
+    setActiveEcommerce(Array(produtos.length).fill(!allChecked));
+  };
+
   // Pesquisa os produtos
   const search = () => {
     window.electronApi?.searchCadastroProdutos(referencia);
@@ -103,14 +113,20 @@ const CadastroWeb = () => {
             <thead>
               <tr>
                 <th>
-                  <Checkbox />
+                  <Checkbox
+                    checked={selectedProducts.every((val) => val)}
+                    onChange={() => handleAllCheckBoxes()}
+                  />
                 </th>
                 <th>SKU</th>
                 <th>Descrição</th>
                 <th>Pai</th>
                 <th>Cor</th>
                 <th>
-                  <Checkbox />
+                  <Checkbox
+                    checked={activeEcommerce.every((val) => val)}
+                    onChange={() => handleAllActiveEcommerce()}
+                  />
                 </th>
               </tr>
             </thead>
