@@ -25,13 +25,44 @@ const CadastroWeb = () => {
 
   const searchCores = (cor) => {
     window.electronApi?.getCores(cor || "");
-    window.electronApi?.onGetCoresResponse((cor) => {
-      setCores(cor);
+    window.electronApi?.onGetCoresResponse((novasCores) => {
+      setCores((coresAntigas) => {
+        // Junta as cores antigas com as novas, evitando duplicidade pelo value
+        const todasCores = [...coresAntigas, ...novasCores];
+        const unique = {};
+        return todasCores.filter((cor) => {
+          if (unique[cor.value]) return false;
+          unique[cor.value] = true;
+          return true;
+        });
+      });
+    });
+  };
+
+  const handleCorChange = (index, value) => {
+    const corSelecionada = cores.find((cor) => cor.value === value);
+    setSelectedCor((prev) => {
+      const updated = [...prev];
+      updated[index] = corSelecionada.value || 1;
+      return updated;
     });
   };
 
   useEffect(() => {
-    console.log(produtos);
+    const unique = {};
+    const coresUnicas = produtos
+      .filter((produto) => {
+        if (!produto.ID_CORES_ECOMERCE || unique[produto.ID_CORES_ECOMERCE])
+          return false;
+        unique[produto.ID_CORES_ECOMERCE] = true;
+        return true;
+      })
+      .map((produto) => ({
+        label: produto.COR_DESCRICAO,
+        value: produto.ID_CORES_ECOMERCE,
+      }));
+    setCores(coresUnicas);
+    searchCores();
   }, [produtos]);
 
   //Checkboxes
@@ -82,7 +113,7 @@ const CadastroWeb = () => {
   // Pesquisa os produtos
   const search = () => {
     window.electronApi?.searchCadastroProdutos(referencia);
-    searchCores();
+    // searchCores();
   };
 
   useEffect(() => {
@@ -102,10 +133,15 @@ const CadastroWeb = () => {
           />
         </td>
         <td>{produto.ID_CODPRODUTO}</td>
-        <td>{produto.ECOMMERCE_DESCRICAO}</td>
+        <td>{produto.PROD_DESCRCOMPLETA}</td>
         <td>{produto.SKU_PRODUTO_PAI}</td>
         <td>
-          <Dropdown filter />
+          <Dropdown
+            filter
+            options={cores}
+            value={selectedCor[index]}
+            onChange={(e) => handleCorChange(index, e.value)}
+          />
         </td>
         <td>
           <Checkbox
@@ -131,7 +167,8 @@ const CadastroWeb = () => {
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
         <p>{selectedCor.join(", ")}</p>
-        <p>{cores.join(", ")}</p>
+        <p>{cores.map((cor) => cor.label).join(", ")}</p>
+        <p>{cores.length}</p>
         <div className="overflow-y-scroll h-25rem">
           <table className="tabela-produtos-web">
             <thead>
