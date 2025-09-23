@@ -3,6 +3,7 @@ import Content from "../components/Content";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Checkbox } from "primereact/checkbox";
+import { Dropdown } from "primereact/dropdown";
 
 import "../styles/tabela-produtos-web.css";
 
@@ -11,6 +12,27 @@ import { useState, useCallback, useEffect, use } from "react";
 const CadastroWeb = () => {
   const [referencia, setReferencia] = useState("");
   const [produtos, setProdutos] = useState([]);
+
+  //cores
+  const [cores, setCores] = useState([]);
+  const [selectedCor, setSelectedCor] = useState([]);
+
+  useEffect(() => {
+    setSelectedCor(
+      produtos.map((produto) => produto.ID_CORES_ECOMERCE || null)
+    );
+  }, [produtos]);
+
+  const searchCores = (cor) => {
+    window.electronApi?.getCores(cor || "");
+    window.electronApi?.onGetCoresResponse((cor) => {
+      setCores(cor);
+    });
+  };
+
+  useEffect(() => {
+    console.log(produtos);
+  }, [produtos]);
 
   //Checkboxes
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -60,12 +82,12 @@ const CadastroWeb = () => {
   // Pesquisa os produtos
   const search = () => {
     window.electronApi?.searchCadastroProdutos(referencia);
+    searchCores();
   };
 
   useEffect(() => {
     window.electronApi?.onSearchCadastroProdutosResponse((produto) => {
       setProdutos(produto);
-      console.log(produto);
     });
   }, []);
 
@@ -82,7 +104,9 @@ const CadastroWeb = () => {
         <td>{produto.ID_CODPRODUTO}</td>
         <td>{produto.ECOMMERCE_DESCRICAO}</td>
         <td>{produto.SKU_PRODUTO_PAI}</td>
-        <td>{produto.COR_DESCRICAO}</td>
+        <td>
+          <Dropdown filter />
+        </td>
         <td>
           <Checkbox
             checked={!!activeEcommerce[index]}
@@ -106,8 +130,8 @@ const CadastroWeb = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
-        <p>{selectedProducts.join(", ")}</p>
-        <p>{activeEcommerce.join(", ")}</p>
+        <p>{selectedCor.join(", ")}</p>
+        <p>{cores.join(", ")}</p>
         <div className="overflow-y-scroll h-25rem">
           <table className="tabela-produtos-web">
             <thead>
