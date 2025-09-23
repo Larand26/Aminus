@@ -17,52 +17,43 @@ const CadastroWeb = () => {
   const [cores, setCores] = useState([]);
   const [selectedCor, setSelectedCor] = useState([]);
 
-  useEffect(() => {
-    setSelectedCor(
-      produtos.map((produto) => produto.ID_CORES_ECOMERCE || null)
-    );
-  }, [produtos]);
-
   const searchCores = (cor) => {
+    console.log("Buscando cores para:", cor);
+
     window.electronApi?.getCores(cor || "");
     window.electronApi?.onGetCoresResponse((novasCores) => {
-      setCores((coresAntigas) => {
-        // Junta as cores antigas com as novas, evitando duplicidade pelo value
-        const todasCores = [...coresAntigas, ...novasCores];
-        const unique = {};
-        return todasCores.filter((cor) => {
-          if (unique[cor.value]) return false;
-          unique[cor.value] = true;
-          return true;
-        });
-      });
+      // Junta as cores atuais com as novas e remove duplicadas pelo campo 'value'
+      const todasCores = [...selectedCor, ...novasCores];
+      const coresUnicas = todasCores.filter(
+        (cor, index, self) =>
+          index === self.findIndex((c) => c.value === cor.value)
+      );
+      setCores(coresUnicas);
     });
   };
 
   const handleCorChange = (index, value) => {
     const corSelecionada = cores.find((cor) => cor.value === value);
+    // troca a cor selecionada no índice específico
     setSelectedCor((prev) => {
       const updated = [...prev];
-      updated[index] = corSelecionada.value || 1;
+      updated[index] = corSelecionada || null;
       return updated;
     });
   };
 
   useEffect(() => {
-    const unique = {};
-    const coresUnicas = produtos
-      .filter((produto) => {
-        if (!produto.ID_CORES_ECOMERCE || unique[produto.ID_CORES_ECOMERCE])
-          return false;
-        unique[produto.ID_CORES_ECOMERCE] = true;
-        return true;
-      })
-      .map((produto) => ({
-        label: produto.COR_DESCRICAO,
-        value: produto.ID_CORES_ECOMERCE,
-      }));
-    setCores(coresUnicas);
     searchCores();
+  }, [selectedCor]);
+
+  useEffect(() => {
+    console.log(produtos);
+    setSelectedCor(
+      produtos.map((produto) => ({
+        value: produto.ID_CORES_ECOMERCE || null,
+        label: produto.COR_DESCRICAO || "Nenhuma",
+      }))
+    );
   }, [produtos]);
 
   //Checkboxes
@@ -139,8 +130,9 @@ const CadastroWeb = () => {
           <Dropdown
             filter
             options={cores}
-            value={selectedCor[index]}
+            value={selectedCor[index]?.value || null}
             onChange={(e) => handleCorChange(index, e.value)}
+            onFilter={(e) => searchCores(e.filter)}
           />
         </td>
         <td>
@@ -166,8 +158,8 @@ const CadastroWeb = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
-        <p>{selectedCor.join(", ")}</p>
-        <p>{cores.map((cor) => cor.label).join(", ")}</p>
+        <p>{selectedCor.map((cor) => cor.label).join(" | ")}</p>
+        <p>{cores.map((cor) => cor.label).join(" | ")}</p>
         <p>{cores.length}</p>
         <div className="overflow-y-scroll h-25rem">
           <table className="tabela-produtos-web">
