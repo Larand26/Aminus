@@ -365,6 +365,9 @@ const CadastroWeb = () => {
             id="inputReferencia"
             value={referencia}
             onChange={(e) => setReferencia(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") search();
+            }}
           />
           <label htmlFor="inputReferencia">Referencia</label>
         </FloatLabel>
