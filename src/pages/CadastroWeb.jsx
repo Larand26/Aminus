@@ -53,6 +53,15 @@ const CadastroWeb = () => {
   const [nomeProduto, setNomeProduto] = useState("");
   const [nomeFormatado, setNomeFormatado] = useState("");
 
+  const changeGrupo = (newGrupo, index) => {
+    // troca o grupo atual pelo novo
+    setProdutoSelecionado((prevProduto) => {
+      const updatedGrupo = [...prevProduto.grupo];
+      updatedGrupo[index] = newGrupo;
+      return { ...prevProduto, grupo: updatedGrupo };
+    });
+  };
+
   //Name formatado
   useEffect(() => {
     let tipo = produtoSelecionado.grupo[3] || "";
@@ -279,6 +288,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("FEMININO")}
               icon="icon-female"
               iconPos="right"
+              onClick={() => changeGrupo("FEMININO", 2)}
             />
             <Button
               title="Masculino"
@@ -286,6 +296,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("MASCULINO")}
               icon="icon-male"
               iconPos="right"
+              onClick={() => changeGrupo("MASCULINO", 2)}
             />
             <Button
               title="Infantil"
@@ -293,6 +304,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("INFANTIL")}
               icon="icon-child"
               iconPos="right"
+              onClick={() => changeGrupo("INFANTIL", 2)}
             />
             <Button
               title="Baby"
@@ -300,6 +312,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("BABY")}
               icon="icon-baby"
               iconPos="right"
+              onClick={() => changeGrupo("BABY", 2)}
             />
             <Button
               title="Unisex"
@@ -307,6 +320,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("UNISEX")}
               icon="icon-unisex"
               iconPos="right"
+              onClick={() => changeGrupo("UNISEX", 2)}
             />
             <Button
               severity="danger"
@@ -324,6 +338,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("CHINELO DEDO")}
               icon="icon-chinelo"
               iconPos="right"
+              onClick={() => changeGrupo("CHINELO DEDO", 3)}
             />
             <Button
               title="Sandália"
@@ -331,6 +346,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("SANDÁLIA")}
               icon="icon-sandalia"
               iconPos="right"
+              onClick={() => changeGrupo("SANDÁLIA", 3)}
             />
             <Button
               title="Slide"
@@ -340,6 +356,7 @@ const CadastroWeb = () => {
               }
               icon="icon-slide"
               iconPos="right"
+              onClick={() => changeGrupo("CHINELO GÁSPEA/SLIDE", 3)}
             />
             <Button
               title="Rasteira"
@@ -347,6 +364,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("RASTEIRINHAS")}
               icon="icon-rasteira"
               iconPos="right"
+              onClick={() => changeGrupo("RASTEIRINHAS", 3)}
             />
             <Button
               title="Tamanco"
@@ -354,6 +372,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("TAMANCO")}
               icon="icon-tamanco"
               iconPos="right"
+              onClick={() => changeGrupo("TAMANCO", 3)}
             />
             <Button
               title="Babuche"
@@ -361,6 +380,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("BABUCH")}
               icon="icon-babuche"
               iconPos="right"
+              onClick={() => changeGrupo("BABUCH", 3)}
             />
             <Button
               title="Bota"
@@ -368,6 +388,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("BOTA")}
               icon="icon-bota"
               iconPos="right"
+              onClick={() => changeGrupo("BOTA", 3)}
             />
             <Button
               title="Sapatilha"
@@ -375,6 +396,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("SAPATILHA")}
               icon="icon-sapatilha"
               iconPos="right"
+              onClick={() => changeGrupo("SAPATILHA", 3)}
             />
             <Button
               title="Sapato"
@@ -382,6 +404,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("SAPATO")}
               icon="icon-sapato"
               iconPos="right"
+              onClick={() => changeGrupo("SAPATO", 3)}
             />
             <Button
               title="Bolsa"
@@ -389,6 +412,7 @@ const CadastroWeb = () => {
               outlined={!produtoSelecionado.grupo?.includes("BOLSA")}
               icon="icon-bolsa"
               iconPos="right"
+              onClick={() => changeGrupo("BOLSA", 3)}
             />
           </div>
           <div className="cont-grade">
