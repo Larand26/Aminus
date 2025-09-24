@@ -4,3 +4,30 @@
   gap: 0.5rem;
   padding: 10px;
 }
+
+.tabela-grade-web {
+  max-width: 100%;
+}
+
+.tabela-grade-web th,
+.tabela-grade-web td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+.cont-tabela-grade-web {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.cont-tabela-grade-web::-webkit-scrollbar {
+  width: 0px;
+}
+
+.tabela-grade-web thead {
+  background-color: #a4a4a4;
+  font-weight: bold;
+  position: sticky;
+  top: -1px;
+  z-index: 2;
+}

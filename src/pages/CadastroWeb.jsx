@@ -15,14 +15,18 @@ import { useState, useCallback, useEffect, use } from "react";
 const CadastroWeb = () => {
   const [referencia, setReferencia] = useState("");
   const [produtos, setProdutos] = useState([]);
+  const [produtoSelecionado, setProdutoSelecionado] = useState({});
+
+  const handleProdutoChange = (produto) => {
+    if (!produto) return;
+    setProdutoSelecionado(produto);
+  };
 
   //cores
   const [cores, setCores] = useState([]);
   const [selectedCor, setSelectedCor] = useState([]);
 
   const searchCores = (cor) => {
-    console.log("Buscando cores para:", cor);
-
     window.electronApi?.getCores(cor || "");
     window.electronApi?.onGetCoresResponse((novasCores) => {
       // Junta as cores atuais com as novas e remove duplicadas pelo campo 'value'
@@ -57,6 +61,12 @@ const CadastroWeb = () => {
         label: produto.COR_DESCRICAO || "Nenhuma",
       }))
     );
+    const produtoSelecionado = {
+      sku: produtos[0]?.ID_CODPRODUTO || "",
+      numeros: produtos[0]?.NUMEROS.split(",") || [],
+      quantidades: produtos[0]?.QUANTIDADES.split(",") || [],
+    };
+    setProdutoSelecionado(produtoSelecionado || {});
   }, [produtos]);
 
   //Checkboxes
@@ -161,6 +171,7 @@ const CadastroWeb = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
+        <div>{JSON.stringify(produtoSelecionado)}</div>
         <div className="mb-3 p-2 flex">
           <div className="cont-buttons">
             <Button
@@ -242,6 +253,31 @@ const CadastroWeb = () => {
               iconPos="right"
             />
             <Button label="Bolsa" outlined icon="icon-bolsa" iconPos="right" />
+          </div>
+          <div className="cont-grade">
+            <div>
+              <InputText placeholder="Coloque uma cor nova..." />
+              <Button icon="pi pi-plus" className="circle-btn" />
+            </div>
+            <div className="cont-tabela-grade-web">
+              <table className="tabela-grade-web">
+                <thead>
+                  <tr>
+                    <th>Número</th>
+                    <th>Qtd</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {produtoSelecionado.numeros &&
+                    produtoSelecionado.numeros.map((num, idx) => (
+                      <tr key={idx}>
+                        <td>{num}</td>
+                        <td>{produtoSelecionado.quantidades[idx]}</td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div className="overflow-y-scroll h-25rem">
