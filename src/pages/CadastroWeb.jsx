@@ -5,12 +5,13 @@ import { FloatLabel } from "primereact/floatlabel";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
+import { Toast } from "primereact/toast";
 
 import "../styles/cadastro-web.css";
 import "../styles/tabela-produtos-web.css";
 import "../styles/icons.css";
 
-import { useState, useCallback, useEffect, use } from "react";
+import { useState, useCallback, useEffect, use, useRef } from "react";
 
 const palavrasParaRemover = [
   "FEMININO",
@@ -54,6 +55,39 @@ const CadastroWeb = () => {
   const [nomeFormatado, setNomeFormatado] = useState("");
   const [novaCor, setNovaCor] = useState("");
   const [pai, setPai] = useState("");
+  const [cadastroResponse, setCadastroResponse] = useState(null);
+  const toast = useRef(null);
+
+  useEffect(() => {
+    const handler = (response) => {
+      setCadastroResponse(response); // Aqui está correto!
+    };
+    window.electronApi?.onCadastraProdutosWebResponse(handler);
+    return () => {
+      window.electronApi?.removeCadastraProdutosWebResponse?.(handler);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (cadastroResponse) {
+      if (cadastroResponse.success) {
+        toast.current?.show({
+          severity: "success",
+          summary: "Sucesso",
+          detail: "Produtos cadastrados com sucesso!",
+          life: 3000,
+        });
+      } else {
+        toast.current?.show({
+          severity: "error",
+          summary: "Erro",
+          detail: "Erro ao cadastrar produtos.",
+          life: 3000,
+        });
+      }
+      setCadastroResponse(null);
+    }
+  }, [cadastroResponse]);
 
   //Função de cadastro
   const cadastro = () => {
@@ -324,6 +358,7 @@ const CadastroWeb = () => {
 
   return (
     <div className="flex">
+      <Toast ref={toast} />
       <BarraLateral search={search}>
         <FloatLabel>
           <InputText
@@ -335,7 +370,6 @@ const CadastroWeb = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
-        <div>{selectedProducts.join(", ")}</div>
         <div className="mb-3 p-2 flex gap-3">
           <div className="cont-buttons">
             <Button
