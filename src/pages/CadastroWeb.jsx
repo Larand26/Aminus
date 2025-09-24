@@ -12,6 +12,35 @@ import "../styles/icons.css";
 
 import { useState, useCallback, useEffect, use } from "react";
 
+const palavrasParaRemover = [
+  "FEMININO",
+  "FEMININA",
+  "MASCULINO",
+  "MASCULINA",
+  "INFANTIL",
+  "BABY",
+  "UNISEX",
+  "CHINELO",
+  "SANDALIA",
+  "SLIDE",
+  "RASTEIRA",
+  "TAMANCO",
+  "BABUCHE",
+  "BABUCH",
+  "BOTA",
+  "SAPATILHA",
+  "SAPATO",
+  "PROMO",
+  "TAM",
+  "AD",
+  "SAND",
+  "CHIN",
+  "FABRICA",
+  "INF",
+  "DEDO",
+  "RAST",
+];
+
 const CadastroWeb = () => {
   const [referencia, setReferencia] = useState("");
   const [produtos, setProdutos] = useState([]);
@@ -21,6 +50,7 @@ const CadastroWeb = () => {
     quantidades: [],
     grupo: [],
   });
+  const [nomeProduto, setNomeProduto] = useState("");
 
   const handleProdutoChange = (produto) => {
     if (!produto) return;
@@ -68,6 +98,14 @@ const CadastroWeb = () => {
         label: produto.COR_DESCRICAO || "Nenhuma",
       }))
     );
+    let nomeLimpo = produtos[0]?.ECOMMERCE_DESCRICAO || "";
+    palavrasParaRemover.forEach((palavra) => {
+      const regex = new RegExp(`\\b${palavra}\\b`, "gi");
+      nomeLimpo = nomeLimpo.replace(regex, "");
+    });
+    nomeLimpo = nomeLimpo.replace(/-.*$/, "");
+    nomeLimpo = nomeLimpo.replace(/\s{2,}/g, " ").trim();
+    setNomeProduto(nomeLimpo);
     const produtoSelecionado = {
       sku: produtos[0]?.ID_CODPRODUTO || "",
       numeros: produtos[0]?.NUMEROS.split(",") || [],
@@ -302,7 +340,12 @@ const CadastroWeb = () => {
           </div>
           <div className="cont-grade">
             <div className="w-full ">
-              <InputText placeholder="Nome do produto" className="w-full" />
+              <InputText
+                placeholder="Nome do produto"
+                className="w-full"
+                value={nomeProduto}
+                onChange={(e) => setNomeProduto(e.target.value.toUpperCase())}
+              />
             </div>
             <div className="w-full flex">
               <InputText
