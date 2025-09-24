@@ -506,7 +506,9 @@ const CadastroWeb = () => {
                 <h3>Pai</h3>
                 <p>{pai}</p>
               </div>
-              <div></div>
+              <div>
+                <Button label="Cadastrar" rounded className="w-full" />
+              </div>
             </div>
             <div className="display-imagem"></div>
           </div>
