@@ -4,8 +4,11 @@ import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
+import { Button } from "primereact/button";
 
+import "../styles/cadastro-web.css";
 import "../styles/tabela-produtos-web.css";
+import "../styles/icons.css";
 
 import { useState, useCallback, useEffect, use } from "react";
 
@@ -158,9 +161,89 @@ const CadastroWeb = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
-        <p>{selectedCor.map((cor) => cor.label).join(" | ")}</p>
-        <p>{cores.map((cor) => cor.label).join(" | ")}</p>
-        <p>{cores.length}</p>
+        <div className="mb-3 p-2 flex">
+          <div className="cont-buttons">
+            <Button
+              label="Feminino"
+              outlined
+              icon="icon-female"
+              iconPos="right"
+            />
+            <Button
+              label="Masculino"
+              outlined
+              icon="icon-male"
+              iconPos="right"
+            />
+            <Button
+              label="Infantil"
+              outlined
+              icon="icon-child"
+              iconPos="right"
+            />
+            <Button label="Baby" outlined icon="icon-baby" iconPos="right" />
+            <Button
+              label="Unisex"
+              outlined
+              icon="icon-unisex"
+              iconPos="right"
+            />
+            <Button
+              severity="danger"
+              label="Promo"
+              outlined
+              icon="icon-promo"
+              iconPos="right"
+            />
+          </div>
+          <div className="cont-buttons">
+            <Button
+              label="Chinelo"
+              outlined
+              icon="icon-chinelo"
+              iconPos="right"
+            />
+            <Button
+              label="Sandália"
+              outlined
+              icon="icon-sandalia"
+              iconPos="right"
+            />
+            <Button label="Slide" outlined icon="icon-slide" iconPos="right" />
+            <Button
+              label="Rasteira"
+              outlined
+              icon="icon-rasteira"
+              iconPos="right"
+            />
+            <Button
+              label="Tamanco"
+              outlined
+              icon="icon-tamanco"
+              iconPos="right"
+            />
+            <Button
+              label="Babuche"
+              outlined
+              icon="icon-babuche"
+              iconPos="right"
+            />
+            <Button label="Bota" outlined icon="icon-bota" iconPos="right" />
+            <Button
+              label="Sapatilha"
+              outlined
+              icon="icon-sapatilha"
+              iconPos="right"
+            />
+            <Button
+              label="Sapato"
+              outlined
+              icon="icon-sapato"
+              iconPos="right"
+            />
+            <Button label="Bolsa" outlined icon="icon-bolsa" iconPos="right" />
+          </div>
+        </div>
         <div className="overflow-y-scroll h-25rem">
           <table className="tabela-produtos-web">
             <thead>
