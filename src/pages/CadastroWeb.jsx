@@ -55,7 +55,9 @@ const CadastroWeb = () => {
   };
 
   useEffect(() => {
-    searchCores();
+    if (selectedCor.length > 0) {
+      searchCores();
+    }
   }, [selectedCor]);
 
   useEffect(() => {
