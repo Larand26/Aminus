@@ -172,7 +172,7 @@ const CadastroWeb = () => {
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
         <div>{JSON.stringify(produtoSelecionado)}</div>
-        <div className="mb-3 p-2 flex">
+        <div className="mb-3 p-2 flex gap-3">
           <div className="cont-buttons">
             <Button
               title="Feminino"
@@ -320,6 +320,14 @@ const CadastroWeb = () => {
                 </tbody>
               </table>
             </div>
+          </div>
+          <div className="cont-display">
+            <div className="display-dados">
+              <div>Nome: {produtoSelecionado.nome}</div>
+              <div>Pai: {produtoSelecionado.pai}</div>
+              <div></div>
+            </div>
+            <div className="display-imagem"></div>
           </div>
         </div>
         <div className="overflow-y-scroll h-25rem">
