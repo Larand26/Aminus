@@ -291,8 +291,14 @@ const CadastroWeb = () => {
             />
           </div>
           <div className="cont-grade">
-            <div>
-              <InputText placeholder="Coloque uma cor nova..." />
+            <div className="w-full ">
+              <InputText placeholder="Nome do produto" className="w-full" />
+            </div>
+            <div className="w-full flex">
+              <InputText
+                placeholder="Coloque uma cor nova..."
+                className="w-full"
+              />
               <Button icon="pi pi-plus" className="circle-btn" />
             </div>
             <div className="cont-tabela-grade-web">
