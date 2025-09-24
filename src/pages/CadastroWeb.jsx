@@ -53,6 +53,7 @@ const CadastroWeb = () => {
   const [nomeProduto, setNomeProduto] = useState("");
   const [nomeFormatado, setNomeFormatado] = useState("");
   const [novaCor, setNovaCor] = useState("");
+  const [pai, setPai] = useState("");
 
   const changeGrupo = (newGrupo, index) => {
     // troca o grupo atual pelo novo
@@ -63,11 +64,38 @@ const CadastroWeb = () => {
     });
   };
 
+  const changePromo = (isPromo, index) => {
+    setProdutoSelecionado((prevProduto) => {
+      const updatedGrupo = [...prevProduto.grupo];
+      if (isPromo) {
+        updatedGrupo[index] = "PROMO";
+      } else {
+        updatedGrupo[index] = "GREN";
+      }
+      return { ...prevProduto, grupo: updatedGrupo };
+    });
+  };
+
   const createCor = () => {
     if (!novaCor) return;
     window.electronApi?.createCor(novaCor);
     setNovaCor("");
   };
+
+  //Pai
+  useEffect(() => {
+    if (!produtoSelecionado.referencia) {
+      setPai("-");
+      return;
+    }
+    if (produtoSelecionado.grupo.includes("PROMO")) {
+      let pai = `${produtoSelecionado.referencia}-PROMO-PAI`;
+      setPai(pai);
+    } else {
+      let pai = `${produtoSelecionado.referencia}-GREN-PAI`;
+      setPai(pai);
+    }
+  }, [produtoSelecionado]);
 
   //Name formatado
   useEffect(() => {
@@ -333,7 +361,10 @@ const CadastroWeb = () => {
               severity="danger"
               title="Promo"
               rounded
-              outlined
+              outlined={!produtoSelecionado.grupo?.includes("PROMO")}
+              onClick={() =>
+                changePromo(!produtoSelecionado.grupo?.includes("PROMO"), 4)
+              }
               icon="icon-promo"
               iconPos="right"
             />
@@ -473,7 +504,7 @@ const CadastroWeb = () => {
               <hr />
               <div>
                 <h3>Pai</h3>
-                <p>{produtoSelecionado.pai}</p>
+                <p>{pai}</p>
               </div>
               <div></div>
             </div>
