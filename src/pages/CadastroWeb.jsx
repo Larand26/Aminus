@@ -55,6 +55,27 @@ const CadastroWeb = () => {
   const [novaCor, setNovaCor] = useState("");
   const [pai, setPai] = useState("");
 
+  //Função de cadastro
+  const cadastro = () => {
+    const produtosSelecionados = produtos
+      .map((produto, idx) => ({ produto, idx }))
+      .filter(({ idx }) => selectedProducts[idx]);
+
+    const produtosParaCadastro = produtosSelecionados.map(
+      ({ produto, idx }) => ({
+        ID_CODPRODUTO: produto.ID_CODPRODUTO,
+        PROD_REFERENCIA: referencia,
+        PROD_NOME: nomeFormatado,
+        PROD_PAI: pai,
+        PROD_IDCOR: selectedCor[idx]?.value || 1,
+        PROD_ATIVO: activeEcommerce[idx] === true ? 1 : 0,
+      })
+    );
+
+    console.log("Produtos selecionados para cadastro:", produtosParaCadastro);
+    window.electronApi?.cadastraProdutosWeb(produtosParaCadastro);
+  };
+
   const changeGrupo = (newGrupo, index) => {
     // troca o grupo atual pelo novo
     setProdutoSelecionado((prevProduto) => {
@@ -314,7 +335,7 @@ const CadastroWeb = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
-        <div>{JSON.stringify(produtoSelecionado)}</div>
+        <div>{selectedProducts.join(", ")}</div>
         <div className="mb-3 p-2 flex gap-3">
           <div className="cont-buttons">
             <Button
@@ -507,7 +528,12 @@ const CadastroWeb = () => {
                 <p>{pai}</p>
               </div>
               <div>
-                <Button label="Cadastrar" rounded className="w-full" />
+                <Button
+                  label="Cadastrar"
+                  rounded
+                  className="w-full"
+                  onClick={cadastro}
+                />
               </div>
             </div>
             <div className="display-imagem"></div>
