@@ -15,7 +15,12 @@ import { useState, useCallback, useEffect, use } from "react";
 const CadastroWeb = () => {
   const [referencia, setReferencia] = useState("");
   const [produtos, setProdutos] = useState([]);
-  const [produtoSelecionado, setProdutoSelecionado] = useState({});
+  const [produtoSelecionado, setProdutoSelecionado] = useState({
+    sku: "",
+    numeros: [],
+    quantidades: [],
+    grupo: [],
+  });
 
   const handleProdutoChange = (produto) => {
     if (!produto) return;
@@ -65,6 +70,7 @@ const CadastroWeb = () => {
       sku: produtos[0]?.ID_CODPRODUTO || "",
       numeros: produtos[0]?.NUMEROS.split(",") || [],
       quantidades: produtos[0]?.QUANTIDADES.split(",") || [],
+      grupo: produtos[0]?.GRUP_DESCRICAO.split(", ") || [],
     };
     setProdutoSelecionado(produtoSelecionado || {});
   }, [produtos]);
@@ -177,35 +183,45 @@ const CadastroWeb = () => {
             <Button
               title="Feminino"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("FEMININO") && {
+                outlined: true,
+              })}
               icon="icon-female"
               iconPos="right"
             />
             <Button
               title="Masculino"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("MASCULINO") && {
+                outlined: true,
+              })}
               icon="icon-male"
               iconPos="right"
             />
             <Button
               title="Infantil"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("INFANTIL") && {
+                outlined: true,
+              })}
               icon="icon-child"
               iconPos="right"
             />
             <Button
               title="Baby"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("BABY") && {
+                outlined: true,
+              })}
               icon="icon-baby"
               iconPos="right"
             />
             <Button
               title="Unisex"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("UNISEX") && {
+                outlined: true,
+              })}
               icon="icon-unisex"
               iconPos="right"
             />
@@ -222,70 +238,92 @@ const CadastroWeb = () => {
             <Button
               title="Chinelo"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("CHINELO DEDO") && {
+                outlined: true,
+              })}
               icon="icon-chinelo"
               iconPos="right"
             />
             <Button
               title="Sandália"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("SANDÁLIA") && {
+                outlined: true,
+              })}
               icon="icon-sandalia"
               iconPos="right"
             />
             <Button
               title="Slide"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes(
+                "CHINELO GÁSPEA/SLIDE"
+              ) && {
+                outlined: true,
+              })}
               icon="icon-slide"
               iconPos="right"
             />
             <Button
               title="Rasteira"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("RASTEIRINHAS") && {
+                outlined: true,
+              })}
               icon="icon-rasteira"
               iconPos="right"
             />
             <Button
               title="Tamanco"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("TAMANCO") && {
+                outlined: true,
+              })}
               icon="icon-tamanco"
               iconPos="right"
             />
             <Button
               title="Babuche"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("BABUCH") && {
+                outlined: true,
+              })}
               icon="icon-babuche"
               iconPos="right"
             />
             <Button
               title="Bota"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("BOTA") && {
+                outlined: true,
+              })}
               icon="icon-bota"
               iconPos="right"
             />
             <Button
               title="Sapatilha"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("SAPATILHA") && {
+                outlined: true,
+              })}
               icon="icon-sapatilha"
               iconPos="right"
             />
             <Button
               title="Sapato"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("SAPATO") && {
+                outlined: true,
+              })}
               icon="icon-sapato"
               iconPos="right"
             />
             <Button
               title="Bolsa"
               rounded
-              outlined
+              {...(!produtoSelecionado.grupo?.includes("BOLSA") && {
+                outlined: true,
+              })}
               icon="icon-bolsa"
               iconPos="right"
             />
