@@ -51,6 +51,58 @@ const CadastroWeb = () => {
     grupo: [],
   });
   const [nomeProduto, setNomeProduto] = useState("");
+  const [nomeFormatado, setNomeFormatado] = useState("");
+
+  //Name formatado
+  useEffect(() => {
+    let tipo = produtoSelecionado.grupo[3] || "";
+    let genero = produtoSelecionado.grupo[2] || "";
+    if (
+      (tipo === "SANDÁLIA" ||
+        tipo === "RASTEIRINHAS" ||
+        tipo === "SAPATILHA" ||
+        tipo === "BOTA") &&
+      (genero === "MASCULINO" || genero === "FEMININO")
+    ) {
+      genero = genero === "MASCULINO" ? "MASCULINA" : "FEMININA";
+    }
+
+    switch (tipo) {
+      case "SANDÁLIA":
+        tipo = "SANDALIA";
+        break;
+      case "CHINELO DEDO":
+        tipo = "CHINELO";
+        break;
+      case "CHINELO G├üSPEA/SLIDE":
+        tipo = "CHINELO SLIDE";
+        break;
+      case "BABUCH":
+        tipo = "BABUCHE";
+        break;
+      case "RASTEIRINHAS":
+        tipo = "RASTEIRA";
+        break;
+      case "TAMANCO":
+        tipo = "TAMANCO";
+        break;
+      case "BOTA":
+        tipo = "BOTA";
+        break;
+      case "SAPATILHA":
+        tipo = "SAPATILHA";
+        break;
+      case "SAPATO":
+        tipo = "SAPATO";
+        break;
+      default:
+        tipo = "";
+    }
+    const nomeFormatado = `${tipo} ${genero} ${nomeProduto} - ${produtoSelecionado.referencia}`;
+    setNomeFormatado(nomeFormatado.trim());
+  }, [nomeProduto, produtoSelecionado]);
+
+  //produto selecionado
 
   const handleProdutoChange = (produto) => {
     if (!produto) return;
@@ -108,6 +160,7 @@ const CadastroWeb = () => {
     setNomeProduto(nomeLimpo);
     const produtoSelecionado = {
       sku: produtos[0]?.ID_CODPRODUTO || "",
+      referencia: produtos[0]?.PROD_CODFABRIC || "",
       numeros: produtos[0]?.NUMEROS.split(",") || [],
       quantidades: produtos[0]?.QUANTIDADES.split(",") || [],
       grupo: produtos[0]?.GRUP_DESCRICAO.split(", ") || [],
@@ -376,7 +429,7 @@ const CadastroWeb = () => {
           </div>
           <div className="cont-display">
             <div className="display-dados">
-              <div>Nome: {produtoSelecionado.nome}</div>
+              <div>Nome: {nomeFormatado}</div>
               <div>Pai: {produtoSelecionado.pai}</div>
               <div></div>
             </div>
