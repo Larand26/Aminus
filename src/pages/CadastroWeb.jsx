@@ -52,6 +52,7 @@ const CadastroWeb = () => {
   });
   const [nomeProduto, setNomeProduto] = useState("");
   const [nomeFormatado, setNomeFormatado] = useState("");
+  const [novaCor, setNovaCor] = useState("");
 
   const changeGrupo = (newGrupo, index) => {
     // troca o grupo atual pelo novo
@@ -60,6 +61,12 @@ const CadastroWeb = () => {
       updatedGrupo[index] = newGrupo;
       return { ...prevProduto, grupo: updatedGrupo };
     });
+  };
+
+  const createCor = () => {
+    if (!novaCor) return;
+    window.electronApi?.createCor(novaCor);
+    setNovaCor("");
   };
 
   //Name formatado
@@ -428,8 +435,14 @@ const CadastroWeb = () => {
               <InputText
                 placeholder="Coloque uma cor nova..."
                 className="w-full"
+                value={novaCor}
+                onChange={(e) => setNovaCor(e.target.value.toUpperCase())}
               />
-              <Button icon="pi pi-plus" className="circle-btn" />
+              <Button
+                icon="pi pi-plus"
+                className="circle-btn"
+                onClick={createCor()}
+              />
             </div>
             <div className="cont-tabela-grade-web">
               <table className="tabela-grade-web">
@@ -453,8 +466,15 @@ const CadastroWeb = () => {
           </div>
           <div className="cont-display">
             <div className="display-dados">
-              <div>Nome: {nomeFormatado}</div>
-              <div>Pai: {produtoSelecionado.pai}</div>
+              <div>
+                <h3>Nome</h3>
+                <p>{nomeFormatado}</p>
+              </div>
+              <hr />
+              <div>
+                <h3>Pai</h3>
+                <p>{produtoSelecionado.pai}</p>
+              </div>
               <div></div>
             </div>
             <div className="display-imagem"></div>

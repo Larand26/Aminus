@@ -50,11 +50,31 @@
 .display-dados {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  width: 66%;
+  gap: 2px;
+  justify-content: center;
+  width: 60%;
 }
 .display-imagem {
-  width: 33%;
+  width: 40%;
   background-color: #d9d9d9;
   border-radius: 10px;
+}
+.display-dados div {
+  width: 100%;
+  text-align: center;
+  height: 33%;
+  padding: 5px;
+}
+.display-dados h3 {
+  margin: 0;
+  font-size: 20px;
+}
+.display-dados p {
+  margin: 3px;
+  font-size: 15px;
+}
+.display-dados hr {
+  border: none;
+  border-top: 2px solid #0074d9;
+  margin: 8px 0;
 }
