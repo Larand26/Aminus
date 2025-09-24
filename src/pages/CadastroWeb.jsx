@@ -183,45 +183,35 @@ const CadastroWeb = () => {
             <Button
               title="Feminino"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("FEMININO") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("FEMININO")}
               icon="icon-female"
               iconPos="right"
             />
             <Button
               title="Masculino"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("MASCULINO") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("MASCULINO")}
               icon="icon-male"
               iconPos="right"
             />
             <Button
               title="Infantil"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("INFANTIL") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("INFANTIL")}
               icon="icon-child"
               iconPos="right"
             />
             <Button
               title="Baby"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("BABY") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("BABY")}
               icon="icon-baby"
               iconPos="right"
             />
             <Button
               title="Unisex"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("UNISEX") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("UNISEX")}
               icon="icon-unisex"
               iconPos="right"
             />
@@ -238,92 +228,72 @@ const CadastroWeb = () => {
             <Button
               title="Chinelo"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("CHINELO DEDO") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("CHINELO DEDO")}
               icon="icon-chinelo"
               iconPos="right"
             />
             <Button
               title="Sandália"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("SANDÁLIA") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("SANDÁLIA")}
               icon="icon-sandalia"
               iconPos="right"
             />
             <Button
               title="Slide"
               rounded
-              {...(!produtoSelecionado.grupo?.includes(
-                "CHINELO GÁSPEA/SLIDE"
-              ) && {
-                outlined: true,
-              })}
+              outlined={
+                !produtoSelecionado.grupo?.includes("CHINELO GÁSPEA/SLIDE")
+              }
               icon="icon-slide"
               iconPos="right"
             />
             <Button
               title="Rasteira"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("RASTEIRINHAS") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("RASTEIRINHAS")}
               icon="icon-rasteira"
               iconPos="right"
             />
             <Button
               title="Tamanco"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("TAMANCO") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("TAMANCO")}
               icon="icon-tamanco"
               iconPos="right"
             />
             <Button
               title="Babuche"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("BABUCH") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("BABUCH")}
               icon="icon-babuche"
               iconPos="right"
             />
             <Button
               title="Bota"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("BOTA") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("BOTA")}
               icon="icon-bota"
               iconPos="right"
             />
             <Button
               title="Sapatilha"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("SAPATILHA") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("SAPATILHA")}
               icon="icon-sapatilha"
               iconPos="right"
             />
             <Button
               title="Sapato"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("SAPATO") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("SAPATO")}
               icon="icon-sapato"
               iconPos="right"
             />
             <Button
               title="Bolsa"
               rounded
-              {...(!produtoSelecionado.grupo?.includes("BOLSA") && {
-                outlined: true,
-              })}
+              outlined={!produtoSelecionado.grupo?.includes("BOLSA")}
               icon="icon-bolsa"
               iconPos="right"
             />
