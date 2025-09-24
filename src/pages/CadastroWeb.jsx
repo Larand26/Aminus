@@ -175,33 +175,44 @@ const CadastroWeb = () => {
         <div className="mb-3 p-2 flex">
           <div className="cont-buttons">
             <Button
-              label="Feminino"
+              title="Feminino"
+              rounded
               outlined
               icon="icon-female"
               iconPos="right"
             />
             <Button
-              label="Masculino"
+              title="Masculino"
+              rounded
               outlined
               icon="icon-male"
               iconPos="right"
             />
             <Button
-              label="Infantil"
+              title="Infantil"
+              rounded
               outlined
               icon="icon-child"
               iconPos="right"
             />
-            <Button label="Baby" outlined icon="icon-baby" iconPos="right" />
             <Button
-              label="Unisex"
+              title="Baby"
+              rounded
+              outlined
+              icon="icon-baby"
+              iconPos="right"
+            />
+            <Button
+              title="Unisex"
+              rounded
               outlined
               icon="icon-unisex"
               iconPos="right"
             />
             <Button
               severity="danger"
-              label="Promo"
+              title="Promo"
+              rounded
               outlined
               icon="icon-promo"
               iconPos="right"
@@ -209,50 +220,75 @@ const CadastroWeb = () => {
           </div>
           <div className="cont-buttons">
             <Button
-              label="Chinelo"
+              title="Chinelo"
+              rounded
               outlined
               icon="icon-chinelo"
               iconPos="right"
             />
             <Button
-              label="Sandália"
+              title="Sandália"
+              rounded
               outlined
               icon="icon-sandalia"
               iconPos="right"
             />
-            <Button label="Slide" outlined icon="icon-slide" iconPos="right" />
             <Button
-              label="Rasteira"
+              title="Slide"
+              rounded
+              outlined
+              icon="icon-slide"
+              iconPos="right"
+            />
+            <Button
+              title="Rasteira"
+              rounded
               outlined
               icon="icon-rasteira"
               iconPos="right"
             />
             <Button
-              label="Tamanco"
+              title="Tamanco"
+              rounded
               outlined
               icon="icon-tamanco"
               iconPos="right"
             />
             <Button
-              label="Babuche"
+              title="Babuche"
+              rounded
               outlined
               icon="icon-babuche"
               iconPos="right"
             />
-            <Button label="Bota" outlined icon="icon-bota" iconPos="right" />
             <Button
-              label="Sapatilha"
+              title="Bota"
+              rounded
+              outlined
+              icon="icon-bota"
+              iconPos="right"
+            />
+            <Button
+              title="Sapatilha"
+              rounded
               outlined
               icon="icon-sapatilha"
               iconPos="right"
             />
             <Button
-              label="Sapato"
+              title="Sapato"
+              rounded
               outlined
               icon="icon-sapato"
               iconPos="right"
             />
-            <Button label="Bolsa" outlined icon="icon-bolsa" iconPos="right" />
+            <Button
+              title="Bolsa"
+              rounded
+              outlined
+              icon="icon-bolsa"
+              iconPos="right"
+            />
           </div>
           <div className="cont-grade">
             <div>
