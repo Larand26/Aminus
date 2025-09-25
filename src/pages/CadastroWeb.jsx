@@ -104,7 +104,6 @@ const CadastroWeb = () => {
         : imagemSemImagem;
       setImagem(img);
       setLoadingImagem(false);
-      console.log("Fotos:", img);
     };
     window.electronApi?.onSearchFotoResponse(handler);
     return () => {
@@ -143,7 +142,6 @@ const CadastroWeb = () => {
       })
     );
 
-    console.log("Produtos selecionados para cadastro:", produtosParaCadastro);
     window.electronApi?.cadastraProdutosWeb(produtosParaCadastro);
   };
 
@@ -427,7 +425,6 @@ const CadastroWeb = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
-        <div>{JSON.stringify(produtoSelecionado)}</div>
         <div className="mb-3 p-2 flex gap-3">
           <div className="cont-buttons">
             <Button
