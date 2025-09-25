@@ -405,6 +405,16 @@ const CadastroWeb = () => {
     });
   }, []);
 
+  // Sem cubagem
+  const semCubagem = (produto) => {
+    return (
+      produto.PROD_ALTURA === null ||
+      produto.PROD_LARGURA === null ||
+      produto.PROD_COMPRIMENTO === null ||
+      produto.PROD_PESOLIQUIDO === null
+    );
+  };
+
   //constroi tabela de produtos
   const renderTableRows = () => {
     return produtos.map((produto, index) => (
@@ -448,6 +458,8 @@ const CadastroWeb = () => {
           <Checkbox
             checked={!!activeEcommerce[index]}
             onChange={() => handleActiveEcommerceChange(index)}
+            disabled={semCubagem(produto)}
+            invalid={semCubagem(produto)}
           />
         </td>
       </tr>
