@@ -251,6 +251,19 @@ const CadastroWeb = () => {
     setProdutoSelecionado(produtoSelecionado || {});
   };
 
+  // Copia cor
+  const copiaCor = (descricao) => {
+    // pega tudo depois do } até antes do (
+    const regex = /\}\s*([^\(]+)\s*\(/;
+    const match = descricao.match(regex);
+    if (match && match[1]) {
+      const cor = match[1].trim().toUpperCase();
+      setNovaCor(cor);
+      // Copia para área de transferência
+      navigator.clipboard.writeText(cor);
+    }
+  };
+
   //cores
   const [cores, setCores] = useState([]);
   const [selectedCor, setSelectedCor] = useState([]);
@@ -388,7 +401,12 @@ const CadastroWeb = () => {
         <td onClick={() => handleProdutoChange(produto, index)}>
           {produto.ID_CODPRODUTO}
         </td>
-        <td onClick={() => handleProdutoChange(produto, index)}>
+        <td
+          onClick={() => {
+            handleProdutoChange(produto, index);
+            copiaCor(produto.PROD_DESCRCOMPLETA);
+          }}
+        >
           {produto.PROD_DESCRCOMPLETA}
         </td>
         <td onClick={() => handleProdutoChange(produto, index)}>
