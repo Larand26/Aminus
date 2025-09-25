@@ -166,6 +166,28 @@ const CadastroWeb = () => {
     });
   };
 
+  //Cria cor
+
+  useEffect(() => {
+    window.electronApi?.onCreateCorResponse((response) => {
+      if (response.success) {
+        toast.current?.show({
+          severity: "success",
+          summary: "Sucesso",
+          detail: "Cor criada com sucesso!",
+          life: 3000,
+        });
+      } else {
+        toast.current?.show({
+          severity: "error",
+          summary: "Erro",
+          detail: response.message || "Erro ao criar cor.",
+          life: 3000,
+        });
+      }
+    });
+  }, []);
+
   const createCor = () => {
     if (!novaCor) return;
     window.electronApi?.createCor(novaCor);

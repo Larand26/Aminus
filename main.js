@@ -290,9 +290,9 @@ ipcMain.on("get-cores", async (event, descricao) => {
 ipcMain.on("create-cor", async (event, cor) => {
   try {
     // Simulação de criação de cor, substitua com a lógica real
-    await createCor(cor);
+    const response = await createCor(cor);
 
-    event.reply("create-cor-response", { success: true });
+    event.reply("create-cor-response", response);
   } catch (error) {
     console.error("Erro ao criar cor:", error);
     event.reply("create-cor-response", {

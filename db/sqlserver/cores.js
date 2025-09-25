@@ -23,11 +23,26 @@ const getCores = async (descricao) => {
 const createCor = async (descricao) => {
   const connection = await conectarSql();
   try {
+    // Verifica se já existe uma cor com a mesma descrição
+    const checkQuery =
+      "SELECT COUNT(*) AS total FROM [CORES_ECOMERCE] WHERE [DESCRICAO] = @descricao";
+    const checkResult = await connection
+      .request()
+      .input("descricao", descricao)
+      .query(checkQuery);
+
+    if (checkResult.recordset[0].total > 0) {
+      // Já existe, não cria
+      return { success: false, message: "Cor já existe" };
+    }
+
     const query =
       "INSERT INTO [CORES_ECOMERCE] (DESCRICAO) VALUES (@descricao)";
     await connection.request().input("descricao", descricao).query(query);
+    return { success: true };
   } catch (error) {
     console.error("Erro ao criar cor:", error);
+    return { success: false, error };
   } finally {
     connection.close();
   }
