@@ -13,6 +13,8 @@ import "../styles/icons.css";
 
 import { useState, useCallback, useEffect, use, useRef } from "react";
 
+import imagemSemImagem from "../assets/img/unknown.jpg";
+
 const palavrasParaRemover = [
   "FEMININO",
   "FEMININA",
@@ -580,7 +582,7 @@ const CadastroWeb = () => {
                 <h3>Pai</h3>
                 <p>{pai}</p>
               </div>
-              <div>
+              <div style={{ justifyContent: "flex-end" }}>
                 <Button
                   label="Cadastrar"
                   rounded
@@ -589,7 +591,9 @@ const CadastroWeb = () => {
                 />
               </div>
             </div>
-            <div className="display-imagem"></div>
+            <div className="display-imagem">
+              <img src={imagemSemImagem} />
+            </div>
           </div>
         </div>
         <div className="overflow-y-scroll h-25rem">
