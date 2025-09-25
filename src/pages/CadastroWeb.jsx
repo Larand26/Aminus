@@ -205,7 +205,16 @@ const CadastroWeb = () => {
 
   const handleProdutoChange = (produto) => {
     if (!produto) return;
-    setProdutoSelecionado(produto);
+    const produtoSelecionado = {
+      sku: produto?.ID_CODPRODUTO || "",
+      referencia: produto?.PROD_CODFABRIC || "",
+      numeros: produto?.NUMEROS.split(",") || [],
+      quantidades: produto?.QUANTIDADES.split(",") || [],
+      grupo: produto?.GRUP_DESCRICAO.split(", ") || [],
+      codigoCor: produto?.CODIGO_COR || null,
+    };
+    setProdutoSelecionado(produtoSelecionado || {});
+    // setProdutoSelecionado(produto);
   };
 
   //cores
@@ -263,6 +272,7 @@ const CadastroWeb = () => {
       numeros: produtos[0]?.NUMEROS.split(",") || [],
       quantidades: produtos[0]?.QUANTIDADES.split(",") || [],
       grupo: produtos[0]?.GRUP_DESCRICAO.split(", ") || [],
+      codigoCor: produtos[0]?.CODIGO_COR || null,
     };
     setProdutoSelecionado(produtoSelecionado || {});
   }, [produtos]);
@@ -327,7 +337,7 @@ const CadastroWeb = () => {
   //constroi tabela de produtos
   const renderTableRows = () => {
     return produtos.map((produto, index) => (
-      <tr key={produto.id}>
+      <tr key={produto.id} onClick={() => handleProdutoChange(produto, index)}>
         <td>
           <Checkbox
             onChange={() => handleCheckboxChange(index)}
@@ -373,6 +383,7 @@ const CadastroWeb = () => {
         </FloatLabel>
       </BarraLateral>
       <Content titulo={"Cadastro Web"}>
+        <div>{JSON.stringify(produtoSelecionado)}</div>
         <div className="mb-3 p-2 flex gap-3">
           <div className="cont-buttons">
             <Button
