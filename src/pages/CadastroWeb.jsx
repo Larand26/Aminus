@@ -230,7 +230,7 @@ const CadastroWeb = () => {
       case "CHINELO DEDO":
         tipo = "CHINELO";
         break;
-      case "CHINELO G├üSPEA/SLIDE":
+      case "CHINELO GÁSPEA/SLIDE":
         tipo = "CHINELO SLIDE";
         break;
       case "BABUCH":
