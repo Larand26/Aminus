@@ -95,8 +95,12 @@ const CadastroWeb = () => {
   //Imagem
   useEffect(() => {
     const handler = (fotos) => {
-      setImagem(Array.isArray(fotos) ? fotos : fotos ? [fotos] : []);
-      console.log("Fotos:", fotos);
+      const fotosArray = Array.isArray(fotos) ? fotos : [fotos];
+      const img = fotosArray[0]?.fotos
+        ? `data:image/jpeg;base64,${fotosArray[0]?.fotos?.foto_principal}`
+        : imagemSemImagem;
+      setImagem(img);
+      console.log("Fotos:", img);
     };
     window.electronApi?.onSearchFotoResponse(handler);
     return () => {
@@ -619,7 +623,7 @@ const CadastroWeb = () => {
               </div>
             </div>
             <div className="display-imagem">
-              <img src={imagemSemImagem} />
+              <img src={imagem} />
             </div>
           </div>
         </div>
