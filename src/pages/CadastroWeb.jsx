@@ -587,7 +587,7 @@ const CadastroWeb = () => {
               <Button
                 icon="pi pi-plus"
                 className="circle-btn"
-                onClick={createCor()}
+                onClick={createCor}
               />
             </div>
             <div className="cont-tabela-grade-web">
