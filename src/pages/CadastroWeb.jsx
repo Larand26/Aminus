@@ -6,6 +6,7 @@ import { Checkbox } from "primereact/checkbox";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
+import { ProgressSpinner } from "primereact/progressspinner"; // Adicione este import
 
 import "../styles/cadastro-web.css";
 import "../styles/tabela-produtos-web.css";
@@ -59,6 +60,7 @@ const CadastroWeb = () => {
   const [pai, setPai] = useState("");
   const [cadastroResponse, setCadastroResponse] = useState(null);
   const [imagem, setImagem] = useState("");
+  const [loadingImagem, setLoadingImagem] = useState(false); // Novo estado
   const toast = useRef(null);
 
   useEffect(() => {
@@ -95,11 +97,13 @@ const CadastroWeb = () => {
   //Imagem
   useEffect(() => {
     const handler = (fotos) => {
+      setLoadingImagem(true); // Começa carregando
       const fotosArray = Array.isArray(fotos) ? fotos : [fotos];
       const img = fotosArray[0]?.fotos
         ? `data:image/jpeg;base64,${fotosArray[0]?.fotos?.foto_principal}`
         : imagemSemImagem;
       setImagem(img);
+      setLoadingImagem(false);
       console.log("Fotos:", img);
     };
     window.electronApi?.onSearchFotoResponse(handler);
@@ -113,6 +117,8 @@ const CadastroWeb = () => {
       setImagem([]);
       return;
     }
+    setImagem("");
+    setLoadingImagem(true);
     const produto = {
       referencia: produtoSelecionado.referencia,
       codigo_cor: produtoSelecionado.codigoCor,
@@ -623,7 +629,13 @@ const CadastroWeb = () => {
               </div>
             </div>
             <div className="display-imagem">
-              <img src={imagem} />
+              {loadingImagem ? <ProgressSpinner /> : null}
+              <img
+                src={imagem}
+                style={{ display: loadingImagem ? "none" : "block" }}
+                onLoad={() => setLoadingImagem(false)}
+                onError={() => setLoadingImagem(false)}
+              />
             </div>
           </div>
         </div>
