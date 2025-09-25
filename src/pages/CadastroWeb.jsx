@@ -58,11 +58,12 @@ const CadastroWeb = () => {
   const [novaCor, setNovaCor] = useState("");
   const [pai, setPai] = useState("");
   const [cadastroResponse, setCadastroResponse] = useState(null);
+  const [imagem, setImagem] = useState("");
   const toast = useRef(null);
 
   useEffect(() => {
     const handler = (response) => {
-      setCadastroResponse(response); // Aqui está correto!
+      setCadastroResponse(response);
     };
     window.electronApi?.onCadastraProdutosWebResponse(handler);
     return () => {
@@ -90,6 +91,30 @@ const CadastroWeb = () => {
       setCadastroResponse(null);
     }
   }, [cadastroResponse]);
+
+  //Imagem
+  useEffect(() => {
+    const handler = (fotos) => {
+      setImagem(Array.isArray(fotos) ? fotos : fotos ? [fotos] : []);
+      console.log("Fotos:", fotos);
+    };
+    window.electronApi?.onSearchFotoResponse(handler);
+    return () => {
+      window.electronApi?.removeSearchFotoResponse(handler);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!produtoSelecionado.referencia || !produtoSelecionado.codigoCor) {
+      setImagem([]);
+      return;
+    }
+    const produto = {
+      referencia: produtoSelecionado.referencia,
+      codigo_cor: produtoSelecionado.codigoCor,
+    };
+    window.electronApi?.searchFoto(produto);
+  }, [produtoSelecionado.referencia, produtoSelecionado.codigoCor]);
 
   //Função de cadastro
   const cadastro = () => {
@@ -325,6 +350,7 @@ const CadastroWeb = () => {
 
   // Pesquisa os produtos
   const search = () => {
+    if (!referencia || referencia.length < 4) return;
     window.electronApi?.searchCadastroProdutos(referencia);
     // searchCores();
   };
@@ -332,6 +358,7 @@ const CadastroWeb = () => {
   useEffect(() => {
     window.electronApi?.onSearchCadastroProdutosResponse((produto) => {
       setProdutos(produto);
+      setReferencia("");
     });
   }, []);
 

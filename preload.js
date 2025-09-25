@@ -31,6 +31,10 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("search-foto-response", (event, arg) => {
       callback(arg);
     }),
+  removeSearchFotoResponse: (callback) =>
+    ipcRenderer.removeListener("search-foto-response", (event, arg) => {
+      callback(arg);
+    }),
   getPedido: (arg) => ipcRenderer.send("get-pedido", arg),
   onGetPedidoResponse: (callback) =>
     ipcRenderer.on("get-pedido-response", (event, arg) => {
