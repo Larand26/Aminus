@@ -33,3 +33,15 @@
 .tabela-produtos-web tbody tr:nth-child(odd) {
   background-color: #b6e6efdd;
 }
+
+.selecionado {
+  background-color: #05859c !important;
+  color: #fff;
+  cursor: auto !important;
+  filter: none !important;
+}
+
+.tabela-produtos-web tbody tr:hover {
+  filter: brightness(0.8);
+  cursor: pointer;
+}

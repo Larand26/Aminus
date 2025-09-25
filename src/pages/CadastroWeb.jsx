@@ -214,7 +214,6 @@ const CadastroWeb = () => {
       codigoCor: produto?.CODIGO_COR || null,
     };
     setProdutoSelecionado(produtoSelecionado || {});
-    // setProdutoSelecionado(produto);
   };
 
   //cores
@@ -337,7 +336,13 @@ const CadastroWeb = () => {
   //constroi tabela de produtos
   const renderTableRows = () => {
     return produtos.map((produto, index) => (
-      <tr key={produto.id} onClick={() => handleProdutoChange(produto, index)}>
+      <tr
+        key={produto.ID_CODPRODUTO}
+        className={
+          produto.ID_CODPRODUTO === produtoSelecionado.sku ? "selecionado" : ""
+        }
+        onClick={() => handleProdutoChange(produto, index)}
+      >
         <td>
           <Checkbox
             onChange={() => handleCheckboxChange(index)}
