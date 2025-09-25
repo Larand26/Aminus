@@ -441,6 +441,7 @@ const CadastroWeb = () => {
             value={selectedCor[index]?.value || null}
             onChange={(e) => handleCorChange(index, e.value)}
             onFilter={(e) => searchCores(e.filter)}
+            className="dropdown-cor"
           />
         </td>
         <td>
