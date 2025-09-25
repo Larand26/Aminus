@@ -378,7 +378,6 @@ const CadastroWeb = () => {
         className={
           produto.ID_CODPRODUTO === produtoSelecionado.sku ? "selecionado" : ""
         }
-        onClick={() => handleProdutoChange(produto, index)}
       >
         <td>
           <Checkbox
@@ -386,9 +385,15 @@ const CadastroWeb = () => {
             checked={!!selectedProducts[index]}
           />
         </td>
-        <td>{produto.ID_CODPRODUTO}</td>
-        <td>{produto.PROD_DESCRCOMPLETA}</td>
-        <td>{produto.SKU_PRODUTO_PAI}</td>
+        <td onClick={() => handleProdutoChange(produto, index)}>
+          {produto.ID_CODPRODUTO}
+        </td>
+        <td onClick={() => handleProdutoChange(produto, index)}>
+          {produto.PROD_DESCRCOMPLETA}
+        </td>
+        <td onClick={() => handleProdutoChange(produto, index)}>
+          {produto.SKU_PRODUTO_PAI}
+        </td>
         <td>
           <Dropdown
             filter
