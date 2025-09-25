@@ -59,7 +59,7 @@ const CadastroWeb = () => {
   const [novaCor, setNovaCor] = useState("");
   const [pai, setPai] = useState("");
   const [cadastroResponse, setCadastroResponse] = useState(null);
-  const [imagem, setImagem] = useState("");
+  const [imagem, setImagem] = useState(imagemSemImagem);
   const [loadingImagem, setLoadingImagem] = useState(false); // Novo estado
   const toast = useRef(null);
 
@@ -116,7 +116,7 @@ const CadastroWeb = () => {
       setImagem([]);
       return;
     }
-    setImagem("");
+    setImagem(null);
     setLoadingImagem(true);
     const produto = {
       referencia: produtoSelecionado.referencia,
