@@ -22,9 +22,6 @@ const searchFoto = async (produto) => {
     const produtos = await Produto.find(pesquisa);
 
     if (produtos.length === 0) {
-      console.log(
-        `${produto.referencia} - ${produto.codigo_cor} não encontrado.`
-      );
       mongoose.connection.close();
       return [];
     }
