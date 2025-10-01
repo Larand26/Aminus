@@ -185,6 +185,7 @@ const Notas = () => {
                 body={(rowData) => rowData.NF_NOMEENTIDADE?.substring(0, 20)}
                 header="Nome do Cliente"
               />
+              <Column field="NF_CEPENTID" header="CEP" />
               <Column field="NF_UNIDFEDENTD" header="UF" />
               <Column
                 field="NF_DATAEMIS"
