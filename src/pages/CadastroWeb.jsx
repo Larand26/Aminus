@@ -265,9 +265,9 @@ const CadastroWeb = () => {
     const produtoSelecionado = {
       sku: produto?.ID_CODPRODUTO || "",
       referencia: produto?.PROD_CODFABRIC || "",
-      numeros: produto?.NUMEROS.split(",") || [],
-      quantidades: produto?.QUANTIDADES.split(",") || [],
-      grupo: produto?.GRUP_DESCRICAO.split(", ") || [],
+      numeros: produto?.NUMEROS ? produto.NUMEROS.split(",") : [],
+      quantidades: produto?.QUANTIDADES ? produto.QUANTIDADES.split(",") : [],
+      grupo: produto?.GRUP_DESCRICAO ? produto.GRUP_DESCRICAO.split(", ") : [],
       codigoCor: produto?.CODIGO_COR || null,
     };
     setProdutoSelecionado(produtoSelecionado || {});
@@ -338,9 +338,13 @@ const CadastroWeb = () => {
     const produtoSelecionado = {
       sku: produtos[0]?.ID_CODPRODUTO || "",
       referencia: produtos[0]?.PROD_CODFABRIC || "",
-      numeros: produtos[0]?.NUMEROS.split(",") || [],
-      quantidades: produtos[0]?.QUANTIDADES.split(",") || [],
-      grupo: produtos[0]?.GRUP_DESCRICAO.split(", ") || [],
+      numeros: produtos[0]?.NUMEROS ? produtos[0].NUMEROS.split(",") : [],
+      quantidades: produtos[0]?.QUANTIDADES
+        ? produtos[0].QUANTIDADES.split(",")
+        : [],
+      grupo: produtos[0]?.GRUP_DESCRICAO
+        ? produtos[0].GRUP_DESCRICAO.split(", ")
+        : [],
       codigoCor: produtos[0]?.CODIGO_COR || null,
     };
     setProdutoSelecionado(produtoSelecionado || {});
