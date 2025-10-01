@@ -3,10 +3,17 @@ const path = require("path");
 const globals = require(path.join(__dirname, "../../globals"));
 const Produto = require("./produtoModel");
 
-mongoose.connect(globals.MONGODB_URI);
+const connectDB = async () => {
+  console.log(mongoose.connection.readyState);
+
+  if (mongoose.connection.readyState === 0) {
+    await mongoose.connect(globals.MONGODB_URI);
+  }
+};
 
 const searchFoto = async (produto) => {
   try {
+    await connectDB();
     let pesquisa;
     if (produto.referencia === "") {
       pesquisa = { codigo_cor: produto.codigo_cor };
