@@ -33,6 +33,7 @@
     "mssql": "^11.0.1",
     "mysql2": "^3.14.1",
     "ospath": "^1.2.2",
+    "path": "^0.12.7",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.5",

@@ -1,66 +1,33 @@
-const { query } = require("mssql");
+const { query, VarChar } = require("mssql");
 const conectarSql = require("../../config/database");
+const fs = require("fs");
+const path = require("path");
 
 const searchCadastroProdutos = async (referencia) => {
   const connection = await conectarSql();
   try {
-    const query = `
-SELECT 
-    P.[ID_CODPRODUTO],
-    P.[PROD_DESCRCOMPLETA],
-    P.[PROD_CODFABRIC],
-    P.[ID_CODGRUPO],
-    GI.[GRUP_DESCRICAO],
-    PE.[DESCRICAO] AS ECOMMERCE_DESCRICAO,
-    PE.[ID_CORES_ECOMERCE],
-    PE.[SKU_PRODUTO_PAI],
-    PE.[ID_GRADE_ECOMERCE],
-    CE.[DESCRICAO] AS COR_DESCRICAO,
-    PR.[PROD_ALTURA],
-    PR.[PROD_LARGURA],
-    PR.[PROD_COMPRIMENTO],
-    PR.[PROD_PESOLIQUIDO],
-    PA.[PRO_ATIVO_ECOMMERCE],
-    PA.[PRO_INTEGRACAO_ECOMMERCE],
-    PA.[ID_CODFILIAIS],
-    PE.[CODIGO_COR],
-    STRING_AGG(CONVERT(VARCHAR, GE.[QUANTIDADE]), ',') AS QUANTIDADES,
-    STRING_AGG(CONVERT(VARCHAR, GE.[NUMERO]), ',') AS NUMEROS
-FROM [vwITEM] P
-    LEFT JOIN [GrupoItens] GI ON P.ID_CODGRUPO = GI.ID_CODGRUPO
-    LEFT JOIN [PRODUTOS_ECOMERCE] PE ON P.ID_CODPRODUTO = PE.ID_CODPRODUTO
-    LEFT JOIN [CORES_ECOMERCE] CE ON PE.ID_CORES_ECOMERCE = CE.ID_CHAVE
-    LEFT JOIN [GRADE_TAMANHO_ECOMERCE] GE ON PE.ID_GRADE_ECOMERCE = GE.ID_GRADE_ECOMERCE
-    LEFT JOIN [PRODUTOS_EMPRESASFILIAIS] PA ON P.ID_CODPRODUTO = PA.ID_CODPRODUTO
-    LEFT JOIN [PRODUTOS] PR ON P.ID_CODPRODUTO = PR.ID_CODPRODUTO
-WHERE (P.[PROD_CODFABRIC] = '${referencia}')
-AND PA.[ID_CODFILIAIS] = 1
-GROUP BY 
-    P.[ID_CODPRODUTO],
-    P.[PROD_DESCRCOMPLETA],
-    P.[PROD_CODFABRIC],
-    P.[ID_CODGRUPO],
-    GI.[GRUP_DESCRICAO],
-    PE.[DESCRICAO],
-    PE.[ID_CORES_ECOMERCE],
-    PE.[SKU_PRODUTO_PAI],
-    PE.[ID_GRADE_ECOMERCE],
-    PE.[CODIGO_COR],
-    CE.[DESCRICAO],
-    PR.[PROD_ALTURA],
-    PR.[PROD_LARGURA],
-    PR.[PROD_COMPRIMENTO],
-    PR.[PROD_PESOLIQUIDO],
-    PA.[PRO_ATIVO_ECOMMERCE],
-    PA.[PRO_INTEGRACAO_ECOMMERCE],
-    PA.[ID_CODFILIAIS];
-    `;
-    const result = await connection.request().query(query);
+    // Constrói o caminho para o arquivo .sql
+    const queryPath = path.join(
+      __dirname,
+      "queries",
+      "searchCadastroProdutos.sql"
+    );
+    // Lê o conteúdo do arquivo
+    const query = fs.readFileSync(queryPath, "utf8");
+
+    const result = await connection
+      .request()
+      // Adiciona o parâmetro de forma segura
+      .input("referencia", VarChar, referencia)
+      .query(query);
+
     return result.recordset;
   } catch (error) {
-    console.error("Erro ao buscar notas:", error);
+    console.error("Erro ao buscar produtos:", error);
   } finally {
-    connection.close();
+    if (connection) {
+      connection.close();
+    }
   }
 };
 
