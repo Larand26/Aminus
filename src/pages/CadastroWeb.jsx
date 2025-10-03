@@ -648,7 +648,7 @@ const CadastroWeb = () => {
               />
             </div>
             <div className="cont-tabela-grade-web">
-              <table className="tabela-grade-web">
+              <table className="tabela-grade-web h-auto">
                 <thead>
                   <tr>
                     <th>Número</th>
