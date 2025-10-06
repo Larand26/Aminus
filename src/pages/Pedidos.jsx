@@ -14,6 +14,7 @@ import { Button } from "primereact/button";
 import createPDF from "../utils/createPDF";
 import { ProgressSpinner } from "primereact/progressspinner";
 import { InputSwitch } from "primereact/inputswitch";
+import { Dialog } from "primereact/dialog"; // 1. Importar Dialog
 
 const Pedidos = () => {
   const [pedidos, setPedidos] = useState([]);
@@ -37,9 +38,11 @@ const Pedidos = () => {
   const [cubagemItens, setCubagemItens] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
-  // 1. Substituir o estado para guardar apenas um item selecionado
   const [itemSelecionadoParaCotacao, setItemSelecionadoParaCotacao] =
     useState(null);
+  // 2. Novos estados para o modal de cotação
+  const [isCotacaoVisible, setIsCotacaoVisible] = useState(false);
+  const [cotacaoData, setCotacaoData] = useState(null);
 
   // Recupera função do usuário do localStorage
   let idFuncaoUsuario = null;
@@ -185,12 +188,35 @@ const Pedidos = () => {
     };
   }, []);
 
+  // 4. Listener para a resposta da cotação
+  useEffect(() => {
+    if (!window.electronApi) return;
+
+    const handleCotacaoResponse = (response) => {
+      if (response.error) {
+        console.error("Erro na cotação:", response.error, response.details);
+        // Adicione um toast ou alerta para o usuário aqui
+      } else {
+        console.log("Cotação recebida:", response);
+        setCotacaoData(response);
+        setIsCotacaoVisible(true); // Abre o modal com os dados
+      }
+    };
+
+    window.electronApi.onMakeCotacaoResponse(handleCotacaoResponse);
+
+    return () => {
+      if (window.electronApi.removeMakeCotacaoResponse) {
+        window.electronApi.removeMakeCotacaoResponse(handleCotacaoResponse);
+      }
+    };
+  }, []); // Executa apenas uma vez para registrar o listener
+
   const makeCubagem = async () => {
     window.electronApi?.makeCubagem(itensPedido);
   };
 
   const makeCotacao = () => {
-    // 4. Lógica de cotação simplificada
     if (!pedidoSelecionado) {
       console.error("Nenhum pedido selecionado.");
       return;
@@ -198,23 +224,32 @@ const Pedidos = () => {
 
     if (!itemSelecionadoParaCotacao) {
       console.warn("Nenhum item selecionado para a cotação.");
-      // Adicione um toast ou alerta para o usuário aqui, se desejar
       return;
     }
 
-    // A quantidade é diretamente do item selecionado
     const quantidadeTotal = itensPedido.reduce((total, item) => {
       return total + item.ITPEDOR_QUANTID;
     }, 0);
 
-    // Envia a quantidade total e o CEP do cliente
+    // Apenas envia a requisição. A resposta será tratada pelo listener no useEffect.
     window.electronApi?.makeCotacao({
       quantidade: quantidadeTotal,
       cep: pedidoSelecionado.ENTI_CEP,
       peso: pedidoSelecionado.PEDOR_PESOBRUTO,
       item: itemSelecionadoParaCotacao,
+      valor: pedidoSelecionado.PEDOR_VLRTOTAL,
     });
   };
+
+  const formatCurrency = (value) => {
+    const number = parseFloat(value);
+    if (isNaN(number)) return "R$ 0,00";
+    return number.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
   return (
     <div className="flex">
       <BarraLateral search={search}>
@@ -369,9 +404,74 @@ const Pedidos = () => {
         </DataTable>
         <div className="flex justify-content-end mt-3 gap-2">
           <Button icon="fa fa-box" label="Cubagem" onClick={makeCubagem} />
-          <Button icon="fa fa-box" label="Cotação" onClick={makeCotacao} />
+          <Button icon="fa fa-truck" label="Cotação" onClick={makeCotacao} />
         </div>
       </PopUp>
+
+      {/* 3. Modal para exibir os resultados da cotação */}
+      <Dialog
+        header="Resultado da Cotação"
+        visible={isCotacaoVisible}
+        style={{ width: "75vw" }}
+        onHide={() => setIsCotacaoVisible(false)}
+      >
+        <div className="grid">
+          <div className="col-12 md:col-6">
+            <h3>Cotação Padrão</h3>
+            <DataTable
+              value={cotacaoData?.padrao?.ShippingSevicesArray}
+              emptyMessage="Nenhum serviço encontrado."
+              sortField="PresentationalPrice"
+              sortOrder={1}
+              scrollHeight="400px"
+            >
+              <Column field="Carrier" header="Transportadora" sortable />
+              <Column
+                field="PresentationalPrice"
+                header="Preço"
+                body={(rowData) => formatCurrency(rowData.PresentationalPrice)}
+                sortable
+              />
+              <Column
+                field="OriginalDeliveryTime"
+                header="Prazo (dias)"
+                body={(rowData) => `${rowData.OriginalDeliveryTime} dia(s)`}
+                sortable
+              />
+            </DataTable>
+          </div>
+          <div className="col-12 md:col-6">
+            <h3>
+              Cotação Personalizada{" "}
+              <i
+                className="custom-cotacao-info fa fa-question-circle"
+                title="Utilizado para Brasspress e Jamef"
+              ></i>
+            </h3>
+            <DataTable
+              value={cotacaoData?.personalizado?.ShippingSevicesArray}
+              emptyMessage="Nenhum serviço encontrado."
+              sortField="PresentationalPrice"
+              sortOrder={1}
+              scrollHeight="400px"
+            >
+              <Column field="Carrier" header="Transportadora" sortable />
+              <Column
+                field="PresentationalPrice"
+                header="Preço"
+                body={(rowData) => formatCurrency(rowData.PresentationalPrice)}
+                sortable
+              />
+              <Column
+                field="OriginalDeliveryTime"
+                header="Prazo (dias)"
+                body={(rowData) => `${rowData.OriginalDeliveryTime} dia(s)`}
+                sortable
+              />
+            </DataTable>
+          </div>
+        </div>
+      </Dialog>
     </div>
   );
 };

@@ -6,13 +6,15 @@ const url = "https://api.frenet.com.br/shipping/quote";
 const token = globals.TOKEN_FRENET; // Seu token de autenticação
 
 const makeCotacao = async (frete) => {
+  console.log(frete);
+
   if (!frete.cep) return { error: "CEP do cliente é obrigatório" };
   // Padrão
   const ShippingItemArrayPadrao = {
     Height: 20, // Altura cm
     Length: 45, // Comprimento cm
-    Quantity: frete.quantidade / 12, // Quantidade
-    Weight: parseFloat((frete.peso / (frete.quantidade / 12)).toFixed(2)), // Peso kg
+    Quantity: 1, // Quantidade
+    Weight: parseFloat(frete.peso.toFixed(2)), // Peso kg
     Width: 30, // Largura cm
   };
 
@@ -39,6 +41,7 @@ const makeCotacao = async (frete) => {
     ShipmentInvoiceValue: 320.685,
     ShippingServiceCode: null,
     ShippingItemArray: [ShippingItemArrayPadrao],
+    ShipmentInvoiceValue: frete.valor || 100,
   };
 
   const bodyPersonalizado = {
@@ -47,6 +50,7 @@ const makeCotacao = async (frete) => {
     ShipmentInvoiceValue: 320.685,
     ShippingServiceCode: null,
     ShippingItemArray: [ShippingItemArrayPersonalizado],
+    ShipmentInvoiceValue: frete.valor || 100,
   };
 
   try {
