@@ -20,7 +20,10 @@ const makeCotacao = async (frete) => {
     Height: item.PROD_ALTURA || 20, // Altura cm
     Length: item.PROD_COMPRIMENTO || 45, // Comprimento cm
     Quantity: Math.ceil(item.ITPEDOR_QUANTID / 12) || 1, // Quantidade
-    Weight: parseFloat((item.PROD_PESOBRUTO * 12).toFixed(2)) || 1, // Peso kg
+    Weight:
+      parseFloat((item.PROD_PESOBRUTO * 12).toFixed(2)) === 0
+        ? 5
+        : parseFloat((item.PROD_PESOBRUTO * 12).toFixed(2)), // Peso kg
     Width: item.PROD_LARGURA || 30, // Largura cm
   }));
 

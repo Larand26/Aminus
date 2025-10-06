@@ -444,7 +444,9 @@ const Pedidos = () => {
           <div className="col-12 md:col-6">
             <h3>Cotação Padrão</h3>
             <DataTable
-              value={cotacaoData?.padrao?.ShippingSevicesArray}
+              value={cotacaoData?.padrao?.ShippingSevicesArray?.filter(
+                (item) => parseFloat(item.PresentationalPrice) > 0
+              )}
               emptyMessage="Nenhum serviço encontrado."
               sortField="PresentationalPrice"
               sortOrder={1}
@@ -474,7 +476,9 @@ const Pedidos = () => {
               ></i>
             </h3>
             <DataTable
-              value={cotacaoData?.personalizado?.ShippingSevicesArray}
+              value={cotacaoData?.personalizado?.ShippingSevicesArray?.filter(
+                (item) => parseFloat(item.PresentationalPrice) > 0
+              )}
               emptyMessage="Nenhum serviço encontrado."
               sortField="PresentationalPrice"
               sortOrder={1}
