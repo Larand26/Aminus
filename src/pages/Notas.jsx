@@ -32,7 +32,18 @@ const Notas = () => {
 
   const search = () => {
     setLoading(true);
-    // Não converta para Date aqui, apenas envie o valor do estado
+
+    let vendedorParaPesquisa = vendedor;
+    // Se o usuário é um vendedor, garante que o ID correto seja usado na pesquisa,
+    // independentemente do estado do React.
+    if (idFuncaoUsuario === 2) {
+      const nome = localStorage.getItem("user");
+      vendedorParaPesquisa = vendedoresJson.find(
+        (v) => v.label === nome
+      )?.value;
+    }
+    console.log("Vendedor para pesquisa:", localStorage.getItem("user"));
+
     const nota = {
       numero: document.getElementById("inputNumero").value || null,
       cnpj:
@@ -40,7 +51,7 @@ const Notas = () => {
       dataInicial: data ? (data[0] ? data[0].toISOString() : null) : null,
       dataFinal: data ? (data[1] ? data[1].toISOString() : null) : null,
       uf: uf || null,
-      vendedor: vendedor || null,
+      vendedor: vendedorParaPesquisa || null, // Usa a variável corrigida
     };
     console.log("Pesquisando nota:", nota);
 
@@ -83,11 +94,13 @@ const Notas = () => {
 
   useEffect(() => {
     if (idFuncaoUsuario === 2) {
+      console.log("Usuário é vendedor, definindo vendedor automaticamente.");
+
       const nome = localStorage.getItem("user");
       const v = vendedoresJson.find((v) => v.label === nome)?.value;
       setVendedor(v);
     }
-  }, [idFuncaoUsuario]);
+  }, []);
 
   return (
     <div className="flex">
