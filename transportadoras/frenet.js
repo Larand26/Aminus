@@ -6,8 +6,6 @@ const url = "https://api.frenet.com.br/shipping/quote";
 const token = globals.TOKEN_FRENET; // Seu token de autenticação
 
 const makeCotacao = async (frete) => {
-  console.log(frete);
-
   if (!frete.cep) return { error: "CEP do cliente é obrigatório" };
   // Padrão
   const ShippingItemArrayPadrao = {
