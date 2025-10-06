@@ -6,8 +6,6 @@ const url = "https://api.frenet.com.br/shipping/quote";
 const token = globals.TOKEN_FRENET; // Seu token de autenticação
 
 const makeCotacao = async (frete) => {
-  console.log("FRETE: ", frete);
-
   if (!frete.cep) return { error: "CEP do cliente é obrigatório" };
   // Padrão
   // const ShippingItemArrayPadrao = {
@@ -25,7 +23,6 @@ const makeCotacao = async (frete) => {
     Weight: parseFloat((item.PROD_PESOBRUTO * 12).toFixed(2)) || 1, // Peso kg
     Width: item.PROD_LARGURA || 30, // Largura cm
   }));
-  console.log(ShippingItemArrayPadrao);
 
   // Personalizado
   const ShippingItemArrayPersonalizado = {
