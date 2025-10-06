@@ -40,9 +40,9 @@ const Pedidos = () => {
   const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
   const [itemSelecionadoParaCotacao, setItemSelecionadoParaCotacao] =
     useState(null);
-  // 2. Novos estados para o modal de cotação
   const [isCotacaoVisible, setIsCotacaoVisible] = useState(false);
   const [cotacaoData, setCotacaoData] = useState(null);
+  const [loadingCotacao, setLoadingCotacao] = useState(false); // 1. Novo estado
 
   // Recupera função do usuário do localStorage
   let idFuncaoUsuario = null;
@@ -208,6 +208,7 @@ const Pedidos = () => {
     if (!window.electronApi) return;
 
     const handleCotacaoResponse = (response) => {
+      setLoadingCotacao(false); // 3. Desativa o loading ao receber a resposta
       if (response.error) {
         console.error("Erro na cotação:", response.error, response.details);
         // Adicione um toast ou alerta para o usuário aqui
@@ -241,6 +242,8 @@ const Pedidos = () => {
       console.warn("Nenhum item selecionado para a cotação.");
       return;
     }
+
+    setLoadingCotacao(true); // 2. Ativa o loading ao iniciar a cotação
 
     const quantidadeTotal = itensPedido.reduce((total, item) => {
       return total + item.ITPEDOR_QUANTID;
@@ -420,7 +423,13 @@ const Pedidos = () => {
         </DataTable>
         <div className="flex justify-content-end mt-3 gap-2">
           <Button icon="fa fa-box" label="Cubagem" onClick={makeCubagem} />
-          <Button icon="fa fa-truck" label="Cotação" onClick={makeCotacao} />
+          {/* 4. Botão com ícone condicional */}
+          <Button
+            icon={loadingCotacao ? "pi pi-spin pi-spinner" : "fa fa-truck"}
+            label="Cotação"
+            onClick={makeCotacao}
+            disabled={loadingCotacao}
+          />
         </div>
       </PopUp>
 
