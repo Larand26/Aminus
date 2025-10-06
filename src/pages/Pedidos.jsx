@@ -13,6 +13,7 @@ import vendedoresJson from "../assets/json/vendedores.json";
 import { Button } from "primereact/button";
 import createPDF from "../utils/createPDF";
 import { ProgressSpinner } from "primereact/progressspinner";
+import { InputSwitch } from "primereact/inputswitch";
 
 const Pedidos = () => {
   const [pedidos, setPedidos] = useState([]);
@@ -35,6 +36,11 @@ const Pedidos = () => {
   const [itensPedido, setItensPedido] = useState([]);
   const [cubagemItens, setCubagemItens] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
+  // 1. Substituir o estado para guardar apenas um item selecionado
+  const [itemSelecionadoParaCotacao, setItemSelecionadoParaCotacao] =
+    useState(null);
+
   // Recupera função do usuário do localStorage
   let idFuncaoUsuario = null;
   try {
@@ -124,6 +130,8 @@ const Pedidos = () => {
     window.electronApi?.getPedido(numero);
     window.electronApi?.onGetPedidoResponse((itensPedido) => {
       setItensPedido(itensPedido || []);
+      // Limpa a seleção ao carregar novos itens
+      setItemSelecionadoParaCotacao(null);
       console.log("Itens do pedido recebidos:", itensPedido);
     });
   };
@@ -182,7 +190,29 @@ const Pedidos = () => {
   };
 
   const makeCotacao = () => {
-    window.electronApi?.makeCotacao(itensPedido);
+    // 4. Lógica de cotação simplificada
+    if (!pedidoSelecionado) {
+      console.error("Nenhum pedido selecionado.");
+      return;
+    }
+
+    if (!itemSelecionadoParaCotacao) {
+      console.warn("Nenhum item selecionado para a cotação.");
+      // Adicione um toast ou alerta para o usuário aqui, se desejar
+      return;
+    }
+
+    // A quantidade é diretamente do item selecionado
+    const quantidadeTotal = itensPedido.reduce((total, item) => {
+      return total + item.ITPEDOR_QUANTID;
+    }, 0);
+
+    // Envia a quantidade total e o CEP do cliente
+    window.electronApi?.makeCotacao({
+      quantidade: quantidadeTotal,
+      cep: pedidoSelecionado.ENTI_CEP,
+      item: itemSelecionadoParaCotacao,
+    });
   };
   return (
     <div className="flex">
@@ -272,6 +302,8 @@ const Pedidos = () => {
             }
             id="tabelaPedidos"
             onRowClick={(e) => {
+              // 2. Guarda o pedido selecionado e busca os itens
+              setPedidoSelecionado(e.data);
               getPedido(e.data.ID_NUMPEDORC);
             }}
           >
@@ -309,17 +341,24 @@ const Pedidos = () => {
         )}
       </Content>
       <PopUp onClose={closePopup}>
+        {/* 2. Atualizar a DataTable */}
         <DataTable
           value={itensPedido}
           emptyMessage="Nenhum item encontrado"
           scrollHeight="500px"
+          selectionMode="radiobutton"
+          selection={itemSelecionadoParaCotacao}
+          onSelectionChange={(e) => setItemSelecionadoParaCotacao(e.value)}
+          dataKey="ID_CODPRODUTO"
         >
+          {/* 3. Substituir a coluna do InputSwitch */}
+          <Column selectionMode="single" headerStyle={{ width: "3rem" }} />
           <Column field="ID_CODPRODUTO" header="Código" />
           <Column field="ITPEDOR_DESCRPROD" header="Descrição" />
           <Column field="ITPEDOR_QUANTID" header="Quantidade" />
           <Column
             body={(rowData) => {
-              const peso = parseFloat(rowData.PROD_PESOLIQUIDO);
+              const peso = parseFloat(rowData.PROD_PESOBRUTO);
               return isNaN(peso) ? "0 kg" : `${(peso * 12).toFixed(2)} kg`;
             }}
             header="Peso"

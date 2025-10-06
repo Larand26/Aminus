@@ -29,6 +29,7 @@ const { login } = require("./db/mysql/login");
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
 const { track } = require("./transportadoras/track");
+const { makeCotacao } = require("./transportadoras/frenet");
 
 // ENV
 require("dotenv").config();
