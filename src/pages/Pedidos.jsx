@@ -132,10 +132,25 @@ const Pedidos = () => {
     openPopup();
     window.electronApi?.getPedido(numero);
     window.electronApi?.onGetPedidoResponse((itensPedido) => {
-      setItensPedido(itensPedido || []);
-      // Limpa a seleção ao carregar novos itens
-      setItemSelecionadoParaCotacao(null);
-      console.log("Itens do pedido recebidos:", itensPedido);
+      const items = itensPedido || [];
+      setItensPedido(items);
+
+      if (items.length > 0) {
+        // Encontra o item com o maior PROD_PESOBRUTO
+        const itemMaisPesado = items.reduce((maisPesado, itemAtual) => {
+          const pesoMaisPesado = parseFloat(maisPesado.PROD_PESOBRUTO) || 0;
+          const pesoItemAtual = parseFloat(itemAtual.PROD_PESOBRUTO) || 0;
+          return pesoItemAtual > pesoMaisPesado ? itemAtual : maisPesado;
+        }, items[0]);
+
+        // Define o item mais pesado como selecionado por padrão
+        setItemSelecionadoParaCotacao(itemMaisPesado);
+      } else {
+        // Limpa a seleção se não houver itens
+        setItemSelecionadoParaCotacao(null);
+      }
+
+      console.log("Itens do pedido recebidos:", items);
     });
   };
   useEffect(() => {
