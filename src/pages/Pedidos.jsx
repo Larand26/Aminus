@@ -252,6 +252,7 @@ const Pedidos = () => {
       cep: pedidoSelecionado.ENTI_CEP,
       peso: pedidoSelecionado.PEDOR_PESOBRUTO,
       item: itemSelecionadoParaCotacao,
+      itensPedido: itensPedido,
       valor: pedidoSelecionado.PEDOR_VLRTOTAL,
     });
   };

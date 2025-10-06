@@ -6,15 +6,26 @@ const url = "https://api.frenet.com.br/shipping/quote";
 const token = globals.TOKEN_FRENET; // Seu token de autenticação
 
 const makeCotacao = async (frete) => {
+  console.log("FRETE: ", frete);
+
   if (!frete.cep) return { error: "CEP do cliente é obrigatório" };
   // Padrão
-  const ShippingItemArrayPadrao = {
-    Height: 20, // Altura cm
-    Length: 45, // Comprimento cm
-    Quantity: 1, // Quantidade
-    Weight: parseFloat(frete.peso.toFixed(2)), // Peso kg
-    Width: 30, // Largura cm
-  };
+  // const ShippingItemArrayPadrao = {
+  //   Height: 20, // Altura cm
+  //   Length: 45, // Comprimento cm
+  //   Quantity: 1, // Quantidade
+  //   Weight: parseFloat(frete.peso.toFixed(2)), // Peso kg
+  //   Width: 30, // Largura cm
+  // };
+
+  const ShippingItemArrayPadrao = frete.itensPedido.map((item) => ({
+    Height: item.PROD_ALTURA || 20, // Altura cm
+    Length: item.PROD_COMPRIMENTO || 45, // Comprimento cm
+    Quantity: Math.ceil(item.ITPEDOR_QUANTID / 12) || 1, // Quantidade
+    Weight: parseFloat((item.PROD_PESOBRUTO * 12).toFixed(2)) || 1, // Peso kg
+    Width: item.PROD_LARGURA || 30, // Largura cm
+  }));
+  console.log(ShippingItemArrayPadrao);
 
   // Personalizado
   const ShippingItemArrayPersonalizado = {
@@ -38,7 +49,7 @@ const makeCotacao = async (frete) => {
     RecipientCEP: frete.cep, // CEP cliente
     ShipmentInvoiceValue: 320.685,
     ShippingServiceCode: null,
-    ShippingItemArray: [ShippingItemArrayPadrao],
+    ShippingItemArray: ShippingItemArrayPadrao,
     ShipmentInvoiceValue: frete.valor || 100,
   };
 
