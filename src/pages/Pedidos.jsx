@@ -211,6 +211,7 @@ const Pedidos = () => {
     window.electronApi?.makeCotacao({
       quantidade: quantidadeTotal,
       cep: pedidoSelecionado.ENTI_CEP,
+      peso: pedidoSelecionado.PEDOR_PESOBRUTO,
       item: itemSelecionadoParaCotacao,
     });
   };
