@@ -3,27 +3,43 @@ const conectarSql = require("../../config/database");
 const searchPedido = async (pedido) => {
   const connection = await conectarSql();
   try {
-    const clienteResult = await connection
-      .request()
-      .query(
-        `SELECT TOP (1) [ID_CODENTIDADE] FROM [ENTIDADES] WHERE [ID_CODFILIAIS] = '1' AND [ENTI_CNPJCPF] = '${pedido.cnpj}'`
-      );
-    // Busca todos os ID_CODNOTA relevantes
-    let query = "FROM [PEDIDOORCAMENTO] WHERE [ID_CODFILIAIS] = '1'";
-    if (pedido) {
-      if (pedido.numero) query += ` AND [ID_NUMPEDORC] = '${pedido.numero}'`;
-      if (pedido.cnpj)
-        query += ` AND [ID_CODENTIDADE] = '${clienteResult.recordset[0].ID_CODENTIDADE}'`;
-      if (pedido.dataInicial)
-        query += ` AND [PEDOR_DATA] >= CONVERT(date, '${pedido.dataInicial}', 126)`;
-      if (pedido.dataFinal)
-        query += ` AND [PEDOR_DATA] <= CONVERT(date, '${pedido.dataFinal}', 126)`;
-      if (pedido.situacao)
-        query += ` AND [PEDOR_SITUACAO] = '${pedido.situacao}'`;
-      if (pedido.vendedor)
-        query += ` AND [ID_CODVENDEDOR] = '${pedido.vendedor}'`;
+    const request = connection.request();
+
+    let conditions = ["WHERE PO.[ID_CODFILIAIS] = '1'"];
+
+    if (pedido?.numero) {
+      conditions.push("AND PO.[ID_NUMPEDORC] = @numero");
+      request.input("numero", pedido.numero);
     }
-    const vwNotaResult = await connection.request().query("SELECT * " + query);
+    if (pedido?.cnpj) {
+      conditions.push("AND E.[ENTI_CNPJCPF] = @cnpj");
+      request.input("cnpj", pedido.cnpj);
+    }
+    if (pedido?.dataInicial) {
+      conditions.push("AND PO.[PEDOR_DATA] >= @dataInicial");
+      request.input("dataInicial", pedido.dataInicial);
+    }
+    if (pedido?.dataFinal) {
+      conditions.push("AND PO.[PEDOR_DATA] <= @dataFinal");
+      request.input("dataFinal", pedido.dataFinal);
+    }
+    if (pedido?.situacao) {
+      conditions.push("AND PO.[PEDOR_SITUACAO] = @situacao");
+      request.input("situacao", pedido.situacao);
+    }
+    if (pedido?.vendedor) {
+      conditions.push("AND PO.[ID_CODVENDEDOR] = @vendedor");
+      request.input("vendedor", pedido.vendedor);
+    }
+
+    const query = `SELECT 
+                    PO.*,
+                    E.[ENTI_CEP],
+                    E.[ENTI_CNPJCPF]
+                    FROM [PEDIDOORCAMENTO] PO
+                    LEFT JOIN [ENTIDADES] E ON PO.ID_CODENTIDADE = E.ID_CODENTIDADE 
+                    ${conditions.join(" ")}`;
+    const vwNotaResult = await request.query(query);
 
     return vwNotaResult.recordset;
   } catch (error) {

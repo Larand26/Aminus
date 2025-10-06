@@ -108,4 +108,10 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("cadastra-produtos-web-response", (event, arg) => {
       callback(arg);
     }),
+
+  makeCotacao: (arg) => ipcRenderer.send("make-cotacao", arg),
+  onMakeCotacaoResponse: (callback) =>
+    ipcRenderer.on("make-cotacao-response", (event, arg) => {
+      callback(arg);
+    }),
 });

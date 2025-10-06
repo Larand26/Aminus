@@ -313,3 +313,15 @@ ipcMain.on("cadastra-produtos-web", async (event, produtos) => {
     });
   }
 });
+
+ipcMain.on("make-cotacao", async (event, arg) => {
+  try {
+    const cotacao = await makeCotacao(arg);
+    event.reply("make-cotacao-response", cotacao);
+  } catch (error) {
+    console.error("Erro ao fazer cotação:", error);
+    event.reply("make-cotacao-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});

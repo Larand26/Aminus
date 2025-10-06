@@ -79,6 +79,8 @@ const Pedidos = () => {
     window.electronApi?.searchPedido(pedido);
     window.electronApi?.onSearchPedidoResponse((pedidos) => {
       setPedidos(pedidos);
+      console.log("Pedidos recebidos:", pedidos);
+
       setLoading(false);
       // Limpa os inputs após a pesquisa
       document.getElementById("inputNumero").value = "";
@@ -177,6 +179,10 @@ const Pedidos = () => {
 
   const makeCubagem = async () => {
     window.electronApi?.makeCubagem(itensPedido);
+  };
+
+  const makeCotacao = () => {
+    window.electronApi?.makeCotacao(itensPedido);
   };
   return (
     <div className="flex">
@@ -321,7 +327,10 @@ const Pedidos = () => {
           <Column field="ITPEDOR_VLRUNIT" header="Valor unitário" />
           <Column field="ITPEDOR_VLRLIQU" header="Valor líquido" />
         </DataTable>
-        <Button icon="fa fa-box" label="Cubagem" onClick={makeCubagem} />
+        <div className="flex justify-content-end mt-3 gap-2">
+          <Button icon="fa fa-box" label="Cubagem" onClick={makeCubagem} />
+          <Button icon="fa fa-box" label="Cotação" onClick={makeCotacao} />
+        </div>
       </PopUp>
     </div>
   );
