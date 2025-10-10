@@ -16,6 +16,7 @@ const PopUp = (props) => {
         <button className="close-button" onClick={() => closePopup(props.id)}>
           <i className="fa fa-times"></i>
         </button>
+        {props.children}
       </div>
     </>
   );
