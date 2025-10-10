@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import MenuMeuPerfil from "./MenuMeuPerfil";
+import PopUp from "./PopUp";
 
 import "../styles/nav-bar.css";
 import "../styles/icons.css";
@@ -8,10 +9,11 @@ import "../styles/icons.css";
 const NavBar = (props) => {
   const navigate = useNavigate();
   const openMenu = () => {
-    document.querySelector(".menu-meu-perfil").classList.toggle("open-menu");
+    document.querySelector("#meu-perfil-popup").classList.toggle("open-menu");
   };
   return (
     <>
+      <PopUp id="meu-perfil-popup" />
       <MenuMeuPerfil />
       <div className="nav-bar">
         <div className="home">

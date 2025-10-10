@@ -4,11 +4,15 @@ import "../styles/menu-meu-perfil.css";
 
 const MenuMeuPerfil = () => {
   const navigate = useNavigate();
+  const openPopup = () => {
+    document.querySelector(".pop-up").classList.toggle("open-pop-up");
+    document.querySelector(".blur").classList.toggle("open-blur");
+  };
   return (
     <div className="menu-meu-perfil">
       <ul>
         <li>
-          <button>
+          <button onClick={openPopup}>
             Meu Perfil <i className="fa fa-user"></i>
           </button>
         </li>
