@@ -13,102 +13,24 @@
   font-style: normal;
 }
 
+:root {
+  --cor-primaria: #2c3e4e;
+  --cor-fundo: #e8edeb;
+  --cor-texto: #1c1c1c;
+  --cor-vermelho: #b2473e;
+  --cor-azulClaro: #8cbdb7;
+  --cor-amarelo: #df9f4e;
+  --cor-branco: #fff;
+  --fonte-principal: "Inter", Arial, sans-serif;
+  --fonte-titulo: "Bebas Neue", cursive;
+}
+
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", Arial, sans-serif;
-  background: #f5f6fa;
-  overflow-y: hidden;
-}
-
-.bebas {
-  font-family: "Bebas Neue", cursive;
-}
-
-.titulo {
-  font-family: "Bebas Neue", cursive;
-  font-size: 2.5rem;
-  text-align: center;
-  word-break: break-word;
-}
-.titulo p {
-  margin: 0;
-}
-.p-row-odd {
-  background-color: #c7c7c7;
-}
-.content table {
-  width: 100%;
-  height: 25rem;
-  border-collapse: collapse;
-}
-
-.content {
-  width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-  box-sizing: border-box;
-}
-
-@media (max-width: 900px) {
-  .content {
-    padding: 0.5rem;
-    min-width: unset;
-  }
-  .titulo {
-    font-size: 2rem;
-  }
-  .content table {
-    min-width: 600px;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 600px) {
-  .content {
-    padding: 0.2rem;
-  }
-  .titulo {
-    font-size: 1.5rem;
-  }
-  table {
-    min-width: 350px;
-    font-size: 0.85rem;
-  }
-}
-
-/* DataTable responsivo */
-.p-datatable-wrapper {
-  overflow-x: auto;
-}
-
-/* Evita quebra feia de palavras e melhora responsividade das tabelas */
-.p-datatable .p-column-header,
-.p-datatable .p-cell {
-  word-break: break-word;
-  white-space: normal;
-  max-width: 180px;
-  overflow-wrap: anywhere;
-}
-
-.p-datatable .p-datatable-tbody > tr > td,
-.p-datatable .p-datatable-thead > tr > th {
-  white-space: nowrap;
-}
-
-@media (max-width: 600px) {
-  .p-datatable .p-column-header,
-  .p-datatable .p-cell {
-    max-width: 100px;
-    font-size: 0.85rem;
-  }
-}
-
-.content td {
-  padding: 0.5rem;
-}
-
-.bg-popup {
-  background-color: #00000080;
+  font-family: var(--fonte-principal);
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  overflow: hidden;
 }
