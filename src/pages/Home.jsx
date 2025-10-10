@@ -7,7 +7,7 @@ const Home = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <NavBar />
+      <NavBar page="home" />
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/nav-bar.css";
 import "../styles/icons.css";
 
-const NavBar = () => {
+const NavBar = (props) => {
   const navigate = useNavigate();
   return (
     <div className="nav-bar">
@@ -13,9 +13,11 @@ const NavBar = () => {
         </button>
       </div>
       <div className="actions">
-        <button>
-          <i className="fa fa-cog"></i>
-        </button>
+        {props.page !== "home" && (
+          <button>
+            <i className="fa fa-cog"></i>
+          </button>
+        )}
         <button>
           <i className="icon-gemini"></i>
         </button>
