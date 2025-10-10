@@ -1,16 +1,18 @@
 .nav-bar {
   background-image: linear-gradient(to right, var(--cor-primaria), #415b72);
-  overflow: hidden;
   display: flex;
   justify-content: space-between;
   padding: 10px 5px;
+  position: relative;
+  z-index: 1;
 }
 
 .nav-bar .home {
   margin-right: auto;
 }
 
-.nav-bar button {
+.nav-bar .home button,
+.nav-bar .actions button {
   padding: 0;
   background: none;
   border: none;
