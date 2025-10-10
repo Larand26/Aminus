@@ -1,5 +1,5 @@
 import React, { use } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 
@@ -8,11 +8,37 @@ import logo from "../assets/img/png/imagologo_png.png";
 import "../styles/login-page.css";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") || ""
+  );
+  const [password, setPassword] = useState(
+    localStorage.getItem("password") || ""
+  );
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleLoginResponse = (response) => {
+      if (!response.success) {
+        console.log("Login falhou: " + response.message);
+        return;
+      }
+      if (response.data) {
+        localStorage.setItem("userData", JSON.stringify(response.data));
+        localStorage.setItem("username", response.data.NOME);
+        localStorage.setItem("password", response.data.SENHA);
+        localStorage.setItem(
+          "ID_FUNCAO_USUARIO",
+          response.data.ID_FUNCAO_USUARIO
+        );
+      }
+      navigate("/home");
+    };
+    window.electronApi?.onLoginResponse(handleLoginResponse);
+  }, [navigate]);
 
   const login = () => {
-    console.log(username, password);
+    if (!username || !password) return;
+    window.electronApi?.login(username.toUpperCase(), password);
   };
 
   return (
@@ -27,6 +53,7 @@ const Login = () => {
             <br />
             <input
               type="text"
+              value={username}
               onChange={(e) => setUsername(e.target.value)}
               id="username"
               placeholder="Usuário"
@@ -37,6 +64,7 @@ const Login = () => {
             <br />
             <input
               type="password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
               id="password"
               placeholder="Senha"
