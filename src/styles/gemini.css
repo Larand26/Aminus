@@ -1,0 +1,17 @@
+.gemini-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  position: absolute;
+  width: 400px;
+  top: 0;
+  right: 0;
+  background-image: linear-gradient(to top right, var(--cor-primaria), #415b72);
+  transition: 0.3s ease-in-out;
+  transform: translate(100%);
+}
+
+.open-gemini-container {
+  transform: translate(0);
+}

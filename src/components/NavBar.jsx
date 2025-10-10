@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import MenuMeuPerfil from "./MenuMeuPerfil";
 import PopUp from "./PopUp";
 import PopUpMeuPerfil from "./PopUps/PopUpMeuPerfil";
+import Gemini from "./Gemini";
 
 import "../styles/nav-bar.css";
 import "../styles/icons.css";
@@ -12,8 +13,12 @@ const NavBar = (props) => {
   const openMenu = () => {
     document.querySelector(".menu-meu-perfil").classList.toggle("open-menu");
   };
+  const openGemini = () => {
+    document.querySelector("#gemini").classList.toggle("open-gemini-container");
+  };
   return (
     <>
+      <Gemini />
       <PopUp id="meu-perfil-popup">
         <PopUpMeuPerfil />
       </PopUp>
@@ -30,7 +35,7 @@ const NavBar = (props) => {
               <i className="fa fa-cog"></i>
             </button>
           )}
-          <button>
+          <button onClick={openGemini}>
             <i className="icon-gemini"></i>
           </button>
           <button onClick={openMenu}>
