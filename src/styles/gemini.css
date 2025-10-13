@@ -10,6 +10,7 @@
   background-image: linear-gradient(to top right, var(--cor-primaria), #415b72);
   transition: 0.3s ease-in-out;
   transform: translate(100%);
+  z-index: 2;
 }
 
 .open-gemini-container {
