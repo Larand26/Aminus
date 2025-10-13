@@ -1,0 +1,65 @@
+[
+  {
+    "page": "produtos",
+    "title": "Produtos",
+    "icon": "box-open",
+    "path": "/produtos",
+    "permissions": []
+  },
+  {
+    "page": "notas",
+    "title": "Notas",
+    "icon": "newspaper",
+    "path": "/notas",
+    "permissions": []
+  },
+  {
+    "page": "pedidos",
+    "title": "Pedidos",
+    "icon": "cart-plus",
+    "path": "/pedidos",
+    "permissions": []
+  },
+  {
+    "page": "clientes",
+    "title": "Clientes",
+    "icon": "users",
+    "path": "/clientes",
+    "permissions": []
+  },
+  {
+    "page": "reserva",
+    "title": "Reserva",
+    "icon": "box",
+    "path": "/reserva",
+    "permissions": []
+  },
+  {
+    "page": "fotos",
+    "title": "Fotos",
+    "icon": "camera-retro",
+    "path": "/fotos",
+    "permissions": []
+  },
+  {
+    "page": "cadastro",
+    "title": "Cadastro",
+    "icon": "table",
+    "path": "/cadastro",
+    "permissions": []
+  },
+  {
+    "page": "rastreio",
+    "title": "Rastreio",
+    "icon": "truck",
+    "path": "/rastreio",
+    "permissions": []
+  },
+  {
+    "page": "log",
+    "title": "Log",
+    "icon": "database",
+    "path": "/log",
+    "permissions": []
+  }
+]
