@@ -1,53 +1,10 @@
-@font-face {
-  font-family: "Bebas Neue";
-  src: url("./assets/fonts/Bebas_Neue/BebasNeue-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-.barra-lateral input {
-  width: 100%;
-  border-radius: 10rem;
-}
-.barra-lateral label {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 1.1rem;
-  color: #0b3892;
-}
-.barra-lateral .p-dropdown {
-  min-width: 0 !important;
-  box-sizing: border-box;
-  font-size: 1rem;
-
-  border-radius: 6px;
-  border: 1px solid #ced4da;
-  background: #fff;
-  border-radius: 50px;
-}
-.barra-lateral .p-dropdown input {
-  color: black;
-}
-
-@media (max-width: 900px) {
-  .barra-lateral {
-    width: 100% !important;
-    min-width: unset !important;
-    max-width: unset !important;
-    margin-bottom: 1rem;
-    border-radius: 0 0 20px 20px;
-  }
-  .barra-lateral input,
-  .barra-lateral .p-dropdown {
-    font-size: 1rem;
-    border-radius: 20px;
-  }
-}
-
-@media (max-width: 600px) {
-  .barra-lateral {
-    padding: 0.5rem !important;
-  }
-  .barra-lateral label {
-    font-size: 0.95rem;
-  }
+.barra-lateral {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: var(--cor-primaria);
+  width: 200px;
+  height: 100vh;
 }
