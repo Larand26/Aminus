@@ -7,7 +7,8 @@ const InputLabel = (props) => {
       <input
         type={props.type || "text"}
         value={props.value || ""}
-        onChange={(e) => props.onChange(e.target.value) || (() => {})}
+        onChange={(e) => props.onChange(e.target.value)}
+        onKeyDown={props.onKeyDown}
       />
     </div>
   );

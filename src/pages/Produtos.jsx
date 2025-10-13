@@ -6,6 +6,8 @@ import InputLabel from "../components/InputLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 
+import searchProdutos from "../utils/search/searchProdutos";
+
 const Produtos = () => {
   // Estados dos inputs
   const [codFabricante, setCodFabricante] = useState("");
@@ -14,53 +16,55 @@ const Produtos = () => {
   const [nome, setNome] = useState("");
 
   // Produtos
-  const [produtos, setProdutos] = useState([
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "002", b: "1002", c: "7891234567891", d: "Produto B" },
-    { a: "003", b: "1003", c: "7891234567892", d: "Produto C" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "002", b: "1002", c: "7891234567891", d: "Produto B" },
-    { a: "003", b: "1003", c: "7891234567892", d: "Produto C" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "002", b: "1002", c: "7891234567891", d: "Produto B" },
-    { a: "003", b: "1003", c: "7891234567892", d: "Produto C" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "002", b: "1002", c: "7891234567891", d: "Produto B" },
-    { a: "003", b: "1003", c: "7891234567892", d: "Produto C" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-    { a: "001", b: "1001", c: "7891234567890", d: "Produto A" },
-  ]);
+  const [produtos, setProdutos] = useState([]);
+
+  // Função que executa a busca
+  const handleSearch = async () => {
+    const resultados = await searchProdutos({
+      codFabricante: codFabricante,
+      codInterno: codInterno,
+      codBarras: codBarras,
+      nome: nome,
+    });
+    setProdutos(resultados);
+  };
+
+  // Função para lidar com a tecla Enter
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <>
       <NavBar />
       <div className="main-container">
-        <BarraLateral search={true}>
+        <BarraLateral onSearch={handleSearch}>
           <InputLabel
             label="Cod Fabricante"
             value={codFabricante}
             onChange={setCodFabricante}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Cod Interno"
             value={codInterno}
             onChange={setCodInterno}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Cod Barras"
             value={codBarras}
             onChange={setCodBarras}
+            onKeyDown={handleKeyDown}
           />
-          <InputLabel label="Nome" value={nome} onChange={setNome} />
+          <InputLabel
+            label="Nome"
+            value={nome}
+            onChange={setNome}
+            onKeyDown={handleKeyDown}
+          />
         </BarraLateral>
         <div className="content">
           <div className="content-title">

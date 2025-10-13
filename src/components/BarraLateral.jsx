@@ -6,7 +6,7 @@ const BarraLateral = (props) => {
   return (
     <div className="barra-lateral">
       {props.children}
-      {props.search && <SearchButton />}
+      {props.onSearch && <SearchButton onClick={props.onSearch} />}
     </div>
   );
 };

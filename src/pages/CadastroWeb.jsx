@@ -9,7 +9,7 @@ import { Toast } from "primereact/toast";
 import { ProgressSpinner } from "primereact/progressspinner"; // Adicione este import
 
 import "../styles/cadastro-web.css";
-import "../styles/tabela-produtos-web.css";
+import "../styles/tabela.css";
 import "../styles/icons.css";
 
 import { useState, useCallback, useEffect, use, useRef } from "react";
