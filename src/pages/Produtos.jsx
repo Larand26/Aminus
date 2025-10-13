@@ -13,25 +13,27 @@ const Produtos = () => {
   return (
     <>
       <NavBar />
-      <BarraLateral search={true}>
-        <InputLabel
-          label="Cod Fabricante"
-          value={codFabricante}
-          onChange={setCodFabricante}
-        />
-        <InputLabel
-          label="Cod Interno"
-          value={codInterno}
-          onChange={setCodInterno}
-        />
-        <InputLabel
-          label="Cod Barras"
-          value={codBarras}
-          onChange={setCodBarras}
-        />
-        <InputLabel label="Nome" value={nome} onChange={setNome} />
-      </BarraLateral>
-      <div className="content"></div>
+      <div className="main-container">
+        <BarraLateral search={true}>
+          <InputLabel
+            label="Cod Fabricante"
+            value={codFabricante}
+            onChange={setCodFabricante}
+          />
+          <InputLabel
+            label="Cod Interno"
+            value={codInterno}
+            onChange={setCodInterno}
+          />
+          <InputLabel
+            label="Cod Barras"
+            value={codBarras}
+            onChange={setCodBarras}
+          />
+          <InputLabel label="Nome" value={nome} onChange={setNome} />
+        </BarraLateral>
+        <div className="content"></div>
+      </div>
     </>
   );
 };
