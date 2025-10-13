@@ -7,4 +7,5 @@
   background-color: var(--cor-primaria);
   width: 200px;
   height: 100vh;
+  padding: 0 10px;
 }
