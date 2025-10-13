@@ -1,8 +1,18 @@
 const searchProdutos = async (produtos) => {
-  if (!produtos.codFabricante) return;
-  console.log(produtos);
+  // lida com os dados antes de enviar
+  if (!produtos) return [];
 
-  //   window.electronApi?.searchProduto(produtos);
+  if (Object.values(produtos).every((value) => !value)) return [];
+
+  window.electronApi?.searchProduto(produtos);
+
+  const response = await new Promise((resolve) => {
+    window.electronApi?.onSearchProdutoResponse((arg) => {
+      resolve(arg);
+    });
+  });
+
+  return response;
 };
 
 export default searchProdutos;

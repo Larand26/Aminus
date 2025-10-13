@@ -5,14 +5,14 @@ const searchProduto = async (produto) => {
     // Busca todos os ID_CODPRODUTO relevantes
     let query = "FROM [vwITEM] WHERE ID_DEPOSITOS = 2";
     if (produto) {
-      if (produto.codigoInterno)
-        query += ` AND [ID_CODPRODUTO] = '${produto.codigoInterno}'`;
-      if (produto.referencia)
-        query += ` AND [PROD_CODFABRIC] = '${produto.referencia}'`;
+      if (produto.codInterno)
+        query += ` AND [ID_CODPRODUTO] = '${produto.codInterno}'`;
+      if (produto.codFabricante)
+        query += ` AND [PROD_CODFABRIC] = '${produto.codFabricante}'`;
       if (produto.nome)
         query += ` AND [PROD_DESCRCOMPLETA] LIKE '%${produto.nome}%'`;
-      if (produto.codigoBarras)
-        query += ` AND [PROD_CODBARRA] = '${produto.codigoBarras}'`;
+      if (produto.codBarras)
+        query += ` AND [PROD_CODBARRA] = '${produto.codBarras}'`;
     }
 
     const vwItemResult = await connection.request().query("SELECT * " + query);

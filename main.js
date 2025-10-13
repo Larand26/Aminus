@@ -71,9 +71,13 @@ ipcMain.on("search-produto", async (event, arg) => {
     const produtos = await searchProduto(arg);
     console.log(produtos);
 
-    event.reply("search-produto-response", produtos);
+    event.reply("search-produto-response", { data: produtos, success: true });
   } catch (error) {
     console.error("Erro ao buscar produtos:", error);
+    event.reply("search-produto-response", {
+      error: error.message || "Erro desconhecido",
+      success: false,
+    });
   }
 });
 

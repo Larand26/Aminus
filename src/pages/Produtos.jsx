@@ -26,7 +26,8 @@ const Produtos = () => {
       codBarras: codBarras,
       nome: nome,
     });
-    setProdutos(resultados);
+    setProdutos(resultados.data);
+    console.log(resultados);
   };
 
   // Função para lidar com a tecla Enter
@@ -71,18 +72,10 @@ const Produtos = () => {
             <h1>Produtos</h1>
           </div>
           <Tabela dados={produtos} semDados="Nenhum produto encontrado">
-            <Coluna titulo="Cod Fabricante" campo="a" />
-            <Coluna titulo="Cod Interno" campo="b" />
-            <Coluna titulo="Cod Barras" campo="c" />
-            <Coluna titulo="Cod Barras" campo="c" />
-            <Coluna titulo="Cod Barras" campo="c" />
-            <Coluna titulo="Cod Barras" campo="c" />
-            <Coluna titulo="Cod Barras" campo="c" />
-            <Coluna titulo="Cod Barras" campo="c" />
-            <Coluna titulo="Cod Barras" campo="c" />
-            <Coluna titulo="Cod Barras" campo="c" />
-            <Coluna titulo="Cod Barras" campo="c" />
-            <Coluna titulo="Nome" campo="d" />
+            <Coluna titulo="Cod Interno" campo="ID_CODPRODUTO" />
+            <Coluna titulo="Cod Fabricante" campo="PROD_CODFABRIC" />
+            <Coluna titulo="Descricao" campo="PROD_DESCRCOMPLETA" />
+            <Coluna titulo="Cod Barras" campo="PROD_CODBARRA" />
           </Tabela>
         </div>
       </div>
