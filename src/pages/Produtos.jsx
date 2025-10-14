@@ -10,6 +10,8 @@ import Opcao from "../components/Opcao";
 
 import searchProdutos from "../utils/search/searchProdutos";
 
+import opcoesProdutos from "../assets/json/opcoes/opcoesProdutos.json";
+
 const Produtos = () => {
   // Estados dos inputs
   const [codFabricante, setCodFabricante] = useState("");
@@ -40,23 +42,17 @@ const Produtos = () => {
   };
 
   //Opções
-  const [opcoes, setOpcoes] = useState([
-    { id: "COD_INTERNO", label: "Cod Interno", checked: true },
-    { id: "COD_FABRICANTE", label: "Cod Fabricante", checked: true },
-    { id: "COD_BARRAS", label: "Cod Barras", checked: true },
-    { id: "NOME", label: "Nome", checked: true },
-    { id: "DESCRICAO", label: "Descrição", checked: true },
-    { id: "QUANT_TOTAL", label: "Quantidade Total", checked: true },
-    { id: "ESTOQUE_DISPONIVEL", label: "Estoque Disponível", checked: true },
-    { id: "PRECO", label: "Preço", checked: true },
-    { id: "ENDERECO", label: "Endereço", checked: true },
-    { id: "ALTURA", label: "Altura", checked: true },
-    { id: "LARGURA", label: "Largura", checked: true },
-    { id: "COMPRIMENTO", label: "Comprimento", checked: true },
-    { id: "DATA_ALTERACAO", label: "Data Alteração", checked: true },
-    { id: "PESO_BR", label: "Peso Bruto", checked: true },
-    { id: "PESO_LIQ", label: "Peso Líquido", checked: true },
-  ]);
+  const [opcoes, setOpcoes] = useState(() => {
+    const savedOpcoes = localStorage.getItem("opcoesProdutos");
+    if (!savedOpcoes) return opcoesProdutos;
+
+    if (JSON.parse(savedOpcoes).length !== opcoesProdutos.length) {
+      localStorage.setItem("opcoesProdutos", JSON.stringify(opcoesProdutos));
+      return opcoesProdutos;
+    }
+
+    return JSON.parse(savedOpcoes);
+  });
 
   const handleOptionClick = (e) => {
     const { id } = e.target;
@@ -64,6 +60,7 @@ const Produtos = () => {
       opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
     );
     setOpcoes(updatedOptions);
+    localStorage.setItem("opcoesProdutos", JSON.stringify(updatedOptions));
   };
 
   return (
