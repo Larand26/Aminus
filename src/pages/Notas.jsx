@@ -1,272 +1,124 @@
+import { useState } from "react";
+
+import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
-import { Calendar } from "primereact/calendar";
-import { InputText } from "primereact/inputtext";
-import { FloatLabel } from "primereact/floatlabel";
-import { Dropdown } from "primereact/dropdown";
-import Content from "../components/Content";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import { useState, useEffect, useCallback } from "react";
-import ufsJson from "../assets/json/ufs.json";
-import vendedoresJson from "../assets/json/vendedores.json";
-import transportadorasJson from "../assets/json/transportadoras.json";
-import { FilterMatchMode } from "primereact/api";
-import { ProgressSpinner } from "primereact/progressspinner";
+import InputLabel from "../components/InputLabel";
+import Tabela from "../components/tabela/Tabela";
+import Coluna from "../components/tabela/Coluna";
+import Configuracoes from "../components/Configuracoes";
+import Opcao from "../components/Opcao";
+
+import searchProdutos from "../utils/search/searchProdutos";
+
+import opcoesProdutos from "../assets/json/opcoes/opcoesProdutos.json";
+
+import atualizaOpcoes from "../utils/atualizaOpcoes";
 
 const Notas = () => {
-  const [notas, setNotas] = useState([]);
-  const [uf, setUf] = useState(null);
-  const ufs = ufsJson;
-  const [vendedor, setVendedor] = useState(null);
-  const vendedores = vendedoresJson;
-  const [data, setData] = useState(null);
-  const [filters, setFilters] = useState({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  });
-  const [loading, setLoading] = useState(false);
-  // Recupera função do usuário do localStorage
-  let idFuncaoUsuario = null;
-  try {
-    idFuncaoUsuario = parseInt(localStorage.getItem("userFuncao"));
-  } catch {}
+  // Estados dos inputs
+  const [codFabricante, setCodFabricante] = useState("");
+  const [codInterno, setCodInterno] = useState("");
+  const [codBarras, setCodBarras] = useState("");
+  const [nome, setNome] = useState("");
 
-  const search = () => {
-    setLoading(true);
+  // Produtos
+  const [produtos, setProdutos] = useState([]);
 
-    let vendedorParaPesquisa = vendedor;
-    // Se o usuário é um vendedor, garante que o ID correto seja usado na pesquisa,
-    // independentemente do estado do React.
-    if (idFuncaoUsuario === 2) {
-      const nome = localStorage.getItem("user");
-      vendedorParaPesquisa = vendedoresJson.find(
-        (v) => v.label === nome
-      )?.value;
-    }
-    console.log("Vendedor para pesquisa:", localStorage.getItem("user"));
-
-    const nota = {
-      numero: document.getElementById("inputNumero").value || null,
-      cnpj:
-        document.getElementById("inputCnpj").value.replace(/\D/g, "") || null,
-      dataInicial: data ? (data[0] ? data[0].toISOString() : null) : null,
-      dataFinal: data ? (data[1] ? data[1].toISOString() : null) : null,
-      uf: uf || null,
-      vendedor: vendedorParaPesquisa || null, // Usa a variável corrigida
-    };
-    console.log("Pesquisando nota:", nota);
-
-    window.electronApi?.searchNota(nota);
-    window.electronApi?.onSearchNotaResponse((notas) => {
-      setNotas(notas);
-      setLoading(false);
-      console.log("Notas recebidas:", notas);
-      // Limpa os inputs após a pesquisa
-      document.getElementById("inputNumero").value = "";
-      document.getElementById("inputCnpj").value = "";
-      setData(null);
-      setUf(null);
+  // Função que executa a busca
+  const handleSearch = async () => {
+    const resultados = await searchProdutos({
+      codFabricante: codFabricante,
+      codInterno: codInterno,
+      codBarras: codBarras,
+      nome: nome,
     });
+    setProdutos(resultados.data);
+    // console.log(resultados);
   };
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === "Enter") {
-      search();
+
+  // Função para lidar com a tecla Enter
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    const inputs = [
-      document.getElementById("inputNumero"),
-      document.getElementById("inputCnpj"),
-      document.getElementById("inputDataInicial"),
-      document.getElementById("inputDataFinal"),
-      document.getElementById("inputUf"),
-      document.getElementById("inputVendedor"),
-    ];
-    inputs.forEach((input) => {
-      if (input) input.addEventListener("keydown", handleKeyDown);
-    });
-    return () => {
-      inputs.forEach((input) => {
-        if (input) input.removeEventListener("keydown", handleKeyDown);
-      });
-    };
-  }, [handleKeyDown]);
+  //Opções
+  const [opcoes, setOpcoes] = useState(() => {
+    const savedOpcoes = localStorage.getItem("opcoesProdutos");
+    return atualizaOpcoes(opcoesProdutos, savedOpcoes);
+  });
 
-  useEffect(() => {
-    if (idFuncaoUsuario === 2) {
-      console.log("Usuário é vendedor, definindo vendedor automaticamente.");
-
-      const nome = localStorage.getItem("user");
-      const v = vendedoresJson.find((v) => v.label === nome)?.value;
-      setVendedor(v);
-    }
-  }, []);
+  const handleOptionClick = (e) => {
+    const { id } = e.target;
+    const updatedOptions = opcoes.map((opcao) =>
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+    );
+    setOpcoes(updatedOptions);
+    localStorage.setItem("opcoesProdutos", JSON.stringify(updatedOptions));
+  };
 
   return (
-    <div className="flex">
-      <BarraLateral search={search}>
-        <FloatLabel>
-          <InputText id="inputNumero" />
-          <label htmlFor="inputNumero">Número</label>
-        </FloatLabel>
-        <FloatLabel>
-          <InputText id="inputCnpj" />
-          <label htmlFor="inputCnpj">CNPJ</label>
-        </FloatLabel>
-        <FloatLabel>
-          <Calendar
-            id="inputDataInicial"
-            dateFormat="dd/mm"
-            selectionMode="range"
-            value={data}
-            onChange={(e) => setData(e.value)}
+    <>
+      <Configuracoes>
+        {opcoes.map((opcao) => (
+          <Opcao
+            key={opcao.id}
+            id={opcao.id}
+            label={opcao.label}
+            checked={opcao.checked}
+            onChange={handleOptionClick}
           />
-          <label htmlFor="inputDataInicial">Data</label>
-        </FloatLabel>
-        <FloatLabel>
-          <Dropdown
-            id="inputUf"
-            options={ufs}
-            className="md:w-12rem "
-            value={uf}
-            onChange={(e) => setUf(e.value)}
+        ))}
+      </Configuracoes>
+      <NavBar />
+      <div className="main-container">
+        <BarraLateral onSearch={handleSearch}>
+          <InputLabel
+            label="Cod Fabricante"
+            value={codFabricante}
+            onChange={setCodFabricante}
+            onKeyDown={handleKeyDown}
           />
-          <label htmlFor="inputUf">UF</label>
-        </FloatLabel>
-        {idFuncaoUsuario !== 2 && (
-          <FloatLabel>
-            <Dropdown
-              id="inputVendedor"
-              options={vendedores}
-              className="md:w-12rem "
-              value={vendedor}
-              onChange={(e) => setVendedor(e.value)}
-            />
-            <label htmlFor="inputVendedor">Vendedor</label>
-          </FloatLabel>
-        )}
-      </BarraLateral>
-      <Content titulo={"Notas Fiscais"}>
-        {loading ? (
-          <div
-            className="flex justify-content-center align-items-center w-full"
-            style={{ minHeight: 200 }}
-          >
-            <ProgressSpinner />
+          <InputLabel
+            label="Cod Interno"
+            value={codInterno}
+            onChange={setCodInterno}
+            onKeyDown={handleKeyDown}
+          />
+          <InputLabel
+            label="Cod Barras"
+            value={codBarras}
+            onChange={setCodBarras}
+            onKeyDown={handleKeyDown}
+          />
+          <InputLabel
+            label="Nome"
+            value={nome}
+            onChange={setNome}
+            onKeyDown={handleKeyDown}
+          />
+        </BarraLateral>
+        <div className="content">
+          <div className="content-title">
+            <h1>Produtos</h1>
           </div>
-        ) : (
-          <div style={{ maxHeight: "500px", overflow: "auto" }}>
-            <DataTable
-              id="tabelaNotas"
-              value={notas}
-              scrollable
-              scrollHeight="400px"
-              rows={10}
-              emptyMessage="Nenhum produto encontrado"
-              showGridlines
-              filters={filters}
-              onFilter={(e) => setFilters(e.filters)}
-              globalFilterFields={[
-                "NF_NUMDOCUM",
-                "ID_PEDIDO",
-                "NF_CGCCPFENTIDADE",
-                "NF_NOMEENTIDADE",
-                "NF_UNIDFEDENTD",
-                "ID_CODTRANSP",
-                "NF_DATAEMIS",
-              ]}
-              header={
-                <InputText
-                  type="search"
-                  onInput={(e) =>
-                    setFilters({
-                      ...filters,
-                      global: {
-                        value: e.target.value,
-                        matchMode: FilterMatchMode.CONTAINS,
-                      },
-                    })
-                  }
-                  placeholder="Filtrar notas fiscais"
+          <Tabela dados={produtos} semDados="Nenhum produto encontrado">
+            {opcoes
+              .filter((opcao) => opcao.checked)
+              .map((opcao) => (
+                <Coluna
+                  key={opcao.id}
+                  titulo={opcao.label}
+                  campo={opcao.id}
+                  format={opcao.format || ""}
+                  dados={opcao.dados || []}
                 />
-              }
-            >
-              <Column field="NF_NUMDOCUM" header="Número" />
-              <Column field="ID_PEDIDO" header="Pedido" />
-              <Column field="NF_CGCCPFENTIDADE" header="CNPJ" />
-              <Column
-                body={(rowData) => rowData.NF_NOMEENTIDADE?.substring(0, 20)}
-                header="Nome do Cliente"
-              />
-              <Column field="NF_CEPENTID" header="CEP" />
-              <Column field="NF_UNIDFEDENTD" header="UF" />
-              <Column
-                field="NF_DATAEMIS"
-                header="Data de Emissão"
-                body={(rowData) => {
-                  if (!rowData.NF_DATAEMIS) return "";
-                  // Se for Date, converte para string legível
-                  if (rowData.NF_DATAEMIS instanceof Date) {
-                    return rowData.NF_DATAEMIS.toLocaleDateString();
-                  }
-                  // Se vier string ISO, formata
-                  if (typeof rowData.NF_DATAEMIS === "string") {
-                    const d = new Date(rowData.NF_DATAEMIS);
-                    if (!isNaN(d)) return d.toLocaleDateString();
-                    return rowData.NF_DATAEMIS;
-                  }
-                  return rowData.NF_DATAEMIS;
-                }}
-              />
-              <Column
-                body={(rowData) => {
-                  return (
-                    vendedoresJson.find(
-                      (v) => v.value === rowData.ID_CODVENDEDOR
-                    )?.label || "Desconhecido"
-                  );
-                }}
-                header="Vendedor"
-              />
-              <Column
-                body={(rowData) => {
-                  return (
-                    rowData.NF_VLRTOTAL?.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    }) || "R$ 0,00"
-                  );
-                }}
-                header="Valor Total"
-              />
-              <Column
-                body={(rowData) => {
-                  return (
-                    "kg " +
-                      rowData.NF_PESOBRUTO?.toLocaleString("pt-BR", {
-                        style: "decimal",
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }) || "kg 0,00"
-                  );
-                }}
-                header="Peso bruto"
-              />
-              <Column
-                body={(rowData) => {
-                  return (
-                    transportadorasJson.transportadoras.find(
-                      (t) => t.id === rowData.ID_CODTRANSP
-                    )?.nome || "Desconhecida"
-                  );
-                }}
-                header="Transportadora"
-              />
-            </DataTable>
-          </div>
-        )}
-      </Content>
-    </div>
+              ))}
+          </Tabela>
+        </div>
+      </div>
+    </>
   );
 };
 
