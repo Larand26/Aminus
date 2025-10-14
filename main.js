@@ -69,8 +69,6 @@ app.on("window-all-closed", () => {
 ipcMain.on("search-produto", async (event, arg) => {
   try {
     const produtos = await searchProduto(arg);
-    console.log(produtos);
-
     event.reply("search-produto-response", { data: produtos, success: true });
   } catch (error) {
     console.error("Erro ao buscar produtos:", error);

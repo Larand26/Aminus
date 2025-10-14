@@ -72,10 +72,31 @@ const Produtos = () => {
             <h1>Produtos</h1>
           </div>
           <Tabela dados={produtos} semDados="Nenhum produto encontrado">
-            <Coluna titulo="Cod Interno" campo="ID_CODPRODUTO" />
-            <Coluna titulo="Cod Fabricante" campo="PROD_CODFABRIC" />
-            <Coluna titulo="Descricao" campo="PROD_DESCRCOMPLETA" />
-            <Coluna titulo="Cod Barras" campo="PROD_CODBARRA" />
+            <Coluna titulo="Cod Interno" campo="COD_INTERNO" />
+            <Coluna titulo="Cod Fabricante" campo="COD_FABRICANTE" />
+            <Coluna titulo="Descricao" campo="DESCRICAO" />
+            <Coluna titulo="Cod Barras" campo="COD_BARRAS" />
+            <Coluna titulo="Quantidade Total" campo="QUANT_TOTAL" />
+            <Coluna titulo="Quantidade Disponível" campo="ESTOQUE_DISPONIVEL" />
+            <Coluna
+              titulo="Endereço"
+              body={(row) => `${row.RUA || " "} - ${row.FILEIRA || " "}`}
+            />
+            <Coluna
+              titulo="Preço"
+              body={(row) => `R$ ${row.PRECO.toFixed(2).replace(".", ",")}`}
+            />
+            <Coluna titulo="Altura" campo="ALTURA" />
+            <Coluna titulo="Largura" campo="LARGURA" />
+            <Coluna titulo="Comprimento" campo="COMPRIMENTO" />
+            <Coluna
+              titulo="Data Alteração"
+              body={(row) =>
+                row.DATA_ALTERACAO
+                  ? new Date(row.DATA_ALTERACAO).toLocaleDateString("pt-BR")
+                  : " "
+              }
+            />
           </Tabela>
         </div>
       </div>

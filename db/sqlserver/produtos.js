@@ -1,77 +1,52 @@
 const conectarSql = require("../../config/database");
+const fs = require("fs");
+const path = require("path");
+const { VarChar, NVarChar } = require("mssql");
+
 const searchProduto = async (produto) => {
   const connection = await conectarSql();
   try {
-    // Busca todos os ID_CODPRODUTO relevantes
-    let query = "FROM [vwITEM] WHERE ID_DEPOSITOS = 2";
+    const queryPath = path.join(__dirname, "queries", "searchProdutos.sql");
+    let query = fs.readFileSync(queryPath, "utf8");
+
+    const request = connection.request();
+    let conditions = [];
+
     if (produto) {
-      if (produto.codInterno)
-        query += ` AND [ID_CODPRODUTO] = '${produto.codInterno}'`;
-      if (produto.codFabricante)
-        query += ` AND [PROD_CODFABRIC] = '${produto.codFabricante}'`;
-      if (produto.nome)
-        query += ` AND [PROD_DESCRCOMPLETA] LIKE '%${produto.nome}%'`;
-      if (produto.codBarras)
-        query += ` AND [PROD_CODBARRA] = '${produto.codBarras}'`;
+      if (produto.codInterno) {
+        conditions.push(`P.[ID_CODPRODUTO] = @codInterno`);
+        request.input("codInterno", VarChar, produto.codInterno);
+      }
+      if (produto.codFabricante) {
+        conditions.push(`P.[PROD_CODFABRIC] = @codFabricante`);
+        request.input("codFabricante", VarChar, produto.codFabricante);
+      }
+      if (produto.nome) {
+        conditions.push(`P.[PROD_DESCRCOMPLETA] LIKE @nome`);
+        request.input("nome", NVarChar, `%${produto.nome}%`);
+      }
+      if (produto.codBarras) {
+        conditions.push(`P.[PROD_CODBARRA] = @codBarras`);
+        request.input("codBarras", VarChar, produto.codBarras);
+      }
     }
 
-    const vwItemResult = await connection.request().query("SELECT * " + query);
-
-    // Para cada produto, busca as infos relacionadas
-    const produtosCompletos = [];
-
-    // Busca dados do produto
-    const produtoResult = await connection.request().query(
-      `SELECT * FROM [PRODUTOS] WHERE ID_CODPRODUTO in 
-        (SELECT [ID_CODPRODUTO] ${query})`
-    );
-    // Busca dados de empresas filiais
-    const empresasFiliaisResult = await connection.request().query(
-      `SELECT [ID_CODPRODUTO], [PRO_ATIVO_ECOMMERCE], [PRO_INTEGRACAO_ECOMMERCE] FROM [PRODUTOS_EMPRESASFILIAIS] WHERE ID_CODPRODUTO IN 
-        (SELECT [ID_CODPRODUTO] ${query}) AND ID_CODFILIAIS = 1`
-    );
-    const quantidadeReservaResult = await connection
-      .request()
-      .query(
-        `SELECT * FROM [EST_RESERVA_PED] WHERE [ID_CODARMAZEN] = 2 AND [ID_CODPRODUTO] IN(SELECT [ID_CODPRODUTO] ${query})`
+    if (conditions.length > 0) {
+      query = query.replace(
+        "-- Os filtros serão adicionados aqui pelo Node.js",
+        `AND ${conditions.join(" AND ")}`
       );
-    const enderecoResult = await connection
-      .request()
-      .query(
-        `SELECT * FROM [PRODUTODEPOSITO] WHERE [ID_CODFILIAIS] = 1 AND [ID_CODPRODUTO] IN(SELECT [ID_CODPRODUTO] ${query})`
-      );
+    }
 
-    produtosCompletos.push(
-      ...vwItemResult.recordset.map((item) => {
-        const produtoInfo = produtoResult.recordset.find(
-          (prod) => prod.ID_CODPRODUTO === item.ID_CODPRODUTO
-        );
-        const empresaFilialInfo = empresasFiliaisResult.recordset.find(
-          (emp) => emp.ID_CODPRODUTO === item.ID_CODPRODUTO
-        );
-        const reservaInfo = quantidadeReservaResult.recordset.find(
-          (res) => res.ID_CODPRODUTO === item.ID_CODPRODUTO
-        );
-        const enderecoInfo = enderecoResult.recordset.find(
-          (end) => end.ID_CODPRODUTO === item.ID_CODPRODUTO
-        );
-
-        return {
-          ...item,
-          ...produtoInfo,
-          ...empresaFilialInfo,
-          ...reservaInfo,
-          ...enderecoInfo,
-        };
-      })
-    );
-
-    connection.close();
-    return produtosCompletos;
+    const result = await request.query(query);
+    return result.recordset;
   } catch (error) {
-    connection.close();
-    // console.log("Erro ao buscar produtos:", error);
+    console.error("Erro ao buscar produtos:", error);
     return [];
+  } finally {
+    if (connection) {
+      connection.close();
+    }
   }
 };
 
