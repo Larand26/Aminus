@@ -110,26 +110,16 @@ const Produtos = () => {
           </div>
           <Tabela dados={produtos} semDados="Nenhum produto encontrado">
             {opcoes
-              .filter(
-                (opcao) => opcao.checked && opcao.format !== "personalizado"
-              )
+              .filter((opcao) => opcao.checked)
               .map((opcao) => (
                 <Coluna
                   key={opcao.id}
                   titulo={opcao.label}
                   campo={opcao.id}
                   format={opcao.format || ""}
+                  dados={opcao.dados || []}
                 />
               ))}
-            {opcoes.find(
-              (opcao) => opcao.id === "ENDERECO" && opcao.checked
-            ) ? (
-              <Coluna
-                titulo="Endereço"
-                key="ENDERECO"
-                body={(row) => `${row.RUA || ""} - ${row.FILEIRA || ""}`}
-              />
-            ) : null}
           </Tabela>
         </div>
       </div>

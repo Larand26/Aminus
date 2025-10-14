@@ -19,7 +19,8 @@
     "id": "ENDERECO",
     "label": "Endereço",
     "checked": true,
-    "format": "personalizado"
+    "format": "junto",
+    "dados": ["RUA", "FILEIRA"]
   },
   { "id": "ALTURA", "label": "Altura", "checked": true },
   { "id": "LARGURA", "label": "Largura", "checked": true },

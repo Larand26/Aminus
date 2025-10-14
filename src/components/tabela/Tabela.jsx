@@ -21,6 +21,10 @@ const Tabela = (props) => {
     const data = new Date(valor);
     return data.toLocaleDateString("pt-BR");
   };
+  const formataJunto = (item, dados) => {
+    console.log(item, dados);
+    return dados.map((dado) => item[dado]).join(" - ");
+  };
 
   return (
     <div className="tabela-container">
@@ -51,6 +55,10 @@ const Tabela = (props) => {
 
                       if (valor instanceof Date) {
                         return formataData(valor);
+                      }
+
+                      if (child.props.format === "junto") {
+                        return formataJunto(item, child.props.dados);
                       }
 
                       return valor || "";
