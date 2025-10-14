@@ -12,6 +12,8 @@ import searchProdutos from "../utils/search/searchProdutos";
 
 import opcoesProdutos from "../assets/json/opcoes/opcoesProdutos.json";
 
+import atualizaOpcoes from "../utils/atualizaOpcoes";
+
 const Produtos = () => {
   // Estados dos inputs
   const [codFabricante, setCodFabricante] = useState("");
@@ -31,7 +33,7 @@ const Produtos = () => {
       nome: nome,
     });
     setProdutos(resultados.data);
-    console.log(resultados);
+    // console.log(resultados);
   };
 
   // Função para lidar com a tecla Enter
@@ -44,6 +46,7 @@ const Produtos = () => {
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesProdutos");
+    atualizaOpcoes(opcoesProdutos, savedOpcoes);
     if (!savedOpcoes) return opcoesProdutos;
 
     if (JSON.parse(savedOpcoes).length !== opcoesProdutos.length) {

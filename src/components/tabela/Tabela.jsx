@@ -22,7 +22,6 @@ const Tabela = (props) => {
     return data.toLocaleDateString("pt-BR");
   };
   const formataJunto = (item, dados) => {
-    console.log(item, dados);
     return dados.map((dado) => item[dado]).join(" - ");
   };
 
