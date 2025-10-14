@@ -46,15 +46,7 @@ const Produtos = () => {
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesProdutos");
-    atualizaOpcoes(opcoesProdutos, savedOpcoes);
-    if (!savedOpcoes) return opcoesProdutos;
-
-    if (JSON.parse(savedOpcoes).length !== opcoesProdutos.length) {
-      localStorage.setItem("opcoesProdutos", JSON.stringify(opcoesProdutos));
-      return opcoesProdutos;
-    }
-
-    return JSON.parse(savedOpcoes);
+    return atualizaOpcoes(opcoesProdutos, savedOpcoes);
   });
 
   const handleOptionClick = (e) => {
