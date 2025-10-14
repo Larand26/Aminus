@@ -6,6 +6,7 @@ import InputLabel from "../components/InputLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
+import Opcao from "../components/Opcao";
 
 import searchProdutos from "../utils/search/searchProdutos";
 
@@ -38,9 +39,35 @@ const Produtos = () => {
     }
   };
 
+  //Opções de configuração
+  const opcoes = [
+    { id: "exibir-inativos", label: "Exibir Inativos", checked: true },
+    { id: "COD_INTERNO", label: "Cod Interno", checked: true },
+    { id: "COD_FABRICANTE", label: "Cod Fabricante", checked: true },
+    { id: "DESCRICAO", label: "Descrição", checked: true },
+    { id: "COD_BARRAS", label: "Cod Barras", checked: true },
+    { id: "QUANT_TOTAL", label: "Quantidade Total", checked: true },
+    { id: "ESTOQUE_DISPONIVEL", label: "Quantidade Disponível", checked: true },
+    { id: "ENDERECO", label: "Endereço", checked: true },
+    { id: "PRECO", label: "Preço", checked: true },
+    { id: "ALTURA", label: "Altura", checked: true },
+    { id: "LARGURA", label: "Largura", checked: true },
+    { id: "COMPRIMENTO", label: "Comprimento", checked: true },
+    { id: "DATA_ALTERACAO", label: "Data Alteração", checked: true },
+  ];
+
   return (
     <>
-      <Configuracoes />
+      <Configuracoes>
+        {opcoes.map((opcao) => (
+          <Opcao
+            key={opcao.id}
+            id={opcao.id}
+            label={opcao.label}
+            checked={opcao.checked}
+          />
+        ))}
+      </Configuracoes>
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
