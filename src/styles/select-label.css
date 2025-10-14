@@ -1,26 +1,89 @@
 .select-label {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1rem;
   width: 100%;
+  position: relative; /* Necessário para o posicionamento das opções */
 }
 .select-label label {
   margin-bottom: 5px;
   font-size: 20px;
   color: var(--cor-branco);
 }
-.select-label select {
-  margin-bottom: 12px;
+/* Esconde o select original */
+.select-label > select {
+  display: none;
+}
+.custom-select-container {
+  position: relative;
   width: 100%;
-  padding: 8px;
+  color: var(--cor-texto);
+}
+.custom-select-trigger {
+  position: relative;
+  background-color: var(--cor-fundo);
   border: 1px solid var(--cor-branco);
   border-radius: 50px;
-  background-color: var(--cor-fundo);
-  color: var(--cor-texto);
-  box-sizing: border-box;
+  padding: 8px 30px 8px 15px;
   cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.select-label option {
-  background-color: var(--cor-fundo);
-  color: var(--cor-texto);
+.arrow {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+.arrow.down {
+  border-top: 5px solid var(--cor-texto);
+}
+.arrow.up {
+  border-bottom: 5px solid var(--cor-texto);
+}
+.custom-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  /* Adiciona transição */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out,
+    visibility 0.2s;
+}
+
+.custom-options.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.custom-option {
+  padding: 10px 15px;
+  cursor: pointer;
+  color: #333;
+}
+.custom-option:hover {
+  background-color: #f5f5f5;
+}
+.custom-option.selected {
+  background-color: #fff;
+  border: 1px solid orange;
+  color: #333;
 }
