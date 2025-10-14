@@ -5,6 +5,7 @@ import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
+import Configuracoes from "../components/Configuracoes";
 
 import searchProdutos from "../utils/search/searchProdutos";
 
@@ -39,6 +40,7 @@ const Produtos = () => {
 
   return (
     <>
+      <Configuracoes />
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>

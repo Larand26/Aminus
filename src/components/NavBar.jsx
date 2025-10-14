@@ -16,6 +16,11 @@ const NavBar = (props) => {
   const openGemini = () => {
     document.querySelector("#gemini").classList.toggle("open-gemini-container");
   };
+  const openConfiguracoes = () => {
+    document
+      .querySelector("#configuracoes")
+      .classList.toggle("open-configuracoes-container");
+  };
   return (
     <>
       <Gemini />
@@ -31,7 +36,7 @@ const NavBar = (props) => {
         </div>
         <div className="actions">
           {props.page !== "home" && (
-            <button>
+            <button onClick={openConfiguracoes}>
               <i className="fa fa-cog"></i>
             </button>
           )}
