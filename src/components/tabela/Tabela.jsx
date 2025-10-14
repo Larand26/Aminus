@@ -11,6 +11,17 @@ const Tabela = (props) => {
   // Conta o número de colunas para usar no colSpan
   const numColunas = colunasVisiveis.length;
 
+  // Formatos
+  const formataDinheiro = (valor) => {
+    if (typeof valor !== "number") return valor;
+    return `R$ ${valor.toFixed(2).replace(".", ",")}`;
+  };
+  const formataData = (valor) => {
+    if (!valor) return valor;
+    const data = new Date(valor);
+    return data.toLocaleDateString("pt-BR");
+  };
+
   return (
     <div className="tabela-container">
       <table className="tabela">
@@ -27,9 +38,20 @@ const Tabela = (props) => {
               <tr key={index} className={index % 2 === 0 ? "par" : "impar"}>
                 {colunasVisiveis.map((child, childIndex) => (
                   <td key={childIndex}>
-                    {typeof child.props.body === "function"
-                      ? child.props.body(item)
-                      : item[child.props.campo]}
+                    {(() => {
+                      if (typeof child.props.body === "function")
+                        return child.props.body(item);
+
+                      const valor = item[child.props.campo];
+
+                      if (child.props.format === "dinheiro") {
+                        return formataDinheiro(valor);
+                      }
+                      if (child.props.format === "data") {
+                        return formataData(valor);
+                      }
+                      return valor;
+                    })()}
                   </td>
                 ))}
               </tr>

@@ -137,10 +137,7 @@ const Produtos = () => {
               />
             ) : null}
             {opcoes.find((o) => o.id === "PRECO")?.checked ? (
-              <Coluna
-                titulo="Preço"
-                body={(row) => `R$ ${row.PRECO.toFixed(2).replace(".", ",")}`}
-              />
+              <Coluna titulo="Preço" campo="PRECO" format="dinheiro" />
             ) : null}
             {opcoes.find((o) => o.id === "ALTURA")?.checked ? (
               <Coluna titulo="Altura" campo="ALTURA" />
@@ -160,11 +157,8 @@ const Produtos = () => {
             {opcoes.find((o) => o.id === "DATA_ALTERACAO")?.checked ? (
               <Coluna
                 titulo="Data Alteração"
-                body={(row) =>
-                  row.DATA_ALTERACAO
-                    ? new Date(row.DATA_ALTERACAO).toLocaleDateString("pt-BR")
-                    : " "
-                }
+                campo="DATA_ALTERACAO"
+                format="data"
               />
             ) : null}
           </Tabela>

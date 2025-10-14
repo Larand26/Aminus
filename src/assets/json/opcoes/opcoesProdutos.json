@@ -10,12 +10,22 @@
     "label": "Estoque Disponível",
     "checked": true
   },
-  { "id": "PRECO", "label": "Preço", "checked": true },
+  {
+    "id": "PRECO",
+    "label": "Preço",
+    "checked": true,
+    "format": "dinheiro"
+  },
   { "id": "ENDERECO", "label": "Endereço", "checked": true },
   { "id": "ALTURA", "label": "Altura", "checked": true },
   { "id": "LARGURA", "label": "Largura", "checked": true },
   { "id": "COMPRIMENTO", "label": "Comprimento", "checked": true },
-  { "id": "DATA_ALTERACAO", "label": "Data Alteração", "checked": true },
+  {
+    "id": "DATA_ALTERACAO",
+    "label": "Data Alteração",
+    "checked": true,
+    "format": "data"
+  },
   { "id": "PESO_BR", "label": "Peso Bruto", "checked": true },
   { "id": "PESO_LIQ", "label": "Peso Líquido", "checked": true }
 ]
