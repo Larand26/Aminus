@@ -109,56 +109,25 @@ const Produtos = () => {
             <h1>Produtos</h1>
           </div>
           <Tabela dados={produtos} semDados="Nenhum produto encontrado">
-            {opcoes.find((o) => o.id === "COD_INTERNO")?.checked ? (
-              <Coluna titulo="Cod Interno" campo="COD_INTERNO" />
-            ) : null}
-            {opcoes.find((o) => o.id === "COD_FABRICANTE")?.checked ? (
-              <Coluna titulo="Cod Fabricante" campo="COD_FABRICANTE" />
-            ) : null}
-            {opcoes.find((o) => o.id === "DESCRICAO")?.checked ? (
-              <Coluna titulo="Descricao" campo="DESCRICAO" />
-            ) : null}
-            {opcoes.find((o) => o.id === "COD_BARRAS")?.checked ? (
-              <Coluna titulo="Cod Barras" campo="COD_BARRAS" />
-            ) : null}
-            {opcoes.find((o) => o.id === "QUANT_TOTAL")?.checked ? (
-              <Coluna titulo="Quantidade Total" campo="QUANT_TOTAL" />
-            ) : null}
-            {opcoes.find((o) => o.id === "ESTOQUE_DISPONIVEL")?.checked ? (
-              <Coluna
-                titulo="Quantidade Disponível"
-                campo="ESTOQUE_DISPONIVEL"
-              />
-            ) : null}
-            {opcoes.find((o) => o.id === "ENDERECO")?.checked ? (
+            {opcoes
+              .filter(
+                (opcao) => opcao.checked && opcao.format !== "personalizado"
+              )
+              .map((opcao) => (
+                <Coluna
+                  key={opcao.id}
+                  titulo={opcao.label}
+                  campo={opcao.id}
+                  format={opcao.format || ""}
+                />
+              ))}
+            {opcoes.find(
+              (opcao) => opcao.id === "ENDERECO" && opcao.checked
+            ) ? (
               <Coluna
                 titulo="Endereço"
-                body={(row) => `${row.RUA || " "} - ${row.FILEIRA || " "}`}
-              />
-            ) : null}
-            {opcoes.find((o) => o.id === "PRECO")?.checked ? (
-              <Coluna titulo="Preço" campo="PRECO" format="dinheiro" />
-            ) : null}
-            {opcoes.find((o) => o.id === "ALTURA")?.checked ? (
-              <Coluna titulo="Altura" campo="ALTURA" />
-            ) : null}
-            {opcoes.find((o) => o.id === "LARGURA")?.checked ? (
-              <Coluna titulo="Largura" campo="LARGURA" />
-            ) : null}
-            {opcoes.find((o) => o.id === "COMPRIMENTO")?.checked ? (
-              <Coluna titulo="Comprimento" campo="COMPRIMENTO" />
-            ) : null}
-            {opcoes.find((o) => o.id === "PESO_BR")?.checked ? (
-              <Coluna titulo="Peso Bruto" campo="PESO_BR" />
-            ) : null}
-            {opcoes.find((o) => o.id === "PESO_LIQ")?.checked ? (
-              <Coluna titulo="Peso Líquido" campo="PESO_LIQ" />
-            ) : null}
-            {opcoes.find((o) => o.id === "DATA_ALTERACAO")?.checked ? (
-              <Coluna
-                titulo="Data Alteração"
-                campo="DATA_ALTERACAO"
-                format="data"
+                key="ENDERECO"
+                body={(row) => `${row.RUA || ""} - ${row.FILEIRA || ""}`}
               />
             ) : null}
           </Tabela>

@@ -44,13 +44,16 @@ const Tabela = (props) => {
 
                       const valor = item[child.props.campo];
 
+                      // Formatação de dinheiro
                       if (child.props.format === "dinheiro") {
                         return formataDinheiro(valor);
                       }
-                      if (child.props.format === "data") {
+
+                      if (valor instanceof Date) {
                         return formataData(valor);
                       }
-                      return valor;
+
+                      return valor || "";
                     })()}
                   </td>
                 ))}
