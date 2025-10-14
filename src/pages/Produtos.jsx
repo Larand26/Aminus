@@ -75,7 +75,7 @@ const Produtos = () => {
             id={opcao.id}
             label={opcao.label}
             checked={opcao.checked}
-            onClick={handleOptionClick}
+            onChange={handleOptionClick}
           />
         ))}
       </Configuracoes>
