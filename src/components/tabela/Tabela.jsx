@@ -3,16 +3,21 @@ import React from "react";
 import "../../styles/tabela.css";
 
 const Tabela = (props) => {
+  // Filtra os filhos para remover valores nulos ou falsos
+  const colunasVisiveis = React.Children.toArray(props.children).filter(
+    Boolean
+  );
+
   // Conta o número de colunas para usar no colSpan
-  const numColunas = React.Children.count(props.children);
+  const numColunas = colunasVisiveis.length;
 
   return (
     <div className="tabela-container">
       <table className="tabela">
         <thead>
           <tr>
-            {React.Children.map(props.children, (child) => (
-              <th>{child.props.titulo || "Cabeçalho"}</th>
+            {colunasVisiveis.map((child, index) => (
+              <th key={index}>{child.props.titulo || "Cabeçalho"}</th>
             ))}
           </tr>
         </thead>
@@ -20,8 +25,8 @@ const Tabela = (props) => {
           {props.dados && props.dados.length > 0 ? (
             props.dados.map((item, index) => (
               <tr key={index} className={index % 2 === 0 ? "par" : "impar"}>
-                {React.Children.map(props.children, (child) => (
-                  <td>
+                {colunasVisiveis.map((child, childIndex) => (
+                  <td key={childIndex}>
                     {typeof child.props.body === "function"
                       ? child.props.body(item)
                       : item[child.props.campo]}

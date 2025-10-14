@@ -39,22 +39,32 @@ const Produtos = () => {
     }
   };
 
-  //Opções de configuração
-  const opcoes = [
-    { id: "exibir-inativos", label: "Exibir Inativos", checked: true },
+  //Opções
+  const [opcoes, setOpcoes] = useState([
     { id: "COD_INTERNO", label: "Cod Interno", checked: true },
     { id: "COD_FABRICANTE", label: "Cod Fabricante", checked: true },
-    { id: "DESCRICAO", label: "Descrição", checked: true },
     { id: "COD_BARRAS", label: "Cod Barras", checked: true },
+    { id: "NOME", label: "Nome", checked: true },
+    { id: "DESCRICAO", label: "Descrição", checked: true },
     { id: "QUANT_TOTAL", label: "Quantidade Total", checked: true },
-    { id: "ESTOQUE_DISPONIVEL", label: "Quantidade Disponível", checked: true },
-    { id: "ENDERECO", label: "Endereço", checked: true },
+    { id: "ESTOQUE_DISPONIVEL", label: "Estoque Disponível", checked: true },
     { id: "PRECO", label: "Preço", checked: true },
+    { id: "ENDERECO", label: "Endereço", checked: true },
     { id: "ALTURA", label: "Altura", checked: true },
     { id: "LARGURA", label: "Largura", checked: true },
     { id: "COMPRIMENTO", label: "Comprimento", checked: true },
     { id: "DATA_ALTERACAO", label: "Data Alteração", checked: true },
-  ];
+    { id: "PESO_BR", label: "Peso Bruto", checked: true },
+    { id: "PESO_LIQ", label: "Peso Líquido", checked: true },
+  ]);
+
+  const handleOptionClick = (e) => {
+    const { id } = e.target;
+    const updatedOptions = opcoes.map((opcao) =>
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+    );
+    setOpcoes(updatedOptions);
+  };
 
   return (
     <>
@@ -65,6 +75,7 @@ const Produtos = () => {
             id={opcao.id}
             label={opcao.label}
             checked={opcao.checked}
+            onClick={handleOptionClick}
           />
         ))}
       </Configuracoes>
@@ -101,31 +112,64 @@ const Produtos = () => {
             <h1>Produtos</h1>
           </div>
           <Tabela dados={produtos} semDados="Nenhum produto encontrado">
-            <Coluna titulo="Cod Interno" campo="COD_INTERNO" />
-            <Coluna titulo="Cod Fabricante" campo="COD_FABRICANTE" />
-            <Coluna titulo="Descricao" campo="DESCRICAO" />
-            <Coluna titulo="Cod Barras" campo="COD_BARRAS" />
-            <Coluna titulo="Quantidade Total" campo="QUANT_TOTAL" />
-            <Coluna titulo="Quantidade Disponível" campo="ESTOQUE_DISPONIVEL" />
-            <Coluna
-              titulo="Endereço"
-              body={(row) => `${row.RUA || " "} - ${row.FILEIRA || " "}`}
-            />
-            <Coluna
-              titulo="Preço"
-              body={(row) => `R$ ${row.PRECO.toFixed(2).replace(".", ",")}`}
-            />
-            <Coluna titulo="Altura" campo="ALTURA" />
-            <Coluna titulo="Largura" campo="LARGURA" />
-            <Coluna titulo="Comprimento" campo="COMPRIMENTO" />
-            <Coluna
-              titulo="Data Alteração"
-              body={(row) =>
-                row.DATA_ALTERACAO
-                  ? new Date(row.DATA_ALTERACAO).toLocaleDateString("pt-BR")
-                  : " "
-              }
-            />
+            {opcoes.find((o) => o.id === "COD_INTERNO")?.checked ? (
+              <Coluna titulo="Cod Interno" campo="COD_INTERNO" />
+            ) : null}
+            {opcoes.find((o) => o.id === "COD_FABRICANTE")?.checked ? (
+              <Coluna titulo="Cod Fabricante" campo="COD_FABRICANTE" />
+            ) : null}
+            {opcoes.find((o) => o.id === "DESCRICAO")?.checked ? (
+              <Coluna titulo="Descricao" campo="DESCRICAO" />
+            ) : null}
+            {opcoes.find((o) => o.id === "COD_BARRAS")?.checked ? (
+              <Coluna titulo="Cod Barras" campo="COD_BARRAS" />
+            ) : null}
+            {opcoes.find((o) => o.id === "QUANT_TOTAL")?.checked ? (
+              <Coluna titulo="Quantidade Total" campo="QUANT_TOTAL" />
+            ) : null}
+            {opcoes.find((o) => o.id === "ESTOQUE_DISPONIVEL")?.checked ? (
+              <Coluna
+                titulo="Quantidade Disponível"
+                campo="ESTOQUE_DISPONIVEL"
+              />
+            ) : null}
+            {opcoes.find((o) => o.id === "ENDERECO")?.checked ? (
+              <Coluna
+                titulo="Endereço"
+                body={(row) => `${row.RUA || " "} - ${row.FILEIRA || " "}`}
+              />
+            ) : null}
+            {opcoes.find((o) => o.id === "PRECO")?.checked ? (
+              <Coluna
+                titulo="Preço"
+                body={(row) => `R$ ${row.PRECO.toFixed(2).replace(".", ",")}`}
+              />
+            ) : null}
+            {opcoes.find((o) => o.id === "ALTURA")?.checked ? (
+              <Coluna titulo="Altura" campo="ALTURA" />
+            ) : null}
+            {opcoes.find((o) => o.id === "LARGURA")?.checked ? (
+              <Coluna titulo="Largura" campo="LARGURA" />
+            ) : null}
+            {opcoes.find((o) => o.id === "COMPRIMENTO")?.checked ? (
+              <Coluna titulo="Comprimento" campo="COMPRIMENTO" />
+            ) : null}
+            {opcoes.find((o) => o.id === "PESO_BR")?.checked ? (
+              <Coluna titulo="Peso Bruto" campo="PESO_BR" />
+            ) : null}
+            {opcoes.find((o) => o.id === "PESO_LIQ")?.checked ? (
+              <Coluna titulo="Peso Líquido" campo="PESO_LIQ" />
+            ) : null}
+            {opcoes.find((o) => o.id === "DATA_ALTERACAO")?.checked ? (
+              <Coluna
+                titulo="Data Alteração"
+                body={(row) =>
+                  row.DATA_ALTERACAO
+                    ? new Date(row.DATA_ALTERACAO).toLocaleDateString("pt-BR")
+                    : " "
+                }
+              />
+            ) : null}
           </Tabela>
         </div>
       </div>

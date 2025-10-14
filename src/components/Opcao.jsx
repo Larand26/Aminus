@@ -1,9 +1,9 @@
 import "../styles/opcao.css";
 
-const Opcao = ({ id, label, ...props }) => {
+const Opcao = ({ id, label, checked, onClick }) => {
   return (
     <div className="opcao">
-      <input type="checkbox" id={id} {...props} />
+      <input type="checkbox" id={id} checked={checked} onClick={onClick} />
       <label htmlFor={id}>{label}</label>
     </div>
   );
