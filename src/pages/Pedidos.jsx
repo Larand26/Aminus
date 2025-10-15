@@ -71,7 +71,16 @@ const Pedidos = () => {
   const openPopupPedido = async (item) => {
     setPedidoSelecionado(item);
     const response = await getItensPedido(item.NUM_PEDIDO);
-    if (response.success) setItensPedido(response.data);
+    if (response.success && response.data.length > 0) {
+      setItensPedido(response.data);
+      const itemMaisPesado = response.data.reduce((max, item) =>
+        item.PESO_BRUTO > max.PESO_BRUTO ? item : max
+      );
+      setLinhaSelecionada(itemMaisPesado);
+    } else if (response.success) {
+      setItensPedido(response.data);
+      setLinhaSelecionada(null); // Limpa a seleção se não houver itens
+    }
     document.querySelector(`#popup-pedido`).classList.add("open-pop-up");
     document.querySelector(".blur").classList.add("open-blur");
   };
