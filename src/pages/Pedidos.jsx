@@ -2,14 +2,18 @@ import { useState } from "react";
 
 import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
-
+import Tabela from "../components/tabela/Tabela";
+import Coluna from "../components/tabela/Coluna";
 import SelectLabel from "../components/SelectLabel";
 import InputLabel from "../components/InputLabel";
 import InputDataLabel from "../components/InputDataLabel";
 
 import searchPedidos from "../utils/search/searchPedidos";
+import atualizaOpcoes from "../utils/atualizaOpcoes";
 
 import vendedoresJson from "../assets/json/vendedores.json";
+
+import opcoesPedidos from "../assets/json/opcoes/opcoesPedidos.json";
 
 const Pedidos = () => {
   // Estados dos inputs
@@ -36,6 +40,22 @@ const Pedidos = () => {
     setPedidos(results.data);
     console.log(results);
   };
+
+  //Opções
+  const [opcoes, setOpcoes] = useState(() => {
+    const savedOpcoes = localStorage.getItem("opcoesPedidos");
+    return atualizaOpcoes(opcoesPedidos, savedOpcoes);
+  });
+
+  const handleOptionClick = (e) => {
+    const { id } = e.target;
+    const updatedOptions = opcoes.map((opcao) =>
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+    );
+    setOpcoes(updatedOptions);
+    localStorage.setItem("opcoesPedidos", JSON.stringify(updatedOptions));
+  };
+
   return (
     <>
       <NavBar />
@@ -56,6 +76,24 @@ const Pedidos = () => {
             onChange={setVendedor}
           />
         </BarraLateral>
+        <div className="content">
+          <div className="content-title">
+            <h1>Pedidos</h1>
+          </div>
+          <Tabela dados={pedidos} semDados="Nenhum pedido encontrado">
+            {opcoes
+              .filter((opcao) => opcao.checked)
+              .map((opcao) => (
+                <Coluna
+                  key={opcao.id}
+                  titulo={opcao.label}
+                  campo={opcao.id}
+                  format={opcao.format || ""}
+                  dados={opcao.dados || []}
+                />
+              ))}
+          </Tabela>
+        </div>
       </div>
     </>
   );
