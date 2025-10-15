@@ -7,6 +7,8 @@ import Coluna from "../components/tabela/Coluna";
 import SelectLabel from "../components/SelectLabel";
 import InputLabel from "../components/InputLabel";
 import InputDataLabel from "../components/InputDataLabel";
+import Configuracoes from "../components/Configuracoes";
+import Opcao from "../components/Opcao";
 
 import searchPedidos from "../utils/search/searchPedidos";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
@@ -58,6 +60,17 @@ const Pedidos = () => {
 
   return (
     <>
+      <Configuracoes>
+        {opcoes.map((opcao) => (
+          <Opcao
+            key={opcao.id}
+            id={opcao.id}
+            label={opcao.label}
+            checked={opcao.checked}
+            onChange={handleOptionClick}
+          />
+        ))}
+      </Configuracoes>
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
