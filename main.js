@@ -5,7 +5,7 @@ const path = require("path");
 const { searchProduto } = require("./db/sqlserver/produtos");
 const { searchNotas } = require("./db/sqlserver/notas");
 const { searchCliente } = require("./db/sqlserver/clientes");
-const { searchPedido, getPedido } = require("./db/sqlserver/pedidos");
+const { searchPedido, getItensPedido } = require("./db/sqlserver/pedidos");
 const { searchReserva } = require("./db/sqlserver/reservas");
 const { searchCadastroProdutos } = require("./db/sqlserver/cadastroProdutos");
 const { getDataReserva } = require("./db/sqlserver/dataReserva");
@@ -142,15 +142,16 @@ ipcMain.on("search-foto", async (event, arg) => {
   }
 });
 
-ipcMain.on("get-pedido", async (event, arg) => {
+ipcMain.on("get-itens-pedido", async (event, arg) => {
   try {
     // Simulação de busca de pedido, substitua com a lógica real
-    const pedido = await getPedido(arg);
-    event.reply("get-pedido-response", pedido);
+    const pedido = await getItensPedido(arg);
+    event.reply("get-itens-pedido-response", pedido);
   } catch (error) {
     console.error("Erro ao buscar pedido:", error);
-    event.reply("get-pedido-response", {
+    event.reply("get-itens-pedido-response", {
       error: error.message || "Erro desconhecido",
+      success: false,
     });
   }
 });

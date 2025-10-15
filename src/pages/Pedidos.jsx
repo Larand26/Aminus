@@ -66,7 +66,8 @@ const Pedidos = () => {
   // Popup
   const openPopupPedido = async (item) => {
     setPedidoSelecionado(item);
-    await getItensPedido(item.NUM_PEDIDO);
+    const response = await getItensPedido(item.NUM_PEDIDO);
+    console.log(response);
     document.querySelector(`#popup-pedido`).classList.add("open-pop-up");
     document.querySelector(".blur").classList.add("open-blur");
   };

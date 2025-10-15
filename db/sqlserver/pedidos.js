@@ -52,14 +52,20 @@ const searchPedido = async (pedido) => {
   }
 };
 
-const getPedido = async (numero) => {
+const getItensPedido = async (numero) => {
   const connection = await conectarSql();
   try {
-    const queryPath = path.join(__dirname, "queries", "GetPedido.sql");
-    const query = fs.readFileSync(queryPath, "utf8");
+    const queryPath = path.join(__dirname, "queries", "getItensPedido.sql");
+    let query = fs.readFileSync(queryPath, "utf8");
 
     const request = connection.request();
-    request.input("numero", VarChar, numero);
+    request.input("numero", Int, numero);
+
+    query = query.replace(
+      "-- Os filtros serão adicionados aqui pelo Node.js",
+      "AND IPO.[ID_NUMPEDORC] = @numero"
+    );
+
     const result = await request.query(query);
     return { success: true, data: result.recordset };
   } catch (error) {
@@ -72,4 +78,4 @@ const getPedido = async (numero) => {
   }
 };
 
-module.exports = { searchPedido, getPedido };
+module.exports = { searchPedido, getItensPedido };
