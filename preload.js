@@ -35,9 +35,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.removeListener("search-foto-response", (event, arg) => {
       callback(arg);
     }),
-  getPedido: (arg) => ipcRenderer.send("get-pedido", arg),
-  onGetPedidoResponse: (callback) =>
-    ipcRenderer.on("get-pedido-response", (event, arg) => {
+  getItensPedido: (arg) => ipcRenderer.send("get-itens-pedido", arg),
+  onGetItensPedidoResponse: (callback) =>
+    ipcRenderer.on("get-itens-pedido-response", (event, arg) => {
       callback(arg);
     }),
   makeCubagem: (arg) => ipcRenderer.send("make-cubagem", arg),

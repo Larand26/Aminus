@@ -10,8 +10,11 @@ import InputDataLabel from "../components/InputDataLabel";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 
+import PopUp from "../components/PopUp";
+
 import searchPedidos from "../utils/search/searchPedidos";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
+import getItensPedido from "../utils/getItensPedido";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 
@@ -27,6 +30,8 @@ const Pedidos = () => {
 
   // Pedidos
   const [pedidos, setPedidos] = useState([]);
+  const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
+  const [itensPedido, setItensPedido] = useState([]);
 
   const handleSearch = async () => {
     const filters = {
@@ -58,8 +63,17 @@ const Pedidos = () => {
     localStorage.setItem("opcoesPedidos", JSON.stringify(updatedOptions));
   };
 
+  // Popup
+  const openPopupPedido = async (item) => {
+    setPedidoSelecionado(item);
+    await getItensPedido(item.NUM_PEDIDO);
+    document.querySelector(`#popup-pedido`).classList.add("open-pop-up");
+    document.querySelector(".blur").classList.add("open-blur");
+  };
+
   return (
     <>
+      <PopUp id="popup-pedido">{pedidoSelecionado && <div></div>}</PopUp>
       <Configuracoes>
         {opcoes.map((opcao) => (
           <Opcao
@@ -103,6 +117,7 @@ const Pedidos = () => {
                   campo={opcao.id}
                   format={opcao.format || ""}
                   dados={opcao.dados || []}
+                  onClick={opcao.id === "NUM_PEDIDO" ? openPopupPedido : null}
                 />
               ))}
           </Tabela>

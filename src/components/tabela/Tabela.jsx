@@ -37,35 +37,52 @@ const Tabela = (props) => {
         </thead>
         <tbody>
           {props.dados && props.dados.length > 0 ? (
-            props.dados.map((item, index) => (
-              <tr key={index} className={index % 2 === 0 ? "par" : "impar"}>
-                {colunasVisiveis.map((child, childIndex) => (
-                  <td key={childIndex}>
-                    {(() => {
-                      if (typeof child.props.body === "function")
-                        return child.props.body(item);
+            props.dados.map((item, index) => {
+              // Encontra a coluna que tem uma função onClick
+              const clickableColumn = colunasVisiveis.find(
+                (child) => child.props.onClick
+              );
 
-                      const valor = item[child.props.campo];
+              // Define o manipulador de clique para a linha inteira
+              const handleRowClick = clickableColumn
+                ? () => clickableColumn.props.onClick(item)
+                : null;
 
-                      // Formatação de dinheiro
-                      if (child.props.format === "dinheiro") {
-                        return formataDinheiro(valor);
-                      }
+              return (
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "par" : "impar"}
+                  onClick={handleRowClick}
+                  style={{ cursor: handleRowClick ? "pointer" : "default" }}
+                >
+                  {colunasVisiveis.map((child, childIndex) => (
+                    <td key={childIndex}>
+                      {(() => {
+                        if (typeof child.props.body === "function")
+                          return child.props.body(item);
 
-                      if (valor instanceof Date) {
-                        return formataData(valor);
-                      }
+                        const valor = item[child.props.campo];
 
-                      if (child.props.format === "junto") {
-                        return formataJunto(item, child.props.dados);
-                      }
+                        // Formatação de dinheiro
+                        if (child.props.format === "dinheiro") {
+                          return formataDinheiro(valor);
+                        }
 
-                      return valor || "";
-                    })()}
-                  </td>
-                ))}
-              </tr>
-            ))
+                        if (valor instanceof Date) {
+                          return formataData(valor);
+                        }
+
+                        if (child.props.format === "junto") {
+                          return formataJunto(item, child.props.dados);
+                        }
+
+                        return valor || "";
+                      })()}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })
           ) : (
             <tr>
               <td
