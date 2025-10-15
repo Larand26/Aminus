@@ -76,6 +76,8 @@ const Pedidos = () => {
     document.querySelector(".blur").classList.add("open-blur");
   };
 
+  const [linhaSelecionada, setLinhaSelecionada] = useState(null);
+
   return (
     <>
       <PopUp
@@ -87,7 +89,12 @@ const Pedidos = () => {
         {pedidoSelecionado && (
           <div className="popup-pedido-content">
             <h1>{pedidoSelecionado.NUM_PEDIDO}</h1>
-            <Tabela dados={itensPedido} semDados="Nenhum item encontrado">
+            <Tabela
+              dados={itensPedido}
+              semDados="Nenhum item encontrado"
+              linhaSelecionada={linhaSelecionada}
+              onLinhaSelecionadaChange={setLinhaSelecionada}
+            >
               {opcoesItensPedido
                 .filter((opcao) => opcao.checked)
                 .map((opcao) => (
@@ -97,7 +104,6 @@ const Pedidos = () => {
                     campo={opcao.id}
                     format={opcao.format || ""}
                     dados={opcao.dados || []}
-                    onClick={opcao.id === "NUM_PEDIDO" ? openPopupPedido : null}
                   />
                 ))}
             </Tabela>

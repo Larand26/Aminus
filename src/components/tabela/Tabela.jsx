@@ -80,7 +80,12 @@ const Tabela = (props) => {
 
                         if (child.props.format === "radio") {
                           return (
-                            <InputRadio checked={false} onChange={() => {}} />
+                            <InputRadio
+                              checked={props.linhaSelecionada === item}
+                              onChange={() =>
+                                props.onLinhaSelecionadaChange(item)
+                              }
+                            />
                           );
                         }
 
