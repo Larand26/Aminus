@@ -28,13 +28,9 @@ const searchPedido = async (pedido) => {
       conditions.push("PO.[PEDOR_DATA] <= @dataFinal");
       request.input("dataFinal", Date, pedido.dataFinal);
     }
-    if (pedido?.situacao) {
-      conditions.push("PO.[PEDOR_SITUACAO] = @situacao");
-      request.input("situacao", VarChar, pedido.situacao);
-    }
-    if (pedido?.vendedor) {
-      conditions.push("PO.[ID_CODVENDEDOR] = @vendedor");
-      request.input("vendedor", Int, pedido.vendedor);
+    if (pedido?.cliente) {
+      conditions.push("PO.[PEDOR_NOMEENTIDADE] LIKE @cliente");
+      request.input("cliente", VarChar, `%${pedido.cliente}%`);
     }
 
     if (conditions.length > 0) {
