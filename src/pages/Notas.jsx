@@ -22,7 +22,7 @@ const Notas = () => {
       <NavBar />
       <BarraLateral>
         <SelectLabel
-          label="Status"
+          label="Vendedores"
           options={vendedoresJson}
           onChange={(e) => setVendedor(e.target.value)}
         />

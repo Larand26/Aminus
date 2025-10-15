@@ -19,6 +19,12 @@ const SelectLabel = (props) => {
     }
   };
 
+  const limpaSelecao = (e) => {
+    e.preventDefault();
+    setSelectedValue("");
+    setSelectedLabel(props.placeholder || "Selecione...");
+  };
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -51,6 +57,7 @@ const SelectLabel = (props) => {
                   option.value === selectedValue ? "selected" : ""
                 }`}
                 onClick={() => handleOptionClick(option)}
+                onContextMenu={limpaSelecao}
               >
                 {option.label}
               </div>
