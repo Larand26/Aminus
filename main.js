@@ -87,6 +87,7 @@ ipcMain.on("search-nota", async (event, arg) => {
     console.error("Erro ao buscar notas:", error);
     event.reply("search-nota-response", {
       error: error.message || "Erro desconhecido",
+      success: false,
     });
   }
 });

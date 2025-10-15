@@ -1,27 +1,60 @@
 const conectarSql = require("../../config/database");
+const fs = require("fs");
+const path = require("path");
+const { VarChar, Date, Int } = require("mssql");
 
 const searchNotas = async (nota) => {
   const connection = await conectarSql();
   try {
-    // Busca todos os ID_CODNOTA relevantes
-    let query = "FROM [NOTAFISCAL] WHERE [ID_CODFILIAIS] = '1'";
-    if (nota) {
-      if (nota.numero) query += ` AND [NF_NUMDOCUM] = '${nota.numero}'`;
-      if (nota.cnpj) query += ` AND [NF_CGCCPFENTIDADE] = '${nota.cnpj}'`;
-      if (nota.dataInicial)
-        query += ` AND [NF_DATAEMIS] >= CONVERT(date, '${nota.dataInicial}', 126)`;
-      if (nota.dataFinal)
-        query += ` AND [NF_DATAEMIS] <= CONVERT(date, '${nota.dataFinal}', 126)`;
-      if (nota.uf) query += ` AND [NF_UNIDFEDENTD] = '${nota.uf}'`;
-      if (nota.vendedor) query += ` AND [ID_CODVENDEDOR] = '${nota.vendedor}'`;
-    }
-    const vwNotaResult = await connection.request().query("SELECT * " + query);
+    const queryPath = path.join(__dirname, "queries", "SearchNotas.sql");
+    let query = fs.readFileSync(queryPath, "utf8");
 
-    return vwNotaResult.recordset;
+    const request = connection.request();
+    let conditions = [];
+
+    if (nota) {
+      if (nota.numero) {
+        conditions.push(`NF.[NF_NUMDOCUM] = @numero`);
+        request.input("numero", VarChar, nota.numero);
+      }
+      if (nota.cnpj) {
+        conditions.push(`NF.[NF_CGCCPFENTIDADE] = @cnpj`);
+        request.input("cnpj", VarChar, nota.cnpj);
+      }
+      if (nota.dataInicial) {
+        conditions.push(`NF.[NF_DATAEMIS] >= @dataInicial`);
+        request.input("dataInicial", Date, nota.dataInicial);
+      }
+      if (nota.dataFinal) {
+        conditions.push(`NF.[NF_DATAEMIS] <= @dataFinal`);
+        request.input("dataFinal", Date, nota.dataFinal);
+      }
+      if (nota.uf) {
+        conditions.push(`NF.[NF_UNIDFEDENTD] = @uf`);
+        request.input("uf", VarChar, nota.uf);
+      }
+      if (nota.vendedor) {
+        conditions.push(`NF.[ID_CODVENDEDOR] = @vendedor`);
+        request.input("vendedor", Int, nota.vendedor);
+      }
+    }
+
+    if (conditions.length > 0) {
+      query = query.replace(
+        "-- Os filtros serão adicionados aqui pelo Node.js",
+        `AND ${conditions.join(" AND ")}`
+      );
+    }
+
+    const result = await request.query(query);
+    return { success: true, data: result.recordset };
   } catch (error) {
     console.error("Erro ao buscar notas:", error);
+    return { success: false, error: error.message };
   } finally {
-    connection.close();
+    if (connection) {
+      connection.close();
+    }
   }
 };
 
