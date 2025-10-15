@@ -9,6 +9,7 @@ import InputLabel from "../components/InputLabel";
 import InputDataLabel from "../components/InputDataLabel";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
+import Button from "../components/Button";
 
 import PopUp from "../components/PopUp";
 
@@ -20,6 +21,8 @@ import vendedoresJson from "../assets/json/vendedores.json";
 
 import opcoesPedidos from "../assets/json/opcoes/opcoesPedidos.json";
 import opcoesItensPedido from "../assets/json/opcoes/opcoesItensPedido.json";
+
+import "../styles/pedidos.css";
 
 const Pedidos = () => {
   // Estados dos inputs
@@ -75,9 +78,15 @@ const Pedidos = () => {
 
   return (
     <>
-      <PopUp id="popup-pedido">
+      <PopUp
+        id="popup-pedido"
+        width="1200px"
+        height="600px"
+        title="Itens do Pedido"
+      >
         {pedidoSelecionado && (
-          <div>
+          <div className="popup-pedido-content">
+            <h1>{pedidoSelecionado.NUM_PEDIDO}</h1>
             <Tabela dados={itensPedido} semDados="Nenhum item encontrado">
               {opcoesItensPedido
                 .filter((opcao) => opcao.checked)
@@ -92,6 +101,11 @@ const Pedidos = () => {
                   />
                 ))}
             </Tabela>
+            <div className="buttons-container">
+              <Button text="Cubagem" icon="fa fa-box" />
+              <Button text="Cotação" icon="fa fa-truck" />
+              <Button text="Imprimir" icon="fa fa-print" />
+            </div>
           </div>
         )}
       </PopUp>

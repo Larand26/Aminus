@@ -1,0 +1,22 @@
+#popup-pedido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup-pedido-content {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.popup-pedido-content h1 {
+  font-weight: bolder;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
