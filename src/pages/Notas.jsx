@@ -5,9 +5,10 @@ import BarraLateral from "../components/BarraLateral";
 import SelectLabel from "../components/SelectLabel";
 import InputLabel from "../components/InputLabel";
 import InputDataLabel from "../components/InputDataLabel";
-import SearchButton from "../components/SearchButton";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
+
+import searchNotas from "../utils/search/searchNotas";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import ufsJson from "../assets/json/ufs.json";
@@ -29,6 +30,23 @@ const Notas = () => {
   // Notas
   const [notas, setNotas] = useState([]);
 
+  const handleSearch = async () => {
+    const filtros = {
+      numNota: numNota,
+      cnpj: cnpj,
+      dataInicial: data[0],
+      dataFinal: data[1],
+      vendedor: vendedor,
+      uf: uf,
+      transportadora: transportadora,
+    };
+
+    const results = await searchNotas(filtros);
+    console.log(results);
+
+    setNotas(results);
+  };
+
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesNotas");
@@ -39,22 +57,10 @@ const Notas = () => {
     <>
       <NavBar />
       <div className="main-container">
-        <BarraLateral>
-          <InputLabel
-            label="Num Nota"
-            value={numNota}
-            onChange={(e) => setNumNota(e.target.value)}
-          />
-          <InputDataLabel
-            label="Data"
-            value={data}
-            onChange={(value) => setData(value)}
-          />
-          <InputLabel
-            label="Cnpj"
-            value={cnpj}
-            onChange={(e) => setCnpj(e.target.value)}
-          />
+        <BarraLateral onSearch={handleSearch}>
+          <InputLabel label="Num Nota" value={numNota} onChange={setNumNota} />
+          <InputDataLabel label="Data" value={data} onChange={setData} />
+          <InputLabel label="Cnpj" value={cnpj} onChange={setCnpj} />
           <SelectLabel
             label="Vendedores"
             options={vendedoresJson}
@@ -73,7 +79,6 @@ const Notas = () => {
             onChange={(e) => setTransportadora(e.target.value)}
             value={transportadora}
           />
-          <SearchButton />
         </BarraLateral>
         <div className="content">
           <div className="content-title">

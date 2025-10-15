@@ -8,14 +8,13 @@ const searchNotas = async (nota) => {
   try {
     const queryPath = path.join(__dirname, "queries", "SearchNotas.sql");
     let query = fs.readFileSync(queryPath, "utf8");
-
     const request = connection.request();
     let conditions = [];
 
     if (nota) {
-      if (nota.numero) {
+      if (nota.numNota) {
         conditions.push(`NF.[NF_NUMDOCUM] = @numero`);
-        request.input("numero", VarChar, nota.numero);
+        request.input("numero", VarChar, nota.numNota);
       }
       if (nota.cnpj) {
         conditions.push(`NF.[NF_CGCCPFENTIDADE] = @cnpj`);
@@ -36,6 +35,10 @@ const searchNotas = async (nota) => {
       if (nota.vendedor) {
         conditions.push(`NF.[ID_CODVENDEDOR] = @vendedor`);
         request.input("vendedor", Int, nota.vendedor);
+      }
+      if (nota.transportadora) {
+        conditions.push(`NF.[ID_CODTRANSP] = @transportadora`);
+        request.input("transportadora", Int, nota.transportadora);
       }
     }
 
