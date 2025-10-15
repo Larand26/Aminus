@@ -77,6 +77,7 @@ const InputDataLabel = (props) => {
   const limparSelecao = (e) => {
     e.preventDefault();
     setDataSelecionada([null, null]);
+    toggleCalendario();
   };
 
   const gerarDiasDoCalendario = () => {
