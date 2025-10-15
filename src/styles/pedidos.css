@@ -20,3 +20,7 @@
   margin-top: 20px;
   gap: 10px;
 }
+
+.popup-pedido-content .tabela-container {
+  max-height: 430px !important;
+}
