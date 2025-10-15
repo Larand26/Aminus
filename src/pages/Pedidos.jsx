@@ -1,7 +1,15 @@
+import { useState } from "react";
+
+import NavBar from "../components/NavBar";
+import BarraLateral from "../components/BarraLateral";
+
 const Pedidos = () => {
   return (
     <>
-      <h1>Pedidos</h1>
+      <NavBar />
+      <div className="main-container">
+        <BarraLateral></BarraLateral>
+      </div>
     </>
   );
 };
