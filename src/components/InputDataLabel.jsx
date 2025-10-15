@@ -74,6 +74,11 @@ const InputDataLabel = (props) => {
     }
   };
 
+  const limparSelecao = (e) => {
+    e.preventDefault();
+    setDataSelecionada([null, null]);
+  };
+
   const gerarDiasDoCalendario = () => {
     const diasNoMes = new Date(ano, mes + 1, 0).getDate();
     const primeiroDiaDoMes = new Date(ano, mes, 1).getDay();
@@ -119,7 +124,12 @@ const InputDataLabel = (props) => {
       }
 
       dias.push(
-        <div key={dia} className={classes} onClick={() => selecionarData(dia)}>
+        <div
+          key={dia}
+          className={classes}
+          onClick={() => selecionarData(dia)}
+          onContextMenu={limparSelecao}
+        >
           {dia}
         </div>
       );
