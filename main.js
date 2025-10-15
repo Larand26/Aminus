@@ -112,6 +112,7 @@ ipcMain.on("search-pedido", async (event, arg) => {
     console.error("Erro ao buscar pedidos:", error);
     event.reply("search-pedido-response", {
       error: error.message || "Erro desconhecido",
+      success: false,
     });
   }
 });
