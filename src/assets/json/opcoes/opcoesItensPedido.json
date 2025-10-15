@@ -1,4 +1,5 @@
 [
+  { "id": " ", "label": " ", "format": "radio", "checked": true },
   { "id": "COD_INTERNO", "label": "Cod Interno", "checked": true },
   { "id": "COD_FABRICANTE", "label": "Cod Fabricante", "checked": true },
   { "id": "DESCRICAO", "label": "Descrição", "checked": true },

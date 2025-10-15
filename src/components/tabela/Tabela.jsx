@@ -1,5 +1,7 @@
 import React from "react";
 
+import InputRadio from "../InputRadio";
+
 import "../../styles/tabela.css";
 
 const Tabela = (props) => {
@@ -74,6 +76,12 @@ const Tabela = (props) => {
 
                         if (child.props.format === "junto") {
                           return formataJunto(item, child.props.dados);
+                        }
+
+                        if (child.props.format === "radio") {
+                          return (
+                            <InputRadio checked={false} onChange={() => {}} />
+                          );
                         }
 
                         return valor || "";
