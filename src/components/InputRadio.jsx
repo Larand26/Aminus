@@ -4,8 +4,9 @@ const InputRadio = (props) => {
   return (
     <div
       className={`input-radio ${props.checked ? "checked-input-radio" : ""}`}
+      onClick={props.onChange}
     >
-      <input type="radio" checked={props.checked} onChange={props.onChange} />
+      <input type="radio" checked={props.checked} readOnly />
     </div>
   );
 };
