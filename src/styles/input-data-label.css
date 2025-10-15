@@ -1,0 +1,114 @@
+.input-data-label {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+.input-data-label label {
+  margin-bottom: 5px;
+  font-size: 20px;
+  color: var(--cor-branco);
+}
+
+.input-data-label .input-data {
+  width: 100%;
+  height: 40px;
+  padding: 8px;
+  border: 1px solid var(--cor-branco);
+  border-radius: 50px;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.calendario {
+  position: absolute;
+  background-color: var(--cor-primaria);
+  border: 1px solid var(--cor-fundo);
+  box-sizing: border-box;
+  border-radius: 5px;
+  margin-top: 5px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  width: 320px;
+  min-height: 381px;
+  transform: translate(50%, -30%);
+  color: var(--cor-branco);
+  padding: 15px;
+}
+
+.calendario-mes {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  color: var(--cor-branco);
+  padding-bottom: 5px;
+  border-bottom: 2px solid var(--cor-fundo);
+}
+
+.calendario-mes span:nth-child(1) {
+  font-size: 22px;
+}
+
+.calendario-mes button {
+  background: none;
+  border: none;
+  color: var(--cor-branco);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.dias {
+  border-radius: 5px;
+  box-sizing: border-box;
+  border: 2px solid var(--cor-fundo);
+  margin-top: 10px;
+}
+
+.semana {
+  border-bottom: 2px solid var(--cor-fundo);
+  font-weight: bold;
+}
+
+.tabela-semana {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  padding: 5px;
+}
+.dia {
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.dia:hover {
+  background-color: var(--cor-amarelo);
+  border-radius: 50%;
+}
+.data-selecionada {
+  background-color: var(--cor-amarelo);
+  border-radius: 50% !important;
+}
+.data-intervalo {
+  background-color: var(--cor-amarelo);
+  color: var(--cor-branco);
+  border-radius: 0;
+}
+.data-inicio {
+  background-color: var(--cor-amarelo);
+  color: var(--cor-branco);
+  border-radius: 20px 0 0 20px;
+}
+.data-fim {
+  background-color: var(--cor-amarelo);
+  color: var(--cor-branco);
+  border-radius: 0 20px 20px 0;
+}
+.dia-outro-mes {
+  opacity: 0.5;
+}
