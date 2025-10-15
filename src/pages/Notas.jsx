@@ -7,6 +7,8 @@ import InputLabel from "../components/InputLabel";
 import InputDataLabel from "../components/InputDataLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
+import Configuracoes from "../components/Configuracoes";
+import Opcao from "../components/Opcao";
 
 import searchNotas from "../utils/search/searchNotas";
 
@@ -14,7 +16,7 @@ import vendedoresJson from "../assets/json/vendedores.json";
 import ufsJson from "../assets/json/ufs.json";
 import transportadorasJson from "../assets/json/transportadoras.json";
 
-import opcoesNotas from "../assets/json/opcoes/opcoesProdutos.json";
+import opcoesNotas from "../assets/json/opcoes/opcoesNotas.json";
 
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 
@@ -44,7 +46,7 @@ const Notas = () => {
     const results = await searchNotas(filtros);
     console.log(results);
 
-    setNotas(results);
+    setNotas(results.data);
   };
 
   //Opções
@@ -53,8 +55,28 @@ const Notas = () => {
     return atualizaOpcoes(opcoesNotas, savedOpcoes);
   });
 
+  const handleOptionClick = (e) => {
+    const { id } = e.target;
+    const updatedOptions = opcoes.map((opcao) =>
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+    );
+    setOpcoes(updatedOptions);
+    localStorage.setItem("opcoesNotas", JSON.stringify(updatedOptions));
+  };
+
   return (
     <>
+      <Configuracoes>
+        {opcoes.map((opcao) => (
+          <Opcao
+            key={opcao.id}
+            id={opcao.id}
+            label={opcao.label}
+            checked={opcao.checked}
+            onChange={handleOptionClick}
+          />
+        ))}
+      </Configuracoes>
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
@@ -82,9 +104,9 @@ const Notas = () => {
         </BarraLateral>
         <div className="content">
           <div className="content-title">
-            <h1>Produtos</h1>
+            <h1>Notas fiscais</h1>
           </div>
-          <Tabela dados={notas} semDados="Nenhum produto encontrado">
+          <Tabela dados={notas} semDados="Nenhuma nota fiscal encontrada">
             {opcoes
               .filter((opcao) => opcao.checked)
               .map((opcao) => (
