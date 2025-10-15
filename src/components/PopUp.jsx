@@ -7,7 +7,7 @@ const PopUp = (props) => {
   };
   return (
     <>
-      <div className="blur"></div>
+      <div className="blur" onClick={() => closePopup(props.id)}></div>
       <div
         className="pop-up"
         style={{ height: props.height || "400px", width: props.width || "50%" }}
