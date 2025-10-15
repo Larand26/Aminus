@@ -1,0 +1,20 @@
+[
+  { "id": "COD_INTERNO", "label": "Cod Interno", "checked": true },
+  { "id": "COD_FABRICANTE", "label": "Cod Fabricante", "checked": true },
+  { "id": "DESCRICAO", "label": "Descrição", "checked": true },
+  { "id": "QUANTIDADE", "label": "Quantidade", "checked": true },
+  {
+    "id": "PRECO",
+    "label": "Preço",
+    "checked": true,
+    "format": "dinheiro"
+  },
+  {
+    "id": "MEDIDAS",
+    "label": "Medidas",
+    "format": "junto",
+    "dados": ["ALTURA", "LARGURA", "COMPRIMENTO"],
+    "checked": true
+  },
+  { "id": "PESO_BRUTO", "label": "Peso Bruto", "checked": true }
+]

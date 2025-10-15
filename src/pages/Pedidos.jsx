@@ -19,6 +19,7 @@ import getItensPedido from "../utils/getItensPedido";
 import vendedoresJson from "../assets/json/vendedores.json";
 
 import opcoesPedidos from "../assets/json/opcoes/opcoesPedidos.json";
+import opcoesItensPedido from "../assets/json/opcoes/opcoesItensPedido.json";
 
 const Pedidos = () => {
   // Estados dos inputs
@@ -67,14 +68,33 @@ const Pedidos = () => {
   const openPopupPedido = async (item) => {
     setPedidoSelecionado(item);
     const response = await getItensPedido(item.NUM_PEDIDO);
-    console.log(response);
+    if (response.success) setItensPedido(response.data);
     document.querySelector(`#popup-pedido`).classList.add("open-pop-up");
     document.querySelector(".blur").classList.add("open-blur");
   };
 
   return (
     <>
-      <PopUp id="popup-pedido">{pedidoSelecionado && <div></div>}</PopUp>
+      <PopUp id="popup-pedido">
+        {pedidoSelecionado && (
+          <div>
+            <Tabela dados={itensPedido} semDados="Nenhum item encontrado">
+              {opcoesItensPedido
+                .filter((opcao) => opcao.checked)
+                .map((opcao) => (
+                  <Coluna
+                    key={opcao.id}
+                    titulo={opcao.label}
+                    campo={opcao.id}
+                    format={opcao.format || ""}
+                    dados={opcao.dados || []}
+                    onClick={opcao.id === "NUM_PEDIDO" ? openPopupPedido : null}
+                  />
+                ))}
+            </Tabela>
+          </div>
+        )}
+      </PopUp>
       <Configuracoes>
         {opcoes.map((opcao) => (
           <Opcao
