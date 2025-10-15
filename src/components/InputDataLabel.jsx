@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "../styles/input-data-label.css";
 
@@ -19,10 +19,28 @@ const meses = [
 const semanas = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
 const InputDataLabel = (props) => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [mes, setMes] = useState(new Date().getMonth());
   const [ano, setAno] = useState(new Date().getFullYear());
-  const [dataSelecionada, setDataSelecionada] = useState([new Date(), null]);
+  const [dataSelecionada, setDataSelecionada] = useState([null, null]);
+
+  useEffect(() => {
+    if (props.onChange) {
+      props.onChange(dataSelecionada);
+    }
+  }, [dataSelecionada, props.onChange]);
+
+  const toggleCalendario = () => {
+    setOpen(!open);
+  };
+
+  const formatarData = (data) => {
+    if (!data) return "";
+    return data.toLocaleDateString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+    });
+  };
 
   const mudaMes = (novoMes) => () => {
     if (novoMes < 0) {
@@ -40,6 +58,10 @@ const InputDataLabel = (props) => {
     const novaData = new Date(ano, mes, dia);
     let [inicio, fim] = dataSelecionada;
 
+    if (!inicio && !fim) {
+      setDataSelecionada([novaData, null]);
+      return;
+    }
     if (
       inicio.getTime() === novaData.getTime() ||
       fim?.getTime() === novaData.getTime()
@@ -118,11 +140,14 @@ const InputDataLabel = (props) => {
   return (
     <div className="input-data-label">
       <label>{props.label}</label>
-      <div className="input-data">
-        <p id="result">17/02 - 18/02</p>
+      <div className="input-data" onClick={toggleCalendario}>
+        <p id="result">
+          {formatarData(dataSelecionada[0])}
+          {dataSelecionada[1] ? ` - ${formatarData(dataSelecionada[1])}` : ""}
+        </p>
         <i className="fa fa-calendar-days"></i>
       </div>
-      <div className="calendario">
+      <div className={`calendario ${open ? "open-calendario" : ""}`}>
         <div className="calendario-mes">
           <button onClick={mudaMes(mes - 1)}>
             <i className="fa fa-chevron-left"></i>

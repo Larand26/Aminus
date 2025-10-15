@@ -36,9 +36,14 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   width: 320px;
   min-height: 381px;
-  transform: translate(50%, -30%);
   color: var(--cor-branco);
   padding: 15px;
+  transition: 0.2s ease-in-out;
+  transform: scale(0) translate(50%, -30%);
+}
+
+.open-calendario {
+  transform: scale(1) translate(50%, -30%);
 }
 
 .calendario-mes {

@@ -10,6 +10,12 @@ import vendedoresJson from "../assets/json/vendedores.json";
 
 const Notas = () => {
   const [vendedor, setVendedor] = useState("");
+  const [data, setData] = useState([null, null]);
+
+  const formatarData = (data) => {
+    if (!data) return "";
+    return data.toLocaleDateString("pt-BR");
+  };
 
   return (
     <>
@@ -20,7 +26,7 @@ const Notas = () => {
           options={vendedoresJson}
           onChange={(e) => setVendedor(e.target.value)}
         />
-        <InputDataLabel label="Data" />
+        <InputDataLabel label="Data" onChange={(value) => setData(value)} />
       </BarraLateral>
     </>
   );
