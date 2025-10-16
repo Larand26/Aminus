@@ -113,7 +113,7 @@ const Pedidos = () => {
           }`,
         })
       );
-      setCotacao(result);
+      setCotacao(result.sort((a, b) => a.PRECO_PADRAO - b.PRECO_PADRAO));
       document.querySelector(`#popup-cotacao`).classList.add("open-pop-up");
       document.querySelector(".blur").classList.add("open-blur");
     }
