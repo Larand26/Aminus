@@ -22,6 +22,7 @@ import vendedoresJson from "../assets/json/vendedores.json";
 
 import opcoesPedidos from "../assets/json/opcoes/opcoesPedidos.json";
 import opcoesItensPedido from "../assets/json/opcoes/opcoesItensPedido.json";
+import opcoesCotacao from "../assets/json/opcoes/opcoesCotacao.json";
 
 import "../styles/pedidos.css";
 
@@ -88,6 +89,9 @@ const Pedidos = () => {
 
   const [linhaSelecionada, setLinhaSelecionada] = useState(null);
 
+  // Cotação
+  const [cotacao, setCotacao] = useState(null);
+
   const handleCotacao = async () => {
     if (!linhaSelecionada) return;
 
@@ -96,9 +100,22 @@ const Pedidos = () => {
       linhaSelecionada,
       pedidoSelecionado
     );
-    console.log(response);
     if (response.success) {
-      // Faça algo com a resposta da cotação
+      const result = response.data.padrao.ShippingSevicesArray.map(
+        (item, index) => ({
+          NOME_TRANSPORTADORA: item.ServiceDescription,
+          PRECO_PADRAO: item.PresentationalPrice,
+          PRECO_PERSONALIZADO:
+            response.data.personalizado.ShippingSevicesArray[index]
+              .PresentationalPrice,
+          TEMPO_ENTREGA: `${item.DeliveryTime} - ${
+            parseInt(item.DeliveryTime) + 2
+          }`,
+        })
+      );
+      setCotacao(result);
+      document.querySelector(`#popup-cotacao`).classList.add("open-pop-up");
+      document.querySelector(".blur").classList.add("open-blur");
     }
   };
 
@@ -140,6 +157,30 @@ const Pedidos = () => {
               />
               <Button text="Imprimir" icon="fa fa-print" />
             </div>
+          </div>
+        )}
+      </PopUp>
+      <PopUp id="popup-cotacao" title="Cotação">
+        {cotacao && (
+          <div className="popup-cotacao-content">
+            <Tabela
+              dados={cotacao}
+              semDados="Nenhum item encontrado"
+              linhaSelecionada={linhaSelecionada}
+              onLinhaSelecionadaChange={setLinhaSelecionada}
+            >
+              {opcoesCotacao
+                .filter((opcao) => opcao.checked)
+                .map((opcao) => (
+                  <Coluna
+                    key={opcao.id}
+                    titulo={opcao.label}
+                    campo={opcao.id}
+                    format={opcao.format || ""}
+                    dados={opcao.dados || []}
+                  />
+                ))}
+            </Tabela>
           </div>
         )}
       </PopUp>

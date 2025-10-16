@@ -1,0 +1,24 @@
+[
+  {
+    "id": "NOME_TRANSPORTADORA",
+    "label": "Transportadora",
+    "checked": true
+  },
+  {
+    "id": "PRECO_PADRAO",
+    "label": "Preço padrão",
+    "format": "dinheiro",
+    "checked": true
+  },
+  {
+    "id": "PRECO_PERSONALIZADO",
+    "label": "Preço Personalizado",
+    "format": "dinheiro",
+    "checked": true
+  },
+  {
+    "id": "TEMPO_ENTREGA",
+    "label": "Tempo de Entrega",
+    "checked": true
+  }
+]

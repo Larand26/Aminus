@@ -19,8 +19,9 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
     valor: pedidoSelecionado.VALOR_TOTAL,
     itensPedido: itensPedido,
     item: itemSelecionado,
-    quantidade: itemSelecionado.QUANTIDADE,
+    quantidade: pedidoSelecionado.QUANTIDADE_MERCADORIA * 12,
   };
+  console.log(pedidoSelecionado);
 
   window.electronApi?.makeCotacao(frete);
 
@@ -29,6 +30,18 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
       resolve(arg);
     });
   });
+
+  /*
+    [
+        {
+            NOME_TRANSPORTADORA: response.data.padrao.ShippingSevicesArray[0].ServiceDescription,
+            PRECO_PADRAO: response.data.padrao.ShippingSevicesArray[0].PresentationalPrice,
+            PRECO_PERSONALIZADO: response.data.personalizado.ShippingSevicesArray[0].PresentationalPrice,
+            TEMPO_ENTREGA: response.data.padrao.ShippingSevicesArray[0].DeliveryTime
+        }
+    ]
+  */
+
   return response;
 };
 
