@@ -17,6 +17,8 @@ import searchPedidos from "../utils/search/searchPedidos";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 import getItensPedido from "../utils/getItensPedido";
 import fazCotacao from "../utils/fazCotacao";
+import fazCubagem from "../utils/fazCubagem";
+import createPDF from "../utils/createPDF";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 
@@ -107,6 +109,13 @@ const Pedidos = () => {
     }
   };
 
+  // Cubagem
+  const handleCubagem = () => {
+    if (itensPedido.length === 0) return;
+    const cubagem = fazCubagem(itensPedido);
+    createPDF(itensPedido, cubagem, pedidoSelecionado.NUM_PEDIDO);
+  };
+
   return (
     <>
       <PopUp
@@ -137,7 +146,7 @@ const Pedidos = () => {
                 ))}
             </Tabela>
             <div className="buttons-container">
-              <Button text="Cubagem" icon="fa fa-box" />
+              <Button text="Cubagem" icon="fa fa-box" onClick={handleCubagem} />
               <Button
                 text="Cotação"
                 icon="fa fa-truck"

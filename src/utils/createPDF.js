@@ -2,7 +2,7 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import logo from "../assets/img/png/logo-daniel-branco.png"; // ajuste o caminho se necessário
 
-export default (data, cubagem) => {
+export default (data, cubagem, numPedido) => {
   const doc = new jsPDF();
 
   // Fundo vermelho para a logo
@@ -27,11 +27,11 @@ export default (data, cubagem) => {
       ],
     ],
     body: data.map((item) => [
-      item.PROD_CODFABRIC,
-      (item.PROD_ALTURA / 100).toFixed(2) + " m",
-      (item.PROD_LARGURA / 100).toFixed(2) + " m",
-      (item.PROD_COMPRIMENTO / 100).toFixed(2) + " m",
-      item.ITPEDOR_QUANTID,
+      item.COD_FABRICANTE,
+      (item.ALTURA / 100).toFixed(2) + " m",
+      (item.LARGURA / 100).toFixed(2) + " m",
+      (item.COMPRIMENTO / 100).toFixed(2) + " m",
+      item.QUANTIDADE,
     ]),
     startY: 35,
     styles: {
@@ -74,5 +74,5 @@ export default (data, cubagem) => {
   doc.setTextColor(255, 255, 255);
   doc.text(cubagemText, x, y);
 
-  doc.save(data[0].ID_NUMPEDORC + ".pdf");
+  doc.save(numPedido + ".pdf");
 };
