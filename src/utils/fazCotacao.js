@@ -19,9 +19,8 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
     valor: pedidoSelecionado.VALOR_TOTAL,
     itensPedido: itensPedido,
     item: itemSelecionado,
-    quantidade: pedidoSelecionado.QUANTIDADE_MERCADORIA * 12,
+    quantidade: pedidoSelecionado.QUANTIDADE_MERCADORIA,
   };
-  console.log(pedidoSelecionado);
 
   window.electronApi?.makeCotacao(frete);
 

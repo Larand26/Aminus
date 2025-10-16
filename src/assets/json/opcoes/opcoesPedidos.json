@@ -20,6 +20,11 @@
     "checked": true
   },
   {
+    "id": "CEP",
+    "label": "CEP",
+    "checked": true
+  },
+  {
     "id": "DATA_PEDIDO",
     "label": "Data do Pedido",
     "checked": true,

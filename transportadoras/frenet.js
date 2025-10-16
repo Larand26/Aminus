@@ -20,7 +20,7 @@ const makeCotacao = async (frete) => {
   const ShippingItemArrayPadrao = frete.itensPedido.map((item) => ({
     Height: item.ALTURA || 20, // Altura cm
     Length: item.COMPRIMENTO || 45, // Comprimento cm
-    Quantity: Math.ceil(item.ITPEDOR_QUANTID / 12) || 1, // Quantidade
+    Quantity: Math.ceil(item.QUANTIDADE / 12) || 1, // Quantidade
     Weight:
       parseFloat((item.PESO_BRUTO * 12).toFixed(2)) === 0
         ? 5
