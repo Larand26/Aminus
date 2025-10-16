@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import "../styles/input-data-label.css";
 
@@ -23,12 +23,32 @@ const InputDataLabel = (props) => {
   const [mes, setMes] = useState(new Date().getMonth());
   const [ano, setAno] = useState(new Date().getFullYear());
   const [dataSelecionada, setDataSelecionada] = useState([null, null]);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (props.onChange) {
       props.onChange(dataSelecionada);
     }
   }, [dataSelecionada, props.onChange]);
+
+  useEffect(() => {
+    const handleClickFora = (event) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener("mousedown", handleClickFora);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickFora);
+    };
+  }, [open]);
 
   const toggleCalendario = () => {
     setOpen(!open);
@@ -149,7 +169,7 @@ const InputDataLabel = (props) => {
   };
 
   return (
-    <div className="input-data-label">
+    <div className="input-data-label" ref={containerRef}>
       <label>{props.label}</label>
       <div className="input-data" onClick={toggleCalendario}>
         <p id="result">
