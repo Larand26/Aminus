@@ -43,7 +43,7 @@ const Pedidos = () => {
     const filters = {
       numPedido: numPedido,
       dataInicial: data[0],
-      dataFinal: data[1],
+      dataFinal: data[1] || data[0],
       cliente: cliente,
       cnpj: cnpj,
       vendedor: vendedor,

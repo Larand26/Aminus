@@ -21,7 +21,7 @@ const Tabela = (props) => {
   const formataData = (valor) => {
     if (!valor) return valor;
     const data = new Date(valor);
-    return data.toLocaleDateString("pt-BR");
+    return data.toLocaleDateString("pt-BR", { timeZone: "UTC" });
   };
   const formataJunto = (item, dados) => {
     return dados.map((dado) => item[dado]).join(" - ");
