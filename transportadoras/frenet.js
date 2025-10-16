@@ -6,7 +6,8 @@ const url = "https://api.frenet.com.br/shipping/quote";
 const token = globals.TOKEN_FRENET; // Seu token de autenticação
 
 const makeCotacao = async (frete) => {
-  if (!frete.cep) return { error: "CEP do cliente é obrigatório" };
+  if (!frete.cep)
+    return { error: "CEP do cliente é obrigatório", success: false };
   // Padrão
   // const ShippingItemArrayPadrao = {
   //   Height: 20, // Altura cm
@@ -17,23 +18,23 @@ const makeCotacao = async (frete) => {
   // };
 
   const ShippingItemArrayPadrao = frete.itensPedido.map((item) => ({
-    Height: item.PROD_ALTURA || 20, // Altura cm
-    Length: item.PROD_COMPRIMENTO || 45, // Comprimento cm
+    Height: item.ALTURA || 20, // Altura cm
+    Length: item.COMPRIMENTO || 45, // Comprimento cm
     Quantity: Math.ceil(item.ITPEDOR_QUANTID / 12) || 1, // Quantidade
     Weight:
-      parseFloat((item.PROD_PESOBRUTO * 12).toFixed(2)) === 0
+      parseFloat((item.PESO_BRUTO * 12).toFixed(2)) === 0
         ? 5
-        : parseFloat((item.PROD_PESOBRUTO * 12).toFixed(2)), // Peso kg
-    Width: item.PROD_LARGURA || 30, // Largura cm
+        : parseFloat((item.PESO_BRUTO * 12).toFixed(2)), // Peso kg
+    Width: item.LARGURA || 30, // Largura cm
   }));
 
   // Personalizado
   const ShippingItemArrayPersonalizado = {
-    Height: frete.item.PROD_ALTURA || 20, // Altura cm
-    Length: frete.item.PROD_COMPRIMENTO || 45, // Comprimento cm
+    Height: frete.item.ALTURA || 20, // Altura cm
+    Length: frete.item.COMPRIMENTO || 45, // Comprimento cm
     Quantity: frete.quantidade / 12, // Quantidade
-    Weight: parseFloat((frete.item.PROD_PESOBRUTO * 12).toFixed(2)) || 1, // Peso kg
-    Width: frete.item.PROD_LARGURA || 30, // Largura cm
+    Weight: parseFloat((frete.item.PESO_BRUTO * 12).toFixed(2)) || 1, // Peso kg
+    Width: frete.item.LARGURA || 30, // Largura cm
   };
 
   const config = {
@@ -71,11 +72,14 @@ const makeCotacao = async (frete) => {
     );
 
     return {
-      padrao: responsePadrao.data,
-      personalizado: responsePersonalizado.data,
+      data: {
+        padrao: responsePadrao.data,
+        personalizado: responsePersonalizado.data,
+      },
+      success: true,
     };
   } catch (error) {
-    return { error: error.message };
+    return { error: error.message, success: false };
   }
 };
 

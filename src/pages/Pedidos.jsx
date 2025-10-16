@@ -16,6 +16,7 @@ import PopUp from "../components/PopUp";
 import searchPedidos from "../utils/search/searchPedidos";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 import getItensPedido from "../utils/getItensPedido";
+import fazCotacao from "../utils/fazCotacao";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 
@@ -87,6 +88,20 @@ const Pedidos = () => {
 
   const [linhaSelecionada, setLinhaSelecionada] = useState(null);
 
+  const handleCotacao = async () => {
+    if (!linhaSelecionada) return;
+
+    const response = await fazCotacao(
+      itensPedido,
+      linhaSelecionada,
+      pedidoSelecionado
+    );
+    console.log(response);
+    if (response.success) {
+      // Faça algo com a resposta da cotação
+    }
+  };
+
   return (
     <>
       <PopUp
@@ -118,7 +133,11 @@ const Pedidos = () => {
             </Tabela>
             <div className="buttons-container">
               <Button text="Cubagem" icon="fa fa-box" />
-              <Button text="Cotação" icon="fa fa-truck" />
+              <Button
+                text="Cotação"
+                icon="fa fa-truck"
+                onClick={handleCotacao}
+              />
               <Button text="Imprimir" icon="fa fa-print" />
             </div>
           </div>
