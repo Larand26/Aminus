@@ -53,7 +53,9 @@ const Tabela = (props) => {
               return (
                 <tr
                   key={index}
-                  className={index % 2 === 0 ? "par" : "impar"}
+                  className={`${index % 2 === 0 ? "par" : "impar"} ${
+                    props.hover ? "hover" : ""
+                  }`}
                   onClick={handleRowClick}
                   style={{ cursor: handleRowClick ? "pointer" : "default" }}
                 >

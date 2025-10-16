@@ -56,3 +56,6 @@
 .impar {
   background-color: var(--cor-fundo);
 }
+.hover:hover {
+  filter: brightness(0.9);
+}

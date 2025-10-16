@@ -205,7 +205,7 @@ const Pedidos = () => {
           <div className="content-title">
             <h1>Pedidos</h1>
           </div>
-          <Tabela dados={pedidos} semDados="Nenhum pedido encontrado">
+          <Tabela dados={pedidos} semDados="Nenhum pedido encontrado" hover>
             {opcoes
               .filter((opcao) => opcao.checked)
               .map((opcao) => (
