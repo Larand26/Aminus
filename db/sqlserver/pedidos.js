@@ -32,6 +32,10 @@ const searchPedido = async (pedido) => {
       conditions.push("PO.[PEDOR_NOMEENTIDADE] LIKE @cliente");
       request.input("cliente", VarChar, `%${pedido.cliente}%`);
     }
+    if (pedido?.vendedor) {
+      conditions.push("PO.[ID_CODVENDEDOR] = @vendedor");
+      request.input("vendedor", VarChar, `${pedido.vendedor}`);
+    }
 
     if (conditions.length > 0) {
       query = query.replace(
