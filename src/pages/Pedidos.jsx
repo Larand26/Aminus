@@ -50,6 +50,7 @@ const Pedidos = () => {
       cnpj: cnpj,
       vendedor: vendedor,
     };
+    console.log(filters);
 
     const results = await searchPedidos(filters);
     setPedidos(results.data);

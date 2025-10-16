@@ -14,8 +14,7 @@ const SelectLabel = (props) => {
     setSelectedLabel(option.label);
     setIsOpen(false);
     if (props.onChange) {
-      // Simula o evento do select nativo
-      props.onChange({ target: { name: props.name, value: option.value } });
+      props.onChange(option.value);
     }
   };
 
@@ -23,6 +22,9 @@ const SelectLabel = (props) => {
     e.preventDefault();
     setSelectedValue("");
     setSelectedLabel(props.placeholder || "Selecione...");
+    if (props.onChange) {
+      props.onChange("");
+    }
   };
 
   useEffect(() => {
