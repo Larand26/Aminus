@@ -101,19 +101,7 @@ const Pedidos = () => {
       pedidoSelecionado
     );
     if (response.success) {
-      const result = response.data.padrao.ShippingSevicesArray.map(
-        (item, index) => ({
-          NOME_TRANSPORTADORA: item.ServiceDescription,
-          PRECO_PADRAO: item.PresentationalPrice,
-          PRECO_PERSONALIZADO:
-            response.data.personalizado.ShippingSevicesArray[index]
-              .PresentationalPrice,
-          TEMPO_ENTREGA: `${item.DeliveryTime} - ${
-            parseInt(item.DeliveryTime) + 2
-          }`,
-        })
-      );
-      setCotacao(result.sort((a, b) => a.PRECO_PADRAO - b.PRECO_PADRAO));
+      setCotacao(response.data);
       document.querySelector(`#popup-cotacao`).classList.add("open-pop-up");
       document.querySelector(".blur").classList.add("open-blur");
     }

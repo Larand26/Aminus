@@ -26,20 +26,28 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
 
   const response = new Promise((resolve) => {
     window.electronApi?.onMakeCotacaoResponse((arg) => {
-      resolve(arg);
+      if (arg.success) {
+        const result = arg.data.padrao.ShippingSevicesArray.map(
+          (item, index) => ({
+            NOME_TRANSPORTADORA: item.ServiceDescription,
+            PRECO_PADRAO: item.PresentationalPrice,
+            PRECO_PERSONALIZADO:
+              arg.data.personalizado.ShippingSevicesArray[index]
+                .PresentationalPrice,
+            TEMPO_ENTREGA: `${item.DeliveryTime} - ${
+              parseInt(item.DeliveryTime) + 2
+            }`,
+          })
+        );
+        resolve({
+          success: true,
+          data: result.sort((a, b) => a.PRECO_PADRAO - b.PRECO_PADRAO),
+        });
+      } else {
+        resolve(arg);
+      }
     });
   });
-
-  /*
-    [
-        {
-            NOME_TRANSPORTADORA: response.data.padrao.ShippingSevicesArray[0].ServiceDescription,
-            PRECO_PADRAO: response.data.padrao.ShippingSevicesArray[0].PresentationalPrice,
-            PRECO_PERSONALIZADO: response.data.personalizado.ShippingSevicesArray[0].PresentationalPrice,
-            TEMPO_ENTREGA: response.data.padrao.ShippingSevicesArray[0].DeliveryTime
-        }
-    ]
-  */
 
   return response;
 };
