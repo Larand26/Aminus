@@ -23,6 +23,11 @@ const Tabela = (props) => {
     const data = new Date(valor);
     return data.toLocaleDateString("pt-BR", { timeZone: "UTC" });
   };
+  const formataDataHora = (valor) => {
+    if (!valor) return valor;
+    const data = new Date(valor);
+    return data.toLocaleString("pt-BR", { timeZone: "UTC" });
+  };
   const formataJunto = (item, dados) => {
     return dados.map((dado) => item[dado]).join(" - ");
   };
@@ -73,7 +78,12 @@ const Tabela = (props) => {
                         }
 
                         if (valor instanceof Date) {
-                          return formataData(valor);
+                          if (child.props.format === "data") {
+                            return formataData(valor);
+                          }
+                          if (child.props.format === "data-hora") {
+                            return formataDataHora(valor);
+                          }
                         }
 
                         if (child.props.format === "junto") {

@@ -29,7 +29,7 @@
     "id": "DATA_ALTERACAO",
     "label": "Data Alteração",
     "checked": true,
-    "format": "data"
+    "format": "data-hora"
   },
   { "id": "PESO_BR", "label": "Peso Bruto", "checked": true },
   { "id": "PESO_LIQ", "label": "Peso Líquido", "checked": true }
