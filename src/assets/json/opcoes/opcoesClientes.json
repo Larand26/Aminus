@@ -1,0 +1,41 @@
+[
+  {
+    "id": "NUM_CLIENTE",
+    "label": "Id",
+    "checked": true
+  },
+  {
+    "id": "NOME_CLIENTE",
+    "label": "Razão Social",
+    "checked": true
+  },
+  {
+    "id": "CNPJ",
+    "label": "CNPJ",
+    "checked": true
+  },
+  {
+    "id": "TELEFONE",
+    "label": "Telefone",
+    "format": "junto",
+    "dados": ["DDD_FAX", "TELEFONE"],
+    "checked": true
+  },
+  {
+    "id": "CELULAR",
+    "label": "Celular",
+    "format": "junto",
+    "dados": ["DDD_CELULAR", "CELULAR"],
+    "checked": true
+  },
+  {
+    "id": "EMAIL",
+    "label": "E-mail",
+    "checked": true
+  },
+  {
+    "id": "STATUS_CLIENTE",
+    "label": "Status",
+    "checked": true
+  }
+]

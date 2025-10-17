@@ -3,8 +3,15 @@ import { useState } from "react";
 import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
+import Tabela from "../components/tabela/Tabela";
+import Coluna from "../components/tabela/Coluna";
+import Configuracoes from "../components/Configuracoes";
+import Opcao from "../components/Opcao";
 
 import searchClientes from "../utils/search/searchClientes";
+import atualizaOpcoes from "../utils/atualizaOpcoes";
+
+import opcoesClientes from "../assets/json/opcoes/opcoesClientes.json";
 
 const Clientes = () => {
   // Estados dos inputs
@@ -36,8 +43,34 @@ const Clientes = () => {
     }
   };
 
+  // Opções
+  const [opcoes, setOpcoes] = useState(() => {
+    const savedOpcoes = localStorage.getItem("opcoesClientes");
+    return atualizaOpcoes(opcoesClientes, savedOpcoes);
+  });
+
+  const handleOptionClick = (e) => {
+    const { id } = e.target;
+    const updatedOptions = opcoes.map((opcao) =>
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+    );
+    setOpcoes(updatedOptions);
+    localStorage.setItem("opcoesClientes", JSON.stringify(updatedOptions));
+  };
+
   return (
     <>
+      <Configuracoes>
+        {opcoes.map((opcao) => (
+          <Opcao
+            key={opcao.id}
+            id={opcao.id}
+            label={opcao.label}
+            checked={opcao.checked}
+            onChange={handleOptionClick}
+          />
+        ))}
+      </Configuracoes>
       <NavBar />
       <BarraLateral onSearch={handleSearch}>
         <InputLabel
