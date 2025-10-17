@@ -1,29 +1,55 @@
 const conectarSql = require("../../config/database");
+const fs = require("fs");
+const path = require("path");
+const { VarChar, Int } = require("mssql");
 
 const searchCliente = async (cliente) => {
   const connection = await conectarSql();
   try {
-    // Busca todos os ID_CODCLIENTE relevantes
-    let query = "FROM [ENTIDADES] WHERE [ID_CODFILIAIS] = '1'";
+    const request = connection.request();
+    const queryPath = path.join(__dirname, "queries", "searchClientes.sql");
+    let query = fs.readFileSync(queryPath, "utf8");
+    let conditions = [];
+
     if (cliente) {
-      if (cliente.nome)
-        query += ` AND [ENTI_RAZAOSOCIAL] LIKE '%${cliente.nome}%'`;
-      if (cliente.cnpj) query += ` AND [ENTI_CNPJCPF] = '${cliente.cnpj}'`;
-      if (cliente.id) query += ` AND [ID_CODENTIDADE] = '${cliente.id}'`;
-      if (cliente.celular)
-        query += ` AND [ENTI_CELULAR] LIKE '%${cliente.celular}%'`;
-      if (cliente.email) query += ` AND [ENTI_EMAIL] LIKE '%${cliente.email}%'`;
+      if (cliente.nome) {
+        conditions.push("[ENTI_RAZAOSOCIAL] LIKE @nome");
+        request.input("nome", VarChar, `%${cliente.nome}%`);
+      }
+      if (cliente.cnpj) {
+        conditions.push("[ENTI_CNPJCPF] = @cnpj");
+        request.input("cnpj", VarChar, cliente.cnpj);
+      }
+      if (cliente.id) {
+        conditions.push("[ID_CODENTIDADE] = @id");
+        request.input("id", Int, cliente.id);
+      }
+      if (cliente.celular) {
+        conditions.push("[ENTI_CELULAR] LIKE @celular");
+        request.input("celular", VarChar, `%${cliente.celular}%`);
+      }
+      if (cliente.email) {
+        conditions.push("[ENTI_EMAIL] LIKE @email");
+        request.input("email", VarChar, `%${cliente.email}%`);
+      }
     }
 
-    const vwClienteResult = await connection
-      .request()
-      .query("SELECT * " + query);
+    if (conditions.length > 0) {
+      query = query.replace(
+        "-- Os filtros serão adicionados aqui pelo Node.js",
+        `AND ${conditions.join(" AND ")}`
+      );
+    }
 
-    return vwClienteResult.recordset;
+    const result = await request.query(query);
+    return { success: true, data: result.recordset };
   } catch (error) {
     console.error("Erro ao buscar clientes:", error);
+    return { success: false, error: error.message };
   } finally {
-    connection.close();
+    if (connection) {
+      connection.close();
+    }
   }
 };
 
