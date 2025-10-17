@@ -4,10 +4,12 @@ import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
 
+import searchClientes from "../utils/search/searchClientes";
+
 const Clientes = () => {
   // Estados dos inputs
   const [numCliente, setNumCliente] = useState("");
-  const [nomeCliente, setNomeCliente] = useState("");
+  const [nome, setNome] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [celular, setCelular] = useState("");
   const [email, setEmail] = useState("");
@@ -15,7 +17,24 @@ const Clientes = () => {
   // Clientes
   const [clientes, setClientes] = useState([]);
 
-  const handleSearch = () => {};
+  const handleSearch = async () => {
+    const filters = {
+      numCliente,
+      nome,
+      cnpj,
+      celular,
+      email,
+    };
+    const response = await searchClientes(filters);
+
+    console.log(response);
+
+    if (response.success) {
+      setClientes(response.data);
+    } else {
+      console.error("Erro ao buscar clientes:", response.error);
+    }
+  };
 
   return (
     <>
@@ -30,8 +49,8 @@ const Clientes = () => {
         <InputLabel
           label="Nome do Cliente"
           type="text"
-          value={nomeCliente}
-          onChange={setNomeCliente}
+          value={nome}
+          onChange={setNome}
         />
         <InputLabel label="CNPJ" type="text" value={cnpj} onChange={setCnpj} />
         <InputLabel

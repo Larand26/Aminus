@@ -12,4 +12,5 @@ E.[ENTI_DDD_CELULAR] AS DDD_CELULAR,
 E.[ENTI_DDD_FAX] AS DDD_FAX,
 E.[STATUS_CLIENTE]
 FROM [ENTIDADES] E
+WHERE 1=1
 -- Os filtros serão adicionados aqui pelo Node.js

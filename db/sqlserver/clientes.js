@@ -20,9 +20,9 @@ const searchCliente = async (cliente) => {
         conditions.push("[ENTI_CNPJCPF] = @cnpj");
         request.input("cnpj", VarChar, cliente.cnpj);
       }
-      if (cliente.id) {
-        conditions.push("[ID_CODENTIDADE] = @id");
-        request.input("id", Int, cliente.id);
+      if (cliente.numCliente) {
+        conditions.push("[ID_CODENTIDADE] = @numCliente");
+        request.input("numCliente", Int, cliente.numCliente);
       }
       if (cliente.celular) {
         conditions.push("[ENTI_CELULAR] LIKE @celular");
