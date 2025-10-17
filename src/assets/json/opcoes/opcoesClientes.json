@@ -1,6 +1,6 @@
 [
   {
-    "id": "NUM_CLIENTE",
+    "id": "ID_CLIENTE",
     "label": "Id",
     "checked": true
   },

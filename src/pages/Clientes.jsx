@@ -72,34 +72,58 @@ const Clientes = () => {
         ))}
       </Configuracoes>
       <NavBar />
-      <BarraLateral onSearch={handleSearch}>
-        <InputLabel
-          label="Número do Cliente"
-          type="text"
-          value={numCliente}
-          onChange={setNumCliente}
-        />
-        <InputLabel
-          label="Nome do Cliente"
-          type="text"
-          value={nome}
-          onChange={setNome}
-        />
-        <InputLabel label="CNPJ" type="text" value={cnpj} onChange={setCnpj} />
-        <InputLabel
-          label="Celular"
-          type="text"
-          value={celular}
-          onChange={setCelular}
-        />
-        <InputLabel
-          label="Email"
-          type="email"
-          value={email}
-          onChange={setEmail}
-        />
-      </BarraLateral>
-      <div className="main-container"></div>
+      <div className="main-container">
+        <BarraLateral onSearch={handleSearch}>
+          <InputLabel
+            label="Número do Cliente"
+            type="text"
+            value={numCliente}
+            onChange={setNumCliente}
+          />
+          <InputLabel
+            label="Nome do Cliente"
+            type="text"
+            value={nome}
+            onChange={setNome}
+          />
+          <InputLabel
+            label="CNPJ"
+            type="text"
+            value={cnpj}
+            onChange={setCnpj}
+          />
+          <InputLabel
+            label="Celular"
+            type="text"
+            value={celular}
+            onChange={setCelular}
+          />
+          <InputLabel
+            label="Email"
+            type="email"
+            value={email}
+            onChange={setEmail}
+          />
+        </BarraLateral>
+        <div className="content">
+          <div className="content-title">
+            <h1>Clientes</h1>
+          </div>
+          <Tabela dados={clientes} semDados="Nenhum cliente encontrado">
+            {opcoes
+              .filter((opcao) => opcao.checked)
+              .map((opcao) => (
+                <Coluna
+                  key={opcao.id}
+                  titulo={opcao.label}
+                  campo={opcao.id}
+                  format={opcao.format || ""}
+                  dados={opcao.dados || []}
+                />
+              ))}
+          </Tabela>
+        </div>
+      </div>
     </>
   );
 };
