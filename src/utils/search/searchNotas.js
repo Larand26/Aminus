@@ -1,6 +1,10 @@
 const searchNotas = (filters) => {
-  if (!filters) return [];
-  if (Object.values(filters).every((value) => !value)) return [];
+  if (!filters) {
+    return { success: false, error: "Nenhum filtro fornecido." };
+  }
+  if (Object.values(filters).every((value) => !value)) {
+    return { success: false, error: "Nenhum filtro fornecido." };
+  }
 
   window.electronApi?.searchNota(filters);
 
