@@ -8,6 +8,7 @@ import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
+import PopUp from "../components/PopUp";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesReserva from "../assets/json/opcoes/opcoesReserva.json";
@@ -55,8 +56,18 @@ const Reservas = () => {
     localStorage.setItem("opcoesReserva", JSON.stringify(updatedOptions));
   };
 
+  // PopUp
+  const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
+
+  const openPopUp = (item) => {
+    setPedidoSelecionado(item);
+    document.querySelector(`#popup-reservas`).classList.add("open-pop-up");
+    document.querySelector(".blur").classList.add("open-blur");
+  };
+
   return (
     <>
+      <PopUp id="popup-reservas"></PopUp>
       <Configuracoes>
         {opcoes.map((opcao) => (
           <Opcao
@@ -102,7 +113,7 @@ const Reservas = () => {
           <div className="content-title">
             <h1>Reservas</h1>
           </div>
-          <Tabela dados={reservas} semDados="Nenhuma reserva encontrada">
+          <Tabela dados={reservas} semDados="Nenhuma reserva encontrada" hover>
             {opcoes
               .filter((opcao) => opcao.checked)
               .map((opcao) => (
@@ -112,6 +123,7 @@ const Reservas = () => {
                   campo={opcao.id}
                   format={opcao.format || ""}
                   dados={opcao.dados || []}
+                  onClick={openPopUp}
                 />
               ))}
           </Tabela>
