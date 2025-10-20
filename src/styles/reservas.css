@@ -1,0 +1,28 @@
+#popup-reservas {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 20px;
+  width: 30%;
+}
+.content-popup-reservas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 70%;
+}
+
+.content-popup-reservas .input-data-label .input-data {
+  background-color: var(--cor-branco);
+}
+
+.btn-consulta-reserva {
+  width: 50px;
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background-color: var(--cor-branco);
+  border: none;
+}

@@ -4,6 +4,7 @@ import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
 import SelectLabel from "../components/SelectLabel";
+import InputDataLabel from "../components/InputDataLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
@@ -15,6 +16,8 @@ import opcoesReserva from "../assets/json/opcoes/opcoesReserva.json";
 
 import searchReservas from "../utils/search/searchReservas";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
+
+import "../styles/reservas.css";
 
 const Reservas = () => {
   // Estados dos inputs
@@ -65,9 +68,24 @@ const Reservas = () => {
     document.querySelector(".blur").classList.add("open-blur");
   };
 
+  // Data Reserva
+  const [dataReserva, setDataReserva] = useState([null, null]);
+  const [dataReservaResponse, setDataReservaResponse] =
+    useState("Selecione uma data");
+
   return (
     <>
-      <PopUp id="popup-reservas"></PopUp>
+      <PopUp id="popup-reservas" width="400px" height="250px">
+        <h2>Consulte a data da reserva</h2>
+        <div className="content-popup-reservas">
+          <InputDataLabel value={dataReserva} onChange={setDataReserva} />
+          <button className="btn-consulta-reserva">
+            <i className="fa fa-search" />
+          </button>
+        </div>
+        <div>{dataReservaResponse}</div>
+        <div className="footer-popup-reservas"></div>
+      </PopUp>
       <Configuracoes>
         {opcoes.map((opcao) => (
           <Opcao
