@@ -25,4 +25,9 @@
   border-radius: 50%;
   background-color: var(--cor-branco);
   border: none;
+  cursor: pointer;
+}
+
+.btn-consulta-reserva:hover {
+  filter: brightness(0.9);
 }
