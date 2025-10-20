@@ -69,6 +69,11 @@ const Reservas = () => {
     document.querySelector(".blur").classList.add("open-blur");
   };
 
+  const handleClosePopUp = () => {
+    setDataReserva([null, null]);
+    setDataReservaResponse("Selecione uma data");
+  };
+
   // Data Reserva
   const [dataReserva, setDataReserva] = useState([null, null]);
   const [dataReservaResponse, setDataReservaResponse] =
@@ -80,16 +85,25 @@ const Reservas = () => {
       numPedido: pedidoSelecionado.NUM_PEDIDO || null,
       dataPesquisa: dataReserva || null,
     };
-    console.log(filters);
 
     const results = await searchData(filters);
-    // setDataReservaResponse(results);
-    console.log(results);
+
+    if (results.success) {
+      setDataReservaResponse(results.data);
+      console.log(results.data);
+    } else {
+      setDataReservaResponse("Erro ao buscar dados");
+    }
   };
 
   return (
     <>
-      <PopUp id="popup-reservas" width="400px" height="250px">
+      <PopUp
+        id="popup-reservas"
+        width="400px"
+        height="250px"
+        onClose={handleClosePopUp}
+      >
         <h2>Consulte a data da reserva</h2>
         <div className="content-popup-reservas">
           <InputDataLabel value={dataReserva} onChange={setDataReserva} />
@@ -97,7 +111,11 @@ const Reservas = () => {
             <i className="fa fa-search" />
           </button>
         </div>
-        <div>{dataReservaResponse}</div>
+        <div>
+          {Array.isArray(dataReservaResponse) && dataReservaResponse.length > 0
+            ? new Date(dataReservaResponse[0].DATA).toLocaleString("pt-BR")
+            : dataReservaResponse}
+        </div>
         <div className="footer-popup-reservas"></div>
       </PopUp>
       <Configuracoes>

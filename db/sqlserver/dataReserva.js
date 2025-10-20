@@ -17,7 +17,6 @@ const getDataReserva = async (arg) => {
       ORDER BY [DATA] DESC
     `;
 
-    console.log(arg);
     // 2. Use uma data muito antiga se a data de início for nula
     const dataInicio = arg.dataPesquisa[0] || new Date("1970-01-01");
     const dataFim = arg.dataPesquisa[1] || new Date();

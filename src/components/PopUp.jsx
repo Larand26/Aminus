@@ -4,6 +4,9 @@ const PopUp = (props) => {
   const closePopup = (id) => {
     document.querySelector(`#${id}`).classList.remove("open-pop-up");
     document.querySelector(".blur").classList.remove("open-blur");
+    if (props.onClose) {
+      props.onClose();
+    }
   };
   return (
     <>
