@@ -70,7 +70,6 @@ const Reservas = () => {
   };
 
   const handleClosePopUp = () => {
-    setDataReserva([null, null]);
     setDataReservaResponse("Selecione uma data");
   };
 
