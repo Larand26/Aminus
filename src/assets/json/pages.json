@@ -28,10 +28,10 @@
     "permissions": []
   },
   {
-    "page": "reserva",
-    "title": "Reserva",
+    "page": "reservas",
+    "title": "Reservas",
     "icon": "box",
-    "path": "/reserva",
+    "path": "/reservas",
     "permissions": []
   },
   {
