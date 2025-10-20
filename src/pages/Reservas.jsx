@@ -1,4 +1,14 @@
+import { useState } from "react";
+
+import NavBar from "../components/NavBar";
+import BarraLateral from "../components/BarraLateral";
+
 const Reservas = () => {
-  return <div>Reservas Page</div>;
+  return (
+    <>
+      <NavBar />
+      <BarraLateral></BarraLateral>
+    </>
+  );
 };
 export default Reservas;
