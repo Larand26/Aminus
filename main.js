@@ -128,6 +128,7 @@ ipcMain.on("search-reserva", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao buscar reservas:", error);
     event.reply("search-reserva-response", {
+      success: false,
       error: error.message || "Erro desconhecido",
     });
   }

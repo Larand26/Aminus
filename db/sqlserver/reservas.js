@@ -1,100 +1,55 @@
 const conectarSql = require("../../config/database");
+const fs = require("fs");
+const path = require("path");
+const { VarChar, NVarChar } = require("mssql");
 
 const searchReserva = async (reserva) => {
   const connection = await conectarSql();
   try {
-    const reservaCompletos = [];
-    if (reserva && (reserva.codigoInterno || reserva.numeroPedido)) {
-      // Busca todos os ID_CODCLIENTE relevantes
-      let query = "FROM [EST_RESERVA_PED] WHERE [ID_CODARMAZEN] = '2'";
-      if (reserva) {
-        if (reserva.codigoInterno)
-          query += ` AND [ID_CODPRODUTO] = '${reserva.codigoInterno}'`;
-        if (reserva.numeroPedido)
-          query += ` AND [ID_NUMPEDORC] = '${reserva.numeroPedido}'`;
+    const queryPath = path.join(__dirname, "queries", "searchReserva.sql");
+    let query = fs.readFileSync(queryPath, "utf8");
+    const request = connection.request();
+    let conditions = [];
+
+    if (reserva) {
+      if (reserva.codInterno) {
+        conditions.push("PR.[ID_CODPRODUTO] = @codInterno");
+        request.input("codInterno", VarChar, reserva.codInterno);
       }
-
-      const reservaResult = await connection
-        .request()
-        .query("SELECT * " + query);
-
-      const vwResults = await connection
-        .request()
-        .query(
-          `SELECT [PROD_CODFABRIC], [ID_CODPRODUTO] FROM [vwITEM] WHERE [ID_CODPRODUTO] IN (SELECT [ID_CODPRODUTO] ${query})`
-        );
-      const pedidosResult = await connection
-        .request()
-        .query(
-          `SELECT * FROM [PEDIDOORCAMENTO] WHERE [ID_NUMPEDORC] IN (SELECT [ID_NUMPEDORC] ${query})`
-        );
-
-      reservaCompletos.push(
-        ...reservaResult.recordset.map((reservaItem) => {
-          const vwItem = vwResults.recordset.find(
-            (item) => item.ID_CODPRODUTO === reservaItem.ID_CODPRODUTO
-          );
-          const pedido = pedidosResult.recordset.find(
-            (ped) => ped.ID_NUMPEDORC === reservaItem.ID_NUMPEDORC
-          );
-
-          return {
-            ...reservaItem,
-            PROD_CODFABRIC: vwItem ? vwItem.PROD_CODFABRIC : null,
-            ID_CODPRODUTO: vwItem ? vwItem.ID_CODPRODUTO : null,
-            ID_NUMPEDORC: pedido ? pedido.ID_NUMPEDORC : null,
-            ID_CODVENDEDOR: pedido ? pedido.ID_CODVENDEDOR : null,
-            PEDOR_DATAALTERACAO: pedido ? pedido.PEDOR_DATAALTERACAO : null,
-            PEDOR_RAZAOSOCIAL: pedido ? pedido.PEDOR_RAZAOSOCIAL : null,
-          };
-        })
-      );
-    } else if (reserva && (reserva.referencia || reserva.nomeProduto)) {
-      let query = "FROM [vwITEM] WHERE ID_DEPOSITOS = 2";
-      if (reserva) {
-        if (reserva.referencia)
-          query += ` AND [PROD_CODFABRIC] = '${reserva.referencia}'`;
-        if (reserva.nomeProduto)
-          query += ` AND [PROD_DESCRCOMPLETA] LIKE '%${reserva.nomeProduto}%'`;
+      if (reserva.numPedido) {
+        conditions.push("PR.[ID_NUMPEDORC] = @numPedido");
+        request.input("numPedido", VarChar, reserva.numPedido);
       }
-      console.log("SELECT * " + query);
+      if (reserva.codFabricante) {
+        conditions.push("P.[PROD_CODFABRIC] = @codFabricante");
+        request.input("codFabricante", VarChar, reserva.codFabricante);
+      }
+      if (reserva.nomeCliente) {
+        conditions.push("PO.[PEDOR_RAZAOSOCIAL] LIKE @nomeCliente");
+        request.input("nomeCliente", NVarChar, `%${reserva.nomeCliente}%`);
+      }
+      if (reserva.vendedor) {
+        conditions.push("PO.[ID_CODVENDEDOR] = @vendedor");
+        request.input("vendedor", VarChar, reserva.vendedor);
+      }
+    }
 
-      const vwResults = await connection.request().query("SELECT * " + query);
-
-      const reservaResult = await connection
-        .request()
-        .query(
-          `SELECT * FROM [EST_RESERVA_PED] WHERE [ID_CODARMAZEN] = 2 AND [ID_CODPRODUTO] IN (SELECT [ID_CODPRODUTO] ${query})`
-        );
-
-      const pedidosResult = await connection
-        .request()
-        .query(
-          `SELECT * FROM [PEDIDOORCAMENTO] WHERE [ID_NUMPEDORC] IN (SELECT [ID_NUMPEDORC] FROM [EST_RESERVA_PED] WHERE [ID_CODARMAZEN] = 2 AND [ID_CODPRODUTO] IN (SELECT [ID_CODPRODUTO] ${query}))`
-        );
-
-      reservaCompletos.push(
-        ...reservaResult.recordset.map((reservaItem) => {
-          const vwItem = vwResults.recordset.find(
-            (item) => item.ID_CODPRODUTO === reservaItem.ID_CODPRODUTO
-          );
-          const pedido = pedidosResult.recordset.find(
-            (ped) => ped.ID_NUMPEDORC === reservaItem.ID_NUMPEDORC
-          );
-
-          return {
-            ...reservaItem,
-            ...vwItem,
-            ...pedido,
-          };
-        })
+    if (conditions.length > 0) {
+      query = query.replace(
+        "-- Os filtros serão adicionados aqui pelo Node.js",
+        `AND ${conditions.join(" AND ")}`
       );
     }
-    return reservaCompletos;
+
+    const result = await request.query(query);
+    return { success: true, data: result.recordset };
   } catch (error) {
     console.error("Erro ao buscar reservas:", error);
+    return { success: false, error: error.message };
   } finally {
-    connection.close();
+    if (connection) {
+      connection.close();
+    }
   }
 };
 
