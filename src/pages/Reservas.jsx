@@ -16,6 +16,7 @@ import opcoesReserva from "../assets/json/opcoes/opcoesReserva.json";
 
 import searchReservas from "../utils/search/searchReservas";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
+import searchData from "../utils/search/searchData";
 
 import "../styles/reservas.css";
 
@@ -73,13 +74,26 @@ const Reservas = () => {
   const [dataReservaResponse, setDataReservaResponse] =
     useState("Selecione uma data");
 
+  const handleSearchData = async () => {
+    const filters = {
+      codInterno: pedidoSelecionado.COD_INTERNO || null,
+      numPedido: pedidoSelecionado.NUM_PEDIDO || null,
+      dataPesquisa: dataReserva || null,
+    };
+    console.log(filters);
+
+    const results = await searchData(filters);
+    // setDataReservaResponse(results);
+    console.log(results);
+  };
+
   return (
     <>
       <PopUp id="popup-reservas" width="400px" height="250px">
         <h2>Consulte a data da reserva</h2>
         <div className="content-popup-reservas">
           <InputDataLabel value={dataReserva} onChange={setDataReserva} />
-          <button className="btn-consulta-reserva">
+          <button className="btn-consulta-reserva" onClick={handleSearchData}>
             <i className="fa fa-search" />
           </button>
         </div>

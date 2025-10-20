@@ -45,12 +45,7 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("make-cubagem-response", (event, arg) => {
       callback(arg);
     }),
-  getDataReserva: (idCodProduto, idNumPedOrc, dataPesquisa) =>
-    ipcRenderer.send("get-data-reserva", {
-      idCodProduto,
-      idNumPedOrc,
-      dataPesquisa,
-    }),
+  getDataReserva: (arg) => ipcRenderer.send("get-data-reserva", arg),
   onGetDataReservaResponse: (callback) =>
     ipcRenderer.on("get-data-reserva-response", (event, arg) => {
       callback(arg);

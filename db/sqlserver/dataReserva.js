@@ -1,6 +1,7 @@
 const conectarSql = require("../../config/database");
+const sql = require("mssql"); // 1. Importe o pacote mssql
 
-const getDataReserva = async (idCodProduto, idNumPedOrc, dataPesquisa) => {
+const getDataReserva = async (arg) => {
   const connection = await conectarSql();
 
   try {
@@ -16,20 +17,26 @@ const getDataReserva = async (idCodProduto, idNumPedOrc, dataPesquisa) => {
       ORDER BY [DATA] DESC
     `;
 
+    console.log(arg);
+    // 2. Use uma data muito antiga se a data de início for nula
+    const dataInicio = arg.dataPesquisa[0] || new Date("1970-01-01");
+    const dataFim = arg.dataPesquisa[1] || new Date();
+
     const result = await connection
       .request()
-      .input("dataInicio", dataPesquisa[0])
-      .input("dataFim", dataPesquisa[1] ? dataPesquisa[1] : new Date())
-      .input("idNumPedOrc", `%${idNumPedOrc}%`)
-      .input("idCodProduto", `%${idCodProduto}%`)
+      // 3. Especifique os tipos de dados para os parâmetros
+      .input("dataInicio", sql.DateTime, dataInicio)
+      .input("dataFim", sql.DateTime, dataFim)
+      .input("idNumPedOrc", sql.VarChar, `%${String(arg.numPedido)}%`)
+      .input("idCodProduto", sql.VarChar, `%${arg.codInterno}%`)
       .query(query);
 
     connection.close();
-    return result.recordset;
+    return { data: result.recordset, success: true };
   } catch (error) {
     console.error("Erro ao buscar dados de reserva:", error);
     connection.close();
-    throw new Error(error.message || "Erro desconhecido");
+    return { data: [], success: false };
   }
 };
 
