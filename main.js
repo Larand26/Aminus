@@ -33,9 +33,6 @@ const { makeCotacao } = require("./transportadoras/frenet");
 
 // ENV
 require("dotenv").config();
-const { insertCsvMysql } = require("./db/insertCsvMysql");
-const { getControlePlaza } = require("./db/getControlePlaza");
-const { changeAcao } = require("./db/changeAcao");
 let MODE = "production";
 try {
   MODE = require("./globals").MODE;
@@ -44,7 +41,7 @@ try {
 }
 
 function isDev() {
-  return MODE === "development" || process.argv.includes("--dev");
+  return MODE === "development" || process.env.NODE_ENV === "development";
 }
 
 const homeWindow = () => {
