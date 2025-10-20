@@ -6,6 +6,8 @@ import InputLabel from "../components/InputLabel";
 import SelectLabel from "../components/SelectLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
+import Configuracoes from "../components/Configuracoes";
+import Opcao from "../components/Opcao";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesReserva from "../assets/json/opcoes/opcoesReserva.json";
@@ -55,6 +57,17 @@ const Reservas = () => {
 
   return (
     <>
+      <Configuracoes>
+        {opcoes.map((opcao) => (
+          <Opcao
+            key={opcao.id}
+            id={opcao.id}
+            label={opcao.label}
+            checked={opcao.checked}
+            onChange={handleOptionClick}
+          />
+        ))}
+      </Configuracoes>
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
