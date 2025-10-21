@@ -10,7 +10,8 @@ const InputFile = (props) => {
   const [dragging, setDragging] = useState(false);
 
   const handleFileChange = (event) => {
-    setFiles(Array.from(event.target.files));
+    const newFiles = Array.from(event.target.files);
+    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
 
     if (props.onFileChange) {
       props.onFileChange(event);
