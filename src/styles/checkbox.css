@@ -1,0 +1,52 @@
+.custom-checkbox {
+  position: relative;
+  width: 24px;
+  height: 24px;
+}
+
+/* Esconde o checkbox original */
+.custom-checkbox input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+/* Cria a caixa do checkbox customizado */
+.custom-checkbox label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--cor-branco);
+  background-color: transparent;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Cria o "V" (check) - inicialmente invisível */
+.custom-checkbox label::after {
+  content: "";
+  position: absolute;
+  left: 6.2px;
+  top: 1px;
+  width: 4px;
+  height: 12px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+/* Mostra o "V" e muda o fundo quando o checkbox original está marcado */
+.custom-checkbox input[type="checkbox"]:checked + label {
+  background-color: var(--cor-amarelo);
+  border-color: var(--cor-amarelo);
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label::after {
+  opacity: 1;
+}
