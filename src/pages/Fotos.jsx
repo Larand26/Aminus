@@ -7,6 +7,8 @@ import CheckBox from "../components/CheckBox";
 import Card from "../components/Card";
 import BotoesFotos from "../components/BotoesFotos";
 
+import unknown from "../assets/img/unknown.jpg";
+
 import "../styles/fotos.css";
 
 const Fotos = () => {
@@ -58,7 +60,7 @@ const Fotos = () => {
             </div>
             <div className="content-fotos">
               <div className="fotos">
-                <Card>
+                <Card className="card-selected" foto={unknown}>
                   <BotoesFotos />
                 </Card>
               </div>
