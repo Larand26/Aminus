@@ -15,16 +15,16 @@ const searchFoto = async (produto) => {
   try {
     await connectDB();
     let pesquisa;
-    if (produto.referencia === "") {
-      pesquisa = { codigo_cor: produto.codigo_cor };
+    if (produto.codFabricante === "") {
+      pesquisa = { codigo_cor: produto.codCor };
     } else {
       pesquisa = {
-        referencia: produto.referencia,
-        codigo_cor: produto.codigo_cor,
+        referencia: produto.codFabricante,
+        codigo_cor: produto.codCor,
       };
     }
-    if (produto.codigo_cor === "") {
-      pesquisa = { referencia: produto.referencia };
+    if (produto.codCor === "") {
+      pesquisa = { referencia: produto.codFabricante };
     }
     const produtos = await Produto.find(pesquisa);
 

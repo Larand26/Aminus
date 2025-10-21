@@ -7,6 +7,8 @@ import CheckBox from "../components/CheckBox";
 import Card from "../components/Card";
 import BotoesFotos from "../components/BotoesFotos";
 
+import searchFotos from "../utils/search/searchFotos";
+
 import unknown from "../assets/img/unknown.jpg";
 
 import "../styles/fotos.css";
@@ -17,26 +19,36 @@ const Fotos = () => {
   const [codInterno, setCodInterno] = useState("");
   const [codCor, setCodCor] = useState("");
 
+  // Fotos
+  const [fotos, setFotos] = useState([unknown]);
+
+  const handleSearch = async () => {
+    const filtros = {
+      codFabricante: codFabricante,
+      codInterno: codInterno,
+      codCor: codCor,
+    };
+    const resultado = await searchFotos(filtros);
+    console.log(resultado);
+    setFotos(resultado);
+  };
+
   return (
     <>
       <NavBar />
       <div className="main-container">
-        <BarraLateral onSearch={() => {}}>
+        <BarraLateral onSearch={handleSearch}>
           <InputLabel
             label="Cod Fabricante"
             value={codFabricante}
-            onChange={(e) => setCodFabricante(e.target.value)}
+            onChange={setCodFabricante}
           />
           <InputLabel
             label="Cod Interno"
             value={codInterno}
-            onChange={(e) => setCodInterno(e.target.value)}
+            onChange={setCodInterno}
           />
-          <InputLabel
-            label="Cod Cor"
-            value={codCor}
-            onChange={(e) => setCodCor(e.target.value)}
-          />
+          <InputLabel label="Cod Cor" value={codCor} onChange={setCodCor} />
         </BarraLateral>
         <div className="content">
           <div className="content-title">
@@ -60,7 +72,7 @@ const Fotos = () => {
             </div>
             <div className="content-fotos">
               <div className="fotos">
-                <Card className="card-selected" foto={unknown}>
+                <Card foto={unknown}>
                   <BotoesFotos />
                 </Card>
               </div>
