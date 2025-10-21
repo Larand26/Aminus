@@ -5,13 +5,13 @@ import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
 import CheckBox from "../components/CheckBox";
 
+import "../styles/fotos.css";
+
 const Fotos = () => {
   // Estados dos inputs
   const [codFabricante, setCodFabricante] = useState("");
   const [codInterno, setCodInterno] = useState("");
   const [codCor, setCodCor] = useState("");
-
-  const [c, setC] = useState(false);
 
   return (
     <>
@@ -40,7 +40,19 @@ const Fotos = () => {
           </div>
           <div className="container-fotos">
             <div className="navBar-fotos">
-              <CheckBox id="foto1" checked={c} onChange={() => setC(!c)} />
+              <div>
+                <input type="text" className="filtro-fotos" />
+                <CheckBox id="foto1" checked={false} onChange={() => {}} />
+                <button className="btn-baixar-foto">
+                  Baixar Fotos
+                  <i className="fa fa-download"></i>
+                </button>
+              </div>
+              <div>
+                <button className="btn-adicionar-foto">
+                  <i className="fas fa-plus"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>

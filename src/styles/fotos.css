@@ -1,0 +1,55 @@
+.container-fotos {
+  background-color: var(--cor-branco);
+  padding: 20px;
+  margin-top: 10px;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+.navBar-fotos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.navBar-fotos div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.filtro-fotos {
+  border-radius: 60px;
+  padding: 10px;
+  border: 2px solid var(--cor-texto);
+}
+.btn-baixar-foto {
+  background-color: var(--cor-amarelo);
+  color: var(--cor-branco);
+  border: none;
+  border-radius: 60px;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+}
+
+.btn-adicionar-foto {
+  background-color: var(--cor-amarelo);
+  color: var(--cor-branco);
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+  gap: 9px;
+  min-width: 30px;
+  min-height: 30px;
+}
+
+.navBar-fotos button:hover {
+  filter: brightness(0.9);
+}
