@@ -30,6 +30,11 @@
   border: 2px solid var(--cor-branco);
   background-color: var(--cor-amarelo);
   color: var(--cor-branco);
+  cursor: pointer;
+}
+
+.botoes-foto-container .btn:hover {
+  filter: brightness(0.9);
 }
 
 .excluir {
