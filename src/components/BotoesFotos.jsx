@@ -1,10 +1,10 @@
 import "../styles/botoes-foto.css";
 
-const BotoesFotos = () => {
+const BotoesFotos = (props) => {
   return (
     <div className="botoes-foto-container">
-      <p className="cor-nome">NUDE CLARO</p>
-      <p className="cor-cod">BP171</p>
+      <p className="cor-nome">{props.foto.nome_cor}</p>
+      <p className="cor-cod">{props.foto.codigo_cor}</p>
       <div className="botoes">
         <button className="btn baixar">
           <i className="fa fa-download"></i>

@@ -33,9 +33,16 @@
 
 .card-selected {
   box-shadow: 0 0 15px var(--cor-amarelo), 0 0 30px var(--cor-amarelo) !important;
+  border: 1px solid var(--cor-amarelo);
+  transform: scale(0.95);
 }
 
 .card img {
   max-width: 100%;
   max-height: 100%;
+}
+
+.card-foto .foto-card {
+  background-color: var(--cor-branco);
+  border-radius: 5px;
 }

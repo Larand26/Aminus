@@ -20,7 +20,7 @@ const Fotos = () => {
   const [codCor, setCodCor] = useState("");
 
   // Fotos
-  const [fotos, setFotos] = useState([unknown]);
+  const [fotos, setFotos] = useState([]);
 
   const handleSearch = async () => {
     const filtros = {
@@ -72,9 +72,20 @@ const Fotos = () => {
             </div>
             <div className="content-fotos">
               <div className="fotos">
-                <Card foto={unknown}>
-                  <BotoesFotos />
-                </Card>
+                {fotos &&
+                  fotos.map((foto, index) => (
+                    <Card
+                      className="card-foto card-selected"
+                      key={index}
+                      foto={
+                        foto.fotos?.foto_principal
+                          ? `data:image/jpeg;base64,${foto.fotos.foto_principal}`
+                          : unknown
+                      }
+                    >
+                      <BotoesFotos foto={foto} />
+                    </Card>
+                  ))}
               </div>
             </div>
           </div>
