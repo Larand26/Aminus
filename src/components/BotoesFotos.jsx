@@ -6,13 +6,13 @@ const BotoesFotos = (props) => {
       <p className="cor-nome">{props.foto.nome_cor}</p>
       <p className="cor-cod">{props.foto.codigo_cor}</p>
       <div className="botoes">
-        <button className="btn baixar">
+        <button className="btn baixar" onClick={props.onDownloadClick}>
           <i className="fa fa-download"></i>
         </button>
-        <button className="btn editar">
+        <button className="btn editar" onClick={props.onEditClick}>
           <i className="fa fa-edit"></i>
         </button>
-        <button className="btn excluir">
+        <button className="btn excluir" onClick={props.onDeleteClick}>
           <i className="fa fa-trash"></i>
         </button>
       </div>

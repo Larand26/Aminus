@@ -6,6 +6,7 @@ import InputLabel from "../components/InputLabel";
 import CheckBox from "../components/CheckBox";
 import Card from "../components/Card";
 import BotoesFotos from "../components/BotoesFotos";
+import PopUp from "../components/PopUp";
 
 import searchFotos from "../utils/search/searchFotos";
 
@@ -36,8 +37,25 @@ const Fotos = () => {
   // Filtro
   const [filtro, setFiltro] = useState("");
 
+  // PopUp
+  const [fotoSelecionada, setFotoSelecionada] = useState(null);
+
+  const openPopUpEditar = (foto) => {
+    setFotoSelecionada(foto);
+
+    document.querySelector(`#editar-foto`).classList.add("open-pop-up");
+    document.querySelector(".blur").classList.add("open-blur");
+  };
+
   return (
     <>
+      <PopUp
+        id="editar-foto"
+        foto={fotoSelecionada}
+        onClose={() => setFotoSelecionada(null)}
+      >
+        <p>{fotoSelecionada?.nome_cor}</p>
+      </PopUp>
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
@@ -101,7 +119,12 @@ const Fotos = () => {
                             : unknown
                         }
                       >
-                        <BotoesFotos foto={foto} />
+                        <BotoesFotos
+                          foto={foto}
+                          onEditClick={() => {
+                            openPopUpEditar(foto);
+                          }}
+                        />
                       </Card>
                     ))}
               </div>
