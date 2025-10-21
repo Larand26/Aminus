@@ -10,6 +10,7 @@
   border: 1px solid var(--cor-texto);
   box-sizing: border-box;
   padding: 10px;
+  min-height: 150px;
 }
 
 .foto-input {
