@@ -4,6 +4,8 @@ import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
 import CheckBox from "../components/CheckBox";
+import Card from "../components/Card";
+import BotoesFotos from "../components/BotoesFotos";
 
 import "../styles/fotos.css";
 
@@ -52,6 +54,13 @@ const Fotos = () => {
                 <button className="btn-adicionar-foto">
                   <i className="fas fa-plus"></i>
                 </button>
+              </div>
+            </div>
+            <div className="content-fotos">
+              <div className="fotos">
+                <Card>
+                  <BotoesFotos />
+                </Card>
               </div>
             </div>
           </div>
