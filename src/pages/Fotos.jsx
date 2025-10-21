@@ -75,7 +75,7 @@ const Fotos = () => {
                 {fotos &&
                   fotos.map((foto, index) => (
                     <Card
-                      className="card-foto card-selected"
+                      className="card-foto"
                       key={index}
                       foto={
                         foto.fotos?.foto_principal

@@ -55,6 +55,7 @@
 }
 .content-fotos {
   overflow-y: scroll;
+  min-height: 550px;
 }
 .fotos {
   display: flex;
