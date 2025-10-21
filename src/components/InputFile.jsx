@@ -19,6 +19,9 @@ const InputFile = (props) => {
       <div className="fotos-input">
         {files.map((file, index) => (
           <div key={index} className="foto-input">
+            <button className="remove-file" onClick={() => removeFile(index)}>
+              <i className="fas fa-trash"></i>
+            </button>
             <img src={URL.createObjectURL(file)} alt={`Preview ${index}`} />
           </div>
         ))}

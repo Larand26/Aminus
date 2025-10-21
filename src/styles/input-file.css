@@ -18,10 +18,29 @@
   background-color: #fff;
   border-radius: 5px;
   padding: 5px;
+  position: relative;
 }
 
 .fotos-input img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+.remove-file {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: 0.2s;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-texto);
+}
+
+.foto-input:hover .remove-file {
+  opacity: 1;
 }
