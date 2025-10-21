@@ -45,3 +45,7 @@
 .foto-input:hover .remove-file {
   opacity: 1;
 }
+
+.foto-input.dragging {
+  opacity: 0.5;
+}
