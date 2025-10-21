@@ -7,6 +7,7 @@ import CheckBox from "../components/CheckBox";
 import Card from "../components/Card";
 import BotoesFotos from "../components/BotoesFotos";
 import PopUp from "../components/PopUp";
+import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 
 import searchFotos from "../utils/search/searchFotos";
 
@@ -56,7 +57,7 @@ const Fotos = () => {
         width="80%"
         height="700px"
       >
-        <p>{fotoSelecionada?.nome_cor}</p>
+        <PopUpEditarFoto foto={fotoSelecionada} />
       </PopUp>
       <NavBar />
       <div className="main-container">
