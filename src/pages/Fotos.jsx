@@ -23,15 +23,18 @@ const Fotos = () => {
   const [fotos, setFotos] = useState([]);
 
   const handleSearch = async () => {
-    const filtros = {
+    const filters = {
       codFabricante: codFabricante,
       codInterno: codInterno,
       codCor: codCor,
     };
-    const resultado = await searchFotos(filtros);
+    const resultado = await searchFotos(filters);
     console.log(resultado);
     setFotos(resultado);
   };
+
+  // Filtro
+  const [filtro, setFiltro] = useState("");
 
   return (
     <>
@@ -57,7 +60,12 @@ const Fotos = () => {
           <div className="container-fotos">
             <div className="navBar-fotos">
               <div>
-                <input type="text" className="filtro-fotos" />
+                <input
+                  type="text"
+                  className="filtro-fotos"
+                  value={filtro}
+                  onChange={(e) => setFiltro(e.target.value)}
+                />
                 <CheckBox id="foto1" checked={false} onChange={() => {}} />
                 <button className="btn-baixar-foto">
                   Baixar Fotos
@@ -73,19 +81,29 @@ const Fotos = () => {
             <div className="content-fotos">
               <div className="fotos">
                 {fotos &&
-                  fotos.map((foto, index) => (
-                    <Card
-                      className="card-foto"
-                      key={index}
-                      foto={
-                        foto.fotos?.foto_principal
-                          ? `data:image/jpeg;base64,${foto.fotos.foto_principal}`
-                          : unknown
-                      }
-                    >
-                      <BotoesFotos foto={foto} />
-                    </Card>
-                  ))}
+                  fotos
+                    .filter(
+                      (foto) =>
+                        foto.nome_cor
+                          ?.toLowerCase()
+                          .includes(filtro.toLowerCase()) ||
+                        foto.codigo_cor
+                          ?.toLowerCase()
+                          .includes(filtro.toLowerCase())
+                    )
+                    .map((foto, index) => (
+                      <Card
+                        className="card-foto"
+                        key={index}
+                        foto={
+                          foto.fotos?.foto_principal
+                            ? `data:image/jpeg;base64,${foto.fotos.foto_principal}`
+                            : unknown
+                        }
+                      >
+                        <BotoesFotos foto={foto} />
+                      </Card>
+                    ))}
               </div>
             </div>
           </div>
