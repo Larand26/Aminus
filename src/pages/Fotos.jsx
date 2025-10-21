@@ -53,6 +53,8 @@ const Fotos = () => {
         id="editar-foto"
         foto={fotoSelecionada}
         onClose={() => setFotoSelecionada(null)}
+        width="80%"
+        height="700px"
       >
         <p>{fotoSelecionada?.nome_cor}</p>
       </PopUp>
