@@ -13,6 +13,12 @@ const InputFile = (props) => {
     }
   };
 
+  const removeFile = (fileIndex) => {
+    setFiles((prevFiles) =>
+      prevFiles.filter((_, index) => index !== fileIndex)
+    );
+  };
+
   return (
     <div className="container-input-file">
       <input type="file" onChange={handleFileChange} multiple />
