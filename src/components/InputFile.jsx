@@ -1,16 +1,19 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import "../styles/input-file.css";
 
 const InputFile = (props) => {
-  // 1. Inicializa o estado com os arquivos das props, filtrando os valores nulos.
-  const [files, setFiles] = useState(
-    props.initialFiles?.filter((file) => file) || []
-  );
+  const [files, setFiles] = useState([]);
   const fileInputRef = useRef(null);
   const dragItem = useRef(null);
   const dragOverItem = useRef(null);
   const [dragging, setDragging] = useState(false);
+
+  // Sincroniza o estado interno com as props quando elas mudam
+  useEffect(() => {
+    const initial = props.initialFiles?.filter((file) => file) || [];
+    setFiles(initial);
+  }, [props.initialFiles]);
 
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);
