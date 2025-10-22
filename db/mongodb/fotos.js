@@ -4,7 +4,7 @@ const globals = require(path.join(__dirname, "../../globals"));
 const Produto = require("./produtoModel");
 
 const connectDB = async () => {
-  console.log(mongoose.connection.readyState);
+  // console.log(mongoose.connection.readyState);
 
   if (mongoose.connection.readyState === 0) {
     await mongoose.connect(globals.MONGODB_URI);

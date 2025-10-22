@@ -31,7 +31,7 @@ const Fotos = () => {
       codCor: codCor,
     };
     const resultado = await searchFotos(filters);
-    console.log(resultado);
+    // console.log(resultado);
     setFotos(resultado);
   };
 
@@ -48,12 +48,17 @@ const Fotos = () => {
     document.querySelector(".blur").classList.add("open-blur");
   };
 
+  // Ao fechar o pop-up
+  const closePopUpEditar = () => {
+    console.log(fotoSelecionada);
+  };
+
   return (
     <>
       <PopUp
         id="editar-foto"
         foto={fotoSelecionada}
-        onClose={() => setFotoSelecionada(null)}
+        onClose={closePopUpEditar}
         width="80%"
         height="700px"
       >
