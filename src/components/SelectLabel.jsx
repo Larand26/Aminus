@@ -9,6 +9,22 @@ const SelectLabel = (props) => {
   );
   const wrapperRef = useRef(null);
 
+  // Adicione este useEffect para sincronizar o estado com as props
+  useEffect(() => {
+    const initialValue = props.value;
+    const options = props.options || [];
+    const selectedOption = options.find((opt) => opt.value === initialValue);
+
+    if (selectedOption) {
+      setSelectedValue(selectedOption.value);
+      setSelectedLabel(selectedOption.label);
+    } else {
+      // Reseta se o valor da prop não corresponder a nenhuma opção
+      setSelectedValue("");
+      setSelectedLabel(props.placeholder || "Selecione...");
+    }
+  }, [props.value, props.options, props.placeholder]);
+
   const handleOptionClick = (option) => {
     setSelectedValue(option.value);
     setSelectedLabel(option.label);
@@ -40,7 +56,7 @@ const SelectLabel = (props) => {
   }, [wrapperRef]);
 
   return (
-    <div className="select-label" ref={wrapperRef}>
+    <div className={`select-label ${props.className || ""}`} ref={wrapperRef}>
       <label>{props.label || "Label"}</label>
       <div className="custom-select-container">
         <div

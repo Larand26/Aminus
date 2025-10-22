@@ -1,0 +1,34 @@
+.pop-up-editar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.info-geral-edit {
+  display: flex;
+  gap: 20px;
+}
+
+.descricao-content {
+  width: 60%;
+}
+
+.descricao-content textarea {
+  width: 100%;
+  height: 400px;
+  resize: none;
+}
+
+.infos-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.imagem-preview {
+  max-width: 200px;
+  max-height: 200px;
+  margin-bottom: 10px;
+  display: block;
+}

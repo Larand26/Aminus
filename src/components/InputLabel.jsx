@@ -2,7 +2,7 @@ import "../styles/input-label.css";
 
 const InputLabel = (props) => {
   return (
-    <div className="input-label">
+    <div className={`input-label ${props.className || ""}`}>
       <label>{props.label || "Label"}</label>
       <input
         type={props.type || "text"}

@@ -3,7 +3,10 @@ import { useState, useRef } from "react";
 import "../styles/input-file.css";
 
 const InputFile = (props) => {
-  const [files, setFiles] = useState([]);
+  // 1. Inicializa o estado com os arquivos das props, filtrando os valores nulos.
+  const [files, setFiles] = useState(
+    props.initialFiles?.filter((file) => file) || []
+  );
   const fileInputRef = useRef(null);
   const dragItem = useRef(null);
   const dragOverItem = useRef(null);
@@ -76,7 +79,15 @@ const InputFile = (props) => {
             <button className="remove-file" onClick={() => removeFile(index)}>
               <i className="fas fa-trash"></i>
             </button>
-            <img src={URL.createObjectURL(file)} alt={`Preview ${index}`} />
+            {/* 2. Renderiza a imagem corretamente se for string Base64 ou objeto File */}
+            <img
+              src={
+                typeof file === "string"
+                  ? `data:image/jpeg;base64,${file}`
+                  : URL.createObjectURL(file)
+              }
+              alt={`Preview ${index}`}
+            />
           </div>
         ))}
       </div>

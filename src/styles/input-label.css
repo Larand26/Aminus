@@ -17,3 +17,7 @@
   color: var(--cor-texto);
   box-sizing: border-box;
 }
+
+.texto-preto label {
+  color: var(--cor-preto) !important;
+}
