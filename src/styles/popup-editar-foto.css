@@ -5,6 +5,10 @@
   padding: 20px;
 }
 
+.pop-up-editar h2 {
+  margin: 1px;
+}
+
 .info-geral-edit {
   display: flex;
   gap: 20px;
