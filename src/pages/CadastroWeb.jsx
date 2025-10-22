@@ -320,7 +320,7 @@ const CadastroWeb = () => {
   }, [selectedCor]);
 
   useEffect(() => {
-    console.log(produtos);
+    // console.log(produtos);
     setSelectedCor(
       produtos.map((produto) => ({
         value: produto.ID_CORES_ECOMERCE || null,

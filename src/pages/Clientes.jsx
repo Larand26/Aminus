@@ -34,7 +34,7 @@ const Clientes = () => {
     };
     const response = await searchClientes(filters);
 
-    console.log(response);
+    // console.log(response);
 
     if (response.success) {
       setClientes(response.data);
