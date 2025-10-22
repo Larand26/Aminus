@@ -61,15 +61,15 @@ const PopUpEditarFoto = (props) => {
           />
           <InputLabel
             className="texto-preto"
-            label="Cod Cor"
-            value={formData.codigo_cor || ""}
-            onChange={(value) => handleChange("codigo_cor", value)}
-          />
-          <InputLabel
-            className="texto-preto"
             label="Preco Revenda"
             value={formData.preco_revenda || ""}
             onChange={(value) => handleChange("preco_revenda", value)}
+          />
+          <InputLabel
+            className="texto-preto"
+            label="Cod Cor"
+            value={formData.codigo_cor || ""}
+            onChange={(value) => handleChange("codigo_cor", value)}
           />
           <InputLabel
             className="texto-preto"
