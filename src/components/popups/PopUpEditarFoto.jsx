@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import InputFile from "../InputFile";
 import InputLabel from "../InputLabel";
 import SelectLabel from "../SelectLabel";
@@ -6,15 +6,31 @@ import SelectLabel from "../SelectLabel";
 import "../../styles/popup-editar-foto.css";
 
 const PopUpEditarFoto = (props) => {
-  // 1. Estado para gerenciar os dados do formulário
   const [formData, setFormData] = useState({});
+  // 1. Cria uma ref para armazenar a versão mais recente do formData
+  const latestFormData = useRef(formData);
 
-  // 2. Sincroniza o estado com as props quando elas mudam
   useEffect(() => {
-    setFormData(props.foto || {});
+    const initialData = props.foto || {};
+    setFormData(initialData);
+    latestFormData.current = initialData; // Sincroniza a ref também
   }, [props.foto]);
 
-  // 3. Função para atualizar o estado
+  // 2. Este useEffect agora só serve para manter a ref atualizada
+  useEffect(() => {
+    latestFormData.current = formData;
+  }, [formData]);
+
+  // 3. Este useEffect roda apenas na montagem e desmontagem
+  useEffect(() => {
+    return () => {
+      if (props.onCloseAndSave) {
+        // Usa o valor atual da ref, que sempre terá os dados mais recentes
+        props.onCloseAndSave(latestFormData.current);
+      }
+    };
+  }, [props.onCloseAndSave]);
+
   const handleChange = (name, value) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -22,7 +38,6 @@ const PopUpEditarFoto = (props) => {
     }));
   };
 
-  // transforma em array
   const fotos = Object.values(props.foto?.fotos || {});
 
   return (
@@ -33,7 +48,6 @@ const PopUpEditarFoto = (props) => {
       </div>
       <div className="info-geral-edit">
         <div className="descricao-content">
-          {/* 4. Conecta a textarea ao estado */}
           <textarea
             value={formData.descricao_produto || ""}
             name="descricao_produto"
@@ -42,7 +56,6 @@ const PopUpEditarFoto = (props) => {
           ></textarea>
         </div>
         <div className="infos-content">
-          {/* 5. Conecta os InputLabel e SelectLabel ao estado */}
           <InputLabel
             className="texto-preto"
             label="Cod Fabricante"

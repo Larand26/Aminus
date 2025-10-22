@@ -31,7 +31,7 @@ const Fotos = () => {
       codCor: codCor,
     };
     const resultado = await searchFotos(filters);
-    // console.log(resultado);
+    console.log(resultado);
     setFotos(resultado);
   };
 
@@ -43,26 +43,37 @@ const Fotos = () => {
 
   const openPopUpEditar = (foto) => {
     setFotoSelecionada(foto);
-
     document.querySelector(`#editar-foto`).classList.add("open-pop-up");
     document.querySelector(".blur").classList.add("open-blur");
   };
 
-  // Ao fechar o pop-up
-  const closePopUpEditar = () => {
-    console.log(fotoSelecionada);
+  // Função que recebe os dados do pop-up ao fechar
+  const handleCloseAndSave = (updatedFoto) => {
+    if (updatedFoto && Object.keys(updatedFoto).length > 0) {
+      console.log("Salvando dados ao fechar:", updatedFoto);
+      setFotos((prevFotos) =>
+        prevFotos.map((foto) =>
+          foto._id === updatedFoto._id ? updatedFoto : foto
+        )
+      );
+    }
   };
 
   return (
     <>
       <PopUp
         id="editar-foto"
-        foto={fotoSelecionada}
-        onClose={closePopUpEditar}
+        onClose={() => setFotoSelecionada(null)}
         width="80%"
         height="700px"
       >
-        <PopUpEditarFoto foto={fotoSelecionada} />
+        {/* Renderiza o componente apenas se uma foto estiver selecionada */}
+        {fotoSelecionada && (
+          <PopUpEditarFoto
+            foto={fotoSelecionada}
+            onCloseAndSave={handleCloseAndSave}
+          />
+        )}
       </PopUp>
       <NavBar />
       <div className="main-container">
