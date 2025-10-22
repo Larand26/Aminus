@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, use } from "react";
 
 import "../styles/input-file.css";
 
@@ -8,12 +8,24 @@ const InputFile = (props) => {
   const dragItem = useRef(null);
   const dragOverItem = useRef(null);
   const [dragging, setDragging] = useState(false);
+  const isFirstRender = useRef(true);
 
   // Sincroniza o estado interno com as props quando elas mudam
   useEffect(() => {
-    const initial = props.initialFiles?.filter((file) => file) || [];
-    setFiles(initial);
-  }, [props.initialFiles]);
+    if (isFirstRender.current) {
+      const initial = props.initialFiles?.filter((file) => file) || [];
+      setFiles(initial);
+      isFirstRender.current = false;
+    }
+    // Não atualiza mais depois da primeira vez!
+  }, []);
+
+  // Chama o onChange sempre que files mudar
+  useEffect(() => {
+    if (props.onChange) {
+      props.onChange(files);
+    }
+  }, [files]);
 
   const handleFileChange = (event) => {
     const newFiles = Array.from(event.target.files);

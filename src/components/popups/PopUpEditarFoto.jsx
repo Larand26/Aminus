@@ -32,10 +32,25 @@ const PopUpEditarFoto = (props) => {
   }, [props.onCloseAndSave]);
 
   const handleChange = (name, value) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    if (name === "fotos") {
+      const fotosObj = {};
+      value.forEach((file, index) => {
+        if (index === 0) {
+          fotosObj["foto_principal"] = file;
+        } else {
+          fotosObj[`foto_produto_${index}`] = file;
+        }
+      });
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: fotosObj,
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
   };
 
   const fotos = Object.values(props.foto?.fotos || {});
@@ -44,7 +59,10 @@ const PopUpEditarFoto = (props) => {
     <div className="pop-up-editar">
       <h2>Editar Foto</h2>
       <div>
-        <InputFile onChange={() => {}} initialFiles={fotos} />
+        <InputFile
+          onChange={(files) => handleChange("fotos", files)}
+          initialFiles={fotos}
+        />
       </div>
       <div className="info-geral-edit">
         <div className="descricao-content">
