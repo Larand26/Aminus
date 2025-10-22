@@ -49,6 +49,16 @@ const PopUpEditarFoto = (props) => {
             value={formData.referencia || ""}
             onChange={(value) => handleChange("referencia", value)}
           />
+          <SelectLabel
+            className="texto-preto"
+            label="Embalamento"
+            value={formData.embalamento || ""}
+            onChange={(value) => handleChange("embalamento", value)}
+            options={[
+              { value: "f", label: "Favo" },
+              { value: "c", label: "Cartucho" },
+            ]}
+          />
           <InputLabel
             className="texto-preto"
             label="Cod Cor"
@@ -66,16 +76,6 @@ const PopUpEditarFoto = (props) => {
             label="Nome Cor"
             value={formData.nome_cor || ""}
             onChange={(value) => handleChange("nome_cor", value)}
-          />
-          <SelectLabel
-            className="texto-preto"
-            label="Embalamento"
-            value={formData.embalamento || ""}
-            onChange={(value) => handleChange("embalamento", value)}
-            options={[
-              { value: "f", label: "Favo" },
-              { value: "c", label: "Cartucho" },
-            ]}
           />
         </div>
       </div>
