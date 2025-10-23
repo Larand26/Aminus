@@ -1,4 +1,5 @@
 .botoes-foto-container {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,4 +45,53 @@
 
 .excluir {
   background-color: var(--cor-vermelho) !important;
+}
+.confirma-delete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--cor-primaria);
+  position: relative;
+  top: 15%;
+  left: 0;
+  z-index: 10;
+  width: 200px;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
+  padding: 5px;
+  color: var(--cor-branco);
+  font-size: 12px;
+  transition: 0.2s ease;
+  opacity: 0;
+}
+.confirma-delete div {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+}
+
+.confirma-delete .btn {
+  width: 70px;
+  height: 30px;
+  border-radius: 30px;
+  border: none;
+  color: var(--cor-branco);
+  cursor: pointer;
+  border: 2px solid var(--cor-branco);
+}
+.confirma-delete .btn:hover {
+  filter: brightness(0.9);
+}
+
+.confirma-delete .cancelar {
+  background-color: var(--cor-vermelho);
+}
+.confirma-delete .confirmar {
+  background-color: var(--cor-amarelo);
+}
+.confirma-delete-open {
+  opacity: 1;
 }

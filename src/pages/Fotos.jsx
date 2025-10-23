@@ -143,6 +143,7 @@ const Fotos = () => {
                       >
                         <BotoesFotos
                           foto={foto}
+                          data={index + 1}
                           onEditClick={() => {
                             openPopUpEditar(foto);
                           }}
