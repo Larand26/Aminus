@@ -80,9 +80,37 @@ const Fotos = () => {
   const [fotosSelecionadasDownload, setFotosSelecionadasDownload] = useState(
     []
   );
+  const todasSelecionadas =
+    fotos.length > 0 && fotosSelecionadasDownload.length === fotos.length;
+
+  const handleSelecionaTodas = () => {
+    if (todasSelecionadas) {
+      setFotosSelecionadasDownload([]);
+    } else {
+      setFotosSelecionadasDownload(fotos);
+    }
+  };
+
   const handleBaixarFotos = async (foto, referencia) => {
     if (foto) {
       const resultado = await baixaFotos([foto], referencia);
+    }
+  };
+
+  // Selecionar foto para baixar
+  const selecionaFoto = (foto) => {
+    if (!foto) return;
+
+    const isSelected = fotosSelecionadasDownload.some(
+      (f) => f._id === foto._id
+    );
+
+    if (isSelected) {
+      setFotosSelecionadasDownload((prev) =>
+        prev.filter((f) => f._id !== foto._id)
+      );
+    } else {
+      setFotosSelecionadasDownload((prev) => [...prev, foto]);
     }
   };
 
@@ -130,7 +158,11 @@ const Fotos = () => {
                   value={filtro}
                   onChange={(e) => setFiltro(e.target.value)}
                 />
-                <CheckBox id="foto1" checked={false} onChange={() => {}} />
+                <CheckBox
+                  id="foto1"
+                  checked={todasSelecionadas}
+                  onChange={handleSelecionaTodas}
+                />
                 <button className="btn-baixar-foto">
                   Baixar Fotos
                   <i className="fa fa-download"></i>
@@ -155,29 +187,37 @@ const Fotos = () => {
                           ?.toLowerCase()
                           .includes(filtro.toLowerCase())
                     )
-                    .map((foto, index) => (
-                      <Card
-                        className="card-foto"
-                        key={index}
-                        foto={
-                          foto.fotos?.foto_principal
-                            ? `data:image/jpeg;base64,${foto.fotos.foto_principal}`
-                            : unknown
-                        }
-                      >
-                        <BotoesFotos
-                          foto={foto}
-                          data={index + 1}
-                          onConfirmDelete={() => handleDeleteFoto(foto._id)}
-                          onEditClick={() => {
-                            openPopUpEditar(foto);
-                          }}
-                          onDownloadClick={() =>
-                            handleBaixarFotos(foto, foto.referencia)
+                    .map((foto, index) => {
+                      const isSelected = fotosSelecionadasDownload.some(
+                        (f) => f._id === foto._id
+                      );
+                      return (
+                        <Card
+                          onClick={() => selecionaFoto(foto)}
+                          className={`card-foto${
+                            isSelected ? " card-selected" : ""
+                          }`}
+                          key={index}
+                          foto={
+                            foto.fotos?.foto_principal
+                              ? `data:image/jpeg;base64,${foto.fotos.foto_principal}`
+                              : unknown
                           }
-                        />
-                      </Card>
-                    ))}
+                        >
+                          <BotoesFotos
+                            foto={foto}
+                            data={index + 1}
+                            onConfirmDelete={() => handleDeleteFoto(foto._id)}
+                            onEditClick={() => {
+                              openPopUpEditar(foto);
+                            }}
+                            onDownloadClick={() =>
+                              handleBaixarFotos(foto, foto.referencia)
+                            }
+                          />
+                        </Card>
+                      );
+                    })}
               </div>
             </div>
           </div>
