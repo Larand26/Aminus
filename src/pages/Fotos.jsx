@@ -12,6 +12,7 @@ import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 import searchFotos from "../utils/search/searchFotos";
 import atualizaFotoMongo from "../utils/fotos/atualizaFotoMongo";
 import deletaFoto from "../utils/fotos/deletaFoto";
+import baixaFotos from "../utils/fotos/baixaFotos";
 
 import unknown from "../assets/img/unknown.jpg";
 
@@ -72,6 +73,16 @@ const Fotos = () => {
     if (resultado.success) {
       const fotosAtualizadas = fotos.filter((foto) => foto._id !== fotoId);
       setFotos(fotosAtualizadas);
+    }
+  };
+
+  // Baixar fotos
+  const [fotosSelecionadasDownload, setFotosSelecionadasDownload] = useState(
+    []
+  );
+  const handleBaixarFotos = async (foto, referencia) => {
+    if (foto) {
+      const resultado = await baixaFotos([foto], referencia);
     }
   };
 
@@ -161,6 +172,9 @@ const Fotos = () => {
                           onEditClick={() => {
                             openPopUpEditar(foto);
                           }}
+                          onDownloadClick={() =>
+                            handleBaixarFotos(foto, foto.referencia)
+                          }
                         />
                       </Card>
                     ))}
