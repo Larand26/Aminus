@@ -31,16 +31,38 @@ const PopUpEditarFoto = (props) => {
     };
   }, [props.onCloseAndSave]);
 
-  const handleChange = (name, value) => {
+  const fileToBase64 = async (file) => {
+    try {
+      const base64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+      return base64;
+    } catch (error) {
+      console.error("Erro ao converter arquivo para base64:", error);
+    }
+  };
+
+  const handleChange = async (name, value) => {
     if (name === "fotos") {
       const fotosObj = {};
-      value.forEach((file, index) => {
-        if (index === 0) {
-          fotosObj["foto_principal"] = file;
+      for (let index = 0; index < value.length; index++) {
+        const file = value[index];
+        let fileBase64;
+        if (file instanceof File) {
+          fileBase64 = await fileToBase64(file);
+          fileBase64 = fileBase64.split(",")[1];
         } else {
-          fotosObj[`foto_produto_${index}`] = file;
+          fileBase64 = file;
         }
-      });
+        if (index === 0) {
+          fotosObj["foto_principal"] = fileBase64;
+        } else {
+          fotosObj[`foto_produto_${index}`] = fileBase64;
+        }
+      }
       setFormData((prevData) => ({
         ...prevData,
         [name]: fotosObj,

@@ -51,7 +51,6 @@ const Fotos = () => {
   // Função que recebe os dados do pop-up ao fechar
   const handleCloseAndSave = async (updatedFoto) => {
     if (updatedFoto && Object.keys(updatedFoto).length > 0) {
-      console.log("Salvando dados ao fechar:", updatedFoto);
       setFotos((prevFotos) =>
         prevFotos.map((foto) =>
           foto._id === updatedFoto._id ? updatedFoto : foto
