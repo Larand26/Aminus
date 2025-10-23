@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
@@ -94,6 +94,8 @@ const Fotos = () => {
   const handleBaixarFotos = async (foto, referencia) => {
     if (foto) {
       const resultado = await baixaFotos([foto], referencia);
+    } else {
+      const resultado = await baixaFotos(fotosSelecionadasDownload, referencia);
     }
   };
 
@@ -163,7 +165,10 @@ const Fotos = () => {
                   checked={todasSelecionadas}
                   onChange={handleSelecionaTodas}
                 />
-                <button className="btn-baixar-foto">
+                <button
+                  className="btn-baixar-foto"
+                  onClick={() => handleBaixarFotos(null, "Todas_Fotos")}
+                >
                   Baixar Fotos
                   <i className="fa fa-download"></i>
                 </button>

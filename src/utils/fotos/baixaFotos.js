@@ -1,6 +1,7 @@
 import JSZip from "jszip";
 
 const baixaFotos = async (fotos, referencia) => {
+  console.log(fotos);
   /*
     fotos = [{fotos: [<foto1>, <foto2>, ...]}, ...]
     Cada foto: { referencia, codigo_cor, buffer }
