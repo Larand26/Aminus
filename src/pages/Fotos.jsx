@@ -10,6 +10,7 @@ import PopUp from "../components/PopUp";
 import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 
 import searchFotos from "../utils/search/searchFotos";
+import atualizaFotoMongo from "../utils/atualizaFotoMongo";
 
 import unknown from "../assets/img/unknown.jpg";
 
@@ -48,7 +49,7 @@ const Fotos = () => {
   };
 
   // Função que recebe os dados do pop-up ao fechar
-  const handleCloseAndSave = (updatedFoto) => {
+  const handleCloseAndSave = async (updatedFoto) => {
     if (updatedFoto && Object.keys(updatedFoto).length > 0) {
       console.log("Salvando dados ao fechar:", updatedFoto);
       setFotos((prevFotos) =>
@@ -56,6 +57,9 @@ const Fotos = () => {
           foto._id === updatedFoto._id ? updatedFoto : foto
         )
       );
+
+      const resultado = await atualizaFotoMongo(updatedFoto);
+      console.log(resultado);
     }
   };
 

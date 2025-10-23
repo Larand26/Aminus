@@ -18,6 +18,8 @@ const produtoSchema = new mongoose.Schema({
   },
 });
 
-const Produto = mongoose.models.Produto || mongoose.model("Produto", produtoSchema, "FOTOS_COLLECTION");
+const Produto =
+  mongoose.models.Produto ||
+  mongoose.model("Produto", produtoSchema, "FOTOS_COLLECTION");
 
 module.exports = Produto;

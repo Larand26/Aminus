@@ -52,7 +52,7 @@ const updateFoto = async (foto) => {
       },
     };
     const result = await Produto.bulkWrite([operacao]);
-    return { success: true, result };
+    return { success: true, result: fotoSemId };
   } catch (error) {
     return { success: false, error: error.message };
   } finally {
