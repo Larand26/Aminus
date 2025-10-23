@@ -17,6 +17,7 @@ const { makeCubagem } = require("./db/sqlserver/cubagem");
 const { searchFoto } = require("./db/mongodb/fotos");
 const { cadastraFotos } = require("./db/mongodb/cadastraFotos");
 const { deleteFoto } = require("./db/mongodb/deleteFoto");
+const { updateFoto } = require("./db/mongodb/updateFoto");
 
 // My SQL
 const { getCsv } = require("./excel/getCsv");
@@ -326,6 +327,18 @@ ipcMain.on("make-cotacao", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao fazer cotação:", error);
     event.reply("make-cotacao-response", {
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("update-foto", async (event, novaFoto) => {
+  try {
+    const result = await updateFoto(novaFoto);
+    event.reply("update-foto-response", result);
+  } catch (error) {
+    console.error("Erro ao atualizar foto:", error);
+    event.reply("update-foto-response", {
       error: error.message || "Erro desconhecido",
     });
   }

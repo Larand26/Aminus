@@ -109,4 +109,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("make-cotacao-response", (event, arg) => {
       callback(arg);
     }),
+  updateFoto: (novaFoto) => ipcRenderer.send("update-foto", novaFoto),
+  onUpdateFotoResponse: (callback) =>
+    ipcRenderer.on("update-foto-response", (event, arg) => {
+      callback(arg);
+    }),
 });
