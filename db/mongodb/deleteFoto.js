@@ -3,34 +3,25 @@ const path = require("path");
 const globals = require(path.join(__dirname, "../../globals"));
 const Produto = require("./produtoModel");
 
-const deleteFoto = async (produto) => {
+const deleteFoto = async (foto_id) => {
   try {
     await mongoose.connect(globals.MONGODB_URI);
 
-    if (!produto._id) {
-      console.log("ID do produto não informado.");
+    if (!foto_id) {
+      console.log("ID da foto não informado.");
       mongoose.connection.close();
       return 0;
     }
 
-    // Garante que o _id seja um ObjectId válido
-    let id;
-    if (typeof produto._id === "string") {
-      id = new mongoose.Types.ObjectId(produto._id);
-    } else if (produto._id._id) {
-      id = new mongoose.Types.ObjectId(produto._id._id);
-    } else if (produto._id.buffer) {
-      id = new mongoose.Types.ObjectId(produto._id.buffer);
-    } else {
-      id = new mongoose.Types.ObjectId(produto._id);
-    }
+    // Converte para ObjectId se necessário
+    const objectId = new mongoose.Types.ObjectId(Buffer.from(foto_id.buffer));
 
-    const resultado = await Produto.deleteOne({ _id: id });
+    const resultado = await Produto.deleteOne({ _id: objectId });
 
     if (resultado.deletedCount === 0) {
       console.log(
-        `${produto.referencia || ""} - ${
-          produto.codigo_cor || ""
+        `${foto_id.referencia || ""} - ${
+          foto_id.codigo_cor || ""
         } não encontrado para deletar.`
       );
     } else {
@@ -40,11 +31,11 @@ const deleteFoto = async (produto) => {
     }
 
     mongoose.connection.close();
-    return resultado.deletedCount;
+    return { deletedCount: resultado.deletedCount, success: true };
   } catch (err) {
-    console.error("Erro:", err);
+    return { success: false, error: err.message };
+  } finally {
     mongoose.connection.close();
-    return 0;
   }
 };
 

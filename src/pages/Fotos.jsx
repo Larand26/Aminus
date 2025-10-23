@@ -11,6 +11,7 @@ import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 
 import searchFotos from "../utils/search/searchFotos";
 import atualizaFotoMongo from "../utils/atualizaFotoMongo";
+import deletaFoto from "../utils/deletaFoto";
 
 import unknown from "../assets/img/unknown.jpg";
 
@@ -59,6 +60,18 @@ const Fotos = () => {
 
       const resultado = await atualizaFotoMongo(updatedFoto);
       console.log(resultado);
+    }
+  };
+
+  // Deletar foto
+  const handleDeleteFoto = async (fotoId) => {
+    if (!fotoId) return;
+
+    const resultado = await deletaFoto(fotoId);
+    console.log("Resultado da deleção:", resultado);
+    if (resultado.success) {
+      const fotosAtualizadas = fotos.filter((foto) => foto._id !== fotoId);
+      setFotos(fotosAtualizadas);
     }
   };
 
@@ -144,6 +157,7 @@ const Fotos = () => {
                         <BotoesFotos
                           foto={foto}
                           data={index + 1}
+                          onConfirmDelete={() => handleDeleteFoto(foto._id)}
                           onEditClick={() => {
                             openPopUpEditar(foto);
                           }}

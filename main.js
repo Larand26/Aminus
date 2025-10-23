@@ -198,15 +198,16 @@ ipcMain.on("cadastra-fotos", async (event, produto) => {
     });
   }
 });
-ipcMain.on("delete-foto", async (event, foto) => {
+ipcMain.on("delete-foto", async (event, fotoId) => {
   try {
     // Simulação de exclusão de foto, substitua com a lógica real
-    await deleteFoto(foto);
-    event.reply("delete-foto-response", { success: true });
+    const result = await deleteFoto(fotoId);
+    event.reply("delete-foto-response", result);
   } catch (error) {
     console.error("Erro ao excluir foto:", error);
     event.reply("delete-foto-response", {
       error: error.message || "Erro desconhecido",
+      success: false,
     });
   }
 });
