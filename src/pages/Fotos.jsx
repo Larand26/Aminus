@@ -10,8 +10,8 @@ import PopUp from "../components/PopUp";
 import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 
 import searchFotos from "../utils/search/searchFotos";
-import atualizaFotoMongo from "../utils/atualizaFotoMongo";
-import deletaFoto from "../utils/deletaFoto";
+import atualizaFotoMongo from "../utils/fotos/atualizaFotoMongo";
+import deletaFoto from "../utils/fotos/deletaFoto";
 
 import unknown from "../assets/img/unknown.jpg";
 
