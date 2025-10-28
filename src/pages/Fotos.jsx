@@ -38,8 +38,21 @@ const Fotos = () => {
     setFotos(resultado);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   // Filtro
   const [filtro, setFiltro] = useState("");
+  const filtrarFotos = () => {
+    return fotos.filter(
+      (foto) =>
+        foto.nome_cor?.toLowerCase().includes(filtro.toLowerCase()) ||
+        foto.codigo_cor?.toLowerCase().includes(filtro.toLowerCase())
+    );
+  };
 
   // PopUp
   const [fotoSelecionada, setFotoSelecionada] = useState(null);
@@ -139,6 +152,7 @@ const Fotos = () => {
             label="Cod Fabricante"
             value={codFabricante}
             onChange={setCodFabricante}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Cod Interno"
@@ -167,7 +181,7 @@ const Fotos = () => {
                 />
                 <button
                   className="btn-baixar-foto"
-                  onClick={() => handleBaixarFotos(null, "Todas_Fotos")}
+                  onClick={() => handleBaixarFotos(null, null)}
                 >
                   Baixar Fotos
                   <i className="fa fa-download"></i>
@@ -181,48 +195,37 @@ const Fotos = () => {
             </div>
             <div className="content-fotos">
               <div className="fotos">
-                {fotos &&
-                  fotos
-                    .filter(
-                      (foto) =>
-                        foto.nome_cor
-                          ?.toLowerCase()
-                          .includes(filtro.toLowerCase()) ||
-                        foto.codigo_cor
-                          ?.toLowerCase()
-                          .includes(filtro.toLowerCase())
-                    )
-                    .map((foto, index) => {
-                      const isSelected = fotosSelecionadasDownload.some(
-                        (f) => f._id === foto._id
-                      );
-                      return (
-                        <Card
-                          onClick={() => selecionaFoto(foto)}
-                          className={`card-foto${
-                            isSelected ? " card-selected" : ""
-                          }`}
-                          key={index}
-                          foto={
-                            foto.fotos?.foto_principal
-                              ? `data:image/jpeg;base64,${foto.fotos.foto_principal}`
-                              : unknown
-                          }
-                        >
-                          <BotoesFotos
-                            foto={foto}
-                            data={index + 1}
-                            onConfirmDelete={() => handleDeleteFoto(foto._id)}
-                            onEditClick={() => {
-                              openPopUpEditar(foto);
-                            }}
-                            onDownloadClick={() =>
-                              handleBaixarFotos(foto, foto.referencia)
-                            }
-                          />
-                        </Card>
-                      );
-                    })}
+                {filtrarFotos().map((foto, index) => {
+                  const isSelected = fotosSelecionadasDownload.some(
+                    (f) => f._id === foto._id
+                  );
+                  return (
+                    <Card
+                      onClick={() => selecionaFoto(foto)}
+                      className={`card-foto${
+                        isSelected ? " card-selected" : ""
+                      }`}
+                      key={index}
+                      foto={
+                        foto.fotos?.foto_principal
+                          ? `data:image/jpeg;base64,${foto.fotos.foto_principal}`
+                          : unknown
+                      }
+                    >
+                      <BotoesFotos
+                        foto={foto}
+                        data={index + 1}
+                        onConfirmDelete={() => handleDeleteFoto(foto._id)}
+                        onEditClick={() => {
+                          openPopUpEditar(foto);
+                        }}
+                        onDownloadClick={() =>
+                          handleBaixarFotos(foto, foto.referencia)
+                        }
+                      />
+                    </Card>
+                  );
+                })}
               </div>
             </div>
           </div>
