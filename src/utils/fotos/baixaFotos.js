@@ -31,13 +31,13 @@ const baixaFotos = async (fotos, referencia) => {
 
   const zip = new JSZip();
   for (const foto of fotos) {
+    let i = 1;
     for (const [key, base64] of Object.entries(foto.fotos)) {
       if (!base64) continue;
-      const nomeArquivo = `${foto.referencia}_${foto.codigo_cor}_${
-        parseInt(key) + 1
-      }.jpg`;
+      const nomeArquivo = `${foto.referencia}_${foto.codigo_cor}_${i}.jpg`;
       const resizedBase64 = await resizeImage(base64, 800);
       zip.file(nomeArquivo, resizedBase64, { base64: true });
+      i++;
     }
   }
 
