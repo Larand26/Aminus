@@ -45,6 +45,8 @@ const Pedidos = () => {
   const [itensPedido, setItensPedido] = useState([]);
 
   const handleSearch = async () => {
+    searchPedidos([]);
+    setIsLoading(true);
     const filters = {
       numPedido: numPedido,
       dataInicial: data[0],
@@ -56,6 +58,7 @@ const Pedidos = () => {
     console.log(filters);
 
     const results = await searchPedidos(filters);
+    setIsLoading(false);
     setPedidos(results.data);
     console.log(results);
   };

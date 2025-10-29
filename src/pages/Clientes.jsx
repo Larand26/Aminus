@@ -28,6 +28,8 @@ const Clientes = () => {
   const [clientes, setClientes] = useState([]);
 
   const handleSearch = async () => {
+    setClientes([]);
+    setIsLoading(true);
     const filters = {
       numCliente,
       nome,
@@ -36,7 +38,7 @@ const Clientes = () => {
       email,
     };
     const response = await searchClientes(filters);
-
+    setIsLoading(false);
     // console.log(response);
 
     if (response.success) {

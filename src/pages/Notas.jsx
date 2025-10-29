@@ -36,6 +36,8 @@ const Notas = () => {
   const [notas, setNotas] = useState([]);
 
   const handleSearch = async () => {
+    setNotas([]);
+    setIsLoading(true);
     const filtros = {
       numNota: numNota,
       cnpj: cnpj,
@@ -47,6 +49,7 @@ const Notas = () => {
     };
 
     const results = await searchNotas(filtros);
+    setIsLoading(false);
     console.log(results);
 
     setNotas(results.data);

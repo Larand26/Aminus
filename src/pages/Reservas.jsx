@@ -35,6 +35,8 @@ const Reservas = () => {
   const [reservas, setReservas] = useState([]);
 
   const handleSearch = async () => {
+    setReservas([]);
+    setIsLoading(true);
     const filters = {
       codFabricante: codFabricante,
       codInterno: codInterno,
@@ -44,6 +46,7 @@ const Reservas = () => {
     };
 
     const results = await searchReservas(filters);
+    setIsLoading(false);
     setReservas(results.data);
     console.log(results);
   };
