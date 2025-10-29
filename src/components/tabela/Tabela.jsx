@@ -1,10 +1,12 @@
 import React from "react";
 
 import InputRadio from "../InputRadio";
+import Loading from "../Loading";
 
 import "../../styles/tabela.css";
 
 const Tabela = (props) => {
+  const isLoading = !!props.loading;
   // Filtra os filhos para remover valores nulos ou falsos
   const colunasVisiveis = React.Children.toArray(props.children).filter(
     Boolean
@@ -43,81 +45,116 @@ const Tabela = (props) => {
           </tr>
         </thead>
         <tbody>
-          {props.dados && props.dados.length > 0 ? (
-            props.dados.map((item, index) => {
-              // Encontra a coluna que tem uma função onClick
-              const clickableColumn = colunasVisiveis.find(
-                (child) => child.props.onClick
-              );
-
-              // Define o manipulador de clique para a linha inteira
-              const handleRowClick = clickableColumn
-                ? () => clickableColumn.props.onClick(item)
-                : null;
-
-              return (
-                <tr
-                  key={index}
-                  className={`${index % 2 === 0 ? "par" : "impar"} ${
-                    props.hover ? "hover" : ""
-                  }`}
-                  onClick={handleRowClick}
-                  style={{ cursor: handleRowClick ? "pointer" : "default" }}
-                >
-                  {colunasVisiveis.map((child, childIndex) => (
-                    <td key={childIndex}>
-                      {(() => {
-                        if (typeof child.props.body === "function")
-                          return child.props.body(item);
-
-                        const valor = item[child.props.campo];
-
-                        // Formatação de dinheiro
-                        if (child.props.format === "dinheiro") {
-                          return formataDinheiro(valor);
-                        }
-
-                        if (valor instanceof Date) {
-                          if (child.props.format === "data") {
-                            return formataData(valor);
-                          }
-                          if (child.props.format === "data-hora") {
-                            return formataDataHora(valor);
-                          }
-                        }
-
-                        if (child.props.format === "junto") {
-                          return formataJunto(item, child.props.dados);
-                        }
-
-                        if (child.props.format === "radio") {
-                          return (
-                            <InputRadio
-                              checked={props.linhaSelecionada === item}
-                              onChange={() =>
-                                props.onLinhaSelecionadaChange(item)
-                              }
-                            />
-                          );
-                        }
-
-                        return valor || "";
-                      })()}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })
-          ) : (
-            <tr>
-              <td
-                colSpan={numColunas}
-                style={{ textAlign: "center", padding: "20px" }}
-              >
-                {props.semDados || "Nenhum dado encontrado"}
+          {isLoading && (
+            <tr className="loading-row">
+              <td colSpan={numColunas} style={{ padding: 0 }}>
+                <div style={{ position: "relative", minHeight: 120 }}>
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      background: "rgba(255,255,255,0.6)",
+                      zIndex: 2,
+                    }}
+                  >
+                    <Loading />
+                  </div>
+                  <div style={{ visibility: "hidden" }}>
+                    {/* mantém a estrutura da tabela por baixo para evitar quebra de layout */}
+                    <table className="tabela">
+                      <tbody>
+                        <tr>
+                          {Array.from({ length: numColunas }).map((_, i) => (
+                            <td key={i} />
+                          ))}
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </td>
             </tr>
           )}
+          {!isLoading ? (
+            props.dados && props.dados.length > 0 ? (
+              props.dados.map((item, index) => {
+                // Encontra a coluna que tem uma função onClick
+                const clickableColumn = colunasVisiveis.find(
+                  (child) => child.props.onClick
+                );
+
+                // Define o manipulador de clique para a linha inteira
+                const handleRowClick = clickableColumn
+                  ? () => clickableColumn.props.onClick(item)
+                  : null;
+
+                return (
+                  <tr
+                    key={index}
+                    className={`${index % 2 === 0 ? "par" : "impar"} ${
+                      props.hover ? "hover" : ""
+                    }`}
+                    onClick={handleRowClick}
+                    style={{ cursor: handleRowClick ? "pointer" : "default" }}
+                  >
+                    {colunasVisiveis.map((child, childIndex) => (
+                      <td key={childIndex}>
+                        {(() => {
+                          if (typeof child.props.body === "function")
+                            return child.props.body(item);
+
+                          const valor = item[child.props.campo];
+
+                          // Formatação de dinheiro
+                          if (child.props.format === "dinheiro") {
+                            return formataDinheiro(valor);
+                          }
+
+                          if (valor instanceof Date) {
+                            if (child.props.format === "data") {
+                              return formataData(valor);
+                            }
+                            if (child.props.format === "data-hora") {
+                              return formataDataHora(valor);
+                            }
+                          }
+
+                          if (child.props.format === "junto") {
+                            return formataJunto(item, child.props.dados);
+                          }
+
+                          if (child.props.format === "radio") {
+                            return (
+                              <InputRadio
+                                checked={props.linhaSelecionada === item}
+                                onChange={() =>
+                                  props.onLinhaSelecionadaChange(item)
+                                }
+                              />
+                            );
+                          }
+
+                          return valor || "";
+                        })()}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td
+                  colSpan={numColunas}
+                  style={{ textAlign: "center", padding: "20px" }}
+                >
+                  {props.semDados || "Nenhum dado encontrado"}
+                </td>
+              </tr>
+            )
+          ) : null}
         </tbody>
       </table>
     </div>
