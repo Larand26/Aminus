@@ -8,6 +8,7 @@ import Card from "../components/Card";
 import BotoesFotos from "../components/BotoesFotos";
 import PopUp from "../components/PopUp";
 import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
+import Loading from "../components/Loading";
 
 import searchFotos from "../utils/search/searchFotos";
 import atualizaFotoMongo from "../utils/fotos/atualizaFotoMongo";
@@ -24,16 +25,22 @@ const Fotos = () => {
   const [codInterno, setCodInterno] = useState("");
   const [codCor, setCodCor] = useState("");
 
+  // Loading
+  const [isLoading, setIsLoading] = useState(false);
+
   // Fotos
   const [fotos, setFotos] = useState([]);
 
   const handleSearch = async () => {
+    setFotos([]);
+    setIsLoading(true);
     const filters = {
       codFabricante: codFabricante,
       codInterno: codInterno,
       codCor: codCor,
     };
     const resultado = await searchFotos(filters);
+    setIsLoading(false);
     console.log(resultado);
     setFotos(resultado);
   };
@@ -195,6 +202,7 @@ const Fotos = () => {
             </div>
             <div className="content-fotos">
               <div className="fotos">
+                {isLoading && <Loading />}
                 {filtrarFotos().map((foto, index) => {
                   const isSelected = fotosSelecionadasDownload.some(
                     (f) => f._id === foto._id
