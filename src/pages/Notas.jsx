@@ -29,6 +29,9 @@ const Notas = () => {
   const [uf, setUf] = useState("");
   const [transportadora, setTransportadora] = useState("");
 
+  // Loading
+  const [isLoading, setIsLoading] = useState(false);
+
   // Notas
   const [notas, setNotas] = useState([]);
 
@@ -106,7 +109,11 @@ const Notas = () => {
           <div className="content-title">
             <h1>Notas fiscais</h1>
           </div>
-          <Tabela dados={notas} semDados="Nenhuma nota fiscal encontrada">
+          <Tabela
+            dados={notas}
+            semDados="Nenhuma nota fiscal encontrada"
+            loading={isLoading}
+          >
             {opcoes
               .filter((opcao) => opcao.checked)
               .map((opcao) => (

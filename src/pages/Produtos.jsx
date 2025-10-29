@@ -21,17 +21,23 @@ const Produtos = () => {
   const [codBarras, setCodBarras] = useState("");
   const [nome, setNome] = useState("");
 
+  // Loading
+  const [isLoading, setIsLoading] = useState(false);
+
   // Produtos
   const [produtos, setProdutos] = useState([]);
 
   // Função que executa a busca
   const handleSearch = async () => {
+    setProdutos([]);
+    setIsLoading(true);
     const resultados = await searchProdutos({
       codFabricante: codFabricante,
       codInterno: codInterno,
       codBarras: codBarras,
       nome: nome,
     });
+    setIsLoading(false);
     setProdutos(resultados.data);
     // console.log(resultados);
   };
@@ -103,7 +109,11 @@ const Produtos = () => {
           <div className="content-title">
             <h1>Produtos</h1>
           </div>
-          <Tabela dados={produtos} semDados="Nenhum produto encontrado">
+          <Tabela
+            dados={produtos}
+            semDados="Nenhum produto encontrado"
+            loading={isLoading}
+          >
             {opcoes
               .filter((opcao) => opcao.checked)
               .map((opcao) => (

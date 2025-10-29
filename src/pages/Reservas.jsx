@@ -28,6 +28,9 @@ const Reservas = () => {
   const [nomePedido, setNomePedido] = useState("");
   const [vendedor, setVendedor] = useState("");
 
+  // Loading
+  const [isLoading, setIsLoading] = useState(false);
+
   // Reservas
   const [reservas, setReservas] = useState([]);
 
@@ -162,7 +165,12 @@ const Reservas = () => {
           <div className="content-title">
             <h1>Reservas</h1>
           </div>
-          <Tabela dados={reservas} semDados="Nenhuma reserva encontrada" hover>
+          <Tabela
+            dados={reservas}
+            semDados="Nenhuma reserva encontrada"
+            hover
+            loading={isLoading}
+          >
             {opcoes
               .filter((opcao) => opcao.checked)
               .map((opcao) => (

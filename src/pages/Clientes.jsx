@@ -21,6 +21,9 @@ const Clientes = () => {
   const [celular, setCelular] = useState("");
   const [email, setEmail] = useState("");
 
+  // Loading
+  const [isLoading, setIsLoading] = useState(false);
+
   // Clientes
   const [clientes, setClientes] = useState([]);
 
@@ -109,7 +112,11 @@ const Clientes = () => {
           <div className="content-title">
             <h1>Clientes</h1>
           </div>
-          <Tabela dados={clientes} semDados="Nenhum cliente encontrado">
+          <Tabela
+            dados={clientes}
+            semDados="Nenhum cliente encontrado"
+            loading={isLoading}
+          >
             {opcoes
               .filter((opcao) => opcao.checked)
               .map((opcao) => (

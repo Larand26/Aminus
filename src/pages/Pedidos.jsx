@@ -36,6 +36,9 @@ const Pedidos = () => {
   const [cnpj, setCnpj] = useState("");
   const [vendedor, setVendedor] = useState("");
 
+  // Loading
+  const [isLoading, setIsLoading] = useState(false);
+
   // Pedidos
   const [pedidos, setPedidos] = useState([]);
   const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
@@ -215,7 +218,12 @@ const Pedidos = () => {
           <div className="content-title">
             <h1>Pedidos</h1>
           </div>
-          <Tabela dados={pedidos} semDados="Nenhum pedido encontrado" hover>
+          <Tabela
+            dados={pedidos}
+            semDados="Nenhum pedido encontrado"
+            hover
+            loading={isLoading}
+          >
             {opcoes
               .filter((opcao) => opcao.checked)
               .map((opcao) => (
