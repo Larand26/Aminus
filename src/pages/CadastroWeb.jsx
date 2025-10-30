@@ -22,7 +22,9 @@ const CadastroWeb = () => {
     console.log("Buscando com os filtros:", filtros);
     const resultados = await searchCadastroWeb(filtros);
     console.log("Resultados da busca:", resultados);
-    setProdutos(resultados.data);
+    if (resultados.success) {
+      setProdutos(resultados.data);
+    }
   };
 
   return (
@@ -30,8 +32,16 @@ const CadastroWeb = () => {
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
-          <InputLabel label="Cod Fabricante" />
-          <InputLabel label="Cod Interno" />
+          <InputLabel
+            label="Cod Fabricante"
+            value={codFabricante}
+            onChange={setCodFabricante}
+          />
+          <InputLabel
+            label="Cod Interno"
+            value={codInterno}
+            onChange={setCodInterno}
+          />
         </BarraLateral>
       </div>
     </>
