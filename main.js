@@ -243,10 +243,10 @@ ipcMain.on("change-acao", async (event, arg) => {
   }
 });
 
-ipcMain.on("search-cadastro-produtos", async (event, referencia) => {
+ipcMain.on("search-cadastro-produtos", async (event, filtros) => {
   try {
     // Simulação de busca de produtos, substitua com a lógica real
-    const produtos = await searchCadastroProdutos(referencia);
+    const produtos = await searchCadastroProdutos(filtros);
     event.reply("search-cadastro-produtos-response", produtos);
   } catch (error) {
     console.error("Erro ao buscar produtos:", error);
