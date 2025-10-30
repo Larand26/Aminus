@@ -21,6 +21,7 @@ const Produtos = () => {
   const [codInterno, setCodInterno] = useState("");
   const [codBarras, setCodBarras] = useState("");
   const [nome, setNome] = useState("");
+  const [quantidade, setQuantidade] = useState("");
 
   // Loading
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +38,7 @@ const Produtos = () => {
       codInterno: codInterno,
       codBarras: codBarras,
       nome: nome,
+      quantidade: quantidade,
     });
     setIsLoading(false);
     setProdutos(resultados.data);
@@ -108,8 +110,8 @@ const Produtos = () => {
           <InputNumeroLabel
             adicional={12}
             label="Quantidade"
-            value={codFabricante}
-            onChange={setCodFabricante}
+            value={quantidade}
+            onChange={setQuantidade}
             onKeyDown={handleKeyDown}
           />
         </BarraLateral>

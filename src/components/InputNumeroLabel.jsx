@@ -1,23 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "../styles/input-numero-label.css";
 
 const InputNumeroLabel = (props) => {
-  const [value, setValue] = useState(props.value || 0);
+  // inicializa com o valor numérico da prop (fallback 0)
+  const inicial = Number(props.value) || 0;
+  const [value, setValue] = useState(inicial);
+
+  // sincroniza quando props.value mudar
+  useEffect(() => {
+    const v = Number(props.value) || 0;
+    setValue(v);
+  }, [props.value]);
+
+  const step = props.adicional || 1;
+
+  const handleChange = (newValue) => {
+    const numeric = Number(newValue) || 0;
+    const final = numeric < 0 ? 0 : numeric;
+    setValue(final);
+    if (typeof props.onChange === "function") props.onChange(final);
+  };
 
   return (
     <div className="input-numero-label">
       <label>{props.label || "Label"}</label>
       <div className="container">
-        <button onClick={() => setValue(value - (props.adicional || 1))}>
+        <button type="button" onClick={() => handleChange(value - step)}>
           <i className="fas fa-minus"></i>
         </button>
         <input
           type="number"
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => handleChange(e.target.value)}
         />
-        <button onClick={() => setValue(value + (props.adicional || 1))}>
+        <button type="button" onClick={() => handleChange(value + step)}>
           <i className="fas fa-plus"></i>
         </button>
       </div>
