@@ -169,7 +169,11 @@ const InputDataLabel = (props) => {
   };
 
   return (
-    <div className="input-data-label" ref={containerRef}>
+    <div
+      className="input-data-label"
+      ref={containerRef}
+      onKeyDown={props.onKeyDown}
+    >
       <label>{props.label}</label>
       <div className="input-data" onClick={toggleCalendario}>
         <p id="result">

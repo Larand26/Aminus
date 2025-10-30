@@ -62,6 +62,13 @@ const Notas = () => {
     setNotas(results.data);
   };
 
+  // Função para lidar com a tecla Enter
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesNotas");
@@ -93,15 +100,31 @@ const Notas = () => {
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
-          <InputLabel label="Num Nota" value={numNota} onChange={setNumNota} />
-          <InputDataLabel label="Data" value={data} onChange={setData} />
-          <InputLabel label="Cnpj" value={cnpj} onChange={setCnpj} />
+          <InputLabel
+            label="Num Nota"
+            value={numNota}
+            onChange={setNumNota}
+            onKeyDown={handleKeyDown}
+          />
+          <InputDataLabel
+            label="Data"
+            value={data}
+            onChange={setData}
+            onKeyDown={handleKeyDown}
+          />
+          <InputLabel
+            label="Cnpj"
+            value={cnpj}
+            onChange={setCnpj}
+            onKeyDown={handleKeyDown}
+          />
           {idFuncao != 2 && (
             <SelectLabel
               label="Vendedores"
               options={vendedoresJson}
               onChange={(e) => setVendedor(e.target.value)}
               value={vendedor}
+              onKeyDown={handleKeyDown}
             />
           )}
           <SelectLabel
@@ -109,12 +132,14 @@ const Notas = () => {
             options={ufsJson}
             onChange={(e) => setUf(e.target.value)}
             value={uf}
+            onKeyDown={handleKeyDown}
           />
           <SelectLabel
             label="Transportadora"
             options={transportadorasJson}
             onChange={(e) => setTransportadora(e.target.value)}
             value={transportadora}
+            onKeyDown={handleKeyDown}
           />
         </BarraLateral>
         <div className="content">

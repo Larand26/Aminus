@@ -88,6 +88,7 @@ const SelectLabel = (props) => {
         value={selectedValue}
         style={{ display: "none" }}
         readOnly
+        onKeyDown={props.onKeyDown}
       >
         <option value=""></option>
         {props.options &&

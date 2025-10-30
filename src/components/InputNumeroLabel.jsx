@@ -33,6 +33,7 @@ const InputNumeroLabel = (props) => {
           type="number"
           value={value}
           onChange={(e) => handleChange(e.target.value)}
+          onKeyDown={props.onKeyDown}
         />
         <button type="button" onClick={() => handleChange(value + step)}>
           <i className="fas fa-plus"></i>

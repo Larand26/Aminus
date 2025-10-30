@@ -71,6 +71,13 @@ const Pedidos = () => {
     console.log(results);
   };
 
+  // Função para lidar com a tecla Enter
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesPedidos");
@@ -217,16 +224,33 @@ const Pedidos = () => {
             label="Num Pedido"
             value={numPedido}
             onChange={setNumPedido}
+            onKeyDown={handleKeyDown}
           />
-          <InputDataLabel label="Data" value={data} onChange={setData} />
-          <InputLabel label="Cliente" value={cliente} onChange={setCliente} />
-          <InputLabel label="CNPJ" value={cnpj} onChange={setCnpj} />
+          <InputDataLabel
+            label="Data"
+            value={data}
+            onChange={setData}
+            onKeyDown={handleKeyDown}
+          />
+          <InputLabel
+            label="Cliente"
+            value={cliente}
+            onChange={setCliente}
+            onKeyDown={handleKeyDown}
+          />
+          <InputLabel
+            label="CNPJ"
+            value={cnpj}
+            onChange={setCnpj}
+            onKeyDown={handleKeyDown}
+          />
           {idFuncao != 2 && (
             <SelectLabel
               options={vendedoresJson}
               label="Vendedor"
               value={vendedor}
               onChange={setVendedor}
+              onKeyDown={handleKeyDown}
             />
           )}
         </BarraLateral>

@@ -51,6 +51,13 @@ const Reservas = () => {
     console.log(results);
   };
 
+  // Função para lidar com a tecla Enter
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesReserva");
@@ -141,27 +148,32 @@ const Reservas = () => {
             label="Cod Fabricante"
             value={codFabricante}
             onChange={setCodFabricante}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Cod Interno"
             value={codInterno}
             onChange={setCodInterno}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Num Pedido"
             value={numPedido}
             onChange={setNumPedido}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Nome Pedido"
             value={nomePedido}
             onChange={setNomePedido}
+            onKeyDown={handleKeyDown}
           />
           <SelectLabel
             label="Vendedor"
             options={vendedoresJson}
             value={vendedor}
             onChange={setVendedor}
+            onKeyDown={handleKeyDown}
           />
         </BarraLateral>
         <div className="content">

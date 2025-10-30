@@ -48,6 +48,13 @@ const Clientes = () => {
     }
   };
 
+  // Função para lidar com a tecla Enter
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   // Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesClientes");
@@ -84,30 +91,35 @@ const Clientes = () => {
             type="text"
             value={numCliente}
             onChange={setNumCliente}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Nome do Cliente"
             type="text"
             value={nome}
             onChange={setNome}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="CNPJ"
             type="text"
             value={cnpj}
             onChange={setCnpj}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Celular"
             type="text"
             value={celular}
             onChange={setCelular}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Email"
             type="email"
             value={email}
             onChange={setEmail}
+            onKeyDown={handleKeyDown}
           />
         </BarraLateral>
         <div className="content">
