@@ -1,7 +1,7 @@
 const conectarSql = require("../../config/database");
 const fs = require("fs");
 const path = require("path");
-const { VarChar, NVarChar } = require("mssql");
+const { VarChar, NVarChar, Int } = require("mssql");
 
 const searchProduto = async (produto) => {
   const connection = await conectarSql();
@@ -28,6 +28,12 @@ const searchProduto = async (produto) => {
       if (produto.codBarras) {
         conditions.push(`P.[PROD_CODBARRA] = @codBarras`);
         request.input("codBarras", VarChar, produto.codBarras);
+      }
+      if (produto.quantidade) {
+        conditions.push(
+          `(P.[PROD_ESTATUAL] - ISNULL(R.QuantidadeReservada, 0)) >= @quantidade`
+        );
+        request.input("quantidade", Int, produto.quantidade);
       }
     }
 
