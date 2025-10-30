@@ -59,3 +59,9 @@
 .hover:hover {
   filter: brightness(0.9);
 }
+
+.selecionado {
+  background-color: var(--cor-selecionado) !important;
+  color: var(--cor-branco) !important;
+  font-weight: bold;
+}

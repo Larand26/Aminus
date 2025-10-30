@@ -5,14 +5,8 @@
     "checked": true
   },
   {
-    "id": "PRECO_PADRAO",
-    "label": "Preço padrão",
-    "format": "dinheiro",
-    "checked": true
-  },
-  {
-    "id": "PRECO_PERSONALIZADO",
-    "label": "Preço Personalizado",
+    "id": "PRECO",
+    "label": "Preço",
     "format": "dinheiro",
     "checked": true
   },

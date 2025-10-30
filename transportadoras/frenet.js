@@ -32,7 +32,7 @@ const makeCotacao = async (frete) => {
   const ShippingItemArrayPersonalizado = {
     Height: frete.item.ALTURA || 20, // Altura cm
     Length: frete.item.COMPRIMENTO || 45, // Comprimento cm
-    Quantity: 1, // Quantidade Sempre 1
+    Quantity: Math.ceil(frete.quantidade / 12),
     Weight: parseFloat((frete.item.PESO_BRUTO * 12).toFixed(2)) || 1, // Peso kg
     Width: frete.item.LARGURA || 30, // Largura cm
   };

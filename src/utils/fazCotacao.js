@@ -1,3 +1,5 @@
+const transportadorsasPrecoPersonalizado = ["BRAS", "JAM"];
+
 const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
   /*
        {
@@ -30,6 +32,10 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
         const result = arg.data.padrao.ShippingSevicesArray.map(
           (item, index) => ({
             NOME_TRANSPORTADORA: item.ServiceDescription,
+            PRECO: transportadorsasPrecoPersonalizado.includes(item.CarrierCode)
+              ? arg.data.personalizado.ShippingSevicesArray[index]
+                  .PresentationalPrice
+              : item.PresentationalPrice,
             PRECO_PADRAO: item.PresentationalPrice,
             PRECO_PERSONALIZADO:
               arg.data.personalizado.ShippingSevicesArray[index]
@@ -37,6 +43,9 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
             TEMPO_ENTREGA: `${item.DeliveryTime} - ${
               parseInt(item.DeliveryTime) + 2
             }`,
+            PERSONALIZADO: transportadorsasPrecoPersonalizado.includes(
+              item.CarrierCode
+            ),
           })
         );
         resolve({

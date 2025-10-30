@@ -100,47 +100,54 @@ const Tabela = (props) => {
                     onClick={handleRowClick}
                     style={{ cursor: handleRowClick ? "pointer" : "default" }}
                   >
-                    {colunasVisiveis.map((child, childIndex) => (
-                      <td key={childIndex}>
-                        {(() => {
-                          if (typeof child.props.body === "function")
-                            return child.props.body(item);
+                    {colunasVisiveis.map((child, childIndex) => {
+                      const cellContent = (() => {
+                        if (typeof child.props.body === "function")
+                          return child.props.body(item);
 
-                          const valor = item[child.props.campo];
+                        const valor = item[child.props.campo];
 
-                          // Formatação de dinheiro
-                          if (child.props.format === "dinheiro") {
-                            return formataDinheiro(valor);
+                        // Formatação de dinheiro
+                        if (child.props.format === "dinheiro") {
+                          return formataDinheiro(valor);
+                        }
+
+                        if (valor instanceof Date) {
+                          if (child.props.format === "data") {
+                            return formataData(valor);
                           }
-
-                          if (valor instanceof Date) {
-                            if (child.props.format === "data") {
-                              return formataData(valor);
-                            }
-                            if (child.props.format === "data-hora") {
-                              return formataDataHora(valor);
-                            }
+                          if (child.props.format === "data-hora") {
+                            return formataDataHora(valor);
                           }
+                        }
 
-                          if (child.props.format === "junto") {
-                            return formataJunto(item, child.props.dados);
-                          }
+                        if (child.props.format === "junto") {
+                          return formataJunto(item, child.props.dados);
+                        }
 
-                          if (child.props.format === "radio") {
-                            return (
-                              <InputRadio
-                                checked={props.linhaSelecionada === item}
-                                onChange={() =>
-                                  props.onLinhaSelecionadaChange(item)
-                                }
-                              />
-                            );
-                          }
+                        if (child.props.format === "radio") {
+                          return (
+                            <InputRadio
+                              checked={props.linhaSelecionada === item}
+                              onChange={() =>
+                                props.onLinhaSelecionadaChange(item)
+                              }
+                            />
+                          );
+                        }
 
-                          return valor || "";
-                        })()}
-                      </td>
-                    ))}
+                        return valor || "";
+                      })();
+
+                      return (
+                        <td
+                          key={childIndex}
+                          className={item.PERSONALIZADO ? "selecionado" : ""}
+                        >
+                          {cellContent}
+                        </td>
+                      );
+                    })}
                   </tr>
                 );
               })
