@@ -176,7 +176,7 @@ const Pedidos = () => {
           </div>
         )}
       </PopUp>
-      <PopUp id="popup-cotacao" title="Cotação">
+      <PopUp id="popup-cotacao" title="Cotação" width="600px">
         <div className="popup-cotacao-content">
           <Tabela
             dados={cotacao}
