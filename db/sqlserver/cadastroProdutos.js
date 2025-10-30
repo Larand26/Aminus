@@ -38,9 +38,10 @@ const searchCadastroProdutos = async (filtros) => {
 
     const result = await request.query(query); // Executa a query usando o objeto request
 
-    return result.recordset;
+    return { data: result.recordset, success: true };
   } catch (error) {
     console.error("Erro ao buscar produtos:", error);
+    return { data: [], success: false, error: error.message };
   } finally {
     if (connection) {
       connection.close();

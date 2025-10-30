@@ -3,8 +3,15 @@ import { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
+import Tabela from "../components/tabela/Tabela";
+import Coluna from "../components/tabela/Coluna";
 
 import searchCadastroWeb from "../utils/search/searchCadastroWeb";
+import atualizaOpcoes from "../utils/atualizaOpcoes";
+
+import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
+
+import "../styles/pages/CadastroWeb.css";
 
 const CadastroWeb = () => {
   // Estados dos inputs
@@ -27,6 +34,12 @@ const CadastroWeb = () => {
     }
   };
 
+  //Opções
+  const [opcoes, setOpcoes] = useState(() => {
+    const savedOpcoes = localStorage.getItem("opcoesCadastroWeb");
+    return atualizaOpcoes(opcoesCadastroWeb, savedOpcoes);
+  });
+
   return (
     <>
       <NavBar />
@@ -43,6 +56,24 @@ const CadastroWeb = () => {
             onChange={setCodInterno}
           />
         </BarraLateral>
+        <div className="content">
+          <div></div>
+          <div className="container-tabela">
+            <Tabela dados={produtos} isLoading={false}>
+              {opcoes
+                .filter((opcao) => opcao.checked)
+                .map((opcao) => (
+                  <Coluna
+                    key={opcao.id}
+                    titulo={opcao.label}
+                    campo={opcao.id}
+                    format={opcao.format || ""}
+                    dados={opcao.dados || []}
+                  />
+                ))}
+            </Tabela>
+          </div>
+        </div>
       </div>
     </>
   );
