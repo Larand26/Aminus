@@ -38,6 +38,7 @@ const Pedidos = () => {
 
   // Loading
   const [isLoading, setIsLoading] = useState(false);
+  const [isCotacaoLoading, setIsCotacaoLoading] = useState(false);
 
   // Usuário
   const idFuncao = JSON.parse(localStorage.getItem("ID_FUNCAO_USUARIO"));
@@ -110,17 +111,21 @@ const Pedidos = () => {
 
   const handleCotacao = async () => {
     if (!linhaSelecionada) return;
+    document.querySelector(`#popup-cotacao`).classList.add("open-pop-up");
+    document.querySelector(".blur").classList.add("open-blur");
+    setCotacao(null);
+    setIsCotacaoLoading(true);
 
     const response = await fazCotacao(
       itensPedido,
       linhaSelecionada,
       pedidoSelecionado
     );
+
     if (response.success) {
       setCotacao(response.data);
-      document.querySelector(`#popup-cotacao`).classList.add("open-pop-up");
-      document.querySelector(".blur").classList.add("open-blur");
     }
+    setIsCotacaoLoading(false);
   };
 
   // Cubagem
@@ -172,28 +177,27 @@ const Pedidos = () => {
         )}
       </PopUp>
       <PopUp id="popup-cotacao" title="Cotação">
-        {cotacao && (
-          <div className="popup-cotacao-content">
-            <Tabela
-              dados={cotacao}
-              semDados="Nenhum item encontrado"
-              linhaSelecionada={linhaSelecionada}
-              onLinhaSelecionadaChange={setLinhaSelecionada}
-            >
-              {opcoesCotacao
-                .filter((opcao) => opcao.checked)
-                .map((opcao) => (
-                  <Coluna
-                    key={opcao.id}
-                    titulo={opcao.label}
-                    campo={opcao.id}
-                    format={opcao.format || ""}
-                    dados={opcao.dados || []}
-                  />
-                ))}
-            </Tabela>
-          </div>
-        )}
+        <div className="popup-cotacao-content">
+          <Tabela
+            dados={cotacao}
+            semDados="Nenhuma cotação encontrada"
+            linhaSelecionada={linhaSelecionada}
+            onLinhaSelecionadaChange={setLinhaSelecionada}
+            loading={isCotacaoLoading}
+          >
+            {opcoesCotacao
+              .filter((opcao) => opcao.checked)
+              .map((opcao) => (
+                <Coluna
+                  key={opcao.id}
+                  titulo={opcao.label}
+                  campo={opcao.id}
+                  format={opcao.format || ""}
+                  dados={opcao.dados || []}
+                />
+              ))}
+          </Tabela>
+        </div>
       </PopUp>
       <Configuracoes>
         {opcoes.map((opcao) => (
