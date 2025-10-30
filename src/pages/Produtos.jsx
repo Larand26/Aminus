@@ -3,6 +3,7 @@ import { useState } from "react";
 import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
+import InputNumeroLabel from "../components/InputNumeroLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
@@ -102,6 +103,13 @@ const Produtos = () => {
             label="Nome"
             value={nome}
             onChange={setNome}
+            onKeyDown={handleKeyDown}
+          />
+          <InputNumeroLabel
+            adicional={12}
+            label="Quantidade"
+            value={codFabricante}
+            onChange={setCodFabricante}
             onKeyDown={handleKeyDown}
           />
         </BarraLateral>

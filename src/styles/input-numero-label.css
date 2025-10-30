@@ -1,0 +1,54 @@
+.input-numero-label {
+  display: flex;
+  flex-direction: column;
+}
+.input-numero-label label {
+  margin-bottom: 5px;
+  font-size: 20px;
+  color: var(--cor-branco);
+}
+.input-numero-label input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--cor-branco);
+  border-radius: 50px;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.texto-preto label {
+  color: var(--cor-preto) !important;
+}
+
+.input-numero-label input::-webkit-inner-spin-button,
+.input-numero-label input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input-numero-label .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input-numero-label .container button {
+  background-color: var(--cor-amarelo);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--cor-branco);
+}
+
+.input-numero-label input {
+  width: 40%;
+}
