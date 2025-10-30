@@ -45,7 +45,7 @@
     "page": "cadastro",
     "title": "Cadastro",
     "icon": "table",
-    "path": "/cadastro",
+    "path": "/cadastro-web",
     "permissions": []
   },
   {
