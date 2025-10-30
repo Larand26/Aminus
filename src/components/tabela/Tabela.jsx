@@ -1,6 +1,7 @@
 import React from "react";
 
 import InputRadio from "../InputRadio";
+import CheckBox from "../CheckBox";
 import Loading from "../Loading";
 
 import "../../styles/tabela.css";
@@ -34,13 +35,36 @@ const Tabela = (props) => {
     return dados.map((dado) => item[dado]).join(" - ");
   };
 
+  const handleSelectAll = () => {
+    // Se todos estiverem selecionados, desmarca todos. Caso contrário, marca todos.
+    if (
+      props.linhasSelecionadas?.length === props.dados?.length &&
+      props.dados?.length > 0
+    ) {
+      props.onLinhasSelecionadasChange([]); // Passa um array vazio para desmarcar
+    } else {
+      props.onLinhasSelecionadasChange(props.dados ? [...props.dados] : []); // Passa todos os dados para marcar
+    }
+  };
+
+  const allSelected =
+    props.dados &&
+    props.dados.length > 0 &&
+    props.linhasSelecionadas?.length === props.dados?.length;
+
   return (
     <div className="tabela-container">
       <table className="tabela">
         <thead>
           <tr>
             {colunasVisiveis.map((child, index) => (
-              <th key={index}>{child.props.titulo || "Cabeçalho"}</th>
+              <th key={index}>
+                {child.props.format === "checkbox" ? (
+                  <CheckBox checked={allSelected} onChange={handleSelectAll} />
+                ) : (
+                  child.props.titulo || "Cabeçalho"
+                )}
+              </th>
             ))}
           </tr>
         </thead>
@@ -131,6 +155,20 @@ const Tabela = (props) => {
                               checked={props.linhaSelecionada === item}
                               onChange={() =>
                                 props.onLinhaSelecionadaChange(item)
+                              }
+                            />
+                          );
+                        }
+
+                        if (child.props.format === "checkbox") {
+                          const isChecked =
+                            props.linhasSelecionadas &&
+                            props.linhasSelecionadas.includes(item);
+                          return (
+                            <CheckBox
+                              checked={isChecked}
+                              onChange={() =>
+                                props.onLinhasSelecionadasChange(item)
                               }
                             />
                           );
