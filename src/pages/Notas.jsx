@@ -32,6 +32,13 @@ const Notas = () => {
   // Loading
   const [isLoading, setIsLoading] = useState(false);
 
+  // Usuário
+  const idFuncao = JSON.parse(localStorage.getItem("ID_FUNCAO_USUARIO"));
+  const username = localStorage.getItem("username");
+  if (idFuncao == 2 && vendedor === "") {
+    setVendedor(vendedoresJson.find((v) => v.label === username)?.value || "");
+  }
+
   // Notas
   const [notas, setNotas] = useState([]);
 
@@ -89,12 +96,14 @@ const Notas = () => {
           <InputLabel label="Num Nota" value={numNota} onChange={setNumNota} />
           <InputDataLabel label="Data" value={data} onChange={setData} />
           <InputLabel label="Cnpj" value={cnpj} onChange={setCnpj} />
-          <SelectLabel
-            label="Vendedores"
-            options={vendedoresJson}
-            onChange={(e) => setVendedor(e.target.value)}
-            value={vendedor}
-          />
+          {idFuncao != 2 && (
+            <SelectLabel
+              label="Vendedores"
+              options={vendedoresJson}
+              onChange={(e) => setVendedor(e.target.value)}
+              value={vendedor}
+            />
+          )}
           <SelectLabel
             label="UF"
             options={ufsJson}

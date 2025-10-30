@@ -39,6 +39,13 @@ const Pedidos = () => {
   // Loading
   const [isLoading, setIsLoading] = useState(false);
 
+  // Usuário
+  const idFuncao = JSON.parse(localStorage.getItem("ID_FUNCAO_USUARIO"));
+  const username = localStorage.getItem("username");
+  if (idFuncao == 2 && vendedor === "") {
+    setVendedor(vendedoresJson.find((v) => v.label === username)?.value || "");
+  }
+
   // Pedidos
   const [pedidos, setPedidos] = useState([]);
   const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
@@ -210,12 +217,14 @@ const Pedidos = () => {
           <InputDataLabel label="Data" value={data} onChange={setData} />
           <InputLabel label="Cliente" value={cliente} onChange={setCliente} />
           <InputLabel label="CNPJ" value={cnpj} onChange={setCnpj} />
-          <SelectLabel
-            options={vendedoresJson}
-            label="Vendedor"
-            value={vendedor}
-            onChange={setVendedor}
-          />
+          {idFuncao != 2 && (
+            <SelectLabel
+              options={vendedoresJson}
+              label="Vendedor"
+              value={vendedor}
+              onChange={setVendedor}
+            />
+          )}
         </BarraLateral>
         <div className="content">
           <div className="content-title">
