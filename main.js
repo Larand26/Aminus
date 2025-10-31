@@ -288,9 +288,7 @@ ipcMain.on("get-cores", async (event, descricao) => {
     event.reply("get-cores-response", cores);
   } catch (error) {
     console.error("Erro ao buscar cores:", error);
-    event.reply("get-cores-response", {
-      error: error.message || "Erro desconhecido",
-    });
+    event.reply("get-cores-response", { success: false, error, data: [] });
   }
 });
 

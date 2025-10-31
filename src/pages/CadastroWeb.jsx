@@ -11,6 +11,7 @@ import Opcao from "../components/Opcao";
 
 import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
+import searchCores from "../utils/search/searchCores";
 
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
@@ -40,6 +41,7 @@ const CadastroWeb = () => {
 
   // Estados da tabela
   const [cores, setCores] = useState([]);
+  const [coresSelecionadas, setCoresSelecionadas] = useState([]);
 
   // Cores
   useEffect(() => {
@@ -47,6 +49,7 @@ const CadastroWeb = () => {
       value: produto.COD_COR_ECOMMERCE,
       label: produto.COR_DESCRICAO,
     }));
+    setCoresSelecionadas(coresIniciais);
     const coresUnicas = coresIniciais.filter(
       (cor, index, self) =>
         index === self.findIndex((c) => c.value === cor.value)
@@ -70,6 +73,24 @@ const CadastroWeb = () => {
         return p;
       })
     );
+  };
+
+  const handleSearchCores = async (term) => {
+    const resultados = await searchCores(term);
+    console.log(resultados);
+    if (!resultados.success) return;
+    const novasCores = resultados.data.map((cor) => ({
+      value: cor.value,
+      label: cor.label,
+    }));
+
+    const coresCombinadas = [...coresSelecionadas, ...novasCores];
+    const coresUnicas = coresCombinadas.filter(
+      (cor, index, self) =>
+        index === self.findIndex((c) => c.value === cor.value)
+    );
+
+    setCores(coresUnicas);
   };
 
   //Opções
@@ -141,6 +162,7 @@ const CadastroWeb = () => {
                       onChange={(newValue) => {
                         handleChangeCor(item.COD_INTERNO, newValue);
                       }}
+                      onSearchChange={handleSearchCores}
                     />
                   );
                 }}

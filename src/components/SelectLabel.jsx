@@ -95,7 +95,14 @@ const SelectLabel = (props) => {
               className="select-search-input"
               placeholder="Pesquisar..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                const newTerm = e.target.value;
+                setSearchTerm(newTerm);
+                // Notifica o componente pai sobre a mudança na busca
+                if (props.onSearchChange) {
+                  props.onSearchChange(newTerm);
+                }
+              }}
               // Impede que o clique no input feche o select
               onClick={(e) => e.stopPropagation()}
             />

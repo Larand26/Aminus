@@ -12,9 +12,10 @@ const getCores = async (descricao) => {
       .input("descricao", descricao)
       .query(query);
 
-    return result.recordset;
+    return { data: result.recordset, success: true };
   } catch (error) {
     console.error("Erro ao buscar cores:", error);
+    return { success: false, error, data: [] };
   } finally {
     connection.close();
   }
