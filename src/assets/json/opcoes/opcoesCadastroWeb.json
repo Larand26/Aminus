@@ -1,9 +1,14 @@
 [
-  { "id": " ", "label": " ", "format": "checkbox", "checked": true },
+  { "id": " ", "label": "Selecionado", "format": "checkbox", "checked": true },
   { "id": "COD_INTERNO", "label": "Cod Interno", "checked": true },
   { "id": "COD_FABRICANTE", "label": "Cod Fabricante", "checked": true },
   { "id": "COD_BARRAS", "label": "Cod Barras", "checked": true },
   { "id": "PAI", "label": "Pai", "checked": true },
   { "id": "PROD_DESCRICAO", "label": "Descrição", "checked": true },
-  { "id": " ", "label": " ", "format": "checkbox", "checked": true }
+  {
+    "id": " ",
+    "label": "Ativo no Ecomerce",
+    "format": "checkbox",
+    "checked": true
+  }
 ]

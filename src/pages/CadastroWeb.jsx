@@ -6,6 +6,8 @@ import InputLabel from "../components/InputLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 import SelectLabel from "../components/SelectLabel";
+import Configuracoes from "../components/Configuracoes";
+import Opcao from "../components/Opcao";
 
 import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
@@ -42,8 +44,28 @@ const CadastroWeb = () => {
     return atualizaOpcoes(opcoesCadastroWeb, savedOpcoes);
   });
 
+  const handleOptionClick = (e) => {
+    const { id } = e.target;
+    const updatedOptions = opcoes.map((opcao) =>
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+    );
+    setOpcoes(updatedOptions);
+    localStorage.setItem("opcoesClientes", JSON.stringify(updatedOptions));
+  };
+
   return (
     <>
+      <Configuracoes>
+        {opcoes.map((opcao) => (
+          <Opcao
+            key={opcao.id}
+            id={opcao.id}
+            label={opcao.label}
+            checked={opcao.checked}
+            onChange={handleOptionClick}
+          />
+        ))}
+      </Configuracoes>
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
