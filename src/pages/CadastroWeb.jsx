@@ -50,7 +50,7 @@ const CadastroWeb = () => {
       opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
     );
     setOpcoes(updatedOptions);
-    localStorage.setItem("opcoesClientes", JSON.stringify(updatedOptions));
+    localStorage.setItem("opcoesCadastroWeb", JSON.stringify(updatedOptions));
   };
 
   return (
