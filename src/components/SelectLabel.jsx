@@ -7,6 +7,7 @@ const SelectLabel = (props) => {
   const [selectedLabel, setSelectedLabel] = useState(
     props.placeholder || "Selecione..."
   );
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para a busca
   const wrapperRef = useRef(null);
 
   // Adicione este useEffect para sincronizar o estado com as props
@@ -55,8 +56,26 @@ const SelectLabel = (props) => {
     };
   }, [wrapperRef]);
 
+  // Limpa a busca quando o select é fechado
+  useEffect(() => {
+    if (!isOpen) {
+      setSearchTerm("");
+    }
+  }, [isOpen]);
+
+  // Filtra as opções com base no termo de busca
+  const filteredOptions =
+    props.options?.filter((option) =>
+      option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    ) || [];
+
   return (
-    <div className={`select-label ${props.className || ""}`} ref={wrapperRef}>
+    <div
+      className={`select-label ${props.className || ""} ${
+        isOpen ? "is-open" : ""
+      }`}
+      ref={wrapperRef}
+    >
       {props.label && <label>{props.label}</label>}
       <div className="custom-select-container">
         <div
@@ -67,19 +86,29 @@ const SelectLabel = (props) => {
           <span className={`arrow ${isOpen ? "up" : "down"}`}></span>
         </div>
         <div className={`custom-options ${isOpen ? "open" : ""}`}>
-          {props.options &&
-            props.options.map((option, index) => (
-              <div
-                key={index}
-                className={`custom-option ${
-                  option.value === selectedValue ? "selected" : ""
-                }`}
-                onClick={() => handleOptionClick(option)}
-                onContextMenu={limpaSelecao}
-              >
-                {option.label}
-              </div>
-            ))}
+          {props.search && (
+            <input
+              type="text"
+              className="select-search-input"
+              placeholder="Pesquisar..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              // Impede que o clique no input feche o select
+              onClick={(e) => e.stopPropagation()}
+            />
+          )}
+          {filteredOptions.map((option, index) => (
+            <div
+              key={index}
+              className={`custom-option ${
+                option.value === selectedValue ? "selected" : ""
+              }`}
+              onClick={() => handleOptionClick(option)}
+              onContextMenu={limpaSelecao}
+            >
+              {option.label}
+            </div>
+          ))}
         </div>
       </div>
       {/* Manter o select original oculto para formulários */}

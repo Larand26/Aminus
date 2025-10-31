@@ -11,6 +11,7 @@ import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
+import coresTeste from "../assets/json/coresTeste.json";
 
 import "../styles/pages/CadastroWeb.css";
 
@@ -77,6 +78,8 @@ const CadastroWeb = () => {
                 body={(item) => {
                   return (
                     <SelectLabel
+                      search
+                      options={coresTeste}
                       value={item.cor}
                       label={null}
                       onChange={(newValue) => {

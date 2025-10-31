@@ -2,22 +2,32 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-width: 200px;
   position: relative; /* Necessário para o posicionamento das opções */
 }
+
+/* Adicione esta nova regra */
+.select-label.is-open {
+  z-index: 2;
+}
+
 .select-label label {
   margin-bottom: 5px;
   font-size: 20px;
   color: var(--cor-branco);
 }
+
 /* Esconde o select original */
 .select-label > select {
   display: none;
 }
+
 .custom-select-container {
   position: relative;
   width: 100%;
   color: var(--cor-texto);
 }
+
 .custom-select-trigger {
   position: relative;
   background-color: var(--cor-fundo);
@@ -32,6 +42,7 @@
   justify-content: space-between;
   align-items: center;
 }
+
 .arrow {
   position: absolute;
   right: 15px;
@@ -43,12 +54,15 @@
   border-right: 5px solid transparent;
   transition: 0.2s;
 }
+
 .arrow.down {
   border-top: 5px solid var(--cor-texto);
 }
+
 .arrow.up {
   border-bottom: 5px solid var(--cor-texto);
 }
+
 .custom-options {
   position: absolute;
   top: 100%;
@@ -80,9 +94,11 @@
   cursor: pointer;
   color: #333;
 }
+
 .custom-option:hover {
   background-color: #f5f5f5;
 }
+
 .custom-option.selected {
   background-color: #fff;
   border: 1px solid orange;

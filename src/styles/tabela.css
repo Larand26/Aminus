@@ -50,6 +50,13 @@
   z-index: 1;
 }
 
+/* Adicione esta regra para elevar a linha da tabela quando um select dentro dela estiver aberto */
+.tabela tr:has(.select-label.is-open) {
+  position: relative;
+  z-index: 3;
+  filter: none;
+}
+
 .par {
   background-color: var(--cor-azulClaro);
 }

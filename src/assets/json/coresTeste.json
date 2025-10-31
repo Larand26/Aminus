@@ -1,0 +1,82 @@
+[
+  {
+    "value": 1,
+    "label": "PRETO/PRETO"
+  },
+  {
+    "value": 2,
+    "label": "AZUL/AZUL"
+  },
+  {
+    "value": 4,
+    "label": "ROSA CLARO/AZUL"
+  },
+  {
+    "value": 5,
+    "label": "ROSA/G:ROSA/AZUL"
+  },
+  {
+    "value": 6,
+    "label": "BEGE/ OURO LIGHT"
+  },
+  {
+    "value": 7,
+    "label": "ROSA/VERDE"
+  },
+  {
+    "value": 8,
+    "label": "VERDE/VERMELHO/PRETO"
+  },
+  {
+    "value": 9,
+    "label": "AZUL/AZUL/LARANJA"
+  },
+  {
+    "value": 10,
+    "label": "AZUL/ROSA/BRANCO"
+  },
+  {
+    "value": 11,
+    "label": "BRANCO/VERDE/AMARELO"
+  },
+  {
+    "value": 12,
+    "label": "CINZA/AMARELO/VR"
+  },
+  {
+    "value": 13,
+    "label": "AMARELO"
+  },
+  {
+    "value": 14,
+    "label": "BEGE ESCURO"
+  },
+  {
+    "value": 15,
+    "label": "NUDE CLARO"
+  },
+  {
+    "value": 16,
+    "label": "PRETO"
+  },
+  {
+    "value": 17,
+    "label": "ROXO"
+  },
+  {
+    "value": 18,
+    "label": "LILAS CLARO/NUDE"
+  },
+  {
+    "value": 20,
+    "label": "OFF WHITE/BEGE"
+  },
+  {
+    "value": 21,
+    "label": "NUDE MEDIO"
+  },
+  {
+    "value": 22,
+    "label": "ROXO ESCURO"
+  }
+]
