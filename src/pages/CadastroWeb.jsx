@@ -38,6 +38,40 @@ const CadastroWeb = () => {
     }
   };
 
+  // Estados da tabela
+  const [cores, setCores] = useState([]);
+
+  // Cores
+  useEffect(() => {
+    const coresIniciais = produtos.map((produto) => ({
+      value: produto.COD_COR_ECOMMERCE,
+      label: produto.COR_DESCRICAO,
+    }));
+    const coresUnicas = coresIniciais.filter(
+      (cor, index, self) =>
+        index === self.findIndex((c) => c.value === cor.value)
+    );
+    setCores(coresUnicas);
+  }, [produtos]);
+
+  const handleChangeCor = (codInterno, newValue) => {
+    const selectedCor = cores.find((cor) => cor.value === newValue);
+    const newLabel = selectedCor ? selectedCor.label : null;
+
+    setProdutos((prevProdutos) =>
+      prevProdutos.map((p) => {
+        if (p.COD_INTERNO === codInterno) {
+          return {
+            ...p,
+            COD_COR_ECOMMERCE: newValue,
+            COR_DESCRICAO: newLabel,
+          };
+        }
+        return p;
+      })
+    );
+  };
+
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesCadastroWeb");
@@ -101,16 +135,11 @@ const CadastroWeb = () => {
                   return (
                     <SelectLabel
                       search
-                      options={coresTeste}
-                      value={item.cor}
+                      options={cores}
+                      value={item.COD_COR_ECOMMERCE}
                       label={null}
                       onChange={(newValue) => {
-                        // Atualiza a cor do item
-                        setProdutos((prevProdutos) =>
-                          prevProdutos.map((p) =>
-                            p.id === item.id ? { ...p, cor: newValue } : p
-                          )
-                        );
+                        handleChangeCor(item.COD_INTERNO, newValue);
                       }}
                     />
                   );

@@ -65,8 +65,11 @@ const SelectLabel = (props) => {
 
   // Filtra as opções com base no termo de busca
   const filteredOptions =
-    props.options?.filter((option) =>
-      option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    props.options?.filter(
+      (option) =>
+        option &&
+        typeof option.label === "string" &&
+        option.label.toLowerCase().includes(searchTerm.toLowerCase())
     ) || [];
 
   return (
