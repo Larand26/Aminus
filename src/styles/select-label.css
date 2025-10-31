@@ -89,6 +89,23 @@
   transform: translateY(0);
 }
 
+/* Estilos para o input de pesquisa */
+.select-search-input {
+  box-sizing: border-box;
+  width: calc(100% - 16px); /* Ajusta a largura para o padding */
+  margin: 8px; /* Espaçamento nas laterais e topo/fundo */
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.select-search-input:focus {
+  outline: none;
+  border-color: #007bff; /* Cor de destaque ao focar */
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); /* Sombra sutil */
+}
+
 .custom-option {
   padding: 10px 15px;
   cursor: pointer;
