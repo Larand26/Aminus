@@ -5,6 +5,7 @@ import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
+import SelectLabel from "../components/SelectLabel";
 
 import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
@@ -59,7 +60,7 @@ const CadastroWeb = () => {
         <div className="content">
           <div></div>
           <div className="container-tabela">
-            <Tabela dados={produtos} isLoading={false}>
+            <Tabela dados={produtos} isLoading={false} hover>
               {opcoes
                 .filter((opcao) => opcao.checked)
                 .map((opcao) => (
@@ -71,6 +72,25 @@ const CadastroWeb = () => {
                     dados={opcao.dados || []}
                   />
                 ))}
+              <Coluna
+                titulo="Cor"
+                body={(item) => {
+                  return (
+                    <SelectLabel
+                      value={item.cor}
+                      label={null}
+                      onChange={(newValue) => {
+                        // Atualiza a cor do item
+                        setProdutos((prevProdutos) =>
+                          prevProdutos.map((p) =>
+                            p.id === item.id ? { ...p, cor: newValue } : p
+                          )
+                        );
+                      }}
+                    />
+                  );
+                }}
+              />
             </Tabela>
           </div>
         </div>

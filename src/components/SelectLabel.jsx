@@ -57,7 +57,7 @@ const SelectLabel = (props) => {
 
   return (
     <div className={`select-label ${props.className || ""}`} ref={wrapperRef}>
-      <label>{props.label || "Label"}</label>
+      {props.label && <label>{props.label}</label>}
       <div className="custom-select-container">
         <div
           className="custom-select-trigger"
