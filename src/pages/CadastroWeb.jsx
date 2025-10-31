@@ -15,7 +15,7 @@ import atualizaOpcoes from "../utils/atualizaOpcoes";
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
 
-import "../styles/pages/CadastroWeb.css";
+import "../styles/CadastroWeb.css";
 
 const CadastroWeb = () => {
   // Estados dos inputs
@@ -80,7 +80,7 @@ const CadastroWeb = () => {
             onChange={setCodInterno}
           />
         </BarraLateral>
-        <div className="content">
+        <div className="content container-cadastro-web">
           <div></div>
           <div className="container-tabela">
             <Tabela dados={produtos} isLoading={false} hover>
