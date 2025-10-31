@@ -38,4 +38,5 @@ FROM [vwITEM] P
     LEFT JOIN [PRODUTOS] PR ON P.ID_CODPRODUTO = PR.ID_CODPRODUTO
 WHERE 1 = 1
     AND PA.[ID_CODFILIAIS] = 1
+    AND P.[ID_DEPOSITOS] = 2
     -- Os filtros serão adicionados aqui pelo Node.js
