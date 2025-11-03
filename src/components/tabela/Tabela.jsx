@@ -57,15 +57,11 @@ const Tabela = (props) => {
                     <Loading />
                   </div>
                   <div style={{ visibility: "hidden" }}>
-                    <table className="tabela">
-                      <tbody>
-                        <tr>
-                          {Array.from({ length: numColunas }).map((_, i) => (
-                            <td key={i} />
-                          ))}
-                        </tr>
-                      </tbody>
-                    </table>
+                    <tr>
+                      {Array.from({ length: numColunas }).map((_, i) => (
+                        <td key={i} />
+                      ))}
+                    </tr>
                   </div>
                 </div>
               </td>
