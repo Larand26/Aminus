@@ -138,7 +138,7 @@ const CadastroWeb = () => {
         <div className="content container-cadastro-web">
           <div></div>
           <div className="container-tabela">
-            <Tabela dados={produtos} isLoading={false} hover>
+            <Tabela dados={produtos} isLoading={false} hover select="checkbox">
               {opcoes
                 .filter((opcao) => opcao.checked)
                 .map((opcao) => (
