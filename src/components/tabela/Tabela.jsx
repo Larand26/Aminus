@@ -53,21 +53,10 @@ const Tabela = (props) => {
             <tr className="loading-row">
               <td colSpan={numColunas} style={{ padding: 0 }}>
                 <div style={{ position: "relative", minHeight: 120 }}>
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      background: "rgba(255,255,255,0.6)",
-                      zIndex: 2,
-                    }}
-                  >
+                  <div className="loading-table">
                     <Loading />
                   </div>
                   <div style={{ visibility: "hidden" }}>
-                    {/* mantém a estrutura da tabela por baixo para evitar quebra de layout */}
                     <table className="tabela">
                       <tbody>
                         <tr>
