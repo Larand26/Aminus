@@ -1,10 +1,4 @@
 [
-  {
-    "id": "SELECIONADO",
-    "label": "Selecionado",
-    "format": "checkbox",
-    "checked": true
-  },
   { "id": "COD_INTERNO", "label": "Cod Interno", "checked": true },
   { "id": "COD_FABRICANTE", "label": "Cod Fabricante", "checked": true },
   { "id": "COD_BARRAS", "label": "Cod Barras", "checked": true },

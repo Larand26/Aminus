@@ -35,23 +35,6 @@ const Tabela = (props) => {
     return dados.map((dado) => item[dado]).join(" - ");
   };
 
-  const handleSelectAll = () => {
-    // Se todos estiverem selecionados, desmarca todos. Caso contrário, marca todos.
-    if (
-      props.linhasSelecionadas?.length === props.dados?.length &&
-      props.dados?.length > 0
-    ) {
-      props.onLinhasSelecionadasChange([]); // Passa um array vazio para desmarcar
-    } else {
-      props.onLinhasSelecionadasChange(props.dados ? [...props.dados] : []); // Passa todos os dados para marcar
-    }
-  };
-
-  const allSelected =
-    props.dados &&
-    props.dados.length > 0 &&
-    props.linhasSelecionadas?.length === props.dados?.length;
-
   return (
     <div className="tabela-container">
       <table className="tabela">
@@ -60,7 +43,7 @@ const Tabela = (props) => {
             {colunasVisiveis.map((child, index) => (
               <th key={index}>
                 {child.props.format === "checkbox" ? (
-                  <CheckBox checked={allSelected} onChange={handleSelectAll} />
+                  <CheckBox checked={false} onChange={() => {}} />
                 ) : (
                   child.props.titulo || "Cabeçalho"
                 )}
@@ -161,12 +144,9 @@ const Tabela = (props) => {
                         }
 
                         if (child.props.format === "checkbox") {
-                          const isChecked =
-                            props.linhasSelecionadas &&
-                            props.linhasSelecionadas.includes(item);
                           return (
                             <CheckBox
-                              checked={isChecked}
+                              checked={false}
                               onChange={() =>
                                 props.onLinhasSelecionadasChange(item)
                               }
