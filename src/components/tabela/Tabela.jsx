@@ -180,6 +180,7 @@ const Tabela = (props) => {
               })
             ) : (
               <tr>
+                {props.select == "checkbox" && <td></td>}
                 <td
                   colSpan={numColunas}
                   style={{ textAlign: "center", padding: "20px" }}
