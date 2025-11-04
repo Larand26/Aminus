@@ -160,7 +160,11 @@ const CadastroWeb = () => {
           />
         </BarraLateral>
         <div className="content container-cadastro-web">
-          <div>{ativosEcommerce.join(", ")}</div>
+          <div className="container-dados">
+            <div className="container tipo-genero"></div>
+            <div className="container display"></div>
+            <div className="container grade-corNova"></div>
+          </div>
           <div className="container-tabela">
             <Tabela
               dados={produtos}
