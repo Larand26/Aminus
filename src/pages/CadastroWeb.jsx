@@ -22,7 +22,6 @@ const CadastroWeb = () => {
   // Estados dos inputs
   const [codFabricante, setCodFabricante] = useState("");
   const [codInterno, setCodInterno] = useState("");
-  const [ativosEcommerce, setAtivosEcommerce] = useState([]);
 
   // Produtos
   const [produtos, setProdutos] = useState([]);
@@ -43,6 +42,7 @@ const CadastroWeb = () => {
   // Estados da tabela
   const [cores, setCores] = useState([]);
   const [coresSelecionadas, setCoresSelecionadas] = useState([]);
+  const [ativosEcommerce, setAtivosEcommerce] = useState([]);
 
   // Cores
   useEffect(() => {
@@ -96,12 +96,21 @@ const CadastroWeb = () => {
 
   // Ativos Ecommerce
   useEffect(() => {
-    const ativosIniciais = produtos.map((produto) => ({
-      value: produto.COD_INTERNO,
-      label: produto.PROD_DESCRICAO,
-    }));
-    setAtivosEcommerce(ativosIniciais);
+    const ativos = produtos.map(
+      (produto) =>
+        produto.ATIVO_ECOMMERCE === true &&
+        produto.INTEGRACAO_ECOMMERCE === true
+    );
+    setAtivosEcommerce(ativos);
   }, [produtos]);
+
+  const handleAtivoEcommerceChange = (index) => {
+    setAtivosEcommerce((prevState) => {
+      const newState = [...prevState];
+      newState[index] = !newState[index];
+      return newState;
+    });
+  };
 
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
@@ -146,7 +155,7 @@ const CadastroWeb = () => {
           />
         </BarraLateral>
         <div className="content container-cadastro-web">
-          <div></div>
+          <div>{ativosEcommerce.join(", ")}</div>
           <div className="container-tabela">
             <Tabela dados={produtos} isLoading={false} hover select="checkbox">
               {opcoes
@@ -180,7 +189,8 @@ const CadastroWeb = () => {
               <Coluna
                 titulo="Ativo Ecommerce"
                 format="checkbox"
-                dados={ativosEcommerce}
+                state={ativosEcommerce}
+                onChange={(index) => handleAtivoEcommerceChange(index)}
               />
             </Tabela>
           </div>

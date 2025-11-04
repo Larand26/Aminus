@@ -46,7 +46,11 @@ const Tabela = (props) => {
           <tr>
             {props.select == "checkbox" && (
               <th>
-                <CheckBox checked={false} onChange={() => {}} />
+                <CheckBox
+                  id="select-all-checkbox"
+                  checked={false}
+                  onChange={() => {}}
+                />
               </th>
             )}
             {colunasVisiveis.map((child, index) => {
@@ -62,7 +66,11 @@ const Tabela = (props) => {
                 case "checkbox":
                   return (
                     <th key={index}>
-                      <CheckBox checked={false} onChange={() => {}} />
+                      <CheckBox
+                        id={`header-checkbox-${index}`}
+                        checked={false}
+                        onChange={() => {}}
+                      />
                     </th>
                   );
                 default:
@@ -155,9 +163,12 @@ const Tabela = (props) => {
                         if (child.props.format === "checkbox") {
                           return (
                             <CheckBox
-                              checked={false}
+                              id={`checkbox-${childIndex}-${index}`}
+                              checked={child.props.state[index] || false}
                               onChange={() =>
-                                props.onLinhasSelecionadasChange(item)
+                                child.props.onChange
+                                  ? child.props.onChange(index)
+                                  : () => {}
                               }
                             />
                           );
