@@ -112,6 +112,10 @@ const CadastroWeb = () => {
     });
   };
 
+  const handleAtivoEcommerceChangeAll = (checked) => {
+    setAtivosEcommerce(produtos.map(() => checked));
+  };
+
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesCadastroWeb");
@@ -189,8 +193,12 @@ const CadastroWeb = () => {
               <Coluna
                 titulo="Ativo Ecommerce"
                 format="checkbox"
+                id="ATIVO_ECOMMERCE"
                 state={ativosEcommerce}
                 onChange={(index) => handleAtivoEcommerceChange(index)}
+                onChangeAll={(checked) =>
+                  handleAtivoEcommerceChangeAll(checked)
+                }
               />
             </Tabela>
           </div>

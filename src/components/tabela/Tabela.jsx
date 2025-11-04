@@ -67,9 +67,15 @@ const Tabela = (props) => {
                   return (
                     <th key={index}>
                       <CheckBox
-                        id={`header-checkbox-${index}`}
-                        checked={false}
-                        onChange={() => {}}
+                        id={`header-checkbox-${child.props.id}`}
+                        checked={
+                          child.props.state &&
+                          child.props.state.length > 0 &&
+                          child.props.state.every(Boolean)
+                        }
+                        onChange={(e) =>
+                          child.props.onChangeAll(e.target.checked)
+                        }
                       />
                     </th>
                   );
