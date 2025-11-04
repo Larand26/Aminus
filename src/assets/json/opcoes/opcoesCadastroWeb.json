@@ -3,11 +3,5 @@
   { "id": "COD_FABRICANTE", "label": "Cod Fabricante", "checked": true },
   { "id": "COD_BARRAS", "label": "Cod Barras", "checked": true },
   { "id": "PAI", "label": "Pai", "checked": true },
-  { "id": "PROD_DESCRICAO", "label": "Descrição", "checked": true },
-  {
-    "id": "ATIVO_ECOMERCE",
-    "label": "Ativo no Ecomerce",
-    "format": "checkbox",
-    "checked": true
-  }
+  { "id": "PROD_DESCRICAO", "label": "Descrição", "checked": true }
 ]

@@ -22,6 +22,7 @@ const CadastroWeb = () => {
   // Estados dos inputs
   const [codFabricante, setCodFabricante] = useState("");
   const [codInterno, setCodInterno] = useState("");
+  const [ativosEcommerce, setAtivosEcommerce] = useState([]);
 
   // Produtos
   const [produtos, setProdutos] = useState([]);
@@ -92,6 +93,15 @@ const CadastroWeb = () => {
 
     setCores(coresUnicas);
   };
+
+  // Ativos Ecommerce
+  useEffect(() => {
+    const ativosIniciais = produtos.map((produto) => ({
+      value: produto.COD_INTERNO,
+      label: produto.PROD_DESCRICAO,
+    }));
+    setAtivosEcommerce(ativosIniciais);
+  }, [produtos]);
 
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
@@ -166,6 +176,11 @@ const CadastroWeb = () => {
                     />
                   );
                 }}
+              />
+              <Coluna
+                titulo="Ativo Ecommerce"
+                format="checkbox"
+                dados={ativosEcommerce}
               />
             </Tabela>
           </div>
