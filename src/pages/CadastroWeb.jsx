@@ -43,6 +43,7 @@ const CadastroWeb = () => {
   const [cores, setCores] = useState([]);
   const [coresSelecionadas, setCoresSelecionadas] = useState([]);
   const [ativosEcommerce, setAtivosEcommerce] = useState([]);
+  const [itensSelecionados, setItensSelecionados] = useState([]); // Estado para itens selecionados
 
   // Cores
   useEffect(() => {
@@ -161,7 +162,14 @@ const CadastroWeb = () => {
         <div className="content container-cadastro-web">
           <div>{ativosEcommerce.join(", ")}</div>
           <div className="container-tabela">
-            <Tabela dados={produtos} isLoading={false} hover select="checkbox">
+            <Tabela
+              dados={produtos}
+              isLoading={false}
+              hover
+              select="checkbox"
+              chave="COD_INTERNO" // Propriedade única para identificar cada item
+              onSelectionChange={setItensSelecionados} // Função para receber os itens selecionados
+            >
               {opcoes
                 .filter((opcao) => opcao.checked)
                 .map((opcao) => (

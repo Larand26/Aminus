@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import InputRadio from "../InputRadio";
 import CheckBox from "../CheckBox";
@@ -7,6 +7,47 @@ import Loading from "../Loading";
 import "../../styles/tabela.css";
 
 const Tabela = (props) => {
+  const { dados, chave, onSelectionChange } = props;
+  const [selecionados, setSelecionados] = useState([]);
+
+  // Efeito para notificar o componente pai sobre mudanças na seleção
+  useEffect(() => {
+    if (onSelectionChange) {
+      onSelectionChange(selecionados);
+    }
+  }, [selecionados, onSelectionChange]);
+
+  // Efeito para limpar a seleção quando os dados da tabela mudam
+  useEffect(() => {
+    setSelecionados([]);
+  }, [dados]);
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelecionados(dados || []);
+    } else {
+      setSelecionados([]);
+    }
+  };
+
+  const handleSelectItem = (item) => {
+    setSelecionados((prevSelecionados) => {
+      const isSelected = prevSelecionados.some(
+        (selecionado) => selecionado[chave] === item[chave]
+      );
+      if (isSelected) {
+        return prevSelecionados.filter(
+          (selecionado) => selecionado[chave] !== item[chave]
+        );
+      } else {
+        return [...prevSelecionados, item];
+      }
+    });
+  };
+
+  const todosSelecionados =
+    dados && dados.length > 0 && selecionados.length === dados.length;
+
   const isLoading = !!props.loading;
   // Filtra os filhos para remover valores nulos ou falsos
   const colunasVisiveis = React.Children.toArray(props.children).filter(
@@ -48,8 +89,8 @@ const Tabela = (props) => {
               <th>
                 <CheckBox
                   id="select-all-checkbox"
-                  checked={false}
-                  onChange={() => {}}
+                  checked={todosSelecionados}
+                  onChange={handleSelectAll}
                 />
               </th>
             )}
@@ -129,7 +170,17 @@ const Tabela = (props) => {
                   >
                     {props.select == "checkbox" && (
                       <td>
-                        <CheckBox checked={false} onChange={() => {}} />
+                        <CheckBox
+                          checked={
+                            !!chave &&
+                            selecionados.some(
+                              (selecionado) =>
+                                selecionado[chave] === item[chave]
+                            )
+                          }
+                          id={`select-item-checkbox-${index}`}
+                          onChange={() => handleSelectItem(item)}
+                        />
                       </td>
                     )}
                     {colunasVisiveis.map((child, childIndex) => {
