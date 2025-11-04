@@ -25,6 +25,11 @@
     "checked": true
   },
   {
+    "id": "PESO_BRUTO",
+    "label": "Peso Bruto",
+    "checked": true
+  },
+  {
     "id": "DATA_PEDIDO",
     "label": "Data do Pedido",
     "checked": true,
