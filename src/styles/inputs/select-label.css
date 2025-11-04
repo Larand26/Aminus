@@ -68,10 +68,11 @@
 }
 
 .custom-options {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+  /* Remova ou comente estas propriedades */
+  /* position: absolute; */
+  /* top: 100%; */
+  /* left: 0; */
+  /* right: 0; */
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -79,7 +80,6 @@
   max-height: 200px;
   overflow-y: auto;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-  /* Adiciona transição */
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
