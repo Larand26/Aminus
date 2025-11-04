@@ -12,6 +12,7 @@ import Opcao from "../components/Opcao";
 import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 import searchCores from "../utils/search/searchCores";
+import atualizaItemSelecionado from "../utils/atualizaItemSelecionado";
 
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
@@ -36,6 +37,7 @@ const CadastroWeb = () => {
     console.log("Resultados da busca:", resultados);
     if (resultados.success) {
       setProdutos(resultados.data);
+      atualizaItemSelecionado(resultados.data[0]);
     }
   };
 
@@ -183,6 +185,9 @@ const CadastroWeb = () => {
                     campo={opcao.id}
                     format={opcao.format || ""}
                     dados={opcao.dados || []}
+                    onClick={(i) => {
+                      atualizaItemSelecionado(i);
+                    }}
                   />
                 ))}
               <Coluna
