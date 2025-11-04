@@ -45,11 +45,31 @@ const Tabela = (props) => {
         <thead>
           <tr>
             {props.select == "checkbox" && (
-              <CheckBox checked={false} onChange={() => {}} />
+              <th>
+                <CheckBox checked={false} onChange={() => {}} />
+              </th>
             )}
-            {colunasVisiveis.map((child, index) => (
-              <th key={index}>{child.props.titulo}</th>
-            ))}
+            {colunasVisiveis.map((child, index) => {
+              const formato = child.props.format || "";
+
+              switch (formato) {
+                case "radio":
+                  return (
+                    <th key={index}>
+                      <InputRadio checked={false} onChange={() => {}} />
+                    </th>
+                  );
+                case "checkbox":
+                  return (
+                    <th key={index}>
+                      <CheckBox checked={false} onChange={() => {}} />
+                    </th>
+                  );
+                default:
+                  break;
+              }
+              return <th key={index}>{child.props.titulo}</th>;
+            })}
           </tr>
         </thead>
         <tbody>
@@ -93,6 +113,11 @@ const Tabela = (props) => {
                     onClick={handleRowClick}
                     style={{ cursor: handleRowClick ? "pointer" : "default" }}
                   >
+                    {props.select == "checkbox" && (
+                      <td>
+                        <CheckBox checked={false} onChange={() => {}} />
+                      </td>
+                    )}
                     {colunasVisiveis.map((child, childIndex) => {
                       const cellContent = (() => {
                         if (typeof child.props.body === "function")
