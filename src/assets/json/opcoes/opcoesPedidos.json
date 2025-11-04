@@ -27,7 +27,8 @@
   {
     "id": "PESO_BRUTO",
     "label": "Peso Bruto",
-    "checked": true
+    "checked": true,
+    "format": "peso"
   },
   {
     "id": "DATA_PEDIDO",

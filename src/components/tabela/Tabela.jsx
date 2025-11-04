@@ -34,6 +34,10 @@ const Tabela = (props) => {
   const formataJunto = (item, dados) => {
     return dados.map((dado) => item[dado]).join(" - ");
   };
+  const formataPeso = (valor, medida) => {
+    if (typeof valor !== "number") return valor;
+    return `${valor.toFixed(2).replace(".", ",")} ${medida || "kg"}`;
+  };
 
   return (
     <div className="tabela-container">
@@ -95,23 +99,21 @@ const Tabela = (props) => {
                           return child.props.body(item);
 
                         const valor = item[child.props.campo];
+                        const formato = child.props.format || "";
 
-                        // Formatação de dinheiro
-                        if (child.props.format === "dinheiro") {
-                          return formataDinheiro(valor);
-                        }
-
-                        if (valor instanceof Date) {
-                          if (child.props.format === "data") {
+                        switch (formato) {
+                          case "dinheiro":
+                            return formataDinheiro(valor);
+                          case "data":
                             return formataData(valor);
-                          }
-                          if (child.props.format === "data-hora") {
+                          case "data-hora":
                             return formataDataHora(valor);
-                          }
-                        }
-
-                        if (child.props.format === "junto") {
-                          return formataJunto(item, child.props.dados);
+                          case "junto":
+                            return formataJunto(item, child.props.dados);
+                          case "peso":
+                            return formataPeso(valor, child.props.medida);
+                          default:
+                            break;
                         }
 
                         if (child.props.format === "radio") {
