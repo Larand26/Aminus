@@ -5,3 +5,9 @@
 .container-tabela {
   height: 60%;
 }
+
+.container-tabela {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

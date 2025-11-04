@@ -4,6 +4,8 @@
   max-height: 630px;
   overflow-y: auto;
   overflow-x: auto;
+  display: flex;
+  justify-content: center;
 }
 
 .tabela-container::-webkit-scrollbar {
@@ -27,7 +29,7 @@
 }
 
 .tabela {
-  width: 80%;
+  width: 100%;
   border-collapse: collapse;
 }
 .tabela th,
@@ -87,4 +89,8 @@ td,
 th {
   text-align: center;
   padding: 20px;
+}
+
+.tabela .custom-checkbox {
+  margin: auto;
 }
