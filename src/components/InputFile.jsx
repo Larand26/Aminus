@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, use } from "react";
 
-import "../styles/input-file.css";
+import "../styles/inputs/input-file.css";
 
 const InputFile = (props) => {
   const [files, setFiles] = useState([]);

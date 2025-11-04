@@ -1,4 +1,4 @@
-import "../styles/input-label.css";
+import "../styles/inputs/input-label.css";
 
 const InputLabel = (props) => {
   return (

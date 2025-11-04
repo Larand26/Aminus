@@ -1,4 +1,4 @@
-import "../styles/input-radio.css";
+import "../styles/inputs/input-radio.css";
 
 const InputRadio = (props) => {
   return (

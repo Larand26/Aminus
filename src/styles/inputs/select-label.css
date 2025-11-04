@@ -6,6 +6,10 @@
   position: relative; /* Necessário para o posicionamento das opções */
 }
 
+.barra-lateral .select-label {
+  min-width: 0;
+}
+
 /* Adicione esta nova regra */
 .select-label.is-open {
   z-index: 2;

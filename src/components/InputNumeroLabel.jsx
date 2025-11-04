@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import "../styles/input-numero-label.css";
+import "../styles/inputs/input-numero-label.css";
 
 const InputNumeroLabel = (props) => {
   // inicializa com o valor numérico da prop (fallback 0)

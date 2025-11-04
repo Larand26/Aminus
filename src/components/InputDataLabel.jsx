@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-import "../styles/input-data-label.css";
+import "../styles/inputs/input-data-label.css";
 
 const meses = [
   "Janeiro",

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import "../styles/select-label.css";
+import "../styles/inputs/select-label.css";
 
 const SelectLabel = (props) => {
   const [isOpen, setIsOpen] = useState(false);
