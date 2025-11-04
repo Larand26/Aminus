@@ -16,7 +16,7 @@ import searchCores from "../utils/search/searchCores";
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
 
-import "../styles/CadastroWeb.css";
+import "../styles/cadastro-web.css";
 
 const CadastroWeb = () => {
   // Estados dos inputs
