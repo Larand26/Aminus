@@ -1,5 +1,6 @@
 .container-cadastro-web {
   justify-content: space-between !important;
+  padding: 40px 20px;
 }
 
 .container-tabela {
@@ -10,4 +11,42 @@
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+.container-dados {
+  display: flex;
+  width: var(--tamanho-maximo);
+  justify-content: space-between;
+}
+
+.tipo-genero {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.container-tipo {
+  height: 250px;
+  overflow-y: auto;
+}
+
+.container-tipo::-webkit-scrollbar {
+  width: 3px;
+}
+
+.container-tipo::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.container-tipo::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 5px;
+}
+
+.tipos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  background-color: var(--cor-primaria);
+  padding: 10px;
 }

@@ -8,6 +8,7 @@ import Coluna from "../components/tabela/Coluna";
 import SelectLabel from "../components/SelectLabel";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
+import BotaoTipoGen from "../components/BotaoTipoGen";
 
 import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
@@ -163,7 +164,33 @@ const CadastroWeb = () => {
         </BarraLateral>
         <div className="content container-cadastro-web">
           <div className="container-dados">
-            <div className="container tipo-genero"></div>
+            <div className="container tipo-genero">
+              <div className="container-tipo">
+                <div className="tipos">
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                </div>
+              </div>
+              <div className="container-tipo">
+                <div className="tipos">
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="fa fa-truck" />
+                </div>
+              </div>
+            </div>
             <div className="container display"></div>
             <div className="container grade-corNova"></div>
           </div>

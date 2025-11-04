@@ -1,0 +1,20 @@
+.botao-tipo-gen {
+  background-color: var(--cor-primaria);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  border: 2px solid var(--cor-branco);
+}
+
+.botao-tipo-gen:hover {
+  filter: brightness(1.1);
+}
+
+.botao-tipo-gen i {
+  color: var(--cor-branco);
+}
+
+.ativo {
+  background-color: var(--cor-amarelo) !important;
+}
