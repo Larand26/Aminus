@@ -13,7 +13,7 @@ import BotaoTipoGen from "../components/BotaoTipoGen";
 import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 import searchCores from "../utils/search/searchCores";
-import atualizaItemSelecionado from "../utils/atualizaItemSelecionado";
+import atualizaItemSelecionado from "../utils/cadastroweb/atualizaItemSelecionado";
 
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
@@ -38,7 +38,7 @@ const CadastroWeb = () => {
     console.log("Resultados da busca:", resultados);
     if (resultados.success) {
       setProdutos(resultados.data);
-      atualizaItemSelecionado(resultados.data[0]);
+      handleAtivoEcommerceChange(resultados.data[0]);
     }
   };
 
@@ -118,6 +118,17 @@ const CadastroWeb = () => {
 
   const handleAtivoEcommerceChangeAll = (checked) => {
     setAtivosEcommerce(produtos.map(() => checked));
+  };
+
+  // Item selecionado
+  const [itemSelecionado, setItemSelecionado] = useState(null);
+
+  const handleItemSelecionado = async (item) => {
+    if (item?.COD_INTERNO === itemSelecionado?.COD_INTERNO) return;
+
+    const itemAtualizado = await atualizaItemSelecionado(item);
+    console.log("Item selecionado atualizado no componente:", itemAtualizado);
+    setItemSelecionado(itemAtualizado);
   };
 
   //Opções
@@ -213,7 +224,7 @@ const CadastroWeb = () => {
                     format={opcao.format || ""}
                     dados={opcao.dados || []}
                     onClick={(i) => {
-                      atualizaItemSelecionado(i);
+                      handleItemSelecionado(i);
                     }}
                   />
                 ))}

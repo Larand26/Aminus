@@ -5,6 +5,7 @@ const searchFotos = async (filters) => {
   if (Object.values(filters).every((value) => !value)) {
     return { success: false, error: "Nenhum filtro fornecido." };
   }
+  console.log(filters);
 
   window.electronApi?.searchFoto(filters);
 
