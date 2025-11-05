@@ -211,6 +211,7 @@ const CadastroWeb = () => {
               select="checkbox"
               chave="COD_INTERNO" // Propriedade única para identificar cada item
               onSelectionChange={setItensSelecionados} // Função para receber os itens selecionados
+              itemSelecionado={itemSelecionado}
             >
               {opcoes
                 .filter((opcao) => opcao.checked)

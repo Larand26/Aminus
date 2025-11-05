@@ -7,7 +7,7 @@ import Loading from "../Loading";
 import "../../styles/tabela.css";
 
 const Tabela = (props) => {
-  const { dados, chave, onSelectionChange } = props;
+  const { dados, chave, onSelectionChange, itemSelecionado } = props;
   const [selecionados, setSelecionados] = useState([]);
 
   // Efeito para notificar o componente pai sobre mudanças na seleção
@@ -164,6 +164,10 @@ const Tabela = (props) => {
                     key={index}
                     className={`${index % 2 === 0 ? "par" : "impar"} ${
                       props.hover ? "hover" : ""
+                    } ${
+                      itemSelecionado && item[chave] === itemSelecionado[chave]
+                        ? "linha-selecionada"
+                        : ""
                     }`}
                     onClick={handleRowClick}
                     style={{ cursor: handleRowClick ? "pointer" : "default" }}

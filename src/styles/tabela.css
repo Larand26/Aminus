@@ -75,6 +75,11 @@
   font-weight: bold;
 }
 
+.tabela tr.linha-selecionada td {
+  background-color: #658884 !important;
+  color: var(--cor-branco) !important;
+}
+
 .loading-table {
   position: absolute;
   inset: 0;
