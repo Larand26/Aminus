@@ -200,7 +200,25 @@ const CadastroWeb = () => {
                 </div>
               </div>
             </div>
-            <div className="container display"></div>
+            <div className="container display">
+              <div className="nome-pai">
+                <div className="nome-produto">
+                  <h3>Nome:</h3>
+                  <p>{produtos[0]?.PROD_DESCRICAO || ""}</p>
+                </div>
+                <hr />
+                <div className="pai">
+                  <h3>Pai:</h3>
+                  <p>{produtos[0]?.PAI || ""}</p>
+                </div>
+                <div className="container-btn-cadastro">
+                  <button className="btn-cafastrar">Cadastrar</button>
+                </div>
+              </div>
+              <div className="foto">
+                <img src={itemSelecionado?.foto || ""} alt="" />
+              </div>
+            </div>
             <div className="container grade-corNova"></div>
           </div>
           <div className="container-tabela">
