@@ -9,6 +9,7 @@ import SelectLabel from "../components/SelectLabel";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import BotaoTipoGen from "../components/BotaoTipoGen";
+import InputButton from "../components/InputButton";
 
 import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
@@ -219,7 +220,15 @@ const CadastroWeb = () => {
                 <img src={itemSelecionado?.foto || ""} alt="" />
               </div>
             </div>
-            <div className="container grade-corNova"></div>
+            <div className="container grade-corNova">
+              <div className="inputs">
+                <InputButton
+                  placeholder="Adicionar cor nova"
+                  icon="fa fa-plus"
+                  onClick={() => {}}
+                />
+              </div>
+            </div>
           </div>
           <div className="container-tabela">
             <Tabela

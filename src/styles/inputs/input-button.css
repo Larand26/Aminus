@@ -1,0 +1,53 @@
+.input-button-container {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: 2px solid var(--cor-fundo);
+  border-radius: 50px;
+  padding: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.input-button-container .input-field {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+  padding: 0 15px;
+  font-family: sans-serif;
+}
+
+.input-button-container .input-field::placeholder {
+  color: #a0a0a0;
+}
+
+.input-button-container .icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background-color: #e6a23c;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s;
+}
+
+.input-button-container .icon-button:hover {
+  background-color: #f5b95c;
+}
+
+/* Para o ícone '+' da imagem, você pode usar uma classe de uma biblioteca (ex: Font Awesome 'fas fa-plus') */
+/* ou estilizar o texto diretamente se não usar uma biblioteca de ícones. */
+.input-button-container .icon-button i {
+  color: white;
+}

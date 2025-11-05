@@ -60,7 +60,7 @@
   background-color: var(--cor-primaria);
   padding: 20px;
   border-radius: 5px;
-  min-width: 500px;
+  min-width: 40%;
   box-sizing: border-box;
 }
 
@@ -107,4 +107,14 @@
 .container-btn-cadastro {
   display: flex;
   justify-content: center;
+}
+
+.grade-corNova {
+  width: 30%;
+  background-color: var(--cor-primaria);
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.118);
+  display: flex;
+  flex-direction: column;
 }
