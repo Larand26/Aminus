@@ -178,27 +178,25 @@ const CadastroWeb = () => {
             <div className="container tipo-genero">
               <div className="container-tipo">
                 <div className="tipos">
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="icon-male" />
+                  <BotaoTipoGen icon="icon-female" />
+                  <BotaoTipoGen icon="icon-child" />
+                  <BotaoTipoGen icon="icon-baby" />
+                  <BotaoTipoGen icon="icon-unisex" />
+                  <BotaoTipoGen icon="icon-promo" />
                 </div>
               </div>
               <div className="container-tipo">
                 <div className="tipos">
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
-                  <BotaoTipoGen icon="fa fa-truck" />
+                  <BotaoTipoGen icon="icon-chinelo" />
+                  <BotaoTipoGen icon="icon-sandalia" />
+                  <BotaoTipoGen icon="icon-rasteira" />
+                  <BotaoTipoGen icon="icon-slide" />
+                  <BotaoTipoGen icon="icon-tamanco" />
+                  <BotaoTipoGen icon="icon-babuche" />
+                  <BotaoTipoGen icon="icon-sapato" />
+                  <BotaoTipoGen icon="icon-sapatilha" />
+                  <BotaoTipoGen icon="icon-bota" />
                 </div>
               </div>
             </div>
