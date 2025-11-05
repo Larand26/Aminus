@@ -18,6 +18,7 @@ import atualizaItemSelecionado from "../utils/cadastroweb/atualizaItemSelecionad
 
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
+import opcoesGrade from "../assets/json/opcoes/opcoesGrade.json";
 
 import "../styles/cadastro-web.css";
 
@@ -39,7 +40,7 @@ const CadastroWeb = () => {
     console.log("Resultados da busca:", resultados);
     if (resultados.success) {
       setProdutos(resultados.data);
-      handleAtivoEcommerceChange(resultados.data[0]);
+      handleItemSelecionado(resultados.data[0]);
     }
   };
 
@@ -227,6 +228,19 @@ const CadastroWeb = () => {
                   icon="fa fa-plus"
                   onClick={() => {}}
                 />
+              </div>
+              <div className="tabela-grade">
+                <Tabela dados={itemSelecionado?.grade} isLoading={false}>
+                  {opcoesGrade.map((opcao) => (
+                    <Coluna
+                      key={opcao.id}
+                      titulo={opcao.label}
+                      campo={opcao.id}
+                      format={opcao.format || ""}
+                      dados={opcao.dados || []}
+                    />
+                  ))}
+                </Tabela>
               </div>
             </div>
           </div>

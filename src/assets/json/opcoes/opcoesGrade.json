@@ -1,0 +1,4 @@
+[
+  { "id": "NUMERO", "label": "Números", "checked": true },
+  { "id": "QUANTIDADE", "label": "Quantidade", "checked": true }
+]
