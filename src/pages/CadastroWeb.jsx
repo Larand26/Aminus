@@ -213,7 +213,7 @@ const CadastroWeb = () => {
                   <p>{produtos[0]?.PAI || ""}</p>
                 </div>
                 <div className="container-btn-cadastro">
-                  <button className="btn-cafastrar">Cadastrar</button>
+                  <button className="btn-cadastrar">Cadastrar</button>
                 </div>
               </div>
               <div className="foto">
