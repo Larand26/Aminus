@@ -19,6 +19,7 @@ import atualizaItemSelecionado from "../utils/cadastroweb/atualizaItemSelecionad
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
 import opcoesGrade from "../assets/json/opcoes/opcoesGrade.json";
+import generos from "../assets/json/generos.json";
 
 import "../styles/cadastro-web.css";
 
@@ -180,48 +181,23 @@ const CadastroWeb = () => {
             <div className="container tipo-genero">
               <div className="container-tipo">
                 <div className="tipos">
-                  <BotaoTipoGen
-                    icon="icon-male"
-                    className={
-                      itemSelecionado?.genero === "MASCULINO"
-                        ? "selecionado"
-                        : ""
-                    }
-                  />
-                  <BotaoTipoGen
-                    icon="icon-female"
-                    className={
-                      itemSelecionado?.genero === "FEMININO"
-                        ? "selecionado"
-                        : ""
-                    }
-                  />
-                  <BotaoTipoGen
-                    icon="icon-child"
-                    className={
-                      itemSelecionado?.genero === "INFANTIL"
-                        ? "selecionado"
-                        : ""
-                    }
-                  />
-                  <BotaoTipoGen
-                    icon="icon-baby"
-                    className={
-                      itemSelecionado?.genero === "BABY" ? "selecionado" : ""
-                    }
-                  />
-                  <BotaoTipoGen
-                    icon="icon-unisex"
-                    className={
-                      itemSelecionado?.genero === "BABY" ? "selecionado" : ""
-                    }
-                  />
-                  <BotaoTipoGen
-                    icon="icon-promo"
-                    className={
-                      itemSelecionado?.colecao === "PROMO" ? "selecionado" : ""
-                    }
-                  />
+                  {generos.map((gen) => (
+                    <BotaoTipoGen
+                      key={gen.icon}
+                      icon={gen.icon}
+                      className={
+                        itemSelecionado?.[gen.field] === gen.value
+                          ? "selecionado"
+                          : ""
+                      }
+                      onClick={() => {
+                        setItemSelecionado((prevItem) => ({
+                          ...prevItem,
+                          [gen.field]: gen.value,
+                        }));
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
               <div className="container-tipo">

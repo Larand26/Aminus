@@ -1,0 +1,8 @@
+[
+  { "icon": "icon-male", "value": "MASCULINO", "field": "genero" },
+  { "icon": "icon-female", "value": "FEMININO", "field": "genero" },
+  { "icon": "icon-child", "value": "INFANTIL", "field": "genero" },
+  { "icon": "icon-baby", "value": "BABY", "field": "genero" },
+  { "icon": "icon-unisex", "value": "UNISSEX", "field": "genero" },
+  { "icon": "icon-promo", "value": "PROMO", "field": "colecao" }
+]
