@@ -2,7 +2,10 @@ import "../styles/botao-tipo-gen.css";
 
 const BotaoTipoGen = (props) => {
   return (
-    <button onClick={props.onClick} className="botao-tipo-gen">
+    <button
+      onClick={props.onClick}
+      className={`botao-tipo-gen ${props.className}`}
+    >
       <i className={props.icon}></i>
     </button>
   );

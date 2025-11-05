@@ -180,12 +180,48 @@ const CadastroWeb = () => {
             <div className="container tipo-genero">
               <div className="container-tipo">
                 <div className="tipos">
-                  <BotaoTipoGen icon="icon-male" />
-                  <BotaoTipoGen icon="icon-female" />
-                  <BotaoTipoGen icon="icon-child" />
-                  <BotaoTipoGen icon="icon-baby" />
-                  <BotaoTipoGen icon="icon-unisex" />
-                  <BotaoTipoGen icon="icon-promo" />
+                  <BotaoTipoGen
+                    icon="icon-male"
+                    className={
+                      itemSelecionado?.genero === "MASCULINO"
+                        ? "selecionado"
+                        : ""
+                    }
+                  />
+                  <BotaoTipoGen
+                    icon="icon-female"
+                    className={
+                      itemSelecionado?.genero === "FEMININO"
+                        ? "selecionado"
+                        : ""
+                    }
+                  />
+                  <BotaoTipoGen
+                    icon="icon-child"
+                    className={
+                      itemSelecionado?.genero === "INFANTIL"
+                        ? "selecionado"
+                        : ""
+                    }
+                  />
+                  <BotaoTipoGen
+                    icon="icon-baby"
+                    className={
+                      itemSelecionado?.genero === "BABY" ? "selecionado" : ""
+                    }
+                  />
+                  <BotaoTipoGen
+                    icon="icon-unisex"
+                    className={
+                      itemSelecionado?.genero === "BABY" ? "selecionado" : ""
+                    }
+                  />
+                  <BotaoTipoGen
+                    icon="icon-promo"
+                    className={
+                      itemSelecionado?.colecao === "PROMO" ? "selecionado" : ""
+                    }
+                  />
                 </div>
               </div>
               <div className="container-tipo">
