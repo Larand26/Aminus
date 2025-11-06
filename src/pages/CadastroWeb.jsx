@@ -165,6 +165,10 @@ const CadastroWeb = () => {
   useEffect(() => {
     const novoNome = atualizaNome(itemSelecionado);
     setNome(novoNome);
+    const novoPai = `${itemSelecionado?.codFabricante || ""}-${
+      itemSelecionado?.colecao == "PROMO" ? "PROMO" : "GREN"
+    }-PAI`;
+    setPai(novoPai);
   }, [itemSelecionado]);
 
   //Opções
