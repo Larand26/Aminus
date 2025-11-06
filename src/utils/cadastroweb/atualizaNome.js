@@ -76,6 +76,7 @@ const atualizaNome = (itemSelecionado) => {
     default:
       break;
   }
+  nomeAtualizado = nomeAtualizado.replace("IPAN ", "IPANEMA ");
 
   return nomeAtualizado + " - " + itemSelecionado.codFabricante;
 };
