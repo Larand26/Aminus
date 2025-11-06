@@ -20,6 +20,7 @@ import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
 import opcoesGrade from "../assets/json/opcoes/opcoesGrade.json";
 import generos from "../assets/json/generos.json";
+import tipos from "../assets/json/tipos.json";
 
 import "../styles/cadastro-web.css";
 
@@ -202,15 +203,23 @@ const CadastroWeb = () => {
               </div>
               <div className="container-tipo">
                 <div className="tipos">
-                  <BotaoTipoGen icon="icon-chinelo" />
-                  <BotaoTipoGen icon="icon-sandalia" />
-                  <BotaoTipoGen icon="icon-rasteira" />
-                  <BotaoTipoGen icon="icon-slide" />
-                  <BotaoTipoGen icon="icon-tamanco" />
-                  <BotaoTipoGen icon="icon-babuche" />
-                  <BotaoTipoGen icon="icon-sapato" />
-                  <BotaoTipoGen icon="icon-sapatilha" />
-                  <BotaoTipoGen icon="icon-bota" />
+                  {tipos.map((tipo) => (
+                    <BotaoTipoGen
+                      key={tipo.icon}
+                      icon={tipo.icon}
+                      className={
+                        itemSelecionado?.[tipo.field] === tipo.value
+                          ? "selecionado"
+                          : ""
+                      }
+                      onClick={() => {
+                        setItemSelecionado((prevItem) => ({
+                          ...prevItem,
+                          [tipo.field]: tipo.value,
+                        }));
+                      }}
+                    />
+                  ))}
                 </div>
               </div>
             </div>

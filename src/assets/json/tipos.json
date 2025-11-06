@@ -1,0 +1,11 @@
+[
+  { "icon": "icon-chinelo", "value": "CHINELO DEDO", "field": "tipo" },
+  { "icon": "icon-sandalia", "value": "SANDÁLIA", "field": "tipo" },
+  { "icon": "icon-rasteira", "value": "RASTEIRINHAS", "field": "tipo" },
+  { "icon": "icon-slide", "value": "CHINELO GÁSPEA/SLIDE", "field": "tipo" },
+  { "icon": "icon-tamanco", "value": "TAMANCO", "field": "tipo" },
+  { "icon": "icon-babuche", "value": "BABUCH", "field": "tipo" },
+  { "icon": "icon-sapato", "value": "SAPATO", "field": "tipo" },
+  { "icon": "icon-sapatilha", "value": "SAPATILHA", "field": "tipo" },
+  { "icon": "icon-bota", "value": "BOTA", "field": "tipo" }
+]
