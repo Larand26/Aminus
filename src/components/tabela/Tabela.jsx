@@ -222,6 +222,10 @@ const Tabela = (props) => {
                         }
 
                         if (child.props.format === "checkbox") {
+                          const isDisabled =
+                            typeof child.props.disabled === "function"
+                              ? child.props.disabled(item)
+                              : child.props.disabled || false;
                           return (
                             <CheckBox
                               id={`checkbox-${childIndex}-${index}`}
@@ -231,7 +235,7 @@ const Tabela = (props) => {
                                   ? child.props.onChange(index)
                                   : () => {}
                               }
-                              disabled={child.props.disabled || false}
+                              disabled={isDisabled}
                             />
                           );
                         }

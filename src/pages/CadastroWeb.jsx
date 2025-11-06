@@ -352,7 +352,11 @@ const CadastroWeb = () => {
                 onChangeAll={(checked) =>
                   handleAtivoEcommerceChangeAll(checked)
                 }
-                disabled
+                disabled={(item) =>
+                  item.ALTURA === 0 ||
+                  item.LARGURA === 0 ||
+                  item.COMPRIMENTO === 0
+                }
               />
             </Tabela>
           </div>
