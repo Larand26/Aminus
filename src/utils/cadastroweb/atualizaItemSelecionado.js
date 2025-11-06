@@ -52,7 +52,7 @@ const atualizaItemSelecionado = async (itensSelecionado) => {
     codFabricante: itensSelecionado.COD_FABRICANTE,
   };
 
-  return itemSelecionado;
+  return { itemAtualizado: itemSelecionado, cor: cor || "" };
 };
 
 export default atualizaItemSelecionado;

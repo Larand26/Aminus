@@ -132,9 +132,10 @@ const CadastroWeb = () => {
   const handleItemSelecionado = async (item) => {
     if (item?.COD_INTERNO === itemSelecionado?.COD_INTERNO) return;
 
-    const itemAtualizado = await atualizaItemSelecionado(item);
+    const { itemAtualizado, cor } = await atualizaItemSelecionado(item);
     console.log("Item selecionado atualizado no componente:", itemAtualizado);
     setItemSelecionado(itemAtualizado);
+    setCorNova(cor);
   };
 
   // Tipo e Gênero
@@ -171,6 +172,9 @@ const CadastroWeb = () => {
     }-PAI`;
     setPai(novoPai);
   }, [itemSelecionado]);
+
+  // Cor nova
+  const [corNova, setCorNova] = useState("");
 
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
@@ -278,6 +282,8 @@ const CadastroWeb = () => {
                 <InputButton
                   placeholder="Adicionar cor nova"
                   icon="fa fa-plus"
+                  value={corNova}
+                  onChange={(e) => setCorNova(e.target.value.toUpperCase())}
                   onClick={() => {}}
                 />
                 <input
