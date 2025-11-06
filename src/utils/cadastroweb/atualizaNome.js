@@ -77,6 +77,6 @@ const atualizaNome = (itemSelecionado) => {
       break;
   }
 
-  return nomeAtualizado;
+  return nomeAtualizado + " - " + itemSelecionado.codFabricante;
 };
 export default atualizaNome;
