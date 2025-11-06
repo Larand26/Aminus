@@ -16,6 +16,7 @@ import atualizaOpcoes from "../utils/atualizaOpcoes";
 import searchCores from "../utils/search/searchCores";
 import atualizaItemSelecionado from "../utils/cadastroweb/atualizaItemSelecionado";
 import atualizaNome from "../utils/cadastroweb/atualizaNome";
+import criaCorNova from "../utils/cadastroweb/criaCorNova";
 
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
@@ -176,6 +177,13 @@ const CadastroWeb = () => {
   // Cor nova
   const [corNova, setCorNova] = useState("");
 
+  const handleCorNova = async () => {
+    if (!corNova) return;
+
+    const response = await criaCorNova(corNova);
+    console.log(response);
+  };
+
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesCadastroWeb");
@@ -284,7 +292,7 @@ const CadastroWeb = () => {
                   icon="fa fa-plus"
                   value={corNova}
                   onChange={(e) => setCorNova(e.target.value.toUpperCase())}
-                  onClick={() => {}}
+                  onClick={handleCorNova}
                 />
                 <input
                   type="text"
