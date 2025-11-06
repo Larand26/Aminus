@@ -15,6 +15,7 @@ import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 import searchCores from "../utils/search/searchCores";
 import atualizaItemSelecionado from "../utils/cadastroweb/atualizaItemSelecionado";
+import atualizaNome from "../utils/cadastroweb/atualizaNome";
 
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
@@ -136,7 +137,6 @@ const CadastroWeb = () => {
   };
 
   // Tipo e Gênero
-
   const handleTipoGeneroClick = (field, value) => {
     let valor = value;
     switch (field) {
@@ -157,6 +157,15 @@ const CadastroWeb = () => {
       [field]: valor,
     }));
   };
+
+  // Nome e pai
+  const [nome, setNome] = useState("");
+  const [pai, setPai] = useState("");
+
+  useEffect(() => {
+    const novoNome = atualizaNome(itemSelecionado);
+    setNome(novoNome);
+  }, [itemSelecionado]);
 
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
@@ -244,12 +253,12 @@ const CadastroWeb = () => {
               <div className="nome-pai">
                 <div className="nome-produto">
                   <h3>Nome:</h3>
-                  <p>{produtos[0]?.PROD_DESCRICAO || ""}</p>
+                  <p>{nome}</p>
                 </div>
                 <hr />
                 <div className="pai">
                   <h3>Pai:</h3>
-                  <p>{produtos[0]?.PAI || ""}</p>
+                  <p>{pai}</p>
                 </div>
                 <div className="container-btn-cadastro">
                   <button className="btn-cadastrar">Cadastrar</button>

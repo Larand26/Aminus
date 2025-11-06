@@ -48,6 +48,8 @@ const atualizaItemSelecionado = async (itensSelecionado) => {
     tipo,
     promo: colecao == "PROMO",
     grade,
+    nome: itensSelecionado.PROD_DESCRICAO,
+    codFabricante: itensSelecionado.COD_FABRICANTE,
   };
 
   return itemSelecionado;
