@@ -129,6 +129,18 @@
 .tabela-grade td {
   padding: 2px !important;
 }
-.tabela-grade .tabela-grade {
+.tabela-grade {
   max-height: 150px !important;
+  overflow-y: scroll;
+}
+
+.tabela-grade::-webkit-scrollbar {
+  width: 0px;
+}
+.tabela-grade::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tabela-grade::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 5px;
 }
