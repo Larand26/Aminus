@@ -19,8 +19,14 @@ const Tabela = (props) => {
 
   // Efeito para limpar a seleção quando os dados da tabela mudam
   useEffect(() => {
-    setSelecionados([]);
-  }, [dados]);
+    setSelecionados((prevSelecionados) => {
+      if (!dados || !chave) return [];
+      const dadosMap = new Map(dados.map((item) => [item[chave], item]));
+      return prevSelecionados
+        .map((selecionado) => dadosMap.get(selecionado[chave]))
+        .filter(Boolean);
+    });
+  }, [dados, chave]);
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
