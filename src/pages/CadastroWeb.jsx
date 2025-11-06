@@ -24,6 +24,7 @@ import generos from "../assets/json/generos.json";
 import tipos from "../assets/json/tipos.json";
 
 import "../styles/cadastro-web.css";
+import "../styles/inputs/input-styled.css";
 
 const CadastroWeb = () => {
   // Estados dos inputs
@@ -278,6 +279,12 @@ const CadastroWeb = () => {
                   placeholder="Adicionar cor nova"
                   icon="fa fa-plus"
                   onClick={() => {}}
+                />
+                <input
+                  type="text"
+                  className="input-styled"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value.toUpperCase())}
                 />
               </div>
               <div className="tabela-grade">

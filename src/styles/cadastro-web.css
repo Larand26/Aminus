@@ -120,7 +120,7 @@
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.118);
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 10px;
 }
 
 .nome-pai {
@@ -131,7 +131,7 @@
   padding: 2px !important;
 }
 .tabela-grade {
-  max-height: 150px !important;
+  max-height: 120px !important;
   overflow-y: scroll;
 }
 
@@ -144,4 +144,10 @@
 .tabela-grade::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 5px;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
