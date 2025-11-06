@@ -40,3 +40,4 @@ WHERE 1 = 1
     AND PA.[ID_CODFILIAIS] = 1
     AND P.[ID_DEPOSITOS] = 2
     -- Os filtros serão adicionados aqui pelo Node.js
+ORDER BY P.[ID_CODPRODUTO] DESC;
