@@ -28,6 +28,8 @@ import tipos from "../assets/json/tipos.json";
 import "../styles/cadastro-web.css";
 import "../styles/inputs/input-styled.css";
 
+import uknown from "../assets/img/unknown.jpg";
+
 const CadastroWeb = () => {
   // Estados dos inputs
   const [codFabricante, setCodFabricante] = useState("");
@@ -300,7 +302,7 @@ const CadastroWeb = () => {
                 </div>
               </div>
               <div className="foto">
-                <img src={itemSelecionado?.foto || ""} alt="" />
+                <img src={itemSelecionado?.foto || uknown} alt="" />
               </div>
             </div>
             <div className="container grade-corNova">
