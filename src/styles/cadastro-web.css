@@ -61,7 +61,8 @@
   background-color: var(--cor-primaria);
   padding: 20px;
   border-radius: 5px;
-  min-width: 40%;
+  width: 40%;
+  min-height: 264px;
   box-sizing: border-box;
 }
 
@@ -123,7 +124,7 @@
 }
 
 .nome-pai {
-  width: 100%;
+  flex: 1;
 }
 
 .tabela-grade td {
