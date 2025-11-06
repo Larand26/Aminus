@@ -17,6 +17,7 @@ import searchCores from "../utils/search/searchCores";
 import atualizaItemSelecionado from "../utils/cadastroweb/atualizaItemSelecionado";
 import atualizaNome from "../utils/cadastroweb/atualizaNome";
 import criaCorNova from "../utils/cadastroweb/criaCorNova";
+import cadastraProdutos from "../utils/cadastroweb/cadastraProdutos";
 
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
@@ -184,6 +185,18 @@ const CadastroWeb = () => {
     console.log(response);
   };
 
+  // Cadastra os produtos
+  const handleCadastrarProduto = async () => {
+    if (itensSelecionados.length === 0) return;
+    const response = await cadastraProdutos(
+      itensSelecionados,
+      nome,
+      pai,
+      ativosEcommerce
+    );
+    console.log(response);
+  };
+
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesCadastroWeb");
@@ -278,7 +291,12 @@ const CadastroWeb = () => {
                   <p>{pai}</p>
                 </div>
                 <div className="container-btn-cadastro">
-                  <button className="btn-cadastrar">Cadastrar</button>
+                  <button
+                    className="btn-cadastrar"
+                    onClick={handleCadastrarProduto}
+                  >
+                    Cadastrar
+                  </button>
                 </div>
               </div>
               <div className="foto">
