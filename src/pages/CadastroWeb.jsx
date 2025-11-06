@@ -352,6 +352,7 @@ const CadastroWeb = () => {
                 onChangeAll={(checked) =>
                   handleAtivoEcommerceChangeAll(checked)
                 }
+                disabled
               />
             </Tabela>
           </div>

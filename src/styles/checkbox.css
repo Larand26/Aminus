@@ -50,3 +50,9 @@
 .custom-checkbox input[type="checkbox"]:checked + label::after {
   opacity: 1;
 }
+
+.disabled label {
+  border: 2px solid var(--cor-vermelho) !important;
+  background-color: var(--cor-fundo);
+  cursor: auto;
+}

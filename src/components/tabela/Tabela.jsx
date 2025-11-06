@@ -231,6 +231,7 @@ const Tabela = (props) => {
                                   ? child.props.onChange(index)
                                   : () => {}
                               }
+                              disabled={child.props.disabled || false}
                             />
                           );
                         }
