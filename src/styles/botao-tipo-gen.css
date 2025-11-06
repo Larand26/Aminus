@@ -5,6 +5,7 @@
   height: 50px;
   cursor: pointer;
   border: 2px solid var(--cor-branco);
+  transition: 0.2s ease-in-out;
 }
 
 .botao-tipo-gen:hover {
@@ -17,4 +18,8 @@
 
 .selecionado {
   background-color: var(--cor-amarelo) !important;
+}
+
+.selecionado.promo {
+  background-color: var(--cor-vermelho) !important;
 }

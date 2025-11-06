@@ -135,6 +135,29 @@ const CadastroWeb = () => {
     setItemSelecionado(itemAtualizado);
   };
 
+  // Tipo e Gênero
+
+  const handleTipoGeneroClick = (field, value) => {
+    let valor = value;
+    switch (field) {
+      case "tipo":
+      case "genero":
+        break;
+      case "colecao":
+        itemSelecionado?.colecao == "PROMO"
+          ? (valor = "NORMAL")
+          : (valor = "PROMO");
+        break;
+      default:
+        console.error("Campo inválido para Tipo/Gênero:", field);
+        return;
+    }
+    setItemSelecionado((prevItem) => ({
+      ...prevItem,
+      [field]: valor,
+    }));
+  };
+
   //Opções
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesCadastroWeb");
@@ -186,17 +209,14 @@ const CadastroWeb = () => {
                     <BotaoTipoGen
                       key={gen.icon}
                       icon={gen.icon}
-                      className={
+                      className={`${
                         itemSelecionado?.[gen.field] === gen.value
                           ? "selecionado"
                           : ""
+                      } ${gen.value === "PROMO" ? "promo" : ""}`}
+                      onClick={() =>
+                        handleTipoGeneroClick(gen.field, gen.value)
                       }
-                      onClick={() => {
-                        setItemSelecionado((prevItem) => ({
-                          ...prevItem,
-                          [gen.field]: gen.value,
-                        }));
-                      }}
                     />
                   ))}
                 </div>
@@ -212,12 +232,9 @@ const CadastroWeb = () => {
                           ? "selecionado"
                           : ""
                       }
-                      onClick={() => {
-                        setItemSelecionado((prevItem) => ({
-                          ...prevItem,
-                          [tipo.field]: tipo.value,
-                        }));
-                      }}
+                      onClick={() =>
+                        handleTipoGeneroClick(tipo.field, tipo.value)
+                      }
                     />
                   ))}
                 </div>
