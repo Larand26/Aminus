@@ -10,6 +10,7 @@ import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import BotaoTipoGen from "../components/BotaoTipoGen";
 import InputButton from "../components/InputButton";
+import Toast from "../components/Toast";
 
 import searchCadastroWeb from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
@@ -44,11 +45,26 @@ const CadastroWeb = () => {
       codInterno: codInterno,
     };
     console.log("Buscando com os filtros:", filtros);
-    const resultados = await searchCadastroWeb(filtros);
-    console.log("Resultados da busca:", resultados);
-    if (resultados.success) {
-      setProdutos(resultados.data);
-      handleItemSelecionado(resultados.data[0]);
+    const response = await searchCadastroWeb(filtros);
+    console.log("Resultados da busca:", response);
+    if (response.success) {
+      if (response.data.length === 0) {
+        setToastInfo({
+          key: Date.now(),
+          message: "Nenhum produto encontrado com os filtros fornecidos.",
+          type: "aviso",
+        });
+      }
+
+      setProdutos(response.data);
+      handleItemSelecionado(response.data[0]);
+    } else {
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao buscar cores.",
+        type: "falha",
+      });
+      return;
     }
   };
 
@@ -57,6 +73,9 @@ const CadastroWeb = () => {
   const [coresSelecionadas, setCoresSelecionadas] = useState([]);
   const [ativosEcommerce, setAtivosEcommerce] = useState([]);
   const [itensSelecionados, setItensSelecionados] = useState([]); // Estado para itens selecionados
+
+  // Toast
+  const [toastInfo, setToastInfo] = useState(null);
 
   // Cores
   useEffect(() => {
@@ -91,10 +110,18 @@ const CadastroWeb = () => {
   };
 
   const handleSearchCores = async (term) => {
-    const resultados = await searchCores(term);
-    console.log(resultados);
-    if (!resultados.success) return;
-    const novasCores = resultados.data.map((cor) => ({
+    const response = await searchCores(term);
+
+    if (!response.success) {
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao buscar cores.",
+        type: "falha",
+      });
+      return;
+    }
+
+    const novasCores = response.data.map((cor) => ({
       value: cor.value,
       label: cor.label,
     }));
@@ -184,7 +211,19 @@ const CadastroWeb = () => {
     if (!corNova) return;
 
     const response = await criaCorNova(corNova);
-    console.log(response);
+    if (response.success) {
+      setToastInfo({
+        key: Date.now(),
+        message: "Cor criada com sucesso!",
+        type: "sucesso",
+      });
+    } else {
+      setToastInfo({
+        key: Date.now(),
+        message: response.message || "Falha ao criar a cor.",
+        type: "falha",
+      });
+    }
   };
 
   // Cadastra os produtos
@@ -196,7 +235,19 @@ const CadastroWeb = () => {
       pai,
       ativosEcommerce
     );
-    console.log(response);
+    if (response.success) {
+      setToastInfo({
+        key: Date.now(),
+        message: "Produtos cadastrados com sucesso!",
+        type: "sucesso",
+      });
+    } else {
+      setToastInfo({
+        key: Date.now(),
+        message: response.error || "Falha ao cadastrar produtos.",
+        type: "falha",
+      });
+    }
   };
 
   //Opções
@@ -228,6 +279,13 @@ const CadastroWeb = () => {
         ))}
       </Configuracoes>
       <NavBar />
+      {toastInfo && (
+        <Toast
+          key={toastInfo.key}
+          message={toastInfo.message}
+          type={toastInfo.type}
+        />
+      )}
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
           <InputLabel

@@ -22,6 +22,9 @@
   --cor-amarelo: #df9f4e;
   --cor-branco: #fff;
   --cor-selecionado: #658884;
+  --cor-sucesso: #658884e4;
+  --cor-falha: #b2473ee4;
+  --cor-aviso: #df9f4ee4;
   --fonte-principal: "Inter", Arial, sans-serif;
   --fonte-titulo: "Bebas Neue", cursive;
   --tamanho-maximo: 1300px;

@@ -1,0 +1,51 @@
+.toast {
+  width: 250px;
+  min-height: 100px;
+  transition: 0.4s ease;
+  position: absolute;
+  right: 10px;
+  top: 70px;
+  z-index: 1000;
+  padding: 15px;
+  word-break: break-word;
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+}
+.toast i {
+  margin-left: 15px;
+  font-size: 1.8rem;
+}
+
+.toast.sucesso {
+  background-color: var(--cor-sucesso);
+}
+
+.toast.falha {
+  background-color: var(--cor-falha);
+}
+
+.toast.aviso {
+  background-color: var(--cor-aviso);
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-80%);
+  }
+}
+.toast {
+  animation: slideIn 2s ease forwards;
+}
