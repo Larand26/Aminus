@@ -39,12 +39,33 @@ const InputFile = (props) => {
     }
   }, [files]);
 
-  const handleFileChange = (event) => {
-    const newFiles = Array.from(event.target.files);
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+  const fileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        // Resolve com apenas a parte Base64 da string
+        const base64String = reader.result.split(",")[1];
+        resolve(base64String);
+      };
+      reader.onerror = (error) => reject(error);
+    });
 
-    if (props.onFileChange) {
-      props.onFileChange(event);
+  const handleFileChange = async (event) => {
+    const newFiles = Array.from(event.target.files);
+
+    // Converte todos os novos arquivos para Base64
+    try {
+      const base64Promises = newFiles.map(fileToBase64);
+      const newBase64Files = await Promise.all(base64Promises);
+
+      setFiles((prevFiles) => [...prevFiles, ...newBase64Files]);
+
+      if (props.onFileChange) {
+        props.onFileChange(event);
+      }
+    } catch (error) {
+      console.error("Erro ao converter arquivos para Base64:", error);
     }
   };
 
