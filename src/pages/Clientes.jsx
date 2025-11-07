@@ -37,7 +37,7 @@ const Clientes = () => {
     const filters = {
       numCliente,
       nome,
-      cnpj,
+      cnpj: cnpj.replace(/\D/g, ""),
       celular,
       email,
     };

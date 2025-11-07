@@ -51,7 +51,7 @@ const Notas = () => {
     setIsLoading(true);
     const filtros = {
       numNota: numNota,
-      cnpj: cnpj,
+      cnpj: cnpj.replace(/\D/g, ""),
       dataInicial: data[0],
       dataFinal: data[1],
       vendedor: vendedor,
