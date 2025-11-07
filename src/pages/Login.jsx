@@ -16,6 +16,8 @@ const Login = () => {
   );
   const navigate = useNavigate();
 
+  const [toastInfo, setToastInfo] = useState(null);
+
   useEffect(() => {
     const handleLoginResponse = (response) => {
       if (!response.success) {
