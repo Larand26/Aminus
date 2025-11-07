@@ -7,6 +7,7 @@ import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
+import Toast from "../components/Toast";
 
 import searchClientes from "../utils/search/searchClientes";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
@@ -20,6 +21,9 @@ const Clientes = () => {
   const [cnpj, setCnpj] = useState("");
   const [celular, setCelular] = useState("");
   const [email, setEmail] = useState("");
+
+  // Toast
+  const [toastInfo, setToastInfo] = useState(null);
 
   // Loading
   const [isLoading, setIsLoading] = useState(false);
@@ -43,8 +47,19 @@ const Clientes = () => {
 
     if (response.success) {
       setClientes(response.data);
+      if (response.data.length === 0) {
+        setToastInfo({
+          key: Date.now(),
+          message: "Nenhum cliente encontrado com os filtros informados.",
+          type: "aviso",
+        });
+      }
     } else {
-      console.error("Erro ao buscar clientes:", response.error);
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao buscar clientes.",
+        type: "falha",
+      });
     }
   };
 
@@ -84,6 +99,13 @@ const Clientes = () => {
         ))}
       </Configuracoes>
       <NavBar />
+      {toastInfo && (
+        <Toast
+          key={toastInfo.key}
+          message={toastInfo.message}
+          type={toastInfo.type}
+        />
+      )}
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
           <InputLabel

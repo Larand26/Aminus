@@ -9,6 +9,7 @@ import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
+import Toast from "../components/Toast";
 
 import searchNotas from "../utils/search/searchNotas";
 
@@ -28,6 +29,9 @@ const Notas = () => {
   const [vendedor, setVendedor] = useState("");
   const [uf, setUf] = useState("");
   const [transportadora, setTransportadora] = useState("");
+
+  // Toast
+  const [toastInfo, setToastInfo] = useState(null);
 
   // Loading
   const [isLoading, setIsLoading] = useState(false);
@@ -55,11 +59,25 @@ const Notas = () => {
       transportadora: transportadora,
     };
 
-    const results = await searchNotas(filtros);
+    const response = await searchNotas(filtros);
     setIsLoading(false);
-    console.log(results);
 
-    setNotas(results.data);
+    if (response.success) {
+      setNotas(response.data);
+      if (response.data.length === 0) {
+        setToastInfo({
+          key: Date.now(),
+          message: "Nenhuma nota fiscal encontrada com os filtros informados.",
+          type: "aviso",
+        });
+      }
+    } else {
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao buscar notas fiscais.",
+        type: "falha",
+      });
+    }
   };
 
   // Função para lidar com a tecla Enter
@@ -98,6 +116,13 @@ const Notas = () => {
         ))}
       </Configuracoes>
       <NavBar />
+      {toastInfo && (
+        <Toast
+          key={toastInfo.key}
+          message={toastInfo.message}
+          type={toastInfo.type}
+        />
+      )}
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
           <InputLabel

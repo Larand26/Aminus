@@ -10,6 +10,7 @@ import InputDataLabel from "../components/InputDataLabel";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import Button from "../components/Button";
+import Toast from "../components/Toast";
 
 import PopUp from "../components/PopUp";
 
@@ -35,6 +36,9 @@ const Pedidos = () => {
   const [cliente, setCliente] = useState("");
   const [cnpj, setCnpj] = useState("");
   const [vendedor, setVendedor] = useState("");
+
+  // Toast
+  const [toastInfo, setToastInfo] = useState(null);
 
   // Loading
   const [isLoading, setIsLoading] = useState(false);
@@ -65,10 +69,25 @@ const Pedidos = () => {
     };
     console.log(filters);
 
-    const results = await searchPedidos(filters);
+    const response = await searchPedidos(filters);
     setIsLoading(false);
-    setPedidos(results.data);
-    console.log(results);
+
+    if (response.success) {
+      if (response.data.length === 0) {
+        setToastInfo({
+          key: Date.now(),
+          message: "Nenhum pedido encontrado com os filtros informados.",
+          type: "aviso",
+        });
+      }
+      setPedidos(response.data);
+    } else {
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao buscar pedidos.",
+        type: "falha",
+      });
+    }
   };
 
   // Função para lidar com a tecla Enter
@@ -218,6 +237,13 @@ const Pedidos = () => {
         ))}
       </Configuracoes>
       <NavBar />
+      {toastInfo && (
+        <Toast
+          key={toastInfo.key}
+          message={toastInfo.message}
+          type={toastInfo.type}
+        />
+      )}
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
           <InputLabel

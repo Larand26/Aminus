@@ -8,6 +8,7 @@ import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
+import Toast from "../components/Toast";
 
 import searchProdutos from "../utils/search/searchProdutos";
 
@@ -23,6 +24,9 @@ const Produtos = () => {
   const [nome, setNome] = useState("");
   const [quantidade, setQuantidade] = useState("");
 
+  // Toast
+  const [toastInfo, setToastInfo] = useState(null);
+
   // Loading
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,7 +37,7 @@ const Produtos = () => {
   const handleSearch = async () => {
     setProdutos([]);
     setIsLoading(true);
-    const resultados = await searchProdutos({
+    const response = await searchProdutos({
       codFabricante: codFabricante,
       codInterno: codInterno,
       codBarras: codBarras,
@@ -41,8 +45,23 @@ const Produtos = () => {
       quantidade: quantidade,
     });
     setIsLoading(false);
-    setProdutos(resultados.data);
-    // console.log(resultados);
+
+    if (response.success) {
+      setProdutos(response.data);
+      if (response.data.length === 0) {
+        setToastInfo({
+          key: Date.now(),
+          message: "Nenhum produto encontrado com os filtros informados.",
+          type: "aviso",
+        });
+      }
+    } else {
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao buscar produtos.",
+        type: "falha",
+      });
+    }
   };
 
   // Função para lidar com a tecla Enter
@@ -81,6 +100,13 @@ const Produtos = () => {
         ))}
       </Configuracoes>
       <NavBar />
+      {toastInfo && (
+        <Toast
+          key={toastInfo.key}
+          message={toastInfo.message}
+          type={toastInfo.type}
+        />
+      )}
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
           <InputLabel

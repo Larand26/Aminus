@@ -1,7 +1,7 @@
-import React, { use } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { useState, useEffect } from "react";
+
+import Toast from "../components/Toast";
 
 import logo from "../assets/img/png/imagologo_png.png";
 
@@ -19,7 +19,11 @@ const Login = () => {
   useEffect(() => {
     const handleLoginResponse = (response) => {
       if (!response.success) {
-        console.log("Login falhou: " + response.message);
+        setToastInfo({
+          key: Date.now(),
+          message: "Usuário ou senha inválidos.",
+          type: "erro",
+        });
         return;
       }
       if (response.data) {
@@ -43,6 +47,13 @@ const Login = () => {
 
   return (
     <div className="login-page">
+      {toastInfo && (
+        <Toast
+          key={toastInfo.key}
+          message={toastInfo.message}
+          type={toastInfo.type}
+        />
+      )}
       <div className="form">
         <div className="logo-container">
           <img src={logo} alt="" />

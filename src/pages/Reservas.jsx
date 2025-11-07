@@ -10,6 +10,7 @@ import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import PopUp from "../components/PopUp";
+import Toast from "../components/Toast";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesReserva from "../assets/json/opcoes/opcoesReserva.json";
@@ -28,6 +29,9 @@ const Reservas = () => {
   const [nomePedido, setNomePedido] = useState("");
   const [vendedor, setVendedor] = useState("");
 
+  // Toast
+  const [toastInfo, setToastInfo] = useState(null);
+
   // Loading
   const [isLoading, setIsLoading] = useState(false);
 
@@ -45,10 +49,25 @@ const Reservas = () => {
       vendedor: vendedor,
     };
 
-    const results = await searchReservas(filters);
+    const response = await searchReservas(filters);
     setIsLoading(false);
-    setReservas(results.data);
-    console.log(results);
+
+    if (response.success) {
+      setReservas(response.data);
+      if (response.data.length === 0) {
+        setToastInfo({
+          key: Date.now(),
+          message: "Nenhuma reserva encontrada com os filtros informados.",
+          type: "aviso",
+        });
+      }
+    } else {
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao buscar reservas.",
+        type: "falha",
+      });
+    }
   };
 
   // Função para lidar com a tecla Enter
@@ -130,6 +149,13 @@ const Reservas = () => {
         </div>
         <div className="footer-popup-reservas"></div>
       </PopUp>
+      {toastInfo && (
+        <Toast
+          key={toastInfo.key}
+          message={toastInfo.message}
+          type={toastInfo.type}
+        />
+      )}
       <Configuracoes>
         {opcoes.map((opcao) => (
           <Opcao
