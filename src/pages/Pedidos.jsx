@@ -124,7 +124,20 @@ const Pedidos = () => {
       setLinhaSelecionada(itemMaisPesado);
     } else if (response.success) {
       setItensPedido(response.data);
-      setLinhaSelecionada(null); // Limpa a seleção se não houver itens
+      setLinhaSelecionada(null);
+      setToastInfo({
+        key: Date.now(),
+        message: "Nenhum item encontrado para este pedido.",
+        type: "aviso",
+      });
+    } else {
+      setItensPedido([]);
+      setLinhaSelecionada(null);
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao pesquisar itens do pedido.",
+        type: "falha",
+      });
     }
     document.querySelector(`#popup-pedido`).classList.add("open-pop-up");
     document.querySelector(".blur").classList.add("open-blur");
@@ -150,6 +163,13 @@ const Pedidos = () => {
 
     if (response.success) {
       setCotacao(response.data);
+    } else {
+      setCotacao([]);
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao pesquisar itens do pedido.",
+        type: "falha",
+      });
     }
     setIsCotacaoLoading(false);
   };
