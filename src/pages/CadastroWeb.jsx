@@ -70,6 +70,13 @@ const CadastroWeb = () => {
     }
   };
 
+  // Função para lidar com a tecla Enter
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   // Estados da tabela
   const [cores, setCores] = useState([]);
   const [coresSelecionadas, setCoresSelecionadas] = useState([]);
@@ -294,11 +301,13 @@ const CadastroWeb = () => {
             label="Cod Fabricante"
             value={codFabricante}
             onChange={setCodFabricante}
+            onKeyDown={handleKeyDown}
           />
           <InputLabel
             label="Cod Interno"
             value={codInterno}
             onChange={setCodInterno}
+            onKeyDown={handleKeyDown}
           />
         </BarraLateral>
         <div className="content container-cadastro-web">
