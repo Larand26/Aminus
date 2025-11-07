@@ -54,6 +54,8 @@ const CadastroWeb = () => {
           message: "Nenhum produto encontrado com os filtros fornecidos.",
           type: "aviso",
         });
+
+        handleItemSelecionado(null);
       }
 
       setProdutos(response.data);

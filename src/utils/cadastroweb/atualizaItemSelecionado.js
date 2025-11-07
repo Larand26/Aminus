@@ -1,16 +1,14 @@
 import searchFotos from "../search/searchFotos";
 
 const atualizaItemSelecionado = async (itensSelecionado) => {
-  if (!itensSelecionado) return;
-
   const [fabrica, marca, genero, tipo, colecao] =
-    itensSelecionado.GRUPO_DESCRICAO.split(", ");
+    itensSelecionado?.GRUPO_DESCRICAO.split(", ") || [];
 
   let grade = [];
-  if (!itensSelecionado.QUANTIDADES || !itensSelecionado.NUMEROS) {
+  if (!itensSelecionado?.QUANTIDADES || !itensSelecionado?.NUMEROS) {
   } else {
-    const quantidades = itensSelecionado.QUANTIDADES.split(",");
-    const numeros = itensSelecionado.NUMEROS.split(",");
+    const quantidades = itensSelecionado?.QUANTIDADES.split(",") || [];
+    const numeros = itensSelecionado?.NUMEROS.split(",") || [];
 
     grade = numeros.map((numero, index) => ({
       NUMERO: numero.trim(),
@@ -18,7 +16,7 @@ const atualizaItemSelecionado = async (itensSelecionado) => {
     }));
   }
 
-  const prodDescricao = itensSelecionado.PROD_DESCRICAO;
+  const prodDescricao = itensSelecionado?.PROD_DESCRICAO || "";
   const match = prodDescricao.match(/\}(.*?)\(/);
   const cor = match ? match[1].trim() : null;
 
@@ -28,9 +26,9 @@ const atualizaItemSelecionado = async (itensSelecionado) => {
     });
   }
   const filters = {
-    codFabricante: itensSelecionado.COD_FABRICANTE,
+    codFabricante: itensSelecionado?.COD_FABRICANTE || "",
     codInterno: "",
-    codCor: itensSelecionado.COD_COR,
+    codCor: itensSelecionado?.COD_COR || "",
   };
 
   const response = await searchFotos(filters);
@@ -40,7 +38,7 @@ const atualizaItemSelecionado = async (itensSelecionado) => {
   }
 
   const itemSelecionado = {
-    COD_INTERNO: itensSelecionado.COD_INTERNO,
+    COD_INTERNO: itensSelecionado?.COD_INTERNO || "",
     foto: fotoB64,
     fabrica,
     marca,
@@ -48,8 +46,8 @@ const atualizaItemSelecionado = async (itensSelecionado) => {
     tipo,
     promo: colecao == "PROMO",
     grade,
-    nome: itensSelecionado.PROD_DESCRICAO,
-    codFabricante: itensSelecionado.COD_FABRICANTE,
+    nome: itensSelecionado?.PROD_DESCRICAO || "",
+    codFabricante: itensSelecionado?.COD_FABRICANTE || "",
   };
 
   return { itemAtualizado: itemSelecionado, cor: cor || "" };
