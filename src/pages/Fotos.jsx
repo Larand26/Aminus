@@ -9,6 +9,7 @@ import BotoesFotos from "../components/BotoesFotos";
 import PopUp from "../components/PopUp";
 import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 import Loading from "../components/Loading";
+import Toast from "../components/Toast";
 
 import searchFotos from "../utils/search/searchFotos";
 import atualizaFotoMongo from "../utils/fotos/atualizaFotoMongo";
@@ -25,6 +26,9 @@ const Fotos = () => {
   const [codInterno, setCodInterno] = useState("");
   const [codCor, setCodCor] = useState("");
 
+  // Toast
+  const [toastInfo, setToastInfo] = useState(null);
+
   // Loading
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,11 +43,23 @@ const Fotos = () => {
       codInterno: codInterno,
       codCor: codCor,
     };
-    const resultado = await searchFotos(filters);
+    const response = await searchFotos(filters);
 
-    if (resultado.success) {
-      setFotos(resultado.data);
+    if (response.success) {
+      if (response.data.length === 0) {
+        setToastInfo({
+          key: Date.now(),
+          message: "Nenhuma foto encontrada",
+          type: "aviso",
+        });
+      }
+      setFotos(response.data);
     } else {
+      setToastInfo({
+        key: Date.now(),
+        message: response.error || "Erro ao buscar fotos",
+        type: "falha",
+      });
       setFotos([]);
     }
     setIsLoading(false);
@@ -157,6 +173,13 @@ const Fotos = () => {
         )}
       </PopUp>
       <NavBar />
+      {toastInfo && (
+        <Toast
+          key={toastInfo.key}
+          message={toastInfo.message}
+          type={toastInfo.type}
+        />
+      )}
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
           <InputLabel
