@@ -41,7 +41,6 @@ const Fotos = () => {
     };
     const resultado = await searchFotos(filters);
     setIsLoading(false);
-    console.log(resultado);
     setFotos(resultado);
   };
 
@@ -215,8 +214,8 @@ const Fotos = () => {
                       }`}
                       key={index}
                       foto={
-                        foto.fotos?.foto_principal
-                          ? `data:image/jpeg;base64,${foto.fotos.foto_principal}`
+                        foto?.fotos[0]
+                          ? `data:image/jpeg;base64,${foto?.fotos[0]}`
                           : unknown
                       }
                     >

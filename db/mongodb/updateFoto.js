@@ -11,37 +11,17 @@ const updateFoto = async (foto) => {
       // Converte Uint8Array para Buffer antes de criar ObjectId
       id = new mongoose.Types.ObjectId(Buffer.from(id.buffer));
     }
-    console.log(id);
 
     // Remover o _id do objeto foto para evitar conflito na atualização
     const { _id, ...fotoSemId } = foto;
 
-    console.log(fotoSemId);
-
-    // Certifique-se que fotoSemId.foto (ou o campo correto) é uma string base64
-    if (fotoSemId.foto && typeof fotoSemId.foto !== "string") {
-      fotoSemId.foto = fotoSemId.foto.toString("base64");
-    }
-
-    if (
-      fotoSemId.fotos &&
-      fotoSemId.fotos.foto_principal &&
-      typeof fotoSemId.fotos.foto_principal === "string"
-    ) {
-      fotoSemId.fotos.foto_principal = Buffer.from(
-        fotoSemId.fotos.foto_principal,
-        "base64"
-      );
-    }
-
-    if (fotoSemId.fotos) {
-      Object.keys(fotoSemId.fotos).forEach((key) => {
-        if (
-          typeof fotoSemId.fotos[key] === "string" &&
-          fotoSemId.fotos[key].length > 0
-        ) {
-          fotoSemId.fotos[key] = Buffer.from(fotoSemId.fotos[key], "base64");
+    // Se 'fotos' for um array, converte cada string base64 para Buffer
+    if (fotoSemId.fotos && Array.isArray(fotoSemId.fotos)) {
+      fotoSemId.fotos = fotoSemId.fotos.map((fotoBase64) => {
+        if (typeof fotoBase64 === "string" && fotoBase64.length > 0) {
+          return Buffer.from(fotoBase64, "base64");
         }
+        return fotoBase64; // Mantém valores que não são strings (ex: já são Buffers)
       });
     }
 

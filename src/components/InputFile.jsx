@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, use } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import "../styles/inputs/input-file.css";
 
@@ -10,17 +10,29 @@ const InputFile = (props) => {
   const [dragging, setDragging] = useState(false);
   const isFirstRender = useRef(true);
 
-  // Sincroniza o estado interno com as props quando elas mudam
+  // Sincroniza o estado interno com as props quando elas mudam (apenas na primeira renderização)
   useEffect(() => {
     if (isFirstRender.current) {
-      const initial = props.initialFiles?.filter((file) => file) || [];
+      let initial = [];
+      const initialFiles = props.initialFiles;
+
+      // Garante que estamos trabalhando com um array
+      if (initialFiles) {
+        if (Array.isArray(initialFiles)) {
+          // Se já for um array, apenas filtra os valores nulos
+          initial = initialFiles.filter((file) => file);
+        } else if (typeof initialFiles === "object") {
+          // Se for um objeto, converte seus valores para um array
+          initial = Object.values(initialFiles).filter((file) => file);
+        }
+      }
+
       setFiles(initial);
       isFirstRender.current = false;
     }
-    // Não atualiza mais depois da primeira vez!
-  }, []);
+  }, [props.initialFiles]);
 
-  // Chama o onChange sempre que files mudar
+  // Chama o onChange sempre que o estado 'files' mudar
   useEffect(() => {
     if (props.onChange) {
       props.onChange(files);
@@ -94,7 +106,7 @@ const InputFile = (props) => {
             <button className="remove-file" onClick={() => removeFile(index)}>
               <i className="fas fa-trash"></i>
             </button>
-            {/* 2. Renderiza a imagem corretamente se for string Base64 ou objeto File */}
+            {/* Esta lógica já trata strings (base64) e objetos File corretamente */}
             <img
               src={
                 typeof file === "string"

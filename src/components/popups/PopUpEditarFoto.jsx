@@ -42,30 +42,29 @@ const PopUpEditarFoto = (props) => {
       return base64;
     } catch (error) {
       console.error("Erro ao converter arquivo para base64:", error);
+      return null;
     }
   };
 
   const handleChange = async (name, value) => {
     if (name === "fotos") {
-      const fotosObj = {};
-      for (let index = 0; index < value.length; index++) {
-        const file = value[index];
-        let fileBase64;
-        if (file instanceof File) {
-          fileBase64 = await fileToBase64(file);
-          fileBase64 = fileBase64.split(",")[1];
-        } else {
-          fileBase64 = file;
+      // 'value' é o array de arquivos/strings do InputFile
+      const base64Promises = value.map(async (fileOrString) => {
+        if (fileOrString instanceof File) {
+          const base64 = await fileToBase64(fileOrString);
+          // Retorna apenas a parte base64 da string
+          return base64 ? base64.split(",")[1] : null;
         }
-        if (index === 0) {
-          fotosObj["foto_principal"] = fileBase64;
-        } else {
-          fotosObj[`foto_produto_${index}`] = fileBase64;
-        }
-      }
+        // Se já for uma string (base64), retorna como está
+        return fileOrString;
+      });
+
+      // Filtra valores nulos que podem vir de erros de conversão
+      const fotosArray = (await Promise.all(base64Promises)).filter(Boolean);
+
       setFormData((prevData) => ({
         ...prevData,
-        [name]: fotosObj,
+        fotos: fotosArray,
       }));
     } else {
       setFormData((prevData) => ({
@@ -75,7 +74,8 @@ const PopUpEditarFoto = (props) => {
     }
   };
 
-  const fotos = Object.values(props.foto?.fotos || {});
+  // Como props.foto.fotos agora é um array, podemos usá-lo diretamente.
+  const fotos = props.foto?.fotos || [];
 
   return (
     <div className="pop-up-editar">

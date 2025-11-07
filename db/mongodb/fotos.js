@@ -34,33 +34,20 @@ const searchFoto = async (produto) => {
 
     // Converte buffers para base64
     const produtosFormatados = produtos.map((prod) => {
-      const fotos = prod.fotos || {};
+      const prodObj = prod.toObject();
+      const originalFotos = prodObj.fotos || {};
+      const formattedFotos = {};
+
+      for (const key in originalFotos) {
+        if (Object.prototype.hasOwnProperty.call(originalFotos, key)) {
+          const value = originalFotos[key];
+          formattedFotos[key] = value ? value.toString("base64") : null;
+        }
+      }
+
       return {
-        ...prod.toObject(),
-        fotos: {
-          ...fotos,
-          foto_principal: fotos.foto_principal
-            ? fotos.foto_principal.toString("base64")
-            : null,
-          foto_produto_1: fotos.foto_produto_1
-            ? fotos.foto_produto_1.toString("base64")
-            : null,
-          foto_produto_2: fotos.foto_produto_2
-            ? fotos.foto_produto_2.toString("base64")
-            : null,
-          foto_produto_3: fotos.foto_produto_3
-            ? fotos.foto_produto_3.toString("base64")
-            : null,
-          foto_produto_4: fotos.foto_produto_4
-            ? fotos.foto_produto_4.toString("base64")
-            : null,
-          foto_produto_5: fotos.foto_produto_5
-            ? fotos.foto_produto_5.toString("base64")
-            : null,
-          foto_complementar: fotos.foto_complementar
-            ? fotos.foto_complementar.toString("base64")
-            : null,
-        },
+        ...prodObj,
+        fotos: formattedFotos,
       };
     });
 
