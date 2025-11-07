@@ -29,7 +29,7 @@ const searchFoto = async (produto) => {
     const produtos = await Produto.find(pesquisa);
 
     if (produtos.length === 0) {
-      return [];
+      return { success: true, data: [] };
     }
 
     // Converte buffers para base64
