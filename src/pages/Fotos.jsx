@@ -40,8 +40,13 @@ const Fotos = () => {
       codCor: codCor,
     };
     const resultado = await searchFotos(filters);
+
+    if (resultado.success) {
+      setFotos(resultado.data);
+      return;
+    }
     setIsLoading(false);
-    setFotos(resultado);
+    setFotos([]);
   };
 
   const handleKeyDown = (event) => {

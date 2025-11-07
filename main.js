@@ -143,6 +143,7 @@ ipcMain.on("search-foto", async (event, arg) => {
   } catch (error) {
     console.error("Erro ao buscar fotos:", error);
     event.reply("search-foto-response", {
+      success: false,
       error: error.message || "Erro desconhecido",
     });
   }

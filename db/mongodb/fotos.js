@@ -51,10 +51,10 @@ const searchFoto = async (produto) => {
       };
     });
 
-    return produtosFormatados;
+    return { success: true, data: produtosFormatados };
   } catch (err) {
     console.error("Erro:", err);
-    return [];
+    return { success: false, error: err.message };
   }
 };
 
