@@ -43,10 +43,10 @@ const Fotos = () => {
 
     if (resultado.success) {
       setFotos(resultado.data);
-      return;
+    } else {
+      setFotos([]);
     }
     setIsLoading(false);
-    setFotos([]);
   };
 
   const handleKeyDown = (event) => {

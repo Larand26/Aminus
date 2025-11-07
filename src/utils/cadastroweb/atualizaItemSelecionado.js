@@ -33,8 +33,8 @@ const atualizaItemSelecionado = async (itensSelecionado) => {
 
   const response = await searchFotos(filters);
   let fotoB64 = null;
-  if (response && response.length > 0) {
-    fotoB64 = `data:image/jpeg;base64,${response[0].fotos.foto_principal}`;
+  if (response.success && response?.data.length > 0) {
+    fotoB64 = `data:image/jpeg;base64,${response.data[0].fotos[0]}`;
   }
 
   const itemSelecionado = {
