@@ -58,6 +58,7 @@ const Notas = () => {
       uf: uf,
       transportadora: transportadora,
     };
+    console.log(filtros);
 
     const response = await searchNotas(filtros);
     setIsLoading(false);
@@ -147,7 +148,7 @@ const Notas = () => {
             <SelectLabel
               label="Vendedores"
               options={vendedoresJson}
-              onChange={(e) => setVendedor(e.target.value)}
+              onChange={setVendedor}
               value={vendedor}
               onKeyDown={handleKeyDown}
             />
@@ -155,14 +156,14 @@ const Notas = () => {
           <SelectLabel
             label="UF"
             options={ufsJson}
-            onChange={(e) => setUf(e.target.value)}
+            onChange={setUf}
             value={uf}
             onKeyDown={handleKeyDown}
           />
           <SelectLabel
             label="Transportadora"
             options={transportadorasJson}
-            onChange={(e) => setTransportadora(e.target.value)}
+            onChange={setTransportadora}
             value={transportadora}
             onKeyDown={handleKeyDown}
           />
