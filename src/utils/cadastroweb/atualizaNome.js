@@ -25,6 +25,8 @@ const listaParaRemover = [
   "MASC",
   "FEM",
   "AD",
+  "ADULTO",
+  "DEDO",
 ];
 
 const atualizaNome = (itemSelecionado) => {
@@ -77,6 +79,7 @@ const atualizaNome = (itemSelecionado) => {
       break;
   }
   nomeAtualizado = nomeAtualizado.replace("IPAN ", "IPANEMA ");
+  nomeAtualizado = nomeAtualizado.replace("CART ", "CARTAGO ");
 
   return nomeAtualizado + " - " + itemSelecionado.codFabricante;
 };
