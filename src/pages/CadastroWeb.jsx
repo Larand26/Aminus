@@ -414,6 +414,9 @@ const CadastroWeb = () => {
               chave="COD_INTERNO" // Propriedade única para identificar cada item
               onSelectionChange={setItensSelecionados} // Função para receber os itens selecionados
               itemSelecionado={itemSelecionado}
+              search={
+                opcoes.find((opcao) => opcao.id === "search").checked || false
+              }
             >
               {opcoes
                 .filter((opcao) => opcao.checked)
