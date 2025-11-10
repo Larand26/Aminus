@@ -187,6 +187,7 @@ const Notas = () => {
                   campo={opcao.id}
                   format={opcao.format || ""}
                   dados={opcao.dados || []}
+                  copy={opcao.copy || false}
                 />
               ))}
           </Tabela>

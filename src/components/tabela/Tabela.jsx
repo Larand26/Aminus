@@ -324,10 +324,35 @@ const Tabela = (props) => {
                         return valor || "";
                       })();
 
+                      // Função para copiar o conteúdo ao clicar
+                      const handleCopy = () => {
+                        if (child.props.copy) {
+                          let textoCopiar = cellContent;
+                          // Se for um elemento React, tenta extrair o texto
+                          if (React.isValidElement(cellContent)) {
+                            if (
+                              typeof cellContent.props.children === "string"
+                            ) {
+                              textoCopiar = cellContent.props.children;
+                            } else {
+                              textoCopiar = "";
+                            }
+                          }
+                          navigator.clipboard.writeText(String(textoCopiar));
+                        }
+                      };
+
                       return (
                         <td
                           key={childIndex}
                           className={item.PERSONALIZADO ? "selecionado" : ""}
+                          style={
+                            child.props.copy ? { cursor: "copy" } : undefined
+                          }
+                          onClick={child.props.copy ? handleCopy : undefined}
+                          title={
+                            child.props.copy ? "Clique para copiar" : undefined
+                          }
                         >
                           {cellContent}
                         </td>
