@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import InputRadio from "../InputRadio";
 import CheckBox from "../CheckBox";
@@ -7,8 +7,9 @@ import Loading from "../Loading";
 import "../../styles/tabela.css";
 
 const Tabela = (props) => {
-  const { dados, chave, onSelectionChange, itemSelecionado } = props;
+  const { dados, chave, onSelectionChange, itemSelecionado, search } = props;
   const [selecionados, setSelecionados] = useState([]);
+  const [termoBusca, setTermoBusca] = useState("");
 
   // Efeito para notificar o componente pai sobre mudanças na seleção
   useEffect(() => {
@@ -28,42 +29,7 @@ const Tabela = (props) => {
     });
   }, [dados, chave]);
 
-  const handleSelectAll = (e) => {
-    if (e.target.checked) {
-      setSelecionados(dados || []);
-    } else {
-      setSelecionados([]);
-    }
-  };
-
-  const handleSelectItem = (item) => {
-    setSelecionados((prevSelecionados) => {
-      const isSelected = prevSelecionados.some(
-        (selecionado) => selecionado[chave] === item[chave]
-      );
-      if (isSelected) {
-        return prevSelecionados.filter(
-          (selecionado) => selecionado[chave] !== item[chave]
-        );
-      } else {
-        return [...prevSelecionados, item];
-      }
-    });
-  };
-
-  const todosSelecionados =
-    dados && dados.length > 0 && selecionados.length === dados.length;
-
-  const isLoading = !!props.loading;
-  // Filtra os filhos para remover valores nulos ou falsos
-  const colunasVisiveis = React.Children.toArray(props.children).filter(
-    Boolean
-  );
-
-  // Conta o número de colunas para usar no colSpan
-  const numColunas = colunasVisiveis.length;
-
-  // Formatos
+  // Formatos (movidos para cima para serem usados na filtragem)
   const formataDinheiro = (valor) => {
     if (typeof valor !== "number") return valor;
     return `R$ ${valor.toFixed(2).replace(".", ",")}`;
@@ -86,10 +52,119 @@ const Tabela = (props) => {
     return `${valor.toFixed(2).replace(".", ",")} ${medida || "kg"}`;
   };
 
+  // Filtra os filhos para remover valores nulos ou falsos
+  const colunasVisiveis = React.Children.toArray(props.children).filter(
+    Boolean
+  );
+
+  const dadosFiltrados = useMemo(() => {
+    if (!termoBusca) {
+      return dados || [];
+    }
+    if (!dados) {
+      return [];
+    }
+
+    const termoBuscaLower = termoBusca.toLowerCase();
+
+    return dados.filter((item) => {
+      return colunasVisiveis.some((child) => {
+        let cellText;
+
+        if (typeof child.props.body === "function") {
+          const bodyResult = child.props.body(item);
+          if (
+            typeof bodyResult === "string" ||
+            typeof bodyResult === "number"
+          ) {
+            cellText = bodyResult;
+          } else {
+            return false;
+          }
+        } else {
+          const valor = item[child.props.campo];
+          const formato = child.props.format || "";
+
+          switch (formato) {
+            case "dinheiro":
+              cellText = formataDinheiro(valor);
+              break;
+            case "data":
+              cellText = formataData(valor);
+              break;
+            case "data-hora":
+              cellText = formataDataHora(valor);
+              break;
+            case "junto":
+              cellText = formataJunto(item, child.props.dados);
+              break;
+            case "peso":
+              cellText = formataPeso(valor, child.props.medida);
+              break;
+            case "radio":
+            case "checkbox":
+              return false;
+            default:
+              cellText = valor;
+              break;
+          }
+        }
+
+        return String(cellText).toLowerCase().includes(termoBuscaLower);
+      });
+    });
+  }, [dados, termoBusca, colunasVisiveis]);
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelecionados(dadosFiltrados || []);
+    } else {
+      setSelecionados([]);
+    }
+  };
+
+  const handleSelectItem = (item) => {
+    setSelecionados((prevSelecionados) => {
+      const isSelected = prevSelecionados.some(
+        (selecionado) => selecionado[chave] === item[chave]
+      );
+      if (isSelected) {
+        return prevSelecionados.filter(
+          (selecionado) => selecionado[chave] !== item[chave]
+        );
+      } else {
+        return [...prevSelecionados, item];
+      }
+    });
+  };
+
+  const todosSelecionados =
+    dadosFiltrados &&
+    dadosFiltrados.length > 0 &&
+    selecionados.length === dadosFiltrados.length;
+
+  const isLoading = !!props.loading;
+
+  // Conta o número de colunas para usar no colSpan
+  const numColunas = colunasVisiveis.length;
+  // Se há coluna de seleção (checkbox no header), conta ela também
+  const totalColunas = numColunas + (props.select == "checkbox" ? 1 : 0);
+
   return (
     <div className="tabela-container">
       <table className="tabela">
         <thead>
+          {search && (
+            <tr>
+              <th colSpan={totalColunas} className="th-search">
+                <input
+                  type="text"
+                  value={termoBusca}
+                  onChange={(e) => setTermoBusca(e.target.value)}
+                />
+              </th>
+            </tr>
+          )}
           <tr>
             {props.select == "checkbox" && (
               <th>
@@ -153,8 +228,8 @@ const Tabela = (props) => {
             </tr>
           )}
           {!isLoading ? (
-            props.dados && props.dados.length > 0 ? (
-              props.dados.map((item, index) => {
+            dadosFiltrados && dadosFiltrados.length > 0 ? (
+              dadosFiltrados.map((item, index) => {
                 // Encontra a coluna que tem uma função onClick
                 const clickableColumn = colunasVisiveis.find(
                   (child) => child.props.onClick
@@ -268,7 +343,9 @@ const Tabela = (props) => {
                   colSpan={numColunas}
                   style={{ textAlign: "center", padding: "20px" }}
                 >
-                  {props.semDados || "Nenhum dado encontrado"}
+                  {termoBusca
+                    ? "Nenhum resultado encontrado"
+                    : props.semDados || "Nenhum dado encontrado"}
                 </td>
               </tr>
             )

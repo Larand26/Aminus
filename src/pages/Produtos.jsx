@@ -149,6 +149,7 @@ const Produtos = () => {
             dados={produtos}
             semDados="Nenhum produto encontrado"
             loading={isLoading}
+            search
           >
             {opcoes
               .filter((opcao) => opcao.checked)
