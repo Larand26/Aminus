@@ -10,6 +10,7 @@ const Tabela = (props) => {
   const { dados, chave, onSelectionChange, itemSelecionado, search } = props;
   const [selecionados, setSelecionados] = useState([]);
   const [termoBusca, setTermoBusca] = useState("");
+  const [copiados, setCopiados] = useState({}); // Novo estado para controlar células copiadas
 
   // Efeito para notificar o componente pai sobre mudanças na seleção
   useEffect(() => {
@@ -325,10 +326,13 @@ const Tabela = (props) => {
                       })();
 
                       // Função para copiar o conteúdo ao clicar
-                      const handleCopy = () => {
-                        if (child.props.copy) {
+                      const handleCopy = (
+                        rowIndex,
+                        childIndex,
+                        cellContent
+                      ) => {
+                        if (colunasVisiveis[childIndex].props.copy) {
                           let textoCopiar = cellContent;
-                          // Se for um elemento React, tenta extrair o texto
                           if (React.isValidElement(cellContent)) {
                             if (
                               typeof cellContent.props.children === "string"
@@ -339,17 +343,35 @@ const Tabela = (props) => {
                             }
                           }
                           navigator.clipboard.writeText(String(textoCopiar));
+                          // Marca como copiado
+                          const key = `${rowIndex}-${childIndex}`;
+                          setCopiados((prev) => ({ ...prev, [key]: true }));
+                          setTimeout(() => {
+                            setCopiados((prev) => {
+                              const novo = { ...prev };
+                              delete novo[key];
+                              return novo;
+                            });
+                          }, 1000);
                         }
                       };
 
                       return (
                         <td
                           key={childIndex}
-                          className={item.PERSONALIZADO ? "selecionado" : ""}
+                          className={`${
+                            item.PERSONALIZADO ? "selecionado" : ""
+                          } ${
+                            copiados[`${index}-${childIndex}`] ? "copiado" : ""
+                          } item-copiavel`}
                           style={
-                            child.props.copy ? { cursor: "copy" } : undefined
+                            child.props.copy ? { cursor: "pointer" } : undefined
                           }
-                          onClick={child.props.copy ? handleCopy : undefined}
+                          onClick={
+                            child.props.copy
+                              ? () => handleCopy(index, childIndex, cellContent)
+                              : undefined
+                          }
                           title={
                             child.props.copy ? "Clique para copiar" : undefined
                           }

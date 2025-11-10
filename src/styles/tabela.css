@@ -114,3 +114,12 @@ th {
 .th-search input:focus {
   outline: none;
 }
+
+.item-copiavel {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.copiado {
+  color: var(--cor-sucesso) !important;
+}
