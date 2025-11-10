@@ -1,4 +1,9 @@
 [
+  {
+    "id": "search",
+    "label": "Pesquisa",
+    "checked": true
+  },
   { "id": "NUM_NOTA", "label": "Num Nota", "checked": true },
   { "id": "RAZAO_SOCIAL", "label": "Razão Social", "checked": true },
   { "id": "CNPJ", "label": "CNPJ", "checked": true, "copy": true },

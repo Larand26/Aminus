@@ -152,6 +152,7 @@ const Clientes = () => {
             dados={clientes}
             semDados="Nenhum cliente encontrado"
             loading={isLoading}
+            search={opcoes.find((opcao) => opcao.id === "search").checked}
           >
             {opcoes
               .filter((opcao) => opcao.checked)

@@ -1,4 +1,9 @@
 [
+  {
+    "id": "search",
+    "label": "Pesquisa",
+    "checked": true
+  },
   { "id": "COD_INTERNO", "label": "Cod Interno", "checked": true },
   { "id": "COD_FABRICANTE", "label": "Cod Fabricante", "checked": true },
   { "id": "NOME_CLIENTE", "label": "Nome Cliente", "checked": true },

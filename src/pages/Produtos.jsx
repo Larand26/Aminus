@@ -149,7 +149,7 @@ const Produtos = () => {
             dados={produtos}
             semDados="Nenhum produto encontrado"
             loading={isLoading}
-            search
+            search={opcoes.find((opcao) => opcao.id === "search").checked}
           >
             {opcoes
               .filter((opcao) => opcao.checked)

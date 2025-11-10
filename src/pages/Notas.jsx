@@ -176,7 +176,7 @@ const Notas = () => {
             dados={notas}
             semDados="Nenhuma nota fiscal encontrada"
             loading={isLoading}
-            search
+            search={opcoes.find((opcao) => opcao.id === "search").checked}
           >
             {opcoes
               .filter((opcao) => opcao.checked)

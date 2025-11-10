@@ -309,6 +309,7 @@ const Pedidos = () => {
             semDados="Nenhum pedido encontrado"
             hover
             loading={isLoading}
+            search={opcoes.find((opcao) => opcao.id === "search").checked}
           >
             {opcoes
               .filter((opcao) => opcao.checked)
