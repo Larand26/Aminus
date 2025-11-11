@@ -49,12 +49,15 @@ const homeWindow = () => {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
+    icon: __dirname + "/logo_png.png",
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, "preload.js"),
     },
   });
+
+  win.maximize();
 
   win.setMenuBarVisibility(isDev());
 
