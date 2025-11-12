@@ -205,6 +205,7 @@ const Tabela = (props) => {
                 default:
                   break;
               }
+              if (child.props.campo === "search") return null;
               return <th key={index}>{child.props.titulo}</th>;
             })}
           </tr>
@@ -270,6 +271,9 @@ const Tabela = (props) => {
                       </td>
                     )}
                     {colunasVisiveis.map((child, childIndex) => {
+                      // Não renderiza a célula da coluna se for a de pesquisa
+                      if (child.props.campo === "search") return null;
+
                       const cellContent = (() => {
                         if (typeof child.props.body === "function")
                           return child.props.body(item);
