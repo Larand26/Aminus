@@ -1,7 +1,7 @@
 const conectarSql = require("../../config/database");
 const fs = require("fs");
 const path = require("path");
-const { VarChar, NVarChar } = require("mssql");
+const { VarChar, NVarChar, Int } = require("mssql");
 
 const searchReserva = async (reserva) => {
   const connection = await conectarSql();
@@ -26,11 +26,11 @@ const searchReserva = async (reserva) => {
       }
       if (reserva.nomeCliente) {
         conditions.push("PO.[PEDOR_RAZAOSOCIAL] LIKE @nomeCliente");
-        request.input("nomeCliente", NVarChar, `%${reserva.nomeCliente}%`);
+        request.input("nomeCliente", VarChar, `%${reserva.nomeCliente}%`);
       }
       if (reserva.vendedor) {
         conditions.push("PO.[ID_CODVENDEDOR] = @vendedor");
-        request.input("vendedor", VarChar, reserva.vendedor);
+        request.input("vendedor", Int, reserva.vendedor);
       }
     }
 
