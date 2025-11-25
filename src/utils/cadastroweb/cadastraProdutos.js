@@ -1,5 +1,6 @@
 const cadastraProdutos = async (
   itensSelecionados,
+  produtos,
   nome,
   pai,
   ativosEcommerce
@@ -15,13 +16,21 @@ const cadastraProdutos = async (
     }
   */
 
-  const itensParaCadastro = itensSelecionados.map((item, index) => ({
-    ID_CODPRODUTO: item.COD_INTERNO,
-    PROD_NOME: nome,
-    PROD_PAI: pai,
-    PROD_IDCOR: item.COD_COR_ECOMMERCE,
-    PROD_ATIVO: ativosEcommerce[index],
-  }));
+  const itensParaCadastro = itensSelecionados.map((item) => {
+    const originalIndex = produtos.findIndex(
+      (p) => p.COD_INTERNO === item.COD_INTERNO
+    );
+
+    return {
+      ID_CODPRODUTO: item.COD_INTERNO,
+      PROD_NOME: nome,
+      PROD_PAI: pai,
+      PROD_IDCOR: item.COD_COR_ECOMMERCE,
+      PROD_ATIVO: originalIndex !== -1 ? ativosEcommerce[originalIndex] : false,
+    };
+  });
+
+  console.log(itensParaCadastro);
 
   window.electronApi?.cadastraProdutosWeb(itensParaCadastro);
 

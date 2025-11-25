@@ -240,6 +240,7 @@ const CadastroWeb = () => {
     if (itensSelecionados.length === 0) return;
     const response = await cadastraProdutos(
       itensSelecionados,
+      produtos,
       nome,
       pai,
       ativosEcommerce
