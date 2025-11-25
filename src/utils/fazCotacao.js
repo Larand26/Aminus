@@ -30,24 +30,33 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
     window.electronApi?.onMakeCotacaoResponse((arg) => {
       if (arg.success) {
         const result = arg.data.padrao.ShippingSevicesArray.map(
-          (item, index) => ({
-            NOME_TRANSPORTADORA: item.ServiceDescription,
-            PRECO: transportadorsasPrecoPersonalizado.includes(item.CarrierCode)
-              ? arg.data.personalizado.ShippingSevicesArray[index]
-                  .PresentationalPrice
-              : item.PresentationalPrice,
-            PRECO_PADRAO: item.PresentationalPrice,
-            PRECO_PERSONALIZADO:
-              arg.data.personalizado.ShippingSevicesArray[index]
-                .PresentationalPrice,
-            TEMPO_ENTREGA: `${item.DeliveryTime} - ${
-              parseInt(item.DeliveryTime) + 2
-            }`,
-            PERSONALIZADO: transportadorsasPrecoPersonalizado.includes(
-              item.CarrierCode
-            ),
-          })
-        );
+          (item, index) => {
+            try {
+              return {
+                NOME_TRANSPORTADORA: item?.ServiceDescription || "--",
+                PRECO: transportadorsasPrecoPersonalizado.includes(
+                  item.CarrierCode
+                )
+                  ? arg.data.personalizado.ShippingSevicesArray[index]
+                      .PresentationalPrice
+                  : item.PresentationalPrice,
+                PRECO_PADRAO: item.PresentationalPrice,
+                PRECO_PERSONALIZADO:
+                  arg.data.personalizado.ShippingSevicesArray[index]
+                    .PresentationalPrice,
+                TEMPO_ENTREGA: `${item.DeliveryTime} - ${
+                  parseInt(item.DeliveryTime) + 2
+                }`,
+                PERSONALIZADO: transportadorsasPrecoPersonalizado.includes(
+                  item.CarrierCode
+                ),
+              };
+            } catch (error) {
+              console.error("Erro ao processar item da cotação:", item, error);
+              return null;
+            }
+          }
+        ).filter(Boolean);
         resolve({
           success: true,
           data: result.sort((a, b) => a.PRECO_PADRAO - b.PRECO_PADRAO),
