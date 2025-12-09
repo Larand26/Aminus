@@ -80,7 +80,6 @@ const CadastroWeb = () => {
   // Estados da tabela
   const [cores, setCores] = useState([]);
   const [coresSelecionadas, setCoresSelecionadas] = useState([]);
-  const [ativosEcommerce, setAtivosEcommerce] = useState([]);
   const [itensSelecionados, setItensSelecionados] = useState([]); // Estado para itens selecionados
 
   // Toast
@@ -145,25 +144,31 @@ const CadastroWeb = () => {
   };
 
   // Ativos Ecommerce
-  useEffect(() => {
-    const ativos = produtos.map(
-      (produto) =>
-        produto.ATIVO_ECOMMERCE === true &&
-        produto.INTEGRACAO_ECOMMERCE === true
-    );
-    setAtivosEcommerce(ativos);
-  }, [produtos]);
-
   const handleAtivoEcommerceChange = (index) => {
-    setAtivosEcommerce((prevState) => {
-      const newState = [...prevState];
-      newState[index] = !newState[index];
-      return newState;
+    setProdutos((prevProdutos) => {
+      const novosProdutos = [...prevProdutos];
+      const produto = novosProdutos[index];
+      // Inverte o valor de ATIVO_ECOMMERCE e INTEGRACAO_ECOMMERCE
+      const novoEstado = !(
+        produto.ATIVO_ECOMMERCE && produto.INTEGRACAO_ECOMMERCE
+      );
+      novosProdutos[index] = {
+        ...produto,
+        ATIVO_ECOMMERCE: novoEstado,
+        INTEGRACAO_ECOMMERCE: novoEstado,
+      };
+      return novosProdutos;
     });
   };
 
   const handleAtivoEcommerceChangeAll = (checked) => {
-    setAtivosEcommerce(produtos.map(() => checked));
+    setProdutos((prevProdutos) =>
+      prevProdutos.map((produto) => ({
+        ...produto,
+        ATIVO_ECOMMERCE: checked,
+        INTEGRACAO_ECOMMERCE: checked,
+      }))
+    );
   };
 
   // Item selecionado
@@ -242,8 +247,7 @@ const CadastroWeb = () => {
       itensSelecionados,
       produtos,
       nome,
-      pai,
-      ativosEcommerce
+      pai
     );
     if (response.success) {
       setToastInfo({
@@ -454,7 +458,9 @@ const CadastroWeb = () => {
                 titulo="Ativo Ecommerce"
                 format="checkbox"
                 id="ATIVO_ECOMMERCE"
-                state={ativosEcommerce}
+                state={produtos.map(
+                  (p) => p.ATIVO_ECOMMERCE && p.INTEGRACAO_ECOMMERCE
+                )}
                 onChange={(index) => handleAtivoEcommerceChange(index)}
                 onChangeAll={(checked) =>
                   handleAtivoEcommerceChangeAll(checked)
