@@ -8,6 +8,7 @@ const InputButton = (props) => {
         className="input-field"
         value={props.value}
         onChange={props.onChange}
+        onBlur={props.onBlur}
         placeholder={props.placeholder}
       />
       <button className="icon-button" onClick={props.onClick}>

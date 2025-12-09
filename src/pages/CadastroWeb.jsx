@@ -224,7 +224,7 @@ const CadastroWeb = () => {
   const handleCorNova = async () => {
     if (!corNova) return;
 
-    const response = await criaCorNova(corNova);
+    const response = await criaCorNova(corNova.toUpperCase());
     if (response.success) {
       setToastInfo({
         key: Date.now(),
@@ -385,7 +385,8 @@ const CadastroWeb = () => {
                   placeholder="Adicionar cor nova"
                   icon="fa fa-plus"
                   value={corNova}
-                  onChange={(e) => setCorNova(e.target.value.toUpperCase())}
+                  onChange={(e) => setCorNova(e.target.value)}
+                  onBlur={() => setCorNova(corNova.toUpperCase())}
                   onClick={handleCorNova}
                 />
                 <input
