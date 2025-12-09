@@ -63,7 +63,9 @@ const PopUpMeuPerfil = () => {
         <div className="foto-perfil">
           <img src={imgPadrao} alt="Foto de Perfil" />
         </div>
-        <button onClick={handleSearchTotalPedidos}>Mudar Foto</button>
+        <button onClick={handleSearchTotalPedidos}>
+          <i className="fa-solid fa-refresh"></i>
+        </button>
       </div>
       <div style={{ width: "100%" }}>
         <div>
