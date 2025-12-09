@@ -6,7 +6,6 @@ import Notas from "./pages/Notas";
 import Clientes from "./pages/Clientes";
 import Reservas from "./pages/Reservas";
 import Fotos from "./pages/Fotos";
-import ControlePlaza from "./pages/ControlePlaza";
 import CadastroWeb from "./pages/CadastroWeb";
 import Login from "./pages/Login";
 import Tracking from "./pages/Tracking";

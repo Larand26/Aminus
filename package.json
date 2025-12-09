@@ -64,7 +64,6 @@
       "package.json",
       "db/**/*",
       "config/**/*",
-      "excel/**/*",
       "transportadoras/**/*",
       "globals.js"
     ],

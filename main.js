@@ -20,11 +20,6 @@ const { deleteFoto } = require("./db/mongodb/deleteFoto");
 const { updateFoto } = require("./db/mongodb/updateFoto");
 
 // My SQL
-const { getCsv } = require("./excel/getCsv");
-const { insertCsvMysql } = require("./db/mysql/insertCsvMysql");
-const { getControlePlaza } = require("./db/mysql/getControlePlaza");
-const { changeAcao } = require("./db/mysql/changeAcao");
-const { changeDataRepasse } = require("./db/mysql/changeDataRepasse");
 const { login } = require("./db/mysql/login");
 
 // Transportadoras
@@ -212,37 +207,6 @@ ipcMain.on("delete-foto", async (event, fotoId) => {
     event.reply("delete-foto-response", {
       error: error.message || "Erro desconhecido",
       success: false,
-    });
-  }
-});
-
-ipcMain.on("get-csv", async (event, arg) => {
-  try {
-    // Simulação de busca de CSV, substitua com a lógica real
-    const csvData = await getCsv(arg);
-    await insertCsvMysql(csvData);
-    const result = await getControlePlaza();
-    event.reply("get-csv-response", result);
-  } catch (error) {
-    console.error("Erro ao buscar CSV:", error);
-    event.reply("get-csv-response", {
-      error: error.message || "Erro desconhecido",
-    });
-  }
-});
-
-ipcMain.on("change-acao", async (event, arg) => {
-  try {
-    // Simulação de alteração de ação, substitua com a lógica real
-    const result = await changeAcao(arg);
-    if (arg.acao === 1) {
-      await changeDataRepasse(arg.id);
-    }
-    event.reply("change-acao-response", result);
-  } catch (error) {
-    console.error("Erro ao alterar ação:", error);
-    event.reply("change-acao-response", {
-      error: error.message || "Erro desconhecido",
     });
   }
 });
