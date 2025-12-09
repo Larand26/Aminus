@@ -1,16 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "../../styles/pop-up-meu-perfil.css";
 
 import imgPadrao from "../../assets/img/png/logo_png.png";
 import searchTotalPedidos from "../../utils/search/searchTotalPedidos";
 
-const PopUpMeuPerfil = () => {
+import searchTotalPedidos from "../../utils/search/searchTotalPedidos";
+
+const PopUpMeuPerfil = ({ isOpen }) => {
   const [userData, setUserData] = useState(
     localStorage.getItem("userData")
       ? JSON.parse(localStorage.getItem("userData"))
       : {}
   );
+  const [totalPedido, setTotalPedido] = useState({});
+
+  const handleSearchTotalPedido = async () => {
+    const filtros = {
+      nomeVendedor: userData.NOME,
+    };
+    const response = await searchTotalPedidos(filtros);
+    if (response.success) {
+      setTotalPedido(response.data);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      handleSearchTotalPedido();
+    }
+  }, [isOpen]);
 
   const handleSearchTotalPedidos = async () => {
     try {

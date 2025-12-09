@@ -2,30 +2,31 @@ import { useNavigate } from "react-router-dom";
 
 import "../styles/menu-meu-perfil.css";
 
-const MenuMeuPerfil = () => {
+// 1. Receba as props: onOpenMeuPerfil, isOpen
+const MenuMeuPerfil = ({ onOpenMeuPerfil, isOpen }) => {
   const navigate = useNavigate();
-  const openPopup = () => {
-    document.querySelector(".pop-up").classList.toggle("open-pop-up");
-    document.querySelector(".blur").classList.toggle("open-blur");
+
+  // 2. Função de logout para limpar o storage e redirecionar
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userData");
+    navigate("/");
   };
-  const closeMenu = () => {
-    document.querySelector(".menu-meu-perfil").classList.remove("open-menu");
-  };
+
+  // 3. Use a prop 'isOpen' para controlar a classe do menu
+  const menuClassName = `menu-meu-perfil ${isOpen ? "open-menu" : ""}`;
+
   return (
-    <div className="menu-meu-perfil">
+    <div className={menuClassName}>
       <ul>
         <li>
-          <button
-            onClick={() => {
-              openPopup();
-              closeMenu();
-            }}
-          >
+          {/* 4. O botão agora chama a função recebida via props */}
+          <button onClick={onOpenMeuPerfil}>
             Meu Perfil <i className="fa fa-user"></i>
           </button>
         </li>
         <li>
-          <button onClick={() => navigate("/")}>
+          <button onClick={handleLogout}>
             Sair <i className="fa fa-sign-out"></i>
           </button>
         </li>
@@ -33,4 +34,5 @@ const MenuMeuPerfil = () => {
     </div>
   );
 };
+
 export default MenuMeuPerfil;

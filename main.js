@@ -12,7 +12,11 @@ const { getDataReserva } = require("./db/sqlserver/dataReserva");
 const { getCores, createCor } = require("./db/sqlserver/cores");
 const { cadastroWeb } = require("./db/sqlserver/cadastroWeb");
 const { makeCubagem } = require("./db/sqlserver/cubagem");
+<<<<<<< HEAD
 const { searchTotalPedidos } = require("./db/sqlserver/totalPedidos");
+=======
+const { searchTotalPedido } = require("./db/sqlserver/totalPedidos");
+>>>>>>> b6977d60f77f7fc2f4651bb5281732b6b6968587
 
 // Mongo DB
 const { searchFoto } = require("./db/mongodb/fotos");
@@ -312,6 +316,7 @@ ipcMain.on("update-foto", async (event, novaFoto) => {
   }
 });
 
+<<<<<<< HEAD
 ipcMain.on("search-total-pedidos", async (event, filters) => {
   try {
     const totalPedidos = await searchTotalPedidos(filters);
@@ -319,6 +324,15 @@ ipcMain.on("search-total-pedidos", async (event, filters) => {
   } catch (error) {
     console.error("Erro ao buscar total de pedidos:", error);
     event.reply("search-total-pedidos-response", {
+=======
+ipcMain.on("search-total-pedido", async (event, arg) => {
+  try {
+    const totalPedidos = await searchTotalPedido(arg);
+    event.reply("search-total-pedido-response", totalPedidos);
+  } catch (error) {
+    console.error("Erro ao buscar total de pedidos:", error);
+    event.reply("search-total-pedido-response", {
+>>>>>>> b6977d60f77f7fc2f4651bb5281732b6b6968587
       error: error.message || "Erro desconhecido",
       success: false,
     });

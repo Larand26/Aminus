@@ -114,10 +114,16 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("update-foto-response", (event, arg) => {
       callback(arg);
     }),
+<<<<<<< HEAD
   searchTotalPedidos: (filters) =>
     ipcRenderer.send("search-total-pedidos", filters),
   onSearchTotalPedidosResponse: (callback) =>
     ipcRenderer.on("search-total-pedidos-response", (event, arg) => {
+=======
+  searchTotalPedido: (arg) => ipcRenderer.send("search-total-pedido", arg),
+  onSearchTotalPedidoResponse: (callback) =>
+    ipcRenderer.on("search-total-pedido-response", (event, arg) => {
+>>>>>>> b6977d60f77f7fc2f4651bb5281732b6b6968587
       callback(arg);
     }),
 });
