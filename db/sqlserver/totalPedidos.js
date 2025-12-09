@@ -13,7 +13,7 @@ const searchTotalPedidos = async (pedido) => {
     let conditions = [];
 
     if (pedido?.nomeVendedor && pedido?.nomeVendedor != "ADMIN") {
-      conditions.push("PO.[ID_CODVENDEDOR] = @nomeVendedor");
+      conditions.push("V.[VEND_NOME] = @nomeVendedor");
       request.input("nomeVendedor", VarChar, pedido.nomeVendedor);
     }
 

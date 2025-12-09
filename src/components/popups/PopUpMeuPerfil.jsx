@@ -11,16 +11,50 @@ const PopUpMeuPerfil = () => {
       ? JSON.parse(localStorage.getItem("userData"))
       : {}
   );
-  const [totalPedidos, setTotalPedidos] = useState({});
+  const [totalPedidos, setTotalPedidos] = useState({ data: [] });
 
   const handleSearchTotalPedidos = async () => {
     try {
-      const response = await searchTotalPedidos({ userId: userData.NOME });
+      const response = await searchTotalPedidos({
+        nomeVendedor: userData.NOME,
+      });
       console.log(response);
       setTotalPedidos(response);
     } catch (error) {
       console.error("Erro ao buscar total de pedidos:", error);
     }
+  };
+
+  const pedidosAtendidos =
+    totalPedidos.data?.filter((p) => p.SITUACAO === "Atendido").length || 0;
+
+  const pedidosPendentes =
+    totalPedidos.data?.filter(
+      (p) => p.SITUACAO === "Pendente" || p.SITUACAO === "Em Alteração"
+    ).length || 0;
+
+  const pedidosCancelados =
+    totalPedidos.data?.filter((p) => p.SITUACAO === "Cancelado").length || 0;
+
+  const valorTotalPedidos = totalPedidos.data?.reduce((acc, curr) => {
+    if (curr.SITUACAO === "Atendido") {
+      return acc + parseFloat(curr.VALOR_TOTAL);
+    }
+    return acc;
+  }, 0);
+
+  const valorAFechar = totalPedidos.data?.reduce((acc, curr) => {
+    if (curr.SITUACAO === "Pendente" || curr.SITUACAO === "Em Alteração") {
+      return acc + parseFloat(curr.VALOR_TOTAL);
+    }
+    return acc;
+  }, 0);
+
+  const formatCurrency = (value) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
   };
 
   return (
@@ -31,12 +65,23 @@ const PopUpMeuPerfil = () => {
         </div>
         <button onClick={handleSearchTotalPedidos}>Mudar Foto</button>
       </div>
-      <div>
+      <div style={{ width: "100%" }}>
         <div>
           <p className="nome">{userData.NOME}</p>
           <p className="cargo">{userData.DESCRICAO}</p>
         </div>
-        <div className="informacoes"></div>
+        <div className="informacoes">
+          <div>
+            <p>Valor Vendido: {formatCurrency(valorTotalPedidos)}</p>
+            <p>Valor a Fechar: {formatCurrency(valorAFechar)}</p>
+          </div>
+          <div>
+            <p>Histórico de Pedidos</p>
+            <p>Pedidos Atendidos: {pedidosAtendidos}</p>
+            <p>Pedidos Pendentes: {pedidosPendentes}</p>
+            <p>Pedidos Cancelados: {pedidosCancelados}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
