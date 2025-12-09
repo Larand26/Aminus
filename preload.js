@@ -114,4 +114,10 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("update-foto-response", (event, arg) => {
       callback(arg);
     }),
+  searchTotalPedidos: (filters) =>
+    ipcRenderer.send("search-total-pedidos", filters),
+  onSearchTotalPedidosResponse: (callback) =>
+    ipcRenderer.on("search-total-pedidos-response", (event, arg) => {
+      callback(arg);
+    }),
 });

@@ -12,6 +12,7 @@ const { getDataReserva } = require("./db/sqlserver/dataReserva");
 const { getCores, createCor } = require("./db/sqlserver/cores");
 const { cadastroWeb } = require("./db/sqlserver/cadastroWeb");
 const { makeCubagem } = require("./db/sqlserver/cubagem");
+const { searchTotalPedidos } = require("./db/sqlserver/totalPedidos");
 
 // Mongo DB
 const { searchFoto } = require("./db/mongodb/fotos");
@@ -307,6 +308,19 @@ ipcMain.on("update-foto", async (event, novaFoto) => {
     console.error("Erro ao atualizar foto:", error);
     event.reply("update-foto-response", {
       error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("search-total-pedidos", async (event, filters) => {
+  try {
+    const totalPedidos = await searchTotalPedidos(filters);
+    event.reply("search-total-pedidos-response", totalPedidos);
+  } catch (error) {
+    console.error("Erro ao buscar total de pedidos:", error);
+    event.reply("search-total-pedidos-response", {
+      error: error.message || "Erro desconhecido",
+      success: false,
     });
   }
 });
