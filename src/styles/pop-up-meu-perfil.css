@@ -56,7 +56,6 @@
 
 .informacoes {
   display: flex;
-  flex-direction: column;
   gap: 20px;
   justify-content: center;
   border: 2px solid var(--cor-texto);

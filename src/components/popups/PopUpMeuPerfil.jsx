@@ -1,8 +1,16 @@
+import { useState } from "react";
+
 import "../../styles/pop-up-meu-perfil.css";
 
 import imgPadrao from "../../assets/img/png/logo_png.png";
 
 const PopUpMeuPerfil = () => {
+  const [userData, setUserData] = useState(
+    localStorage.getItem("userData")
+      ? JSON.parse(localStorage.getItem("userData"))
+      : {}
+  );
+
   return (
     <div className="pop-up-meu-perfil">
       <div className="foto-perfil-container">
@@ -13,8 +21,8 @@ const PopUpMeuPerfil = () => {
       </div>
       <div>
         <div>
-          <p className="nome">{localStorage.getItem("username")}</p>
-          <p className="cargo">ADMININTRADOR</p>
+          <p className="nome">{userData.NOME}</p>
+          <p className="cargo">{userData.DESCRICAO}</p>
         </div>
         <div className="informacoes"></div>
       </div>
