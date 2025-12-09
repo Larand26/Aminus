@@ -71,16 +71,42 @@ const PopUpMeuPerfil = () => {
           <p className="cargo">{userData.DESCRICAO}</p>
         </div>
         <div className="informacoes">
-          <div>
-            <p>Valor Vendido: {formatCurrency(valorTotalPedidos)}</p>
-            <p>Valor a Fechar: {formatCurrency(valorAFechar)}</p>
-          </div>
-          <div>
-            <p>Histórico de Pedidos</p>
-            <p>Pedidos Atendidos: {pedidosAtendidos}</p>
-            <p>Pedidos Pendentes: {pedidosPendentes}</p>
-            <p>Pedidos Cancelados: {pedidosCancelados}</p>
-          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  A fechar <br /> <span>{formatCurrency(valorAFechar)}</span>
+                </th>
+                <th>
+                  Total vendido <br />{" "}
+                  <span>{formatCurrency(valorTotalPedidos)}</span>
+                </th>
+              </tr>
+              <tr className="historico-header">
+                <th colSpan="2">Histórico de pedidos</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="pedido-pendente">
+                <td colSpan="2">
+                  <i className="fa-solid fa-circle-exclamation"></i> Pendente:{" "}
+                  {pedidosPendentes}
+                </td>
+              </tr>
+              <tr className="pedido-atendido">
+                <td colSpan="2">
+                  <i className="fa-solid fa-circle-check"></i> Completo:{" "}
+                  {pedidosAtendidos}
+                </td>
+              </tr>
+              <tr className="pedido-cancelado">
+                <td colSpan="2">
+                  <i className="fa-solid fa-circle-xmark"></i> Cancelado:{" "}
+                  {pedidosCancelados}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
