@@ -1,8 +1,20 @@
+import { useState } from "react";
+
 import InputButton from "../components/InputButton";
+
+import pegaRespostaGemini from "../utils/pegaRespostaGemini";
 
 import "../styles/gemini.css";
 
 const Gemini = () => {
+  const [pergunta, setPergunta] = useState("");
+
+  const handleEnviarPergunta = async () => {
+    if (pergunta.trim() === "") return;
+    const resposta = await pegaRespostaGemini(pergunta);
+    console.log(resposta);
+  };
+
   return (
     <div className="gemini-container" id="gemini">
       <div className="respostas">
@@ -25,6 +37,9 @@ const Gemini = () => {
         <InputButton
           placeholder="Digite sua mensagem..."
           icon="fa fa-paper-plane"
+          value={pergunta}
+          onChange={(e) => setPergunta(e.target.value)}
+          onClick={handleEnviarPergunta}
         />
       </div>
     </div>

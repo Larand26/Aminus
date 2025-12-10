@@ -28,6 +28,9 @@ const { trackTNT } = require("./transportadoras/trackTNT");
 const { track } = require("./transportadoras/track");
 const { makeCotacao } = require("./transportadoras/frenet");
 
+// Gemini
+const { pegaRespostaGemini } = require("./gemini/gemini");
+
 // ENV
 require("dotenv").config();
 let MODE = "production";
@@ -321,6 +324,19 @@ ipcMain.on("search-total-pedidos", async (event, filtros) => {
     event.reply("search-total-pedidos-response", {
       error: error.message || "Erro desconhecido",
       success: false,
+    });
+  }
+});
+
+ipcMain.on("pega-resposta-gemini", async (event, pergunta) => {
+  try {
+    const resposta = await pegaRespostaGemini(pergunta);
+    event.reply("pega-resposta-gemini-response", resposta);
+  } catch (error) {
+    console.error("Erro ao obter resposta do Gemini:", error);
+    event.reply("pega-resposta-gemini-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
     });
   }
 });
