@@ -17,7 +17,7 @@ const pegaRespostaGemini = async (pergunta) => {
       model: model,
       contents: [{ role: "user", parts: [{ text: pergunta }] }],
       config: {
-        maxOutputTokens: 1024,
+        maxOutputTokens: 4096,
       },
     });
 
