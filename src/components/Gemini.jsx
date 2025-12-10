@@ -83,7 +83,7 @@ const Gemini = () => {
           value={pergunta}
           onChange={(e) => setPergunta(e.target.value)}
           onClick={handleEnviarPergunta}
-          onKeyPress={(e) => e.key === "Enter" && handleEnviarPergunta()} // Opcional: Enviar com Enter
+          onKeyPress={(e) => e.key === "Enter" && handleEnviarPergunta()}
         />
       </div>
     </div>

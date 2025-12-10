@@ -20,12 +20,25 @@ const MensagemComEfeitoDigitacao = ({ texto }) => {
     return () => clearInterval(intervalId); // Limpa o intervalo se o componente for desmontado
   }, [texto]);
 
-  // Função para converter markdown bold para HTML
+  // Função para converter markdown para HTML
   const formatarResposta = (texto) => {
-    const textoFormatado = texto.replace(
+    let textoFormatado = texto;
+
+    // Converte negrito (**texto**) para <strong>
+    textoFormatado = textoFormatado.replace(
       /\*\*(.*?)\*\*/g,
       "<strong>$1</strong>"
     );
+
+    textoFormatado = textoFormatado.replace(
+      /(\n?\* .+(?:\n\* .+)*)/g,
+      "<ul>$1</ul>"
+    );
+    textoFormatado = textoFormatado.replace(
+      /\* (.*?)(?=\n\*|\n\n|$)/g,
+      "<li>$1</li>"
+    );
+
     return { __html: textoFormatado };
   };
 
