@@ -119,8 +119,8 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("search-total-pedidos-response", (event, arg) => {
       callback(arg);
     }),
-  pegaRespostaGemini: (pergunta) =>
-    ipcRenderer.send("pega-resposta-gemini", pergunta),
+  pegaRespostaGemini: (pergunta, respostas) =>
+    ipcRenderer.send("pega-resposta-gemini", { pergunta, respostas }),
   onPegaRespostaGeminiResponse: (callback) =>
     ipcRenderer.on("pega-resposta-gemini-response", (event, arg) => {
       callback(arg);

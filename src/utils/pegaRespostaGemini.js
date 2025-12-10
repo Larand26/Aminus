@@ -1,5 +1,5 @@
-const pegaRespostaGemini = (pergunta) => {
-  window.electronApi?.pegaRespostaGemini(pergunta);
+const pegaRespostaGemini = (pergunta, respostas) => {
+  window.electronApi?.pegaRespostaGemini(pergunta, respostas);
 
   const response = new Promise((resolve) => {
     window.electronApi?.onPegaRespostaGeminiResponse((arg) => {

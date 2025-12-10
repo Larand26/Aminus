@@ -328,9 +328,9 @@ ipcMain.on("search-total-pedidos", async (event, filtros) => {
   }
 });
 
-ipcMain.on("pega-resposta-gemini", async (event, pergunta) => {
+ipcMain.on("pega-resposta-gemini", async (event, { pergunta, respostas }) => {
   try {
-    const resposta = await pegaRespostaGemini(pergunta);
+    const resposta = await pegaRespostaGemini(pergunta, respostas);
     event.reply("pega-resposta-gemini-response", resposta);
   } catch (error) {
     console.error("Erro ao obter resposta do Gemini:", error);
