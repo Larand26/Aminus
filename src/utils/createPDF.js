@@ -31,7 +31,7 @@ export default (data, cubagem, numPedido) => {
       (item.ALTURA / 100).toFixed(2) + " m",
       (item.LARGURA / 100).toFixed(2) + " m",
       (item.COMPRIMENTO / 100).toFixed(2) + " m",
-      item.QUANTIDADE,
+      Math.ceil(item.QUANTIDADE / 12),
     ]),
     startY: 35,
     styles: {
