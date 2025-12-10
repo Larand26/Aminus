@@ -30,7 +30,7 @@ const Gemini = () => {
     }
     setRespostas((prevRespostas) => [
       ...prevRespostas,
-      { conteudo: resposta.conteudo, user: "gemini" },
+      { conteudo: resposta.data, user: "gemini" },
     ]);
 
     console.log(resposta);
@@ -55,6 +55,16 @@ const Gemini = () => {
         <div className="mensagem-gemini">
           <p>Olá! Como posso ajudar você hoje?</p>
         </div>
+        {respostas.map((resposta, index) => (
+          <div
+            key={index}
+            className={`mensagem-gemini ${
+              resposta.user === "usuário" ? "usuario" : "gemini"
+            }`}
+          >
+            <p>{resposta.conteudo}</p>
+          </div>
+        ))}
       </div>
       <div className="input-container-gemini ">
         <InputButton
