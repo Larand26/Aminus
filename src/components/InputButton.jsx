@@ -10,6 +10,7 @@ const InputButton = (props) => {
         onChange={props.onChange}
         onBlur={props.onBlur}
         placeholder={props.placeholder}
+        onKeyPress={props.onKeyPress}
       />
       <button className="icon-button" onClick={props.onClick}>
         <i className={props.icon}></i>
