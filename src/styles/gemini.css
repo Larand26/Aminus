@@ -1,18 +1,50 @@
 .gemini-container {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100vh;
   font-family: Arial, sans-serif;
   position: absolute;
   width: 400px;
   top: 0;
   right: 0;
-  background-image: linear-gradient(to top right, var(--cor-primaria), #415b72);
+  background-color: #34495e;
   transition: 0.3s ease-in-out;
   transform: translate(100%);
   z-index: 2;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .open-gemini-container {
   transform: translate(0);
+}
+
+.respostas {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  color: #ecf0f1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-container {
+  position: relative;
+}
+
+.gemini-input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 25px;
+  border: 1px solid #bdc3c7;
+  background-color: transparent;
+  color: #ecf0f1;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.gemini-input::placeholder {
+  color: #bdc3c7;
 }
