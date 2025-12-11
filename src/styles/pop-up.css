@@ -5,13 +5,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 0;
-  display: none;
-}
-
-.open-blur {
-  display: block;
-  z-index: 10;
+  z-index: 10; /* Aumentado para garantir que fique sobre o conteúdo */
 }
 
 .pop-up {
@@ -28,10 +22,17 @@
   justify-content: space-between;
   padding: 20px;
   transition: 0.3s ease-in-out;
+  animation: scale-in 0.3s forwards; /* Adicionando animação */
 }
 
-.open-pop-up {
-  transform: translate(-50%, -50%) scale(1);
+/* Animação para o pop-up aparecer */
+@keyframes scale-in {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
 .close-button {

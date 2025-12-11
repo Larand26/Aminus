@@ -56,6 +56,10 @@ const Pedidos = () => {
   const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
   const [itensPedido, setItensPedido] = useState([]);
 
+  // PopUps
+  const [popUpItensOpen, setPopUpItensOpen] = useState(false);
+  const [popUpCotacaoOpen, setPopUpCotacaoOpen] = useState(false);
+
   const handleSearch = async () => {
     searchPedidos([]);
     setIsLoading(true);
@@ -139,8 +143,7 @@ const Pedidos = () => {
         type: "falha",
       });
     }
-    document.querySelector(`#popup-pedido`).classList.add("open-pop-up");
-    document.querySelector(".blur").classList.add("open-blur");
+    setPopUpItensOpen(true);
   };
 
   const [linhaSelecionada, setLinhaSelecionada] = useState(null);
@@ -150,8 +153,7 @@ const Pedidos = () => {
 
   const handleCotacao = async () => {
     if (!linhaSelecionada) return;
-    document.querySelector(`#popup-cotacao`).classList.add("open-pop-up");
-    document.querySelector(".blur").classList.add("open-blur");
+    setPopUpCotacaoOpen(true);
     setCotacao(null);
     setIsCotacaoLoading(true);
 
@@ -188,6 +190,8 @@ const Pedidos = () => {
         width="1200px"
         height="600px"
         title="Itens do Pedido"
+        open={popUpItensOpen}
+        setOpen={setPopUpItensOpen}
       >
         {pedidoSelecionado && (
           <div className="popup-pedido-content">
@@ -222,7 +226,13 @@ const Pedidos = () => {
           </div>
         )}
       </PopUp>
-      <PopUp id="popup-cotacao" title="Cotação" width="600px">
+      <PopUp
+        id="popup-cotacao"
+        title="Cotação"
+        width="600px"
+        open={popUpCotacaoOpen}
+        setOpen={setPopUpCotacaoOpen}
+      >
         <div className="popup-cotacao-content">
           <Tabela
             dados={cotacao}

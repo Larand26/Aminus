@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import MenuMeuPerfil from "./MenuMeuPerfil";
 import PopUp from "./PopUp";
@@ -10,8 +11,15 @@ import "../styles/icons.css";
 
 const NavBar = (props) => {
   const navigate = useNavigate();
+
+  // PopUps
+  const [meuPerfilOpen, setMeuPerfilOpen] = useState(false);
+  const [geminiOpen, setGeminiOpen] = useState(false);
+  const [configuracoesOpen, setConfiguracoesOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const openMenu = () => {
-    document.querySelector(".menu-meu-perfil").classList.toggle("open-menu");
+    setMenuOpen(!menuOpen);
   };
   const openGemini = () => {
     document.querySelector("#gemini").classList.toggle("open-gemini-container");
@@ -24,10 +32,18 @@ const NavBar = (props) => {
   return (
     <>
       <Gemini />
-      <PopUp id="meu-perfil-popup">
+      <PopUp
+        id="meu-perfil-popup"
+        open={meuPerfilOpen}
+        setOpen={setMeuPerfilOpen}
+      >
         <PopUpMeuPerfil />
       </PopUp>
-      <MenuMeuPerfil />
+      <MenuMeuPerfil
+        isOpen={menuOpen}
+        setMenuOpen={setMenuOpen}
+        setMeuPerfilOpen={setMeuPerfilOpen}
+      />
       <div className="nav-bar">
         <div className="home">
           <button onClick={() => navigate("/home")}>

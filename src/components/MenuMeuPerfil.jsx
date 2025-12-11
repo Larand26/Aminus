@@ -2,25 +2,19 @@ import { useNavigate } from "react-router-dom";
 
 import "../styles/menu-meu-perfil.css";
 
-const MenuMeuPerfil = () => {
+const MenuMeuPerfil = (props) => {
   const navigate = useNavigate();
-  const openPopup = () => {
-    document.querySelector(".pop-up").classList.toggle("open-pop-up");
-    document.querySelector(".blur").classList.toggle("open-blur");
+
+  const handleMeuPerfilClick = () => {
+    props.setMeuPerfilOpen(true); // Abre o PopUp do perfil
+    props.setMenuOpen(false); // Fecha este menu
   };
-  const closeMenu = () => {
-    document.querySelector(".menu-meu-perfil").classList.remove("open-menu");
-  };
+
   return (
-    <div className="menu-meu-perfil">
+    <div className={`menu-meu-perfil ${props.isOpen ? "open-menu" : ""}`}>
       <ul>
         <li>
-          <button
-            onClick={() => {
-              openPopup();
-              closeMenu();
-            }}
-          >
+          <button onClick={handleMeuPerfilClick}>
             Meu Perfil <i className="fa fa-user"></i>
           </button>
         </li>

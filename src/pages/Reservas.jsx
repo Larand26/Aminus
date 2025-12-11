@@ -38,6 +38,9 @@ const Reservas = () => {
   // Reservas
   const [reservas, setReservas] = useState([]);
 
+  // Popups
+  const [pegaDataOpen, setPegaDataOpen] = useState(false);
+
   const handleSearch = async () => {
     setReservas([]);
     setIsLoading(true);
@@ -97,8 +100,7 @@ const Reservas = () => {
 
   const openPopUp = (item) => {
     setPedidoSelecionado(item);
-    document.querySelector(`#popup-reservas`).classList.add("open-pop-up");
-    document.querySelector(".blur").classList.add("open-blur");
+    setPegaDataOpen(true);
   };
 
   const handleClosePopUp = () => {
@@ -134,6 +136,8 @@ const Reservas = () => {
         width="400px"
         height="250px"
         onClose={handleClosePopUp}
+        open={pegaDataOpen}
+        setOpen={setPegaDataOpen}
       >
         <h2>Consulte a data da reserva</h2>
         <div className="content-popup-reservas">
