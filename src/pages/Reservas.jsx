@@ -26,7 +26,7 @@ const Reservas = () => {
   const [codFabricante, setCodFabricante] = useState("");
   const [codInterno, setCodInterno] = useState("");
   const [numPedido, setNumPedido] = useState("");
-  const [nomePedido, setNomePedido] = useState("");
+  const [nomeCliente, setNomeCliente] = useState("");
   const [vendedor, setVendedor] = useState("");
 
   // Toast
@@ -45,7 +45,7 @@ const Reservas = () => {
       codFabricante: codFabricante,
       codInterno: codInterno,
       numPedido: numPedido,
-      nomePedido: nomePedido,
+      nomeCliente: nomeCliente,
       vendedor: vendedor,
     };
 
@@ -189,9 +189,9 @@ const Reservas = () => {
             onKeyDown={handleKeyDown}
           />
           <InputLabel
-            label="Nome Pedido"
-            value={nomePedido}
-            onChange={setNomePedido}
+            label="Nome Cliente"
+            value={nomeCliente}
+            onChange={setNomeCliente}
             onKeyDown={handleKeyDown}
           />
           <SelectLabel
