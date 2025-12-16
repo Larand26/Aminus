@@ -37,6 +37,9 @@ const PopUpMeuPerfil = () => {
     totalPedidos.data?.filter((p) => p.SITUACAO === "Cancelado").length || 0;
 
   const valorTotalPedidos = totalPedidos.data?.reduce((acc, curr) => {
+    if (!curr.VALOR_TOTAL) {
+      return acc;
+    }
     if (curr.SITUACAO === "Atendido") {
       return acc + parseFloat(curr.VALOR_TOTAL);
     }
@@ -44,6 +47,9 @@ const PopUpMeuPerfil = () => {
   }, 0);
 
   const valorAFechar = totalPedidos.data?.reduce((acc, curr) => {
+    if (!curr.VALOR_TOTAL) {
+      return acc;
+    }
     if (curr.SITUACAO === "Pendente" || curr.SITUACAO === "Em Alteração") {
       return acc + parseFloat(curr.VALOR_TOTAL);
     }
