@@ -35,6 +35,9 @@ const Fotos = () => {
   // Fotos
   const [fotos, setFotos] = useState([]);
 
+  // Pop up
+  const [popUpFotosOpen, setPopUpFotosOpen] = useState(false);
+
   const handleSearch = async () => {
     setFotos([]);
     setIsLoading(true);
@@ -86,8 +89,7 @@ const Fotos = () => {
 
   const openPopUpEditar = (foto) => {
     setFotoSelecionada(foto);
-    document.querySelector(`#editar-foto`).classList.add("open-pop-up");
-    document.querySelector(".blur").classList.add("open-blur");
+    setPopUpFotosOpen(true);
   };
 
   // Função que recebe os dados do pop-up ao fechar
@@ -160,9 +162,13 @@ const Fotos = () => {
     <>
       <PopUp
         id="editar-foto"
-        onClose={() => setFotoSelecionada(null)}
+        onClose={() => {
+          setFotoSelecionada(null);
+          setPopUpFotosOpen(false);
+        }}
         width="80%"
         height="700px"
+        open={popUpFotosOpen}
       >
         {/* Renderiza o componente apenas se uma foto estiver selecionada */}
         {fotoSelecionada && (
@@ -253,6 +259,7 @@ const Fotos = () => {
                         onConfirmDelete={() => handleDeleteFoto(foto._id)}
                         onEditClick={() => {
                           openPopUpEditar(foto);
+                          setPopUpFotosOpen(true);
                         }}
                         onDownloadClick={() =>
                           handleBaixarFotos(foto, foto.referencia)
