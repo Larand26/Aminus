@@ -1,20 +1,36 @@
 import JSZip from "jszip";
 
 // Função auxiliar para redimensionar imagem base64
-const resizeImage = (base64, maxSize = 800) =>
+const resizeImage = (base64, isFirstImage, maxSize = 800) =>
   new Promise((resolve) => {
     const img = new Image();
     img.onload = () => {
       let { width, height } = img;
       const scale = Math.min(maxSize / width, maxSize / height, 1);
-      width = Math.round(width * scale);
-      height = Math.round(height * scale);
+      const newWidth = Math.round(width * scale);
+      const newHeight = Math.round(height * scale);
 
       const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
       const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, width, height);
+
+      if (isFirstImage) {
+        // Para a primeira imagem, cria um canvas de 800x800 com fundo branco
+        canvas.width = maxSize;
+        canvas.height = maxSize;
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, maxSize, maxSize);
+
+        // Centraliza a imagem redimensionada no canvas
+        const x = (maxSize - newWidth) / 2;
+        const y = (maxSize - newHeight) / 2;
+        ctx.drawImage(img, x, y, newWidth, newHeight);
+      } else {
+        // Para as outras imagens, redimensiona normalmente
+        canvas.width = newWidth;
+        canvas.height = newHeight;
+        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+      }
+
       resolve(canvas.toDataURL("image/jpeg").split(",")[1]); // retorna apenas o base64
     };
     img.src = `data:image/jpeg;base64,${base64}`;
@@ -35,7 +51,8 @@ const baixaFotos = async (fotos, referencia) => {
     for (const [key, base64] of Object.entries(foto.fotos)) {
       if (!base64) continue;
       const nomeArquivo = `${foto.referencia}_${foto.codigo_cor}_${i}.jpg`;
-      const resizedBase64 = await resizeImage(base64, 800);
+      // Passa 'true' se for a primeira imagem (i === 1), senão 'false'
+      const resizedBase64 = await resizeImage(base64, i === 1, 800);
       zip.file(nomeArquivo, resizedBase64, { base64: true });
       i++;
     }
