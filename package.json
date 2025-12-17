@@ -1,7 +1,7 @@
 {
   "name": "aminus",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.2",
   "main": "main.js",
   "description": "Um sistema capaz de alterar e ver um banco de dados",
   "scripts": {
@@ -10,12 +10,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "start": "electron-forge start",
-    "build:react": "vite build",
-    "build:electron": "electron-builder",
-    "dist": "electron-builder",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "exe": "npm run build && npm run dist"
+    "release": "npm run build && npm run make"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
@@ -43,37 +40,50 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.8.1",
+    "@electron-forge/maker-deb": "^7.4.0",
+    "@electron-forge/maker-rpm": "^7.4.0",
+    "@electron-forge/maker-squirrel": "^7.4.0",
+    "@electron-forge/maker-zip": "^7.4.0",
     "@eslint/js": "^9.25.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
     "electron": "^36.3.2",
-    "electron-builder": "^26.0.12",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
     "vite": "^6.3.5"
   },
-  "build": {
-    "appId": "com.seuprojeto.aminus",
-    "productName": "Aminus",
-    "files": [
-      "dist/**/*",
-      "main.js",
-      "preload.js",
-      "package.json",
-      "db/**/*",
-      "config/**/*",
-      "transportadoras/**/*",
-      "gemini/**/*",
-      "globals.js"
-    ],
-    "directories": {
-      "buildResources": "public"
-    },
-    "win": {
-      "target": "nsis"
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "./build/icon"
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "aminus",
+            "setupIcon": "./build/icon.ico"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin",
+            "linux"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
     }
   }
 }
