@@ -6,6 +6,10 @@ import InputLabel from "../components/InputLabel";
 import SelectLabel from "../components/SelectLabel";
 import Content from "../components/Content";
 
+import ClientesWpp from "../components/whatsapp/ClientesWpp";
+import Dashboard from "../components/whatsapp/DashboardWpp";
+import MensagensWpp from "../components/whatsapp/MensagensWpp";
+
 import vendedoresJson from "../assets/json/vendedores.json";
 
 const Whatsapp = () => {
@@ -54,13 +58,9 @@ const Whatsapp = () => {
           />
         </BarraLateral>
         <Content titulo="WhatsApp" pages={pages}>
-          {paginaAtiva === "clientes" && <div>Conteúdo da página Clientes</div>}
-          {paginaAtiva === "dashboard" && (
-            <div>Conteúdo da página Dashboard</div>
-          )}
-          {paginaAtiva === "mensagens" && (
-            <div>Conteúdo da página Mensagens</div>
-          )}
+          {paginaAtiva === "clientes" && <ClientesWpp />}
+          {paginaAtiva === "dashboard" && <Dashboard />}
+          {paginaAtiva === "mensagens" && <MensagensWpp />}
         </Content>
       </div>
     </>
