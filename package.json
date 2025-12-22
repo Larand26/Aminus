@@ -12,7 +12,8 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "release": "npm run build && npm run make"
+    "release": "npm run build && npm run make",
+    "dev:all": "npm-run-all --parallel dev start"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.7.2",
@@ -53,6 +54,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "npm-run-all": "^4.1.5",
     "vite": "^6.3.5"
   },
   "config": {
