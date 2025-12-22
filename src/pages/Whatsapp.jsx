@@ -17,18 +17,24 @@ const Whatsapp = () => {
   // Páginas para o Content
   const pages = [
     {
-      icon: "fa-brands fa-whatsapp",
-      onClick: () => {},
-    },
-    {
-      icon: "fa-solid fa-chart-bar",
-      onClick: () => {},
-    },
-    {
+      key: "clientes",
       icon: "fa fa-phone",
-      onClick: () => {},
+      onClick: () => setPaginaAtiva("clientes"),
+    },
+    {
+      key: "dashboard",
+      icon: "fa-solid fa-chart-bar",
+      onClick: () => setPaginaAtiva("dashboard"),
+    },
+    {
+      key: "mensagens",
+      icon: "fa-brands fa-whatsapp",
+      onClick: () => setPaginaAtiva("mensagens"),
     },
   ];
+
+  // Págia ativa
+  const [paginaAtiva, setPaginaAtiva] = useState("clientes");
 
   // Pesquisa
   const handleSearch = () => {};
@@ -48,7 +54,13 @@ const Whatsapp = () => {
           />
         </BarraLateral>
         <Content titulo="WhatsApp" pages={pages}>
-          <div>Conteúdo da página WhatsApp</div>
+          {paginaAtiva === "clientes" && <div>Conteúdo da página Clientes</div>}
+          {paginaAtiva === "dashboard" && (
+            <div>Conteúdo da página Dashboard</div>
+          )}
+          {paginaAtiva === "mensagens" && (
+            <div>Conteúdo da página Mensagens</div>
+          )}
         </Content>
       </div>
     </>

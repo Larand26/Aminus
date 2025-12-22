@@ -20,3 +20,10 @@
   gap: 10px;
   width: 100%;
 }
+
+.content-body {
+  background-color: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  height: 100%;
+}

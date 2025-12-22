@@ -9,7 +9,7 @@ const Content = (props) => {
         <p>{props.titulo ? props.titulo : "Título Padrão"}</p>
       </div>
 
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%" }} className="content-body">
         {props.pages ? (
           <div className="button-content-container">
             {props.pages.map((page, index) => (
