@@ -1,0 +1,14 @@
+.content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 30px;
+  box-sizing: border-box;
+}
+
+.content .titulo {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}

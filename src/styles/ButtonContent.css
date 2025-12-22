@@ -1,0 +1,32 @@
+.button-content {
+  width: 25px;
+  height: 25px;
+  background: var(--cor-amarelo);
+  border: 2px solid var(--cor-primaria);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: filter 0.2s;
+  outline: none;
+  padding: 0;
+}
+
+.button-content:hover {
+  filter: brightness(0.95);
+}
+
+.button-content i {
+  font-size: 20px;
+  color: #fff;
+}
+
+.button-content-container {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 10px;
+  width: 100%;
+}

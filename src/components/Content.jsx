@@ -1,10 +1,28 @@
-const Content = ({ children, titulo }) => {
+import ButtonContent from "./ButtonContent";
+
+import "../styles/content.css";
+
+const Content = (props) => {
   return (
-    <div className="content flex flex-column align-items-center justify-content-center w-full min-h-screen bg-gray-200 p-4">
+    <div className="content">
       <div className="titulo">
-        <p>{titulo ? titulo : "Título Padrão"}</p>
+        <p>{props.titulo ? props.titulo : "Título Padrão"}</p>
       </div>
-      <div style={{ width: "100%" }}>{children}</div>
+
+      <div style={{ width: "100%" }}>
+        {props.pages ? (
+          <div className="button-content-container">
+            {props.pages.map((page, index) => (
+              <ButtonContent
+                key={index}
+                icon={page.icon}
+                onClick={page.onClick}
+              />
+            ))}
+          </div>
+        ) : null}
+        {props.children}
+      </div>
     </div>
   );
 };
