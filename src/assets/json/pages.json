@@ -2,64 +2,72 @@
   {
     "page": "produtos",
     "title": "Produtos",
-    "icon": "box-open",
+    "icon": "fa fa-box-open",
     "path": "/produtos",
     "restrition": []
   },
   {
     "page": "notas",
     "title": "Notas",
-    "icon": "newspaper",
+    "icon": "fa fa-newspaper",
     "path": "/notas",
     "restrition": []
   },
   {
     "page": "pedidos",
     "title": "Pedidos",
-    "icon": "cart-plus",
+    "icon": "fa fa-cart-plus",
     "path": "/pedidos",
     "restrition": []
   },
   {
     "page": "clientes",
     "title": "Clientes",
-    "icon": "users",
+    "icon": "fa fa-users",
     "path": "/clientes",
     "restrition": []
   },
   {
     "page": "reservas",
     "title": "Reservas",
-    "icon": "box",
+    "icon": "fa fa-box",
     "path": "/reservas",
     "restrition": [2, 4]
   },
   {
     "page": "fotos",
     "title": "Fotos",
-    "icon": "camera-retro",
+    "icon": "fa fa-camera-retro",
     "path": "/fotos",
     "restrition": []
   },
   {
     "page": "cadastro",
     "title": "Cadastro",
-    "icon": "table",
+    "icon": "fa fa-table",
     "path": "/cadastro-web",
     "restrition": [2, 4]
   },
   {
     "page": "rastreio",
     "title": "Rastreio",
-    "icon": "truck",
+    "icon": "fa fa-truck",
     "path": "/rastreio",
     "restrition": [4]
   },
   {
     "page": "log",
     "title": "Log",
-    "icon": "database",
+    "icon": "fa fa-database",
     "path": "/log",
+    "restrition": [2, 3, 4]
+  },
+  {
+    "page": "whatsapp",
+    "title": "Wahtsapp",
+    "icon": "fa-brands fa-whatsapp",
+    "iconPrefix": "brands",
+    "path": "/whatsapp",
     "restrition": [2, 3, 4]
   }
 ]

@@ -8,7 +8,7 @@ const Card = (props) => {
     >
       <div className="foto-card">
         {props.icon ? (
-          <i className={`fa fa-${props.icon}`} />
+          <i className={props.icon} />
         ) : props.foto ? (
           <img src={props.foto} alt="Foto" />
         ) : null}
