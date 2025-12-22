@@ -12,3 +12,11 @@
   font-weight: bold;
   margin-bottom: 1rem;
 }
+
+.button-content-container {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 10px;
+  width: 100%;
+}

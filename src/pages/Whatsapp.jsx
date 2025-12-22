@@ -14,6 +14,22 @@ const Whatsapp = () => {
   const [mensagem, setMensagem] = useState("");
   const [vendedor, setVendedor] = useState("");
 
+  // Páginas para o Content
+  const pages = [
+    {
+      icon: "fa-brands fa-whatsapp",
+      onClick: () => {},
+    },
+    {
+      icon: "fa-solid fa-chart-bar",
+      onClick: () => {},
+    },
+    {
+      icon: "fa fa-phone",
+      onClick: () => {},
+    },
+  ];
+
   // Pesquisa
   const handleSearch = () => {};
 
@@ -31,7 +47,7 @@ const Whatsapp = () => {
             onChange={setVendedor}
           />
         </BarraLateral>
-        <Content titulo="WhatsApp">
+        <Content titulo="WhatsApp" pages={pages}>
           <div>Conteúdo da página WhatsApp</div>
         </Content>
       </div>
