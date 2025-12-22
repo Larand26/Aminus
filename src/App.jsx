@@ -9,6 +9,7 @@ import Fotos from "./pages/Fotos";
 import CadastroWeb from "./pages/CadastroWeb";
 import Login from "./pages/Login";
 import Tracking from "./pages/Tracking";
+import Whatsapp from "./pages/Whatsapp";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/fotos" element={<Fotos />} />
         <Route path="/cadastro-web" element={<CadastroWeb />} />
         <Route path="/tracking" element={<Tracking />} />
+        <Route path="/whatsapp" element={<Whatsapp />} />
       </Routes>
     </Router>
   );
