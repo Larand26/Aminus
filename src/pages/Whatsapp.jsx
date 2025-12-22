@@ -43,6 +43,11 @@ const Whatsapp = () => {
   // Pesquisa
   const handleSearch = () => {};
 
+  // Estados de mensagens
+  const [mensagemEnviar, setMensagemEnviar] = useState("");
+  const [timer, setTimer] = useState("05:00");
+  const [imagens, setImagens] = useState([]);
+
   return (
     <>
       <NavBar />
@@ -60,7 +65,16 @@ const Whatsapp = () => {
         <Content titulo="WhatsApp" pages={pages}>
           {paginaAtiva === "clientes" && <ClientesWpp />}
           {paginaAtiva === "dashboard" && <Dashboard />}
-          {paginaAtiva === "mensagens" && <MensagensWpp />}
+          {paginaAtiva === "mensagens" && (
+            <MensagensWpp
+              timer={timer}
+              mensagemEnviar={mensagemEnviar}
+              imagens={imagens}
+              setImagens={setImagens}
+              setMensagemEnviar={setMensagemEnviar}
+              onEnviar={() => {}}
+            />
+          )}
         </Content>
       </div>
     </>
