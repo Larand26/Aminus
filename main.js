@@ -243,7 +243,12 @@ ipcMain.on("login", async (event, { user, password, semExpiracao }) => {
       },
       semExpiracao || false
     );
-    event.reply("login-response", tokenResult);
+    if (!tokenResult.success) return event.reply("login-response", tokenResult);
+    const result = {
+      success: true,
+      data: { token: tokenResult.data, ...loginResult.data },
+    };
+    event.reply("login-response", result);
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     event.reply("login-response", {

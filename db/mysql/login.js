@@ -4,7 +4,7 @@ const login = async (user, password) => {
   try {
     const connection = await connectMySql();
     const [rows] = await connection.execute(
-      "SELECT U.*, TF.*  FROM USUARIOS U LEFT JOIN TIPO_USUARIO TF ON U.ID_FUNCAO_USUARIO = TF.ID_TIPO_USUARIO WHERE NOME = ? AND SENHA = ?",
+      "SELECT U.ID_USUARIO, U.NOME, U.ID_FUNCAO_USUARIO, TF.DESCRICAO AS DESCRICAO_FUNCAO FROM USUARIOS U LEFT JOIN TIPO_USUARIO TF ON U.ID_FUNCAO_USUARIO = TF.ID_TIPO_USUARIO WHERE NOME = ? AND SENHA = ?",
       [user, password]
     );
     connection.end();
