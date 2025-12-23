@@ -6,17 +6,14 @@ import imgPadrao from "../../assets/img/png/logo_png.png";
 import searchTotalPedidos from "../../utils/search/searchTotalPedidos";
 
 const PopUpMeuPerfil = () => {
-  const [userData, setUserData] = useState(
-    localStorage.getItem("userData")
-      ? JSON.parse(localStorage.getItem("userData"))
-      : {}
-  );
+  const username = localStorage.getItem("username") || "";
+  const funcao = localStorage.getItem("funcao") || "";
   const [totalPedidos, setTotalPedidos] = useState({ data: [] });
 
   const handleSearchTotalPedidos = async () => {
     try {
       const response = await searchTotalPedidos({
-        nomeVendedor: userData.NOME,
+        nomeVendedor: username,
       });
       console.log(response);
       setTotalPedidos(response);
@@ -75,8 +72,8 @@ const PopUpMeuPerfil = () => {
       </div>
       <div style={{ width: "100%" }}>
         <div>
-          <p className="nome">{userData.NOME}</p>
-          <p className="cargo">{userData.DESCRICAO}</p>
+          <p className="nome">{username}</p>
+          <p className="cargo">{funcao}</p>
         </div>
         <div className="informacoes">
           <table>
