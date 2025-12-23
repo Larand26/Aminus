@@ -130,4 +130,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("autentica-token-response", (event, arg) => {
       callback(arg);
     }),
+  enviaMensagem: (args) => ipcRenderer.send("envia-mensagem", args),
+  onEnviaMensagem: (callback) =>
+    ipcRenderer.on("envia-mensagem-response", (event, arg) => {
+      callback(arg);
+    }),
 });

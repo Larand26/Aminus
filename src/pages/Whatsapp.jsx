@@ -10,9 +10,14 @@ import ClientesWpp from "../components/whatsapp/ClientesWpp";
 import Dashboard from "../components/whatsapp/DashboardWpp";
 import MensagensWpp from "../components/whatsapp/MensagensWpp";
 
+import enviaMensagem from "../utils/whatsapp/enviaMensagem";
+
 import vendedoresJson from "../assets/json/vendedores.json";
 
 const Whatsapp = () => {
+  //token
+  const token = localStorage.getItem("token");
+
   // Estados dos inputs
   const [numero, setNumero] = useState("");
   const [mensagem, setMensagem] = useState("");
@@ -48,6 +53,18 @@ const Whatsapp = () => {
   const [timer, setTimer] = useState("05:00");
   const [imagens, setImagens] = useState([]);
 
+  // Envia a mensagem
+  const handleEnviarMensagem = async () => {
+    if (imagens.length === 0 && mensagemEnviar.trim() === "") return;
+
+    const args = {
+      token,
+      mensagem: mensagemEnviar,
+      imagens,
+    };
+    await enviaMensagem(args);
+  };
+
   return (
     <>
       <NavBar />
@@ -72,9 +89,7 @@ const Whatsapp = () => {
               imagens={imagens}
               setImagens={setImagens}
               setMensagemEnviar={setMensagemEnviar}
-              onEnviar={() => {
-                console.log(imagens);
-              }}
+              onEnviar={() => handleEnviarMensagem()}
             />
           )}
         </Content>
