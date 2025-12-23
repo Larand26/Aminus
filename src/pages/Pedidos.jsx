@@ -233,7 +233,7 @@ const Pedidos = () => {
         open={popUpCotacaoOpen}
         setOpen={setPopUpCotacaoOpen}
       >
-        <div className="popup-cotacao-content">
+        <div className="popup-cotacao-content" style={{ paddingTop: "45px" }}>
           <Tabela
             dados={cotacao}
             semDados="Nenhuma cotação encontrada"
