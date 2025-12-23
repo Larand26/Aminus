@@ -22,6 +22,12 @@ import opcoesNotas from "../assets/json/opcoes/opcoesNotas.json";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 
 const Notas = () => {
+  // Token
+  const token = localStorage.getItem("token");
+
+  // Função do usuário
+  const idFuncao = localStorage.getItem("ID_FUNCAO_USUARIO");
+
   // Estados dos inputs
   const [numNota, setNumNota] = useState("");
   const [cnpj, setCnpj] = useState("");
@@ -43,6 +49,7 @@ const Notas = () => {
     setNotas([]);
     setIsLoading(true);
     const filtros = {
+      token: token,
       numNota: numNota,
       cnpj: cnpj.replace(/\D/g, ""),
       dataInicial: data[0],

@@ -44,6 +44,9 @@ try {
 const { geraToken } = require("./token/geraToken");
 const { verificaToken } = require("./token/verificaToken");
 
+// Vendededores
+const vendedoresJson = require("./db/vendedores.json");
+
 function isDev() {
   return MODE === "development" || process.env.NODE_ENV === "development";
 }
@@ -92,6 +95,16 @@ ipcMain.on("search-produto", async (event, arg) => {
 
 ipcMain.on("search-nota", async (event, arg) => {
   try {
+    const tokenResult = await verificaToken(arg.token);
+    if (!tokenResult.success) event.reply("search-nota-response", tokenResult);
+
+    if (tokenResult.data.ID_FUNCAO_USUARIO == 2) {
+      const idVendedor = vendedoresJson.find(
+        (v) => v.label === tokenResult.data.NOME
+      )?.value;
+      arg.vendedor = idVendedor || "";
+    }
+
     const notas = await searchNotas(arg);
     event.reply("search-nota-response", notas);
   } catch (error) {
@@ -117,6 +130,16 @@ ipcMain.on("search-cliente", async (event, arg) => {
 
 ipcMain.on("search-pedido", async (event, arg) => {
   try {
+    const tokenResult = await verificaToken(arg.token);
+    if (!tokenResult.success) event.reply("search-nota-response", tokenResult);
+
+    if (tokenResult.data.ID_FUNCAO_USUARIO == 2) {
+      const idVendedor = vendedoresJson.find(
+        (v) => v.label === tokenResult.data.NOME
+      )?.value;
+      arg.vendedor = idVendedor || "";
+    }
+
     const pedidos = await searchPedido(arg);
     event.reply("search-pedido-response", pedidos);
   } catch (error) {
