@@ -29,13 +29,7 @@ const Login = () => {
         return;
       }
       if (response.data) {
-        localStorage.setItem("userData", JSON.stringify(response.data));
-        localStorage.setItem("username", response.data.NOME);
-        localStorage.setItem("password", response.data.SENHA);
-        localStorage.setItem(
-          "ID_FUNCAO_USUARIO",
-          response.data.ID_FUNCAO_USUARIO
-        );
+        localStorage.setItem("token", response.data);
       }
       navigate("/home");
     };

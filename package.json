@@ -25,6 +25,7 @@
     "dotenv": "^16.5.0",
     "env": "^0.0.2",
     "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.3",
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
     "jszip": "^3.10.1",

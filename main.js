@@ -40,6 +40,9 @@ try {
   // globals.js não encontrado, segue com o padrão "production"
 }
 
+// Token
+const { geraToken } = require("./token/geraToken");
+
 function isDev() {
   return MODE === "development" || process.env.NODE_ENV === "development";
 }
@@ -228,10 +231,19 @@ ipcMain.on("search-cadastro-produtos", async (event, filtros) => {
   }
 });
 
-ipcMain.on("login", async (event, { user, password }) => {
+ipcMain.on("login", async (event, { user, password, semExpiracao }) => {
   try {
-    const result = await login(user, password);
-    event.reply("login-response", result);
+    const loginResult = await login(user, password);
+    if (!loginResult.success) event.reply("login-response", loginResult);
+    const tokenResult = await geraToken(
+      {
+        userId: loginResult.data.ID_USUARIO,
+        nome: loginResult.data.NOME,
+        funcao: loginResult.data.ID_FUNCAO_USUARIO,
+      },
+      semExpiracao || false
+    );
+    event.reply("login-response", tokenResult);
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     event.reply("login-response", {
