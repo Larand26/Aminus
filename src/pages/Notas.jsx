@@ -36,13 +36,6 @@ const Notas = () => {
   // Loading
   const [isLoading, setIsLoading] = useState(false);
 
-  // Usuário
-  const idFuncao = JSON.parse(localStorage.getItem("ID_FUNCAO_USUARIO"));
-  const username = localStorage.getItem("username");
-  if (idFuncao == 2 && vendedor === "") {
-    setVendedor(vendedoresJson.find((v) => v.label === username)?.value || "");
-  }
-
   // Notas
   const [notas, setNotas] = useState([]);
 

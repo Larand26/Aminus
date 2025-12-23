@@ -252,6 +252,7 @@ ipcMain.on("login", async (event, { user, password, semExpiracao }) => {
         token: tokenResult.data,
         NOME: loginResult.data.NOME,
         DESCRICAO_FUNCAO: loginResult.data.DESCRICAO_FUNCAO,
+        ID_FUNCAO: loginResult.data.ID_FUNCAO_USUARIO,
         // outros campos simples...
       },
     };

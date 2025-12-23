@@ -46,6 +46,7 @@ const Login = () => {
         setToken(response.data.token);
         localStorage.setItem("username", response.data.NOME);
         localStorage.setItem("funcao", response.data.DESCRICAO_FUNCAO);
+        localStorage.setItem("ID_FUNCAO_USUARIO", response.data.ID_FUNCAO);
       }
       navigate("/home");
     };
