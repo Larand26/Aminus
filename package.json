@@ -61,14 +61,22 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "./build/icon"
+        "icon": "./build/icon",
+        "extraFiles": [
+          "./db",
+          "./config",
+          "./gemini",
+          "./token",
+          "./transportadoras"
+        ]
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "name": "aminus",
-            "setupIcon": "./build/icon.ico"
+            "setupIcon": "./build/icon.ico",
+            "authors": "Victor de Brito Laranjeira"
           }
         },
         {
