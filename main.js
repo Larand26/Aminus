@@ -42,6 +42,7 @@ try {
 
 // Token
 const { geraToken } = require("./token/geraToken");
+const { verificaToken } = require("./token/verificaToken");
 
 function isDev() {
   return MODE === "development" || process.env.NODE_ENV === "development";
@@ -237,21 +238,28 @@ ipcMain.on("login", async (event, { user, password, semExpiracao }) => {
     if (!loginResult.success) event.reply("login-response", loginResult);
     const tokenResult = await geraToken(
       {
-        userId: loginResult.data.ID_USUARIO,
-        nome: loginResult.data.NOME,
-        funcao: loginResult.data.ID_FUNCAO_USUARIO,
+        ID_USUARIO: loginResult.data.ID_USUARIO,
+        NOME: loginResult.data.NOME,
+        DESCRICAO_FUNCAO: loginResult.data.DESCRICAO_FUNCAO,
+        ID_FUNCAO_USUARIO: loginResult.data.ID_FUNCAO_USUARIO,
       },
       semExpiracao || false
     );
     if (!tokenResult.success) return event.reply("login-response", tokenResult);
     const result = {
       success: true,
-      data: { token: tokenResult.data, ...loginResult.data },
+      data: {
+        token: tokenResult.data,
+        NOME: loginResult.data.NOME,
+        DESCRICAO_FUNCAO: loginResult.data.DESCRICAO_FUNCAO,
+        // outros campos simples...
+      },
     };
     event.reply("login-response", result);
   } catch (error) {
     console.error("Erro ao fazer login:", error);
     event.reply("login-response", {
+      success: false,
       error: error.message || "Erro desconhecido",
     });
   }
@@ -352,6 +360,19 @@ ipcMain.on("pega-resposta-gemini", async (event, { pergunta, respostas }) => {
   } catch (error) {
     console.error("Erro ao obter resposta do Gemini:", error);
     event.reply("pega-resposta-gemini-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("autentica-token", async (event, token) => {
+  try {
+    const resultado = await verificaToken(token);
+    event.reply("autentica-token-response", resultado);
+  } catch (error) {
+    console.error("Erro ao autenticar token:", error);
+    event.reply("autentica-token-response", {
       success: false,
       error: error.message || "Erro desconhecido",
     });

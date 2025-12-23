@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+import autenticaToken from "../utils/autenticaToken";
+
 import Toast from "../components/Toast";
 
 import logo from "../assets/img/png/imagologo_png.png";
@@ -8,12 +10,23 @@ import logo from "../assets/img/png/imagologo_png.png";
 import "../styles/login-page.css";
 
 const Login = () => {
-  const [username, setUsername] = useState(
-    localStorage.getItem("username") || ""
-  );
-  const [password, setPassword] = useState(
-    localStorage.getItem("password") || ""
-  );
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const verificaToken = async () => {
+    if (!token) return;
+    const response = await autenticaToken(token);
+    console.log("Resposta da autenticação do token:", response);
+    if (response.success && token) {
+      navigate("/home");
+    }
+  };
+  // Roda a verificação quando carrega a página
+  useEffect(() => {
+    verificaToken();
+  }, [token]);
+
   const navigate = useNavigate();
 
   const [toastInfo, setToastInfo] = useState(null);
@@ -30,6 +43,7 @@ const Login = () => {
       }
       if (response.data) {
         localStorage.setItem("token", response.data.token);
+        setToken(response.data.token);
         localStorage.setItem("username", response.data.NOME);
         localStorage.setItem("funcao", response.data.DESCRICAO_FUNCAO);
       }

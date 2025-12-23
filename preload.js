@@ -125,4 +125,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("pega-resposta-gemini-response", (event, arg) => {
       callback(arg);
     }),
+  autenticaToken: (token) => ipcRenderer.send("autentica-token", token),
+  onAutenticaTokenResponse: (callback) =>
+    ipcRenderer.on("autentica-token-response", (event, arg) => {
+      callback(arg);
+    }),
 });

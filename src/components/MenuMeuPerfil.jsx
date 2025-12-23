@@ -19,7 +19,12 @@ const MenuMeuPerfil = (props) => {
           </button>
         </li>
         <li>
-          <button onClick={() => navigate("/")}>
+          <button
+            onClick={() => {
+              localStorage.removeItem("token");
+              navigate("/");
+            }}
+          >
             Sair <i className="fa fa-sign-out"></i>
           </button>
         </li>
