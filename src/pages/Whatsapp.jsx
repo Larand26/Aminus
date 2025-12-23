@@ -72,7 +72,9 @@ const Whatsapp = () => {
               imagens={imagens}
               setImagens={setImagens}
               setMensagemEnviar={setMensagemEnviar}
-              onEnviar={() => {}}
+              onEnviar={() => {
+                console.log(imagens);
+              }}
             />
           )}
         </Content>

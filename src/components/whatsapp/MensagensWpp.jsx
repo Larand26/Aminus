@@ -6,7 +6,7 @@ const MensagensWpp = (props) => {
   return (
     <div className="mensagens-wpp-container">
       <div>
-        <InputFile imagens={props.imagens} setImagens={props.setImagens} />
+        <InputFile initialFiles={props.imagens} onChange={props.setImagens} />
       </div>
       <div className="mensagens-wpp-content">
         <div>
