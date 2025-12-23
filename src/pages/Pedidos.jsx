@@ -30,6 +30,12 @@ import opcoesCotacao from "../assets/json/opcoes/opcoesCotacao.json";
 import "../styles/pedidos.css";
 
 const Pedidos = () => {
+  // Token
+  const token = localStorage.getItem("token");
+
+  // Função do usuário
+  const idFuncao = localStorage.getItem("ID_FUNCAO_USUARIO");
+
   // Estados dos inputs
   const [numPedido, setNumPedido] = useState("");
   const [data, setData] = useState([null, null]);
@@ -44,13 +50,6 @@ const Pedidos = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isCotacaoLoading, setIsCotacaoLoading] = useState(false);
 
-  // Usuário
-  const idFuncao = JSON.parse(localStorage.getItem("ID_FUNCAO_USUARIO"));
-  const username = localStorage.getItem("username");
-  if (idFuncao == 2 && vendedor === "") {
-    setVendedor(vendedoresJson.find((v) => v.label === username)?.value || "");
-  }
-
   // Pedidos
   const [pedidos, setPedidos] = useState([]);
   const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
@@ -64,6 +63,7 @@ const Pedidos = () => {
     searchPedidos([]);
     setIsLoading(true);
     const filters = {
+      token: token,
       numPedido: numPedido,
       dataInicial: data[0],
       dataFinal: data[1] || data[0],
