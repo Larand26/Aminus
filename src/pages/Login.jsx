@@ -30,7 +30,7 @@ const Login = () => {
       }
       if (response.data) {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("username", response.data.nome);
+        localStorage.setItem("username", response.data.NOME);
         localStorage.setItem("funcao", response.data.DESCRICAO_FUNCAO);
       }
       navigate("/home");
