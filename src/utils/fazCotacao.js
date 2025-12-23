@@ -36,6 +36,7 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
         const result = arg.data.padrao.ShippingSevicesArray.map(
           (item, index) => {
             try {
+              if (!item || item?.Error) return null;
               return {
                 NOME_TRANSPORTADORA: item?.ServiceDescription || "--",
                 PRECO: transportadorsasPrecoPersonalizado.includes(
