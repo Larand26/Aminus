@@ -22,6 +22,7 @@ const { updateFoto } = require("./db/mongodb/updateFoto");
 
 // My SQL
 const { login } = require("./db/mysql/login");
+const { pegaContatos } = require("./db/mysql/contatos");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
@@ -46,6 +47,9 @@ const { verificaToken } = require("./token/verificaToken");
 
 // Vendededores
 const vendedoresJson = require("./db/vendedores.json");
+
+// Whatsapp
+const { enviaMensagem } = require("./whatsapp/mensagem");
 
 function isDev() {
   return MODE === "development" || process.env.NODE_ENV === "development";
@@ -397,6 +401,33 @@ ipcMain.on("autentica-token", async (event, token) => {
   } catch (error) {
     console.error("Erro ao autenticar token:", error);
     event.reply("autentica-token-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("envia-mensagem", async (event, args) => {
+  try {
+    const tokenResult = await verificaToken(args.token);
+    if (!tokenResult.success) event.reply("search-nota-response", tokenResult);
+
+    const contatosResult = await pegaContatos(tokenResult.data.ID_USUARIO);
+    if (!contatosResult.success)
+      event.reply("envia-mensagem-response", contatosResult);
+
+    const mensagemArgs = {
+      mensagem: args.mensagem,
+      imagens: args.imagens,
+      contatos: contatosResult.data,
+    };
+    event.reply("envia-mensagem-response", {
+      success: true,
+      message: "Mensagem enviada com sucesso",
+    });
+  } catch (error) {
+    console.error("Erro ao enviar mensagem:", error);
+    event.reply("envia-mensagem-response", {
       success: false,
       error: error.message || "Erro desconhecido",
     });
