@@ -1,7 +1,4 @@
 const { contextBridge, ipcRenderer } = require("electron");
-const {
-  default: searchContatos,
-} = require("./src/utils/search/searchContatos");
 
 contextBridge.exposeInMainWorld("electronApi", {
   searchProduto: (arg) => ipcRenderer.send("search-produto", arg),
