@@ -11,6 +11,7 @@ import Dashboard from "../components/whatsapp/DashboardWpp";
 import MensagensWpp from "../components/whatsapp/MensagensWpp";
 
 import enviaMensagem from "../utils/whatsapp/enviaMensagem";
+import searchContatos from "../utils/search/searchContatos";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
@@ -21,7 +22,7 @@ const Whatsapp = () => {
 
   // Estados dos inputs
   const [numero, setNumero] = useState("");
-  const [mensagem, setMensagem] = useState("");
+  const [cliente, setCliente] = useState("");
   const [vendedor, setVendedor] = useState("");
 
   // Páginas para o Content
@@ -47,7 +48,16 @@ const Whatsapp = () => {
   const [paginaAtiva, setPaginaAtiva] = useState("clientes");
 
   // Pesquisa
-  const handleSearch = () => {};
+  const handleSearch = async () => {
+    const filtros = {
+      numero,
+      nome: cliente,
+      vendedor,
+      token,
+    };
+    const resultados = await searchContatos(filtros);
+    console.log("Resultados da pesquisa de contatos:", resultados);
+  };
 
   // Estados de mensagens
   const [mensagemEnviar, setMensagemEnviar] = useState("");
@@ -72,7 +82,7 @@ const Whatsapp = () => {
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
           <InputLabel label="Número" value={numero} onChange={setNumero} />
-          <InputLabel label="Cliente" value={mensagem} onChange={setMensagem} />
+          <InputLabel label="Cliente" value={cliente} onChange={setCliente} />
           <SelectLabel
             label="Vendedor"
             options={vendedoresJson}

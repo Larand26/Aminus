@@ -262,6 +262,7 @@ ipcMain.on("search-cadastro-produtos", async (event, filtros) => {
 ipcMain.on("login", async (event, { user, password, semExpiracao }) => {
   try {
     const loginResult = await login(user, password);
+    console.log("Resultado do login:", loginResult);
     if (!loginResult.success) event.reply("login-response", loginResult);
     const tokenResult = await geraToken(
       {
@@ -412,7 +413,9 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     const tokenResult = await verificaToken(args.token);
     if (!tokenResult.success) event.reply("search-nota-response", tokenResult);
 
-    const contatosResult = await pegaContatos(tokenResult.data.ID_USUARIO);
+    const contatosResult = await pegaContatos({
+      vendedorId: tokenResult.data.ID_USUARIO,
+    });
     if (!contatosResult.success)
       event.reply("envia-mensagem-response", contatosResult);
 
@@ -429,6 +432,27 @@ ipcMain.on("envia-mensagem", async (event, args) => {
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
     event.reply("envia-mensagem-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("search-contatos", async (event, filters) => {
+  try {
+    const tokenResult = await verificaToken(filters.token);
+    if (!tokenResult.success)
+      event.reply("search-contatos-response", tokenResult);
+
+    const contatosResult = await pegaContatos({
+      ...filters,
+      vendedorId: tokenResult.data.ID_USUARIO,
+    });
+
+    event.reply("search-contatos-response", contatosResult);
+  } catch (error) {
+    console.error("Erro ao buscar contatos:", error);
+    event.reply("search-contatos-response", {
       success: false,
       error: error.message || "Erro desconhecido",
     });

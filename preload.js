@@ -1,4 +1,7 @@
 const { contextBridge, ipcRenderer } = require("electron");
+const {
+  default: searchContatos,
+} = require("./src/utils/search/searchContatos");
 
 contextBridge.exposeInMainWorld("electronApi", {
   searchProduto: (arg) => ipcRenderer.send("search-produto", arg),
@@ -133,6 +136,11 @@ contextBridge.exposeInMainWorld("electronApi", {
   enviaMensagem: (args) => ipcRenderer.send("envia-mensagem", args),
   onEnviaMensagem: (callback) =>
     ipcRenderer.on("envia-mensagem-response", (event, arg) => {
+      callback(arg);
+    }),
+  searchContatos: (filters) => ipcRenderer.send("search-contatos", filters),
+  onSearchContatosResponse: (callback) =>
+    ipcRenderer.on("search-contatos-response", (event, arg) => {
       callback(arg);
     }),
 });
