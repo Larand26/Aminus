@@ -421,10 +421,11 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       imagens: args.imagens,
       contatos: contatosResult.data,
     };
-    event.reply("envia-mensagem-response", {
-      success: true,
-      message: "Mensagem enviada com sucesso",
-    });
+
+    const enviaResult = await enviaMensagem(mensagemArgs);
+    console.log("Resultado do envio de mensagem:", enviaResult);
+
+    event.reply("envia-mensagem-response", enviaResult);
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
     event.reply("envia-mensagem-response", {

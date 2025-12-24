@@ -9,7 +9,7 @@ const pegaContatos = async (vendedor) => {
     );
     connection.end();
 
-    return { success: true, data: rows[0] };
+    return { success: true, data: rows };
   } catch (error) {
     console.error("Erro ao realizar login:", error);
     return { success: false, error: error.message || "Erro desconhecido" };
