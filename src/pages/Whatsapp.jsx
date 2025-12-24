@@ -25,6 +25,9 @@ const Whatsapp = () => {
   const [cliente, setCliente] = useState("");
   const [vendedor, setVendedor] = useState("");
 
+  // Dados
+  const [contatos, setContatos] = useState([]);
+
   // Páginas para o Content
   const pages = [
     {
@@ -56,7 +59,9 @@ const Whatsapp = () => {
       token,
     };
     const resultados = await searchContatos(filtros);
-    console.log("Resultados da pesquisa de contatos:", resultados);
+    if (!resultados?.success) return;
+    if (resultados.data.length === 0) return;
+    setContatos(resultados.data);
   };
 
   // Estados de mensagens
@@ -92,7 +97,7 @@ const Whatsapp = () => {
         </BarraLateral>
         <Content titulo="WhatsApp" pages={pages}>
           {paginaAtiva === "clientes" && (
-            <ClientesWpp dados={[]} opcoes={opcoesContatosWhatsapp} />
+            <ClientesWpp dados={contatos} opcoes={opcoesContatosWhatsapp} />
           )}
           {paginaAtiva === "dashboard" && <Dashboard />}
           {paginaAtiva === "mensagens" && (
