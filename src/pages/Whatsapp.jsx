@@ -13,6 +13,7 @@ import MensagensWpp from "../components/whatsapp/MensagensWpp";
 import enviaMensagem from "../utils/whatsapp/enviaMensagem";
 
 import vendedoresJson from "../assets/json/vendedores.json";
+import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
 
 const Whatsapp = () => {
   //token
@@ -80,7 +81,9 @@ const Whatsapp = () => {
           />
         </BarraLateral>
         <Content titulo="WhatsApp" pages={pages}>
-          {paginaAtiva === "clientes" && <ClientesWpp />}
+          {paginaAtiva === "clientes" && (
+            <ClientesWpp dados={[]} opcoes={opcoesContatosWhatsapp} />
+          )}
           {paginaAtiva === "dashboard" && <Dashboard />}
           {paginaAtiva === "mensagens" && (
             <MensagensWpp
