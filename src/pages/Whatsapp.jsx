@@ -111,7 +111,7 @@ const Whatsapp = () => {
     if (!adicionaResult?.success) {
       setToastInfo({
         key: Date.now(),
-        message: "Erro ao adicionar cliente.",
+        message: adicionaResult?.error || "Erro ao adicionar cliente.",
         type: "falha",
       });
       return;
@@ -122,7 +122,6 @@ const Whatsapp = () => {
       type: "sucesso",
     });
 
-    console.log("Cliente adicionado:", adicionaResult);
     setNovoCliente({});
     handleSearch();
   };
