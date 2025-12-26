@@ -12,6 +12,7 @@ import MensagensWpp from "../components/whatsapp/MensagensWpp";
 
 import enviaMensagem from "../utils/whatsapp/enviaMensagem";
 import searchContatos from "../utils/search/searchContatos";
+import adicionaContato from "../utils/whatsapp/adicionaContato";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
@@ -83,7 +84,16 @@ const Whatsapp = () => {
 
   // Adiciona um cliente novo
   const [novoCliente, setNovoCliente] = useState({});
-  const handleAdicionarCliente = async () => {};
+  const handleAdicionarCliente = async () => {
+    const args = {
+      ...novoCliente,
+      token,
+    };
+    const adicionaResult = await adicionaContato(args);
+    console.log("Cliente adicionado:", adicionaResult);
+    setNovoCliente({});
+    handleSearch();
+  };
 
   return (
     <>

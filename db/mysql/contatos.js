@@ -30,6 +30,28 @@ const pegaContatos = async (filtros) => {
   }
 };
 
+const adicionaContato = async (contato) => {
+  try {
+    const connection = await connectMySql();
+    const query =
+      "INSERT INTO CONTATOS (CONTATO_NOME, CONTATO_NUMERO, CONTATO_CNPJ, VENDEDOR_ID) VALUES (?, ?, ?, ?)";
+    const params = [
+      contato.nome,
+      contato.numero,
+      contato.cnpj ?? null,
+      contato.vendedorId,
+    ];
+    await connection.execute(query, params);
+    connection.end();
+
+    return { success: true, data: "Contato adicionado com sucesso" };
+  } catch (error) {
+    console.error("Erro ao adicionar contato:", error);
+    return { success: false, error: error.message || "Erro desconhecido" };
+  }
+};
+
 module.exports = {
   pegaContatos,
+  adicionaContato,
 };

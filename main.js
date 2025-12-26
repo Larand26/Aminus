@@ -22,7 +22,7 @@ const { updateFoto } = require("./db/mongodb/updateFoto");
 
 // My SQL
 const { login } = require("./db/mysql/login");
-const { pegaContatos } = require("./db/mysql/contatos");
+const { pegaContatos, adicionaContato } = require("./db/mysql/contatos");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
@@ -453,6 +453,34 @@ ipcMain.on("search-contatos", async (event, filters) => {
   } catch (error) {
     console.error("Erro ao buscar contatos:", error);
     event.reply("search-contatos-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("adiciona-contato", async (event, args) => {
+  try {
+    const tokenResult = await verificaToken(args.token);
+    if (!tokenResult.success)
+      event.reply("adiciona-contato-response", tokenResult);
+    const contatosResult = await pegaContatos({
+      vendedorId: tokenResult.data.ID_USUARIO,
+    });
+    if (!contatosResult.success)
+      event.reply("adiciona-contato-response", contatosResult);
+
+    const adicionaResult = await adicionaContato({
+      nome: args.nome,
+      numero: args.numero,
+      cnpj: args.cnpj,
+      vendedorId: tokenResult.data.ID_USUARIO,
+    });
+
+    event.reply("adiciona-contato-response", adicionaResult);
+  } catch (error) {
+    console.error("Erro ao adicionar contato:", error);
+    event.reply("adiciona-contato-response", {
       success: false,
       error: error.message || "Erro desconhecido",
     });

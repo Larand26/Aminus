@@ -140,4 +140,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("search-contatos-response", (event, arg) => {
       callback(arg);
     }),
+  adicionaContato: (args) => ipcRenderer.send("adiciona-contato", args),
+  onAdicionaContato: (callback) =>
+    ipcRenderer.on("adiciona-contato-response", (event, arg) => {
+      callback(arg);
+    }),
 });
