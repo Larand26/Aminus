@@ -11,7 +11,9 @@ import "../styles/login-page.css";
 
 const Login = () => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(
+    localStorage.getItem("username") || ""
+  );
   const [password, setPassword] = useState("");
 
   const verificaToken = async () => {
