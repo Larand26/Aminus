@@ -446,7 +446,8 @@ ipcMain.on("search-contatos", async (event, filters) => {
 
     const contatosResult = await pegaContatos({
       ...filters,
-      vendedorId: tokenResult.data.ID_USUARIO,
+      vendedorId:
+        tokenResult.data.ID_USUARIO == 1 ? null : tokenResult.data.ID_USUARIO,
     });
 
     event.reply("search-contatos-response", contatosResult);
