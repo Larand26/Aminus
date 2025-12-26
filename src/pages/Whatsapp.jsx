@@ -5,6 +5,7 @@ import BarraLateral from "../components/BarraLateral";
 import InputLabel from "../components/InputLabel";
 import SelectLabel from "../components/SelectLabel";
 import Content from "../components/Content";
+import Toast from "../components/Toast";
 
 import ClientesWpp from "../components/whatsapp/ClientesWpp";
 import Dashboard from "../components/whatsapp/DashboardWpp";
@@ -20,6 +21,9 @@ import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp
 const Whatsapp = () => {
   //token
   const token = localStorage.getItem("token");
+
+  // Toast
+  const [toastInfo, setToastInfo] = useState(null);
 
   // Estados dos inputs
   const [numero, setNumero] = useState("");
@@ -60,8 +64,22 @@ const Whatsapp = () => {
       token,
     };
     const resultados = await searchContatos(filtros);
-    if (!resultados?.success) return;
-    if (resultados.data.length === 0) return;
+    if (!resultados?.success) {
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao buscar contatos.",
+        type: "falha",
+      });
+      return;
+    }
+    if (resultados.data.length === 0) {
+      setToastInfo({
+        key: Date.now(),
+        message: "Nenhum contato encontrado.",
+        type: "aviso",
+      });
+      return;
+    }
     setContatos(resultados.data);
   };
 
@@ -90,6 +108,20 @@ const Whatsapp = () => {
       token,
     };
     const adicionaResult = await adicionaContato(args);
+    if (!adicionaResult?.success) {
+      setToastInfo({
+        key: Date.now(),
+        message: "Erro ao adicionar cliente.",
+        type: "falha",
+      });
+      return;
+    }
+    setToastInfo({
+      key: Date.now(),
+      message: "Cliente adicionado com sucesso!",
+      type: "sucesso",
+    });
+
     console.log("Cliente adicionado:", adicionaResult);
     setNovoCliente({});
     handleSearch();
@@ -97,6 +129,14 @@ const Whatsapp = () => {
 
   return (
     <>
+      {toastInfo && (
+        <Toast
+          key={toastInfo.key}
+          message={toastInfo.message}
+          type={toastInfo.type}
+        />
+      )}
+
       <NavBar />
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>

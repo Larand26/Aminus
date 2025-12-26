@@ -39,7 +39,7 @@ const Login = () => {
         setToastInfo({
           key: Date.now(),
           message: "Usuário ou senha inválidos.",
-          type: "erro",
+          type: "falha",
         });
         return;
       }
