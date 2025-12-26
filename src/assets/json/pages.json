@@ -68,6 +68,6 @@
     "icon": "fa-brands fa-whatsapp",
     "iconPrefix": "brands",
     "path": "/whatsapp",
-    "restrition": [2, 3, 4]
+    "restrition": [3, 4]
   }
 ]

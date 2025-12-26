@@ -22,6 +22,9 @@ const Whatsapp = () => {
   //token
   const token = localStorage.getItem("token");
 
+  // Função do usuário
+  const idFuncao = localStorage.getItem("ID_FUNCAO_USUARIO");
+
   // Toast
   const [toastInfo, setToastInfo] = useState(null);
 
@@ -141,12 +144,14 @@ const Whatsapp = () => {
         <BarraLateral onSearch={handleSearch}>
           <InputLabel label="Número" value={numero} onChange={setNumero} />
           <InputLabel label="Cliente" value={cliente} onChange={setCliente} />
-          <SelectLabel
-            label="Vendedor"
-            options={vendedoresJson}
-            value={vendedor}
-            onChange={setVendedor}
-          />
+          {idFuncao != 2 && (
+            <SelectLabel
+              label="Vendedor"
+              options={vendedoresJson}
+              value={vendedor}
+              onChange={setVendedor}
+            />
+          )}
         </BarraLateral>
         <Content titulo="WhatsApp" pages={pages}>
           {paginaAtiva === "clientes" && (
