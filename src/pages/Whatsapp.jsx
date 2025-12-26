@@ -81,6 +81,10 @@ const Whatsapp = () => {
     await enviaMensagem(args);
   };
 
+  // Adiciona um cliente novo
+  const [novoCliente, setNovoCliente] = useState({});
+  const handleAdicionarCliente = async () => {};
+
   return (
     <>
       <NavBar />
@@ -97,7 +101,13 @@ const Whatsapp = () => {
         </BarraLateral>
         <Content titulo="WhatsApp" pages={pages}>
           {paginaAtiva === "clientes" && (
-            <ClientesWpp dados={contatos} opcoes={opcoesContatosWhatsapp} />
+            <ClientesWpp
+              dados={contatos}
+              opcoes={opcoesContatosWhatsapp}
+              onClick={handleAdicionarCliente}
+              novoCliente={novoCliente}
+              setNovoCliente={setNovoCliente}
+            />
           )}
           {paginaAtiva === "dashboard" && <Dashboard />}
           {paginaAtiva === "mensagens" && (

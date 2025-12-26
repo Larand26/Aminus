@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Table from "../tabela/Tabela";
 import Coluna from "../tabela/Coluna";
 
@@ -9,15 +11,49 @@ const ClientesWpp = (props) => {
       <div className="adicionarClienteContent">
         <div className="inputGroup">
           <label htmlFor="nomeCliente">Nome</label>
-          <input id="nomeCliente" type="text" placeholder="Nome" />
+          <input
+            value={props.novoCliente?.nome || ""}
+            onChange={(e) =>
+              props.setNovoCliente({
+                ...props.novoCliente,
+                nome: e.target.value,
+              })
+            }
+            id="nomeCliente"
+            type="text"
+            placeholder="Nome"
+          />
         </div>
         <div className="inputGroup">
           <label htmlFor="telefoneCliente">Telefone</label>
-          <input id="telefoneCliente" type="text" placeholder="5511999999999" />
+          <input
+            value={props.novoCliente?.numero || ""}
+            onChange={(e) =>
+              props.setNovoCliente({
+                ...props.novoCliente,
+                numero: e.target.value.replace(/\D/g, ""), // Remove tudo que não for dígito
+              })
+            }
+            id="telefoneCliente"
+            type="text"
+            inputMode="numeric"
+            placeholder="5511999999999"
+          />
         </div>
         <div className="inputGroup">
           <label htmlFor="cnpjCliente">CNPJ</label>
-          <input id="cnpjCliente" type="text" placeholder="Cnpj" />
+          <input
+            value={props.novoCliente?.cnpj || ""}
+            onChange={(e) =>
+              props.setNovoCliente({
+                ...props.novoCliente,
+                cnpj: e.target.value,
+              })
+            }
+            id="cnpjCliente"
+            type="text"
+            placeholder="Cnpj"
+          />
         </div>
         <div className="inputGroup">
           <label htmlFor="">&zwnj;</label>
