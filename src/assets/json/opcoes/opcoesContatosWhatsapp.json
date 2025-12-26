@@ -12,5 +12,10 @@
     "label": "Ativo",
     "checked": true
   },
+  {
+    "id": "CONTATO_CNPJ",
+    "label": "CNPJ",
+    "checked": true
+  },
   { "id": "VENDEDOR_ID", "label": "Vendedor ID", "checked": true }
 ]
