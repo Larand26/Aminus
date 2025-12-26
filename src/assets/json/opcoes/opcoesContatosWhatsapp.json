@@ -12,5 +12,5 @@
     "label": "Ativo",
     "checked": true
   },
-  { "id": "CONTATO_VENDEDOR_ID", "label": "Vendedor ID", "checked": true }
+  { "id": "VENDEDOR_ID", "label": "Vendedor ID", "checked": true }
 ]
