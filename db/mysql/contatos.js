@@ -36,9 +36,9 @@ const adicionaContato = async (contato) => {
     const query =
       "INSERT INTO CONTATOS (CONTATO_NOME, CONTATO_NUMERO, CONTATO_CNPJ, VENDEDOR_ID) VALUES (?, ?, ?, ?)";
     const params = [
-      contato.nome,
-      contato.numero,
-      contato.cnpj ?? null,
+      contato.nome.toUpperCase(),
+      contato.numero?.replace(/\D/g, "") ?? null,
+      contato.cnpj?.replace(/\D/g, "") ?? null,
       contato.vendedorId,
     ];
     await connection.execute(query, params);
