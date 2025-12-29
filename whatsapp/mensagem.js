@@ -3,14 +3,14 @@ const path = require("path");
 const globals = require(path.join(__dirname, "../globals"));
 
 const WHATSAPP_API_URL = globals.WHATSAPP_API_URL;
-const WHATSAPP_API_KEY = globals.WHATSAPP_API_KEY;
 
 const enviaImagem = async (args) => {
   try {
-    const { imagem, contatoNumero, mensagem } = args;
+    const { imagem, contatoNumero, mensagem, key, session } = args;
+
     const headers = {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${WHATSAPP_API_KEY}`,
+      Authorization: `Bearer ${key}`,
     };
     let base64Image = imagem;
     if (!imagem.startsWith("data:image")) {
@@ -28,7 +28,7 @@ const enviaImagem = async (args) => {
       base64: base64Image,
     };
     const response = await axios.post(
-      `${WHATSAPP_API_URL}/lista/send-image`,
+      `${WHATSAPP_API_URL}/${session}/send-image`,
       body,
       { headers: headers }
     );
@@ -42,10 +42,10 @@ const enviaImagem = async (args) => {
 
 const enviaMensagem = async (args) => {
   try {
-    const { mensagem, imagens, contatos } = args;
+    const { mensagem, imagens, contatos, key, session } = args;
     const headers = {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${WHATSAPP_API_KEY}`,
+      Authorization: `Bearer ${key}`,
     };
     if (contatos.length === 0)
       return { success: false, error: "Nenhum contato fornecido." };
@@ -66,6 +66,8 @@ const enviaMensagem = async (args) => {
             imagem: base64Image,
             contatoNumero: contato.CONTATO_NUMERO,
             mensagem: "",
+            key: key,
+            session: session,
           });
         }
       }
@@ -81,7 +83,7 @@ const enviaMensagem = async (args) => {
         message: mensagem,
       };
 
-      await axios.post(`${WHATSAPP_API_URL}/lista/send-message`, body, {
+      await axios.post(`${WHATSAPP_API_URL}/${session}/send-message`, body, {
         headers: headers,
       });
 

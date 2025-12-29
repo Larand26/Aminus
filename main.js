@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, session } = require("electron");
 const path = require("path");
 
 // SQL Server
@@ -23,6 +23,7 @@ const { updateFoto } = require("./db/mongodb/updateFoto");
 // My SQL
 const { login } = require("./db/mysql/login");
 const { pegaContatos, adicionaContato } = require("./db/mysql/contatos");
+const { pegaKeys } = require("./db/mysql/keys");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
@@ -419,14 +420,20 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     if (!contatosResult.success)
       event.reply("envia-mensagem-response", contatosResult);
 
+    const keysResult = await pegaKeys({
+      vendedorId: tokenResult.data.ID_USUARIO,
+    });
+    if (!keysResult.success) event.reply("envia-mensagem-response", keysResult);
+
     const mensagemArgs = {
       mensagem: args.mensagem,
       imagens: args.imagens,
       contatos: contatosResult.data,
+      key: keysResult.data[0].KEY_VALUE,
+      session: keysResult.data[0].SESSION,
     };
 
     const enviaResult = await enviaMensagem(mensagemArgs);
-    console.log("Resultado do envio de mensagem:", enviaResult);
 
     event.reply("envia-mensagem-response", enviaResult);
   } catch (error) {
