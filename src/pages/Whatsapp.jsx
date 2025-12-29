@@ -110,12 +110,15 @@ const Whatsapp = () => {
       imagens,
     };
     const result = await enviaMensagem(args);
+    setEnviando(false);
+    console.log(result);
     if (!result?.success) {
       setToastInfo({
         key: Date.now(),
         message: result?.error || "Erro ao enviar mensagens.",
         type: "falha",
       });
+      setProgresso({ progresso: 1, total: 1 });
     } else {
       setToastInfo({
         key: Date.now(),
@@ -125,8 +128,6 @@ const Whatsapp = () => {
       setMensagemEnviar("");
       setImagens([]);
     }
-
-    setEnviando(false);
   };
 
   // Adiciona um cliente novo
@@ -158,7 +159,7 @@ const Whatsapp = () => {
   };
 
   // Progresso
-  const [progresso, setProgresso] = useState({ progresso: 0, total: 0 });
+  const [progresso, setProgresso] = useState({ progresso: 1, total: 1 });
   const [enviando, setEnviando] = useState(false);
 
   useEffect(() => {

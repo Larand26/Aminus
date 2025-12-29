@@ -23,7 +23,11 @@ const { updateFoto } = require("./db/mongodb/updateFoto");
 // My SQL
 const { login } = require("./db/mysql/login");
 const { pegaContatos, adicionaContato } = require("./db/mysql/contatos");
-const { pegaKeys } = require("./db/mysql/keys");
+const {
+  pegaKeys,
+  atualizaUltimoUsoKey,
+  pegaUltimoUsoKey,
+} = require("./db/mysql/keys");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
@@ -421,6 +425,23 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     if (!contatosResult.success)
       return event.reply("envia-mensagem-response", contatosResult);
 
+    // Verifica último uso da key
+    const ultimoUsoKey = await pegaUltimoUsoKey(tokenResult.data.ID_USUARIO);
+    if (!ultimoUsoKey.success)
+      return event.reply("envia-mensagem-response", ultimoUsoKey);
+    const agora = new Date();
+    // Verifica se passou pelo menos 5 minutos desde o último uso
+    const diffMs = agora - new Date(ultimoUsoKey.data);
+    const diffMinutes = Math.floor(diffMs / 60000);
+    if (diffMinutes < 5) {
+      return event.reply("envia-mensagem-response", {
+        success: false,
+        error: `Aguarde mais ${
+          5 - diffMinutes
+        } minuto(s) para enviar novas mensagens.`,
+      });
+    }
+
     const keysResult = await pegaKeys({
       vendedorId: tokenResult.data.ID_USUARIO,
     });
@@ -452,6 +473,8 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       progresso++;
       event.sender.send("envia-mensagem-progresso", { progresso, total });
     }
+
+    await atualizaUltimoUsoKey(tokenResult.data.ID_USUARIO);
 
     event.reply("envia-mensagem-response", {
       success: true,

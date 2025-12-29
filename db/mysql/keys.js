@@ -17,6 +17,41 @@ const pegaKeys = async (filtros) => {
     return { success: false, error: error.message || "Erro desconhecido" };
   }
 };
+
+const atualizaUltimoUsoKey = async (vendedorId) => {
+  try {
+    const connection = await connectMySql();
+    const agora = new Date(); // Horário do Node.js
+    const query =
+      "UPDATE KEYS_WHATSAPP SET ULTIMA_MENSAGEM = ? WHERE VENDEDOR_ID = ?";
+    await connection.execute(query, [agora, vendedorId]);
+    connection.end();
+    return { success: true };
+  } catch (error) {
+    console.error("Erro ao atualizar último uso da key:", error);
+    return { success: false, error: error.message || "Erro desconhecido" };
+  }
+};
+
+const pegaUltimoUsoKey = async (vendedorId) => {
+  try {
+    const connection = await connectMySql();
+    const query =
+      "SELECT ULTIMA_MENSAGEM FROM KEYS_WHATSAPP WHERE VENDEDOR_ID = ?";
+    const [rows] = await connection.execute(query, [vendedorId]);
+    connection.end();
+    if (rows.length === 0) {
+      return { success: false, error: "Key não encontrada para o vendedor." };
+    }
+    return { success: true, data: rows[0].ULTIMA_MENSAGEM };
+  } catch (error) {
+    console.error("Erro ao buscar último uso da key:", error);
+    return { success: false, error: error.message || "Erro desconhecido" };
+  }
+};
+
 module.exports = {
   pegaKeys,
+  atualizaUltimoUsoKey,
+  pegaUltimoUsoKey,
 };
