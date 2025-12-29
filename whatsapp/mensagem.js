@@ -4,91 +4,68 @@ const globals = require(path.join(__dirname, "../globals"));
 
 const WHATSAPP_API_URL = globals.WHATSAPP_API_URL;
 
-const enviaImagem = async (args) => {
+const enviaImagens = async (args) => {
   try {
-    const { imagem, contatoNumero, mensagem, key, session } = args;
-
+    const { mensagem, imagens, contatoNumero, key, session } = args;
+    if (!imagens || imagens.length === 0) {
+      return { success: false, error: "Nenhuma imagem fornecida." };
+    }
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${key}`,
     };
-    let base64Image = imagem;
-    if (!imagem.startsWith("data:image")) {
-      base64Image = `data:image/jpeg;base64,${imagem}`;
-    }
-    const body = {
-      phone: contatoNumero,
-      isGroup: false,
+    let base64Imagens = imagens.map((img) => {
+      if (!img.startsWith("data:image")) {
+        return `data:image/jpeg;base64,${img}`;
+      }
+      return img;
+    });
 
-      isNewsletter: false,
-      isLid: false,
-      message: mensagem,
-      fileName: "foto.jpg",
-      caption: "",
-      base64: base64Image,
-    };
-    const response = await axios.post(
-      `${WHATSAPP_API_URL}/${session}/send-image`,
-      body,
-      { headers: headers }
-    );
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    return { success: true, data: response.data };
+    for (const base64Image of base64Imagens) {
+      const body = {
+        phone: contatoNumero,
+        isGroup: false,
+        isNewsletter: false,
+        isLid: false,
+        message: "",
+        fileName: "foto.jpg",
+        caption: "",
+        base64: base64Image,
+      };
+
+      await axios.post(`${WHATSAPP_API_URL}/${session}/send-image`, body, {
+        headers: headers,
+      });
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+
+    return { success: true, data: "Imagens enviadas com sucesso." };
   } catch (error) {
-    console.error("Erro ao enviar imagem:", error);
+    console.error("Erro ao enviar imagens:", error);
     return { success: false, error: error.message };
   }
 };
 
 const enviaMensagem = async (args) => {
   try {
-    const { mensagem, imagens, contatos, key, session } = args;
+    const { mensagem, imagens, contatoNumero, key, session } = args;
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${key}`,
     };
-    if (contatos.length === 0)
-      return { success: false, error: "Nenhum contato fornecido." };
+    const body = {
+      phone: contatoNumero,
+      isGroup: false,
+      isNewsletter: false,
+      isLid: false,
+      message: mensagem,
+    };
 
-    const base64Images = imagens.map((img) => {
-      if (img.startsWith("data:image")) {
-        return img;
-      } else {
-        return `data:image/jpeg;base64,${img}`;
-      }
+    await axios.post(`${WHATSAPP_API_URL}/${session}/send-message`, body, {
+      headers: headers,
     });
 
-    if (base64Images.length > 0) {
-      for (const contato of contatos) {
-        if (!contato.CONTATO_NUMERO) continue;
-        for (const base64Image of base64Images) {
-          await enviaImagem({
-            imagem: base64Image,
-            contatoNumero: contato.CONTATO_NUMERO,
-            mensagem: "",
-            key: key,
-            session: session,
-          });
-        }
-      }
-    }
-
-    for (const contato of contatos) {
-      if (!contato.CONTATO_NUMERO) continue;
-      const body = {
-        phone: contato.CONTATO_NUMERO,
-        isGroup: false,
-        isNewsletter: false,
-        isLid: false,
-        message: mensagem,
-      };
-
-      await axios.post(`${WHATSAPP_API_URL}/${session}/send-message`, body, {
-        headers: headers,
-      });
-
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-    }
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     return { success: true, data: "Mensagens enviadas com sucesso." };
   } catch (error) {
@@ -97,4 +74,4 @@ const enviaMensagem = async (args) => {
   }
 };
 
-module.exports = { enviaMensagem };
+module.exports = { enviaMensagem, enviaImagens };

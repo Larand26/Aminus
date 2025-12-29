@@ -50,7 +50,7 @@ const { verificaToken } = require("./token/verificaToken");
 const vendedoresJson = require("./db/vendedores.json");
 
 // Whatsapp
-const { enviaMensagem } = require("./whatsapp/mensagem");
+const { enviaMensagem, enviaImagens } = require("./whatsapp/mensagem");
 
 function isDev() {
   return MODE === "development" || process.env.NODE_ENV === "development";
@@ -425,17 +425,22 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     });
     if (!keysResult.success) event.reply("envia-mensagem-response", keysResult);
 
-    const mensagemArgs = {
-      mensagem: args.mensagem,
-      imagens: args.imagens,
-      contatos: contatosResult.data,
-      key: keysResult.data[0].KEY_VALUE,
-      session: keysResult.data[0].SESSION,
-    };
+    for (const contato of contatosResult.data) {
+      const mensagemArgs = {
+        mensagem: args.mensagem,
+        imagens: args.imagens,
+        contatoNumero: contato.CONTATO_NUMERO,
+        key: keysResult.data[0].KEY_VALUE,
+        session: keysResult.data[0].SESSION,
+      };
+      await enviaImagens(mensagemArgs);
+      await enviaMensagem(mensagemArgs);
+    }
 
-    const enviaResult = await enviaMensagem(mensagemArgs);
-
-    event.reply("envia-mensagem-response", enviaResult);
+    event.reply("envia-mensagem-response", {
+      success: true,
+      data: "Mensagens enviadas com sucesso.",
+    });
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
     event.reply("envia-mensagem-response", {
