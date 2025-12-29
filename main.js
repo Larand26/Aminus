@@ -28,6 +28,7 @@ const {
   atualizaUltimoUsoKey,
   pegaUltimoUsoKey,
 } = require("./db/mysql/keys");
+const { salvaInfos } = require("./db/mysql/dashboardWpp");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
@@ -450,6 +451,8 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     const total =
       contatosResult.data.length * ((args.imagens?.length || 0) + 1);
     let progresso = 0;
+    let mensagensEnviadas = 0;
+    let mensagensNaoEnviadas = 0;
 
     for (const contato of contatosResult.data) {
       const mensagemArgs = {
@@ -462,13 +465,26 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       // Envia imagens uma a uma, progresso o progresso
       if (args.imagens && args.imagens.length > 0) {
         for (const img of args.imagens) {
-          await enviaImagens({ ...mensagemArgs, imagens: [img] });
+          const enviaImagemResult = await enviaImagens({
+            ...mensagemArgs,
+            imagens: [img],
+          });
+          if (enviaImagemResult.success) {
+            mensagensEnviadas++;
+          } else {
+            mensagensNaoEnviadas++;
+          }
           progresso++;
           event.sender.send("envia-mensagem-progresso", { progresso, total });
         }
       }
       // Envia mensagem de texto
-      await enviaMensagem(mensagemArgs);
+      const enviaMensagemResult = await enviaMensagem(mensagemArgs);
+      if (enviaMensagemResult.success) {
+        mensagensEnviadas++;
+      } else {
+        mensagensNaoEnviadas++;
+      }
       progresso++;
       event.sender.send("envia-mensagem-progresso", { progresso, total });
     }
@@ -479,6 +495,17 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       success: true,
       data: "Mensagens enviadas com sucesso.",
     });
+
+    const dashboardWppArgs = {
+      mensagem: args.mensagem,
+      mensagensEnviadas,
+      mensagensNaoEnviadas,
+      taxaAcerto: Math.round(
+        (mensagensEnviadas / (mensagensEnviadas + mensagensNaoEnviadas)) * 100
+      ),
+      vendedorId: tokenResult.data.ID_USUARIO,
+    };
+    await salvaInfos(dashboardWppArgs);
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
     event.reply("envia-mensagem-response", {
