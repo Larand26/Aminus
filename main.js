@@ -433,7 +433,7 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     // Verifica se passou pelo menos 5 minutos desde o último uso
     const diffMs = agora - new Date(ultimoUsoKey.data);
     const diffMinutes = Math.floor(diffMs / 60000);
-    if (diffMinutes < 5) {
+    if (diffMinutes < 5 && tokenResult.data.ID_USUARIO !== 1) {
       return event.reply("envia-mensagem-response", {
         success: false,
         error: `Aguarde mais ${
