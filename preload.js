@@ -145,4 +145,6 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("adiciona-contato-response", (event, arg) => {
       callback(arg);
     }),
+  onEnviaMensagemProgresso: (callback) =>
+    ipcRenderer.on("envia-mensagem-progresso", (event, data) => callback(data)),
 });

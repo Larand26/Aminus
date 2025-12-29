@@ -363,7 +363,7 @@ ipcMain.on("update-foto", async (event, novaFoto) => {
     const result = await updateFoto(novaFoto);
     event.reply("update-foto-response", result);
   } catch (error) {
-    console.error("Erro ao atualizar foto:", error);
+    console.error("Erro ao progressoizar foto:", error);
     event.reply("update-foto-response", {
       error: error.message || "Erro desconhecido",
     });
@@ -412,18 +412,24 @@ ipcMain.on("autentica-token", async (event, token) => {
 ipcMain.on("envia-mensagem", async (event, args) => {
   try {
     const tokenResult = await verificaToken(args.token);
-    if (!tokenResult.success) event.reply("search-nota-response", tokenResult);
+    if (!tokenResult.success)
+      return event.reply("envia-mensagem-response", tokenResult);
 
     const contatosResult = await pegaContatos({
       vendedorId: tokenResult.data.ID_USUARIO,
     });
     if (!contatosResult.success)
-      event.reply("envia-mensagem-response", contatosResult);
+      return event.reply("envia-mensagem-response", contatosResult);
 
     const keysResult = await pegaKeys({
       vendedorId: tokenResult.data.ID_USUARIO,
     });
-    if (!keysResult.success) event.reply("envia-mensagem-response", keysResult);
+    if (!keysResult.success)
+      return event.reply("envia-mensagem-response", keysResult);
+
+    const total =
+      contatosResult.data.length * ((args.imagens?.length || 0) + 1);
+    let progresso = 0;
 
     for (const contato of contatosResult.data) {
       const mensagemArgs = {
@@ -433,8 +439,18 @@ ipcMain.on("envia-mensagem", async (event, args) => {
         key: keysResult.data[0].KEY_VALUE,
         session: keysResult.data[0].SESSION,
       };
-      await enviaImagens(mensagemArgs);
+      // Envia imagens uma a uma, progresso o progresso
+      if (args.imagens && args.imagens.length > 0) {
+        for (const img of args.imagens) {
+          await enviaImagens({ ...mensagemArgs, imagens: [img] });
+          progresso++;
+          event.sender.send("envia-mensagem-progresso", { progresso, total });
+        }
+      }
+      // Envia mensagem de texto
       await enviaMensagem(mensagemArgs);
+      progresso++;
+      event.sender.send("envia-mensagem-progresso", { progresso, total });
     }
 
     event.reply("envia-mensagem-response", {

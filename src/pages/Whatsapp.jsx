@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import NavBar from "../components/NavBar";
 import BarraLateral from "../components/BarraLateral";
@@ -14,6 +14,7 @@ import MensagensWpp from "../components/whatsapp/MensagensWpp";
 import enviaMensagem from "../utils/whatsapp/enviaMensagem";
 import searchContatos from "../utils/search/searchContatos";
 import adicionaContato from "../utils/whatsapp/adicionaContato";
+import onEnviaMensagemProgresso from "../utils/whatsapp/progresso";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
@@ -129,6 +130,13 @@ const Whatsapp = () => {
     handleSearch();
   };
 
+  // Progresso
+  const [progresso, setProgresso] = useState({ progresso: 0, total: 0 });
+
+  useEffect(() => {
+    onEnviaMensagemProgresso(setProgresso);
+  }, []);
+
   return (
     <>
       {toastInfo && (
@@ -154,6 +162,9 @@ const Whatsapp = () => {
           )}
         </BarraLateral>
         <Content titulo="WhatsApp" pages={pages}>
+          <p>
+            {progresso.progresso} / {progresso.total}
+          </p>
           {paginaAtiva === "clientes" && (
             <ClientesWpp
               dados={contatos}
