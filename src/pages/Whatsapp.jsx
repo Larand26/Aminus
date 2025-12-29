@@ -98,6 +98,34 @@ const Whatsapp = () => {
   const [timerSegundos, setTimerSegundos] = useState(300); // Começa em 5 minutos (300 segundos)
   const [imagens, setImagens] = useState([]);
 
+  // Timer regressivo de 5 minutos
+  useEffect(() => {
+    const ultimaMensagemWpp = localStorage.getItem("ultimaMensagemWpp");
+    let timerInterval = null;
+
+    const atualizarTimer = () => {
+      if (!ultimaMensagemWpp) {
+        setTimerSegundos(300);
+        return;
+      }
+      const ultimaMensagemDate = new Date(ultimaMensagemWpp);
+      const agora = new Date();
+      const diferencaSegundos = Math.floor((agora - ultimaMensagemDate) / 1000);
+      const restante = 300 - diferencaSegundos;
+      setTimerSegundos(restante > 0 ? restante : 0);
+    };
+
+    atualizarTimer(); // Atualiza imediatamente ao montar
+
+    timerInterval = setInterval(() => {
+      atualizarTimer();
+    }, 1000);
+
+    return () => {
+      if (timerInterval) clearInterval(timerInterval);
+    };
+  }, [localStorage.getItem("ultimaMensagemWpp")]);
+
   // Envia a mensagem
   const handleEnviarMensagem = async () => {
     if (imagens.length === 0 && mensagemEnviar.trim() === "") return;
@@ -110,7 +138,6 @@ const Whatsapp = () => {
       imagens,
     };
     const result = await enviaMensagem(args);
-    localStorage.setItem("ultimaMensagemWpp", new Date().toISOString());
     setEnviando(false);
     console.log(result);
     if (!result?.success) {
@@ -121,6 +148,7 @@ const Whatsapp = () => {
       });
       setProgresso({ progresso: 1, total: 1 });
     } else {
+      localStorage.setItem("ultimaMensagemWpp", new Date().toISOString());
       setToastInfo({
         key: Date.now(),
         message: "Mensagens enviadas com sucesso!",
@@ -130,27 +158,6 @@ const Whatsapp = () => {
       setImagens([]);
     }
   };
-
-  // Formata o timer
-  const ultimaMensagemWpp = localStorage.getItem("ultimaMensagemWpp");
-  useEffect(() => {
-    setTimerSegundos(300);
-    let timerInterval = null;
-    if (ultimaMensagemWpp) {
-      timerInterval = setInterval(() => {
-        setTimerSegundos((prev) => {
-          if (prev > 0) return prev - 1;
-          clearInterval(timerInterval);
-          return 0;
-        });
-      }, 1000);
-    } else {
-      setTimerSegundos(300);
-    }
-    return () => {
-      if (timerInterval) clearInterval(timerInterval);
-    };
-  }, [ultimaMensagemWpp]);
 
   // Adiciona um cliente novo
   const [novoCliente, setNovoCliente] = useState({});
