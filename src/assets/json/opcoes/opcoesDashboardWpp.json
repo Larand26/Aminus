@@ -1,0 +1,24 @@
+[
+  {
+    "id": "MENSAGENS_DATA_ENVIO",
+    "label": "Data de Envio",
+    "checked": true,
+    "format": "data-hora"
+  },
+  { "id": "VENDEDOR_ID", "label": "Id vendedor", "checked": true },
+  {
+    "id": "MENSAGENS_ENVIADAS",
+    "label": "Mensagens Enviadas",
+    "checked": true
+  },
+  {
+    "id": "MENSAGENS_NAO_ENVIADAS",
+    "label": "Mensagens Não Enviadas",
+    "checked": true
+  },
+  {
+    "id": "MENSAGENS_TAXA_ACERTO",
+    "label": "Taxa de Acerto",
+    "checked": true
+  }
+]

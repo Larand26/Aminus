@@ -19,6 +19,7 @@ import pegaInfosDashboardWpp from "../utils/whatsapp/pegaInfosDashboardWpp";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
+import opcoesDashboardWpp from "../assets/json/opcoes/opcoesDashboardWpp.json";
 
 const Whatsapp = () => {
   //token
@@ -207,6 +208,8 @@ const Whatsapp = () => {
   };
 
   // Dashboard WPP - Pega infos
+  const [infosDashboardWpp, setInfosDashboardWpp] = useState([]);
+
   const handlePegaInfosDashboardWpp = async () => {
     const args = { token };
     const infosResult = await pegaInfosDashboardWpp(args);
@@ -219,6 +222,7 @@ const Whatsapp = () => {
       });
       return;
     }
+    setInfosDashboardWpp(infosResult.data);
   };
 
   return (
@@ -256,7 +260,9 @@ const Whatsapp = () => {
               loading={loading}
             />
           )}
-          {paginaAtiva === "dashboard" && <Dashboard />}
+          {paginaAtiva === "dashboard" && (
+            <Dashboard opcoes={opcoesDashboardWpp} dados={infosDashboardWpp} />
+          )}
           {paginaAtiva === "mensagens" && (
             <MensagensWpp
               timer={formatTimer(timerSegundos)}

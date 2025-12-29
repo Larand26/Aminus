@@ -1,0 +1,116 @@
+.dashboard-wpp-container {
+  padding: 24px;
+  background: #f8f9fa;
+}
+
+.dashboard-wpp-cards-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.dashboard-wpp-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 180px;
+  text-align: center;
+  justify-content: center;
+}
+
+.dashboard-wpp-card-status {
+  flex: 2;
+  min-width: 260px;
+}
+
+.dashboard-wpp-card-saude,
+.dashboard-wpp-card-economia {
+  flex: 1.2;
+}
+
+.dashboard-wpp-card-title {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.dashboard-wpp-card-value,
+.dashboard-wpp-saude-value,
+.dashboard-wpp-economia-value,
+.dashboard-wpp-status-chart,
+.dashboard-wpp-status-legend {
+  min-height: 36px;
+  width: 100%;
+}
+
+.placeholder {
+  background: #e3e7ea;
+  border-radius: 6px;
+  min-height: 32px;
+  min-width: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.dashboard-wpp-table-container {
+  margin-top: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 16px;
+}
+
+.dashboard-wpp-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard-wpp-table th,
+.dashboard-wpp-table td {
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.dashboard-wpp-table th {
+  background: #2d3a4a;
+  color: #fff;
+  font-weight: 600;
+}
+
+.dashboard-wpp-table tr:nth-child(even) td {
+  background: #e3e7ea;
+}
+
+.dashboard-wpp-table tr:nth-child(odd) td {
+  background: #f8f9fa;
+}
+
+.dashboard-wpp-card-value.destaque {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2d3a4a;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.dashboard-wpp-saude-value.destaque-saude {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #6b8b89;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.dashboard-wpp-economia-value.destaque-economia {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2d3a4a;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
