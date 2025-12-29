@@ -5,12 +5,24 @@
 }
 .fotos-input {
   width: 100%;
+  max-width: 100%;
   display: flex;
   gap: 10px;
   border: 1px solid var(--cor-texto);
   box-sizing: border-box;
   padding: 10px;
   min-height: 150px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+}
+
+@media (min-width: 1400px) {
+  .container-input-file {
+    max-width: 1300px;
+    margin: 0 auto;
+  }
 }
 
 .foto-input {
@@ -23,7 +35,7 @@
 }
 
 .fotos-input img {
-  width: 100%;
+  width: inherit;
   height: 100%;
   object-fit: contain;
 }
