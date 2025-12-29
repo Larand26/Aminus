@@ -429,7 +429,12 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     const ultimoUsoKey = await pegaUltimoUsoKey(tokenResult.data.ID_USUARIO);
     if (!ultimoUsoKey.success)
       return event.reply("envia-mensagem-response", ultimoUsoKey);
-    const agora = new Date();
+    const responseTime = await fetch(
+      "https://worldtimeapi.org/api/timezone/Etc/UTC"
+    );
+    const data = await responseTime.json();
+    const agora = new Date(data.utc_datetime);
+
     // Verifica se passou pelo menos 5 minutos desde o último uso
     const diffMs = agora - new Date(ultimoUsoKey.data);
     const diffMinutes = Math.floor(diffMs / 60000);
