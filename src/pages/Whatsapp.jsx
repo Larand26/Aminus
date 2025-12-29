@@ -95,7 +95,7 @@ const Whatsapp = () => {
 
   // Estados de mensagens
   const [mensagemEnviar, setMensagemEnviar] = useState("");
-  const [timer, setTimer] = useState("05:00");
+  const [timerSegundos, setTimerSegundos] = useState(300); // Começa em 5 minutos (300 segundos)
   const [imagens, setImagens] = useState([]);
 
   // Envia a mensagem
@@ -110,6 +110,7 @@ const Whatsapp = () => {
       imagens,
     };
     const result = await enviaMensagem(args);
+    localStorage.setItem("ultimaMensagemWpp", new Date().toISOString());
     setEnviando(false);
     console.log(result);
     if (!result?.success) {
@@ -129,6 +130,27 @@ const Whatsapp = () => {
       setImagens([]);
     }
   };
+
+  // Formata o timer
+  const ultimaMensagemWpp = localStorage.getItem("ultimaMensagemWpp");
+  useEffect(() => {
+    setTimerSegundos(300);
+    let timerInterval = null;
+    if (ultimaMensagemWpp) {
+      timerInterval = setInterval(() => {
+        setTimerSegundos((prev) => {
+          if (prev > 0) return prev - 1;
+          clearInterval(timerInterval);
+          return 0;
+        });
+      }, 1000);
+    } else {
+      setTimerSegundos(300);
+    }
+    return () => {
+      if (timerInterval) clearInterval(timerInterval);
+    };
+  }, [ultimaMensagemWpp]);
 
   // Adiciona um cliente novo
   const [novoCliente, setNovoCliente] = useState({});
@@ -165,6 +187,13 @@ const Whatsapp = () => {
   useEffect(() => {
     onEnviaMensagemProgresso(setProgresso);
   }, []);
+
+  // Para exibir o timer no formato mm:ss
+  const formatTimer = (segundos) => {
+    const min = String(Math.floor(segundos / 60)).padStart(2, "0");
+    const sec = String(segundos % 60).padStart(2, "0");
+    return `${min}:${sec}`;
+  };
 
   return (
     <>
@@ -204,7 +233,7 @@ const Whatsapp = () => {
           {paginaAtiva === "dashboard" && <Dashboard />}
           {paginaAtiva === "mensagens" && (
             <MensagensWpp
-              timer={timer}
+              timer={formatTimer(timerSegundos)}
               mensagemEnviar={mensagemEnviar}
               imagens={imagens}
               setImagens={setImagens}
