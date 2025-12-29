@@ -267,7 +267,6 @@ ipcMain.on("search-cadastro-produtos", async (event, filtros) => {
 ipcMain.on("login", async (event, { user, password, semExpiracao }) => {
   try {
     const loginResult = await login(user, password);
-    console.log("Resultado do login:", loginResult);
     if (!loginResult.success) event.reply("login-response", loginResult);
     const tokenResult = await geraToken(
       {
@@ -454,7 +453,7 @@ ipcMain.on("envia-mensagem", async (event, args) => {
 
     for (const contato of contatosResult.data) {
       const mensagemArgs = {
-        mensagem: args.mensagem,
+        mensagem: args.mensagem.replace(/\$nome/g, contato.CONTATO_NOME),
         imagens: args.imagens,
         contatoNumero: contato.CONTATO_NUMERO,
         key: keysResult.data[0].KEY_VALUE,
