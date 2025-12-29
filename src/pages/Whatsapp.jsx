@@ -95,6 +95,8 @@ const Whatsapp = () => {
   // Envia a mensagem
   const handleEnviarMensagem = async () => {
     if (imagens.length === 0 && mensagemEnviar.trim() === "") return;
+    setEnviando(true);
+    setProgresso({ progresso: 0, total: 0 });
 
     const args = {
       token,
@@ -102,6 +104,7 @@ const Whatsapp = () => {
       imagens,
     };
     await enviaMensagem(args);
+    setEnviando(false);
   };
 
   // Adiciona um cliente novo
@@ -132,6 +135,7 @@ const Whatsapp = () => {
 
   // Progresso
   const [progresso, setProgresso] = useState({ progresso: 0, total: 0 });
+  const [enviando, setEnviando] = useState(false);
 
   useEffect(() => {
     onEnviaMensagemProgresso(setProgresso);
@@ -162,9 +166,6 @@ const Whatsapp = () => {
           )}
         </BarraLateral>
         <Content titulo="WhatsApp" pages={pages}>
-          <p>
-            {progresso.progresso} / {progresso.total}
-          </p>
           {paginaAtiva === "clientes" && (
             <ClientesWpp
               dados={contatos}
@@ -183,6 +184,8 @@ const Whatsapp = () => {
               setImagens={setImagens}
               setMensagemEnviar={setMensagemEnviar}
               onEnviar={() => handleEnviarMensagem()}
+              progresso={progresso}
+              enviando={enviando}
             />
           )}
         </Content>
