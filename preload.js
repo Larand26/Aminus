@@ -147,4 +147,10 @@ contextBridge.exposeInMainWorld("electronApi", {
     }),
   onEnviaMensagemProgresso: (callback) =>
     ipcRenderer.on("envia-mensagem-progresso", (event, data) => callback(data)),
+  pegaInfosDashboardWpp: (args) =>
+    ipcRenderer.send("pega-infos-dashboard-wpp", args),
+  onPegaInfosDashboardWppResponse: (callback) =>
+    ipcRenderer.on("pega-infos-dashboard-wpp-response", (event, arg) => {
+      callback(arg);
+    }),
 });

@@ -15,6 +15,7 @@ import enviaMensagem from "../utils/whatsapp/enviaMensagem";
 import searchContatos from "../utils/search/searchContatos";
 import adicionaContato from "../utils/whatsapp/adicionaContato";
 import onEnviaMensagemProgresso from "../utils/whatsapp/progresso";
+import pegaInfosDashboardWpp from "../utils/whatsapp/pegaInfosDashboardWpp";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
@@ -50,7 +51,10 @@ const Whatsapp = () => {
     {
       key: "dashboard",
       icon: "fa-solid fa-chart-bar",
-      onClick: () => setPaginaAtiva("dashboard"),
+      onClick: () => {
+        setPaginaAtiva("dashboard");
+        handlePegaInfosDashboardWpp();
+      },
     },
     {
       key: "mensagens",
@@ -200,6 +204,21 @@ const Whatsapp = () => {
     const min = String(Math.floor(segundos / 60)).padStart(2, "0");
     const sec = String(segundos % 60).padStart(2, "0");
     return `${min}:${sec}`;
+  };
+
+  // Dashboard WPP - Pega infos
+  const handlePegaInfosDashboardWpp = async () => {
+    const args = { token };
+    const infosResult = await pegaInfosDashboardWpp(args);
+    console.log(infosResult);
+    if (!infosResult?.success) {
+      setToastInfo({
+        key: Date.now(),
+        message: infosResult?.error || "Erro ao carregar dashboard WPP.",
+        type: "falha",
+      });
+      return;
+    }
   };
 
   return (

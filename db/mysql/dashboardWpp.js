@@ -37,4 +37,20 @@ const salvaInfos = async (args) => {
   }
 };
 
-module.exports = { salvaInfos };
+const pegaInfos = async () => {
+  try {
+    const connection = await connectMySql();
+    const query = `
+            SELECT * FROM CONTATOS_MENSAGENS
+            ORDER BY MENSAGENS_DATA_ENVIO DESC
+        `;
+    const [rows] = await connection.execute(query);
+    connection.end();
+    return { success: true, data: rows };
+  } catch (error) {
+    console.error("Erro ao pegar informações do dashboard WPP:", error);
+    return { success: false, error: error.message || "Erro desconhecido" };
+  }
+};
+
+module.exports = { salvaInfos, pegaInfos };

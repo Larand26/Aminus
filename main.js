@@ -28,7 +28,7 @@ const {
   atualizaUltimoUsoKey,
   pegaUltimoUsoKey,
 } = require("./db/mysql/keys");
-const { salvaInfos } = require("./db/mysql/dashboardWpp");
+const { salvaInfos, pegaInfos } = require("./db/mysql/dashboardWpp");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
@@ -559,6 +559,22 @@ ipcMain.on("adiciona-contato", async (event, args) => {
   } catch (error) {
     console.error("Erro ao adicionar contato:", error);
     event.reply("adiciona-contato-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("pega-infos-dashboard-wpp", async (event, args) => {
+  try {
+    const tokenResult = await verificaToken(args.token);
+    if (!tokenResult.success)
+      event.reply("pega-infos-dashboard-wpp-response", tokenResult);
+    const infosResult = await pegaInfos();
+    event.reply("pega-infos-dashboard-wpp-response", infosResult);
+  } catch (error) {
+    console.error("Erro ao pegar infos do dashboard WPP:", error);
+    event.reply("pega-infos-dashboard-wpp-response", {
       success: false,
       error: error.message || "Erro desconhecido",
     });
