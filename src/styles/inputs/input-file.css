@@ -20,7 +20,7 @@
 
 @media (min-width: 1400px) {
   .container-input-file {
-    max-width: 1300px;
+    max-width: 1260px;
     margin: 0 auto;
   }
 }
@@ -60,4 +60,31 @@
 
 .foto-input.dragging {
   opacity: 0.5;
+}
+
+.fotos-input::-webkit-scrollbar {
+  height: 8px; /* Altura do scrollbar horizontal */
+  background: transparent;
+}
+
+.fotos-input::-webkit-scrollbar-thumb {
+  background: var(--cor-primaria, #415b72); /* Cor do thumb */
+  border-radius: 4px;
+  border: 2px solid #fff; /* Borda branca para destacar */
+  transition: background 0.3s;
+}
+
+.fotos-input::-webkit-scrollbar-thumb:hover {
+  background: #2d3e50; /* Cor ao passar o mouse */
+}
+
+.fotos-input::-webkit-scrollbar-track {
+  background: var(--cor-fundo, #eaeaea); /* Cor do track */
+  border-radius: 4px;
+}
+
+/* Para Firefox */
+.fotos-input {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cor-primaria, #415b72) var(--cor-fundo, #eaeaea);
 }
