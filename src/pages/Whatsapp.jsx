@@ -26,6 +26,9 @@ const Whatsapp = () => {
   // Função do usuário
   const idFuncao = localStorage.getItem("ID_FUNCAO_USUARIO");
 
+  // Loading
+  const [loading, setLoading] = useState(false);
+
   // Toast
   const [toastInfo, setToastInfo] = useState(null);
 
@@ -61,6 +64,8 @@ const Whatsapp = () => {
 
   // Pesquisa
   const handleSearch = async () => {
+    setContatos([]);
+    setLoading(true);
     const filtros = {
       numero,
       nome: cliente,
@@ -68,6 +73,7 @@ const Whatsapp = () => {
       token,
     };
     const resultados = await searchContatos(filtros);
+    setLoading(false);
     if (!resultados?.success) {
       setToastInfo({
         key: Date.now(),
@@ -110,11 +116,13 @@ const Whatsapp = () => {
   // Adiciona um cliente novo
   const [novoCliente, setNovoCliente] = useState({});
   const handleAdicionarCliente = async () => {
+    setLoading(true);
     const args = {
       ...novoCliente,
       token,
     };
     const adicionaResult = await adicionaContato(args);
+    setLoading(false);
     if (!adicionaResult?.success) {
       setToastInfo({
         key: Date.now(),
@@ -173,6 +181,7 @@ const Whatsapp = () => {
               onClick={handleAdicionarCliente}
               novoCliente={novoCliente}
               setNovoCliente={setNovoCliente}
+              loading={loading}
             />
           )}
           {paginaAtiva === "dashboard" && <Dashboard />}
