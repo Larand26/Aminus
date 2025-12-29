@@ -109,7 +109,23 @@ const Whatsapp = () => {
       mensagem: mensagemEnviar,
       imagens,
     };
-    await enviaMensagem(args);
+    const result = await enviaMensagem(args);
+    if (!result?.success) {
+      setToastInfo({
+        key: Date.now(),
+        message: result?.error || "Erro ao enviar mensagens.",
+        type: "falha",
+      });
+    } else {
+      setToastInfo({
+        key: Date.now(),
+        message: "Mensagens enviadas com sucesso!",
+        type: "sucesso",
+      });
+      setMensagemEnviar("");
+      setImagens([]);
+    }
+
     setEnviando(false);
   };
 
