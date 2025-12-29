@@ -36,7 +36,7 @@ const enviaImagens = async (args) => {
       await axios.post(`${WHATSAPP_API_URL}/${session}/send-image`, body, {
         headers: headers,
       });
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
     }
 
     return { success: true, data: "Imagens enviadas com sucesso." };
@@ -65,7 +65,7 @@ const enviaMensagem = async (args) => {
       headers: headers,
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
     return { success: true, data: "Mensagens enviadas com sucesso." };
   } catch (error) {
