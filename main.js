@@ -578,6 +578,11 @@ ipcMain.on("pega-infos-dashboard-wpp", async (event, args) => {
     const tokenResult = await verificaToken(args.token);
     if (!tokenResult.success)
       event.reply("pega-infos-dashboard-wpp-response", tokenResult);
+    if (tokenResult.data.ID_FUNCAO != 1)
+      return event.reply("pega-infos-dashboard-wpp-response", {
+        success: false,
+        error: "Acesso negado.",
+      });
     const infosResult = await pegaInfos();
     event.reply("pega-infos-dashboard-wpp-response", infosResult);
   } catch (error) {
