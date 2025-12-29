@@ -1,7 +1,6 @@
 .tabela-container {
   width: 100%;
   max-width: var(--tamanho-maximo);
-  max-height: 630px;
   overflow-y: auto;
   overflow-x: auto;
   display: flex;

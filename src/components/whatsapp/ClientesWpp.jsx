@@ -61,7 +61,11 @@ const ClientesWpp = (props) => {
         </div>
       </div>
       <div>
-        <Table dados={props.dados} semDados="Nenhuma nota fiscal encontrada">
+        <Table
+          dados={props.dados}
+          semDados="Nenhuma nota fiscal encontrada"
+          tamMax="400px"
+        >
           {props.opcoes
             .filter((opcao) => opcao.checked)
             .map((opcao) => (

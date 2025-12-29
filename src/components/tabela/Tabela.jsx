@@ -152,7 +152,10 @@ const Tabela = (props) => {
   const totalColunas = numColunas + (props.select == "checkbox" ? 1 : 0);
 
   return (
-    <div className="tabela-container">
+    <div
+      className="tabela-container"
+      style={{ maxHeight: props.tamMax || "630px" }}
+    >
       <table className="tabela">
         <thead>
           {search && (
