@@ -18,13 +18,12 @@ const pegaKeys = async (filtros) => {
   }
 };
 
-const atualizaUltimoUsoKey = async (vendedorId) => {
+const atualizaUltimoUsoKey = async ({ data, vendedorId }) => {
   try {
     const connection = await connectMySql();
-    const agora = new Date(); // Horário do Node.js
     const query =
       "UPDATE KEYS_WHATSAPP SET ULTIMA_MENSAGEM = ? WHERE VENDEDOR_ID = ?";
-    await connection.execute(query, [agora, vendedorId]);
+    await connection.execute(query, [data, vendedorId]);
     connection.end();
     return { success: true };
   } catch (error) {

@@ -494,7 +494,10 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       event.sender.send("envia-mensagem-progresso", { progresso, total });
     }
 
-    await atualizaUltimoUsoKey(tokenResult.data.ID_USUARIO);
+    await atualizaUltimoUsoKey({
+      data: agora,
+      vendedorId: tokenResult.data.ID_USUARIO,
+    });
 
     event.reply("envia-mensagem-response", {
       success: true,
