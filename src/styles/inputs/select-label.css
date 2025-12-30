@@ -129,3 +129,24 @@
 .texto-preto label {
   color: var(--cor-preto) !important;
 }
+
+@media (max-height: 800px) {
+  .select-label label {
+    font-size: 1em;
+    margin-bottom: 3px;
+  }
+  .custom-select-trigger {
+    padding: 6px 20px 6px 10px;
+    margin-bottom: 2px;
+    font-size: 0.95em;
+  }
+  .select-search-input {
+    padding: 6px 10px;
+    font-size: 13px;
+    margin: 6px;
+  }
+  .custom-option {
+    padding: 8px 10px;
+    font-size: 0.95em;
+  }
+}

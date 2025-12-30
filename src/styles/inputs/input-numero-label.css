@@ -52,3 +52,19 @@
 .input-numero-label input {
   width: 40%;
 }
+
+@media (max-height: 800px) {
+  .input-numero-label label {
+    font-size: 1em;
+    margin-bottom: 3px;
+  }
+  .input-numero-label input {
+    padding: 6px;
+    font-size: 0.95em;
+  }
+  .input-numero-label .container button {
+    width: 26px;
+    height: 26px;
+    font-size: 18px;
+  }
+}

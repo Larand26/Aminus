@@ -116,3 +116,30 @@
 .dia-outro-mes {
   opacity: 0.5;
 }
+
+@media (max-height: 800px) {
+  .input-data-label label {
+    font-size: 1em;
+    margin-bottom: 3px;
+  }
+  .input-data-label .input-data {
+    height: 32px;
+    padding: 6px;
+    font-size: 0.95em;
+  }
+  .calendario {
+    width: 260px;
+    min-height: 300px;
+    padding: 10px;
+  }
+  .calendario-mes span:nth-child(1) {
+    font-size: 18px;
+  }
+  .calendario-mes button {
+    font-size: 16px;
+  }
+  .dia {
+    padding: 7px;
+    font-size: 0.95em;
+  }
+}
