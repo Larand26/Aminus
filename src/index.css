@@ -37,7 +37,6 @@ body {
   font-family: var(--fonte-principal);
   background-color: var(--cor-fundo);
   color: var(--cor-texto);
-  overflow: hidden;
 }
 
 .content {

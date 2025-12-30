@@ -1,9 +1,11 @@
 .tabela-container {
   width: 100%;
-  max-width: var(--tamanho-maximo);
-  overflow-y: auto;
+  max-width: 100vw;
   overflow-x: auto;
-  display: flex;
+  overflow-y: auto;
+  display: block; /* <-- altere aqui */
+  box-sizing: border-box;
+  padding: 8px;
 }
 
 .tabela-container::-webkit-scrollbar {
@@ -28,6 +30,7 @@
 
 .tabela {
   width: 100%;
+  min-width: 600px; /* opcional: define um mínimo para não quebrar */
   border-collapse: collapse;
 }
 .tabela th,
@@ -121,4 +124,16 @@ th {
 
 .copiado {
   color: var(--cor-sucesso) !important;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  .tabela-container {
+    padding: 4px;
+  }
+  .tabela th,
+  .tabela td {
+    font-size: 12px;
+    padding: 6px;
+  }
 }

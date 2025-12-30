@@ -1,5 +1,7 @@
 .content {
   width: 100%;
+  max-width: 100vw;
+  overflow-x: auto;
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -26,4 +28,19 @@
   padding: 20px;
   box-sizing: border-box;
   height: 100%;
+}
+
+@media (max-width: 768px) {
+  .tabela-container {
+    padding: 2px;
+  }
+  .tabela th,
+  .tabela td {
+    font-size: 11px;
+    padding: 4px;
+  }
+  .content {
+    max-width: 100vw;
+    padding: 0;
+  }
 }

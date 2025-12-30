@@ -9,6 +9,7 @@ import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
+import Content from "../components/Content";
 
 import searchProdutos from "../utils/search/searchProdutos";
 
@@ -141,10 +142,7 @@ const Produtos = () => {
             onKeyDown={handleKeyDown}
           />
         </BarraLateral>
-        <div className="content">
-          <div className="content-title">
-            <h1>Produtos</h1>
-          </div>
+        <Content titulo="Produtos">
           <Tabela
             dados={produtos}
             semDados="Nenhum produto encontrado"
@@ -163,7 +161,7 @@ const Produtos = () => {
                 />
               ))}
           </Tabela>
-        </div>
+        </Content>
       </div>
     </>
   );
