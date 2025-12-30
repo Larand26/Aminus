@@ -420,7 +420,8 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       return event.reply("envia-mensagem-response", tokenResult);
 
     const contatosResult = await pegaContatos({
-      vendedorId: tokenResult.data.ID_USUARIO,
+      vendedorId:
+        tokenResult.data.ID_USUARIO == 11 ? null : tokenResult.data.ID_USUARIO,
     });
     if (!contatosResult.success)
       return event.reply("envia-mensagem-response", contatosResult);
