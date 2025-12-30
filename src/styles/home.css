@@ -1,13 +1,22 @@
 .home-container {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
-  height: 100vh;
   box-sizing: border-box;
   padding: 40px;
   justify-items: center;
   align-items: start;
+  overflow-y: auto;
+  max-height: calc(100vh - 80px); /* Ajuste para não passar do topo/nav */
 }
+
+@media (max-width: 700px) {
+  .home-container {
+    padding: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+
 .card-container {
   display: flex;
   width: 100%;
