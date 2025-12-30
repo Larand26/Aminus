@@ -429,16 +429,22 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     const ultimoUsoKey = await pegaUltimoUsoKey(tokenResult.data.ID_USUARIO);
     if (!ultimoUsoKey.success)
       return event.reply("envia-mensagem-response", ultimoUsoKey);
-    const responseTime = await fetch(
-      "https://worldtimeapi.org/api/timezone/Etc/UTC"
-    );
-    const data = await responseTime.json();
-    const agora = new Date(data.utc_datetime);
+
+    let agora;
+    try {
+      const responseTime = await fetch(
+        "https://worldtimeapi.org/api/timezone/Etc/UTC"
+      );
+      const data = await responseTime.json();
+      agora = new Date(data.utc_datetime);
+    } catch (e) {
+      agora = new Date();
+    }
 
     // Verifica se passou pelo menos 5 minutos desde o último uso
     const diffMs = agora - new Date(ultimoUsoKey.data);
     const diffMinutes = Math.floor(diffMs / 60000);
-    if (diffMinutes < 5 && tokenResult.data.ID_USUARIO !== 1) {
+    if (diffMinutes < 5 && tokenResult.data.ID_FUNCAO_USUARIO !== 1) {
       return event.reply("envia-mensagem-response", {
         success: false,
         error: `Aguarde mais ${
@@ -578,7 +584,7 @@ ipcMain.on("pega-infos-dashboard-wpp", async (event, args) => {
     const tokenResult = await verificaToken(args.token);
     if (!tokenResult.success)
       event.reply("pega-infos-dashboard-wpp-response", tokenResult);
-    if (tokenResult.data.ID_FUNCAO != 1)
+    if (tokenResult.data.ID_FUNCAO_USUARIO != 1)
       return event.reply("pega-infos-dashboard-wpp-response", {
         success: false,
         error: "Acesso negado.",
