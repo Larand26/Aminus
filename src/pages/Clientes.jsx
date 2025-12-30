@@ -8,6 +8,7 @@ import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
+import Content from "../components/Content";
 
 import searchClientes from "../utils/search/searchClientes";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
@@ -144,10 +145,7 @@ const Clientes = () => {
             onKeyDown={handleKeyDown}
           />
         </BarraLateral>
-        <div className="content">
-          <div className="content-title">
-            <h1>Clientes</h1>
-          </div>
+        <Content titulo="Clientes">
           <Tabela
             dados={clientes}
             semDados="Nenhum cliente encontrado"
@@ -166,7 +164,7 @@ const Clientes = () => {
                 />
               ))}
           </Tabela>
-        </div>
+        </Content>
       </div>
     </>
   );

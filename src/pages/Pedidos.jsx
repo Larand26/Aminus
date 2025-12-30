@@ -11,6 +11,7 @@ import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import Button from "../components/Button";
 import Toast from "../components/Toast";
+import Content from "../components/Content";
 
 import PopUp from "../components/PopUp";
 
@@ -310,10 +311,7 @@ const Pedidos = () => {
             />
           )}
         </BarraLateral>
-        <div className="content">
-          <div className="content-title">
-            <h1>Pedidos</h1>
-          </div>
+        <Content titulo="Pedidos">
           <Tabela
             dados={pedidos}
             semDados="Nenhum pedido encontrado"
@@ -334,7 +332,7 @@ const Pedidos = () => {
                 />
               ))}
           </Tabela>
-        </div>
+        </Content>
       </div>
     </>
   );

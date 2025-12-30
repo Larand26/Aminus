@@ -11,6 +11,7 @@ import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import PopUp from "../components/PopUp";
 import Toast from "../components/Toast";
+import Content from "../components/Content";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesReserva from "../assets/json/opcoes/opcoesReserva.json";
@@ -206,10 +207,7 @@ const Reservas = () => {
             onKeyDown={handleKeyDown}
           />
         </BarraLateral>
-        <div className="content">
-          <div className="content-title">
-            <h1>Reservas</h1>
-          </div>
+        <Content titulo="Reservas">
           <Tabela
             dados={reservas}
             semDados="Nenhuma reserva encontrada"
@@ -230,7 +228,7 @@ const Reservas = () => {
                 />
               ))}
           </Tabela>
-        </div>
+        </Content>
       </div>
     </>
   );

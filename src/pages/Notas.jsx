@@ -10,6 +10,7 @@ import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
+import Content from "../components/Content";
 
 import searchNotas from "../utils/search/searchNotas";
 
@@ -168,10 +169,7 @@ const Notas = () => {
             onKeyDown={handleKeyDown}
           />
         </BarraLateral>
-        <div className="content">
-          <div className="content-title">
-            <h1>Notas fiscais</h1>
-          </div>
+        <Content titulo="Notas Fiscais">
           <Tabela
             dados={notas}
             semDados="Nenhuma nota fiscal encontrada"
@@ -191,7 +189,7 @@ const Notas = () => {
                 />
               ))}
           </Tabela>
-        </div>
+        </Content>
       </div>
     </>
   );
