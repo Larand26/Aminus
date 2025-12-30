@@ -123,7 +123,7 @@ const Dashboard = (props) => {
         <Tabela
           semDados="Nenhum produto encontrado"
           dados={props.dados || []}
-          tamMax={"200px"}
+          tamMax={"120px"}
         >
           {props.opcoes &&
             props.opcoes
