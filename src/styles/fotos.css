@@ -4,6 +4,8 @@
   margin-top: 10px;
   width: 100%;
   box-sizing: border-box;
+  height: 70vh;
+  overflow: hidden;
 }
 
 .navBar-fotos {
@@ -53,9 +55,13 @@
 .navBar-fotos button:hover {
   filter: brightness(0.9);
 }
+
 .content-fotos {
-  overflow-y: scroll;
-  min-height: 550px;
+  overflow-y: auto;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  height: 90%;
 }
 .fotos {
   display: flex;
@@ -63,4 +69,25 @@
   justify-content: center;
   gap: 30px;
   max-height: 550px;
+}
+
+@media (max-height: 600px) {
+  .navBar-fotos {
+    margin-bottom: 8px;
+    padding: 4px 0;
+    font-size: 0.95em;
+  }
+  .navBar-fotos div {
+    gap: 4px;
+  }
+  .btn-baixar-foto,
+  .btn-adicionar-foto {
+    padding: 6px 10px;
+    font-size: 0.95em;
+    min-width: 24px;
+    min-height: 24px;
+  }
+  .content-fotos {
+    height: 80%;
+  }
 }

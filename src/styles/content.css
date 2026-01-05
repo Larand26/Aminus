@@ -1,18 +1,35 @@
 .content {
   width: 100%;
   max-width: 100vw;
-  overflow-x: auto;
   display: flex;
   flex-direction: column;
   align-items: start;
   padding: 30px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .content .titulo {
   font-size: 30px;
   font-weight: bold;
   margin-bottom: 1rem;
+}
+
+.content .titulo p {
+  margin: 0;
+}
+
+@media (max-height: 800px) {
+  .content {
+    padding: 15px;
+  }
+  .content .titulo {
+    font-size: 20px;
+    margin-bottom: 3px;
+  }
+  .content-body {
+    padding: 10px;
+  }
 }
 
 .button-content-container {
@@ -27,7 +44,6 @@
   background-color: #fff;
   padding: 20px;
   box-sizing: border-box;
-  height: 100%;
 }
 
 @media (max-width: 768px) {

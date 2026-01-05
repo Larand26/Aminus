@@ -10,6 +10,7 @@ import PopUp from "../components/PopUp";
 import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 import Loading from "../components/Loading";
 import Toast from "../components/Toast";
+import Content from "../components/Content";
 
 import searchFotos from "../utils/search/searchFotos";
 import atualizaFotoMongo from "../utils/fotos/atualizaFotoMongo";
@@ -201,10 +202,7 @@ const Fotos = () => {
           />
           <InputLabel label="Cod Cor" value={codCor} onChange={setCodCor} />
         </BarraLateral>
-        <div className="content">
-          <div className="content-title">
-            <h1>Fotos</h1>
-          </div>
+        <Content titulo="Fotos">
           <div className="container-fotos">
             <div className="navBar-fotos">
               <div>
@@ -271,7 +269,7 @@ const Fotos = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Content>
       </div>
     </>
   );
