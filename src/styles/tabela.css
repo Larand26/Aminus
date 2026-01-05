@@ -3,9 +3,10 @@
   max-width: 100vw;
   overflow-x: auto;
   overflow-y: auto;
-  display: block; /* <-- altere aqui */
+  display: block;
   box-sizing: border-box;
   padding: 8px;
+  height: 100%;
 }
 
 .tabela-container::-webkit-scrollbar {
