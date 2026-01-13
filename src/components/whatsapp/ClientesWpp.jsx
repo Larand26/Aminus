@@ -66,6 +66,7 @@ const ClientesWpp = (props) => {
           semDados="Nenhuma nota fiscal encontrada"
           tamMax="400px"
           loading={props.loading}
+          onEdit={props.onEdit}
         >
           {props.opcoes
             .filter((opcao) => opcao.checked)

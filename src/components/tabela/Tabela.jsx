@@ -335,7 +335,7 @@ const Tabela = (props) => {
                               <button
                                 className="action-btn edit"
                                 title="Editar"
-                                onClick={() => props.onEditCliente(item)}
+                                onClick={() => props.onEdit(item)}
                               >
                                 <i className="fa fa-edit"></i>
                               </button>

@@ -226,9 +226,9 @@ const Whatsapp = () => {
   };
 
   // Handle Edit Cliente
-  const handleEditCliente = (clienteId) => {
+  const handleEditCliente = (cliente) => {
     // Lógica para editar o cliente com o ID fornecido
-    console.log("Editar cliente com ID:", clienteId);
+    console.log("Editar cliente com ID:", cliente);
     // Transforma dados em inputs editáveis ou abre um modal de edição
   };
 
@@ -265,7 +265,7 @@ const Whatsapp = () => {
               novoCliente={novoCliente}
               setNovoCliente={setNovoCliente}
               loading={loading}
-              onEditCliente={handleEditCliente}
+              onEdit={handleEditCliente}
             />
           )}
           {paginaAtiva === "dashboard" && (
