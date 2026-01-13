@@ -17,5 +17,6 @@
     "label": "CNPJ",
     "checked": true
   },
-  { "id": "VENDEDOR_ID", "label": "Vendedor ID", "checked": true }
+  { "id": "VENDEDOR_ID", "label": "Vendedor ID", "checked": true },
+  { "id": "", "label": "Ações", "format": "edit", "checked": true }
 ]

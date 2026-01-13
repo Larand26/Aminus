@@ -225,6 +225,13 @@ const Whatsapp = () => {
     setInfosDashboardWpp(infosResult.data);
   };
 
+  // Handle Edit Cliente
+  const handleEditCliente = (clienteId) => {
+    // Lógica para editar o cliente com o ID fornecido
+    console.log("Editar cliente com ID:", clienteId);
+    // Transforma dados em inputs editáveis ou abre um modal de edição
+  };
+
   return (
     <>
       {toastInfo && (
@@ -258,6 +265,7 @@ const Whatsapp = () => {
               novoCliente={novoCliente}
               setNovoCliente={setNovoCliente}
               loading={loading}
+              onEditCliente={handleEditCliente}
             />
           )}
           {paginaAtiva === "dashboard" && (

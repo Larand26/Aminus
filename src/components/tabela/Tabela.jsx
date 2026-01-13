@@ -329,7 +329,27 @@ const Tabela = (props) => {
                           );
                         }
 
-                        return valor || "";
+                        if (child.props.format === "edit") {
+                          return (
+                            <div className="action-buttons">
+                              <button
+                                className="action-btn edit"
+                                title="Editar"
+                                onClick={() => props.onEditCliente(item)}
+                              >
+                                <i className="fa fa-edit"></i>
+                              </button>
+                              <button
+                                className="action-btn delete"
+                                title="Excluir"
+                              >
+                                <i className="fa fa-trash"></i>
+                              </button>
+                            </div>
+                          );
+                        }
+
+                        return valor || "0";
                       })();
 
                       // Função para copiar o conteúdo ao clicar

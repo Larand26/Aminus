@@ -138,3 +138,29 @@ th {
     padding: 6px;
   }
 }
+
+.action-btn {
+  border: 2px solid var(--cor-branco);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 15px;
+  margin: auto;
+}
+
+.action-btn:hover {
+  filter: brightness(0.9);
+}
+
+.action-btn.edit {
+  background: var(--cor-amarelo);
+}
+
+.action-btn.delete {
+  background: var(--cor-vermelho);
+}

@@ -78,23 +78,6 @@ const ClientesWpp = (props) => {
                 copy={opcao.copy || false}
               />
             ))}
-          <Coluna
-            titulo="Ações"
-            campo="acoes"
-            format="acoes"
-            body={() => {
-              return (
-                <div className="action-buttons">
-                  <button className="action-btn edit" title="Editar">
-                    <i className="fa fa-edit"></i>
-                  </button>
-                  <button className="action-btn delete" title="Excluir">
-                    <i className="fa fa-trash"></i>
-                  </button>
-                </div>
-              );
-            }}
-          />
         </Table>
       </div>
     </div>
