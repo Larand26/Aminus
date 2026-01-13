@@ -77,6 +77,7 @@ const ClientesWpp = (props) => {
                 campo={opcao.id}
                 format={opcao.format || ""}
                 copy={opcao.copy || false}
+                editavel={opcao.editavel || false}
               />
             ))}
         </Table>

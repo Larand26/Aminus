@@ -5,8 +5,13 @@
     "checked": false
   },
   { "id": "CONTATO_ID", "label": "ID", "checked": true },
-  { "id": "CONTATO_NOME", "label": "Nome", "checked": true },
-  { "id": "CONTATO_NUMERO", "label": "Número", "checked": true },
+  { "id": "CONTATO_NOME", "label": "Nome", "checked": true, "editavel": true },
+  {
+    "id": "CONTATO_NUMERO",
+    "label": "Número",
+    "checked": true,
+    "editavel": true
+  },
   {
     "id": "CONTATO_RECEBER_MENSAGENS",
     "label": "Ativo",
@@ -15,7 +20,8 @@
   {
     "id": "CONTATO_CNPJ",
     "label": "CNPJ",
-    "checked": true
+    "checked": true,
+    "editavel": true
   },
   { "id": "VENDEDOR_ID", "label": "Vendedor ID", "checked": true },
   { "id": "", "label": "Ações", "format": "edit", "checked": true }
