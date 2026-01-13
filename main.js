@@ -543,7 +543,11 @@ ipcMain.on("search-contatos", async (event, filters) => {
     const contatosResult = await pegaContatos({
       ...filters,
       vendedorId:
-        tokenResult.data.ID_USUARIO == 1 ? null : tokenResult.data.ID_USUARIO,
+        filters.vendedorId !== undefined
+          ? filters.vendedorId
+          : tokenResult.data.ID_USUARIO == 1
+          ? null
+          : tokenResult.data.ID_USUARIO,
     });
 
     event.reply("search-contatos-response", contatosResult);
@@ -610,6 +614,17 @@ ipcMain.on("edita-contato", async (event, contato) => {
     const tokenResult = await verificaToken(contato.token);
     if (!tokenResult.success)
       event.reply("edita-contato-response", tokenResult);
+
+    if (
+      tokenResult.data.vendedorId !== contato.vendedorId &&
+      tokenResult.data.ID_FUNCAO_USUARIO != 1
+    ) {
+      return event.reply("edita-contato-response", {
+        success: false,
+        error: "Acesso negado.",
+      });
+    }
+
     const editaResult = await editaContato(contato);
     event.reply("edita-contato-response", editaResult);
   } catch (error) {

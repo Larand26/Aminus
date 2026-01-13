@@ -18,7 +18,7 @@ import onEnviaMensagemProgresso from "../utils/whatsapp/progresso";
 import pegaInfosDashboardWpp from "../utils/whatsapp/pegaInfosDashboardWpp";
 import editaContato from "../utils/whatsapp/editaContato";
 
-import vendedoresJson from "../assets/json/vendedores.json";
+import vendedoresJson from "../assets/json/vendedoresAminus.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
 import opcoesDashboardWpp from "../assets/json/opcoes/opcoesDashboardWpp.json";
 
@@ -75,7 +75,7 @@ const Whatsapp = () => {
     const filtros = {
       numero,
       nome: cliente,
-      vendedor,
+      vendedorId: vendedor,
       token,
     };
     const resultados = await searchContatos(filtros);
