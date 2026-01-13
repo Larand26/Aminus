@@ -164,3 +164,11 @@ th {
 .action-btn.delete {
   background: var(--cor-vermelho);
 }
+
+.action-btn.save {
+  background: var(--cor-amarelo);
+}
+
+.action-btn.cancel {
+  background: var(--cor-vermelho);
+}

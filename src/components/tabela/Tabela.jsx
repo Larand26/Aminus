@@ -11,6 +11,8 @@ const Tabela = (props) => {
   const [selecionados, setSelecionados] = useState([]);
   const [termoBusca, setTermoBusca] = useState("");
   const [copiados, setCopiados] = useState({}); // Novo estado para controlar células copiadas
+  const [linhaEditando, setLinhaEditando] = useState(null);
+  const [valoresEditados, setValoresEditados] = useState({});
 
   // Efeito para notificar o componente pai sobre mudanças na seleção
   useEffect(() => {
@@ -245,6 +247,16 @@ const Tabela = (props) => {
                   ? () => clickableColumn.props.onClick(item)
                   : null;
 
+                const isEditing =
+                  linhaEditando && linhaEditando[chave] === item[chave];
+
+                const handleInputChange = (campo, valor) => {
+                  setValoresEditados((prev) => ({
+                    ...prev,
+                    [campo]: valor,
+                  }));
+                };
+
                 return (
                   <tr
                     key={index}
@@ -276,6 +288,27 @@ const Tabela = (props) => {
                     {colunasVisiveis.map((child, childIndex) => {
                       // Não renderiza a célula da coluna se for a de pesquisa
                       if (child.props.campo === "search") return null;
+
+                      // Verifica se está em modo de edição e se a coluna é editável
+                      if (isEditing && child.props.editavel) {
+                        return (
+                          <td key={childIndex}>
+                            <input
+                              type="text"
+                              value={
+                                valoresEditados[child.props.campo] ??
+                                item[child.props.campo]
+                              }
+                              onChange={(e) =>
+                                handleInputChange(
+                                  child.props.campo,
+                                  e.target.value
+                                )
+                              }
+                            />
+                          </td>
+                        );
+                      }
 
                       const cellContent = (() => {
                         if (typeof child.props.body === "function")
@@ -330,12 +363,45 @@ const Tabela = (props) => {
                         }
 
                         if (child.props.format === "edit") {
+                          if (isEditing) {
+                            return (
+                              <div className="action-buttons">
+                                <button
+                                  className="action-btn save"
+                                  title="Salvar"
+                                  onClick={() => {
+                                    props.onEdit({
+                                      ...item,
+                                      ...valoresEditados,
+                                    });
+                                    setLinhaEditando(null);
+                                    setValoresEditados({});
+                                  }}
+                                >
+                                  <i className="fa fa-save"></i>
+                                </button>
+                                <button
+                                  className="action-btn cancel"
+                                  title="Cancelar"
+                                  onClick={() => {
+                                    setLinhaEditando(null);
+                                    setValoresEditados({});
+                                  }}
+                                >
+                                  <i className="fa fa-times"></i>
+                                </button>
+                              </div>
+                            );
+                          }
                           return (
                             <div className="action-buttons">
                               <button
                                 className="action-btn edit"
                                 title="Editar"
-                                onClick={() => props.onEdit(item)}
+                                onClick={() => {
+                                  setLinhaEditando(item);
+                                  setValoresEditados({});
+                                }}
                               >
                                 <i className="fa fa-edit"></i>
                               </button>
@@ -371,7 +437,7 @@ const Tabela = (props) => {
                           }
                           navigator.clipboard.writeText(String(textoCopiar));
                           // Marca como copiado
-                          const key = `${rowIndex}-${childIndex}`;
+                          const key = `${index}-${childIndex}`;
                           setCopiados((prev) => ({ ...prev, [key]: true }));
                           setTimeout(() => {
                             setCopiados((prev) => {
