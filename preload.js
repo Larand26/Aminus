@@ -153,4 +153,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("pega-infos-dashboard-wpp-response", (event, arg) => {
       callback(arg);
     }),
+  editaContato: (contato) => ipcRenderer.send("edita-contato", contato),
+  onEditaContatoResponse: (callback) =>
+    ipcRenderer.on("edita-contato-response", (event, arg) => {
+      callback(arg);
+    }),
 });

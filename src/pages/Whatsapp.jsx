@@ -16,6 +16,7 @@ import searchContatos from "../utils/search/searchContatos";
 import adicionaContato from "../utils/whatsapp/adicionaContato";
 import onEnviaMensagemProgresso from "../utils/whatsapp/progresso";
 import pegaInfosDashboardWpp from "../utils/whatsapp/pegaInfosDashboardWpp";
+import editaContato from "../utils/whatsapp/editaContato";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
@@ -226,10 +227,26 @@ const Whatsapp = () => {
   };
 
   // Handle Edit Cliente
-  const handleEditCliente = (cliente) => {
+  const handleEditCliente = async (cliente) => {
     // Lógica para editar o cliente com o ID fornecido
     console.log("Editar cliente com ID:", cliente);
     // Transforma dados em inputs editáveis ou abre um modal de edição
+    const response = await editaContato({ ...cliente, token });
+
+    if (!response?.success) {
+      setToastInfo({
+        key: Date.now(),
+        message: response?.error || "Erro ao editar cliente.",
+        type: "falha",
+      });
+      return;
+    }
+    setToastInfo({
+      key: Date.now(),
+      message: "Cliente editado com sucesso!",
+      type: "sucesso",
+    });
+    handleSearch();
   };
 
   return (

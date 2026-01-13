@@ -51,7 +51,28 @@ const adicionaContato = async (contato) => {
   }
 };
 
+const editaContato = async (contato) => {
+  try {
+    const connection = await connectMySql();
+    const query =
+      "UPDATE CONTATOS SET CONTATO_NOME = ?, CONTATO_NUMERO = ?, CONTATO_CNPJ = ? WHERE CONTATO_ID = ?";
+    const params = [
+      contato.CONTATO_NOME.toUpperCase(),
+      contato.CONTATO_NUMERO?.replace(/\D/g, "") ?? null,
+      contato.CONTATO_CNPJ?.replace(/\D/g, "") ?? null,
+      contato.CONTATO_ID,
+    ];
+    await connection.execute(query, params);
+    connection.end();
+    return { success: true, data: "Contato editado com sucesso" };
+  } catch (error) {
+    console.error("Erro ao editar contato:", error);
+    return { success: false, error: error.message || "Erro desconhecido" };
+  }
+};
+
 module.exports = {
   pegaContatos,
   adicionaContato,
+  editaContato,
 };

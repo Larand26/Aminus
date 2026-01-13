@@ -22,7 +22,11 @@ const { updateFoto } = require("./db/mongodb/updateFoto");
 
 // My SQL
 const { login } = require("./db/mysql/login");
-const { pegaContatos, adicionaContato } = require("./db/mysql/contatos");
+const {
+  pegaContatos,
+  adicionaContato,
+  editaContato,
+} = require("./db/mysql/contatos");
 const {
   pegaKeys,
   atualizaUltimoUsoKey,
@@ -595,6 +599,22 @@ ipcMain.on("pega-infos-dashboard-wpp", async (event, args) => {
   } catch (error) {
     console.error("Erro ao pegar infos do dashboard WPP:", error);
     event.reply("pega-infos-dashboard-wpp-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("edita-contato", async (event, contato) => {
+  try {
+    const tokenResult = await verificaToken(contato.token);
+    if (!tokenResult.success)
+      event.reply("edita-contato-response", tokenResult);
+    const editaResult = await editaContato(contato);
+    event.reply("edita-contato-response", editaResult);
+  } catch (error) {
+    console.error("Erro ao editar contato:", error);
+    event.reply("edita-contato-response", {
       success: false,
       error: error.message || "Erro desconhecido",
     });
