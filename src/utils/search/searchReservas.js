@@ -2,7 +2,12 @@ const searchReservas = async (filters) => {
   // lida com os dados antes de enviar
   if (!filters) return [];
 
-  if (Object.values(filters).every((value) => !value)) return [];
+  if (
+    Object.entries(filters)
+      .filter(([key]) => key !== "token")
+      .every(([, value]) => !value)
+  )
+    return { success: false, error: "Nenhum filtro válido fornecido." };
 
   window.electronApi?.searchReserva(filters);
 
