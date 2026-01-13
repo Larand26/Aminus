@@ -247,8 +247,7 @@ const Tabela = (props) => {
                   ? () => clickableColumn.props.onClick(item)
                   : null;
 
-                const isEditing =
-                  linhaEditando && linhaEditando[chave] === item[chave];
+                const isEditing = linhaEditando === item[chave];
 
                 const handleInputChange = (campo, valor) => {
                   setValoresEditados((prev) => ({
@@ -295,6 +294,7 @@ const Tabela = (props) => {
                           <td key={childIndex}>
                             <input
                               type="text"
+                              className="input-edit"
                               value={
                                 valoresEditados[child.props.campo] ??
                                 item[child.props.campo]
@@ -399,7 +399,7 @@ const Tabela = (props) => {
                                 className="action-btn edit"
                                 title="Editar"
                                 onClick={() => {
-                                  setLinhaEditando(item);
+                                  setLinhaEditando(item[chave]);
                                   setValoresEditados({});
                                 }}
                               >

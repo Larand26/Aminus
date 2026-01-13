@@ -172,3 +172,12 @@ th {
 .action-btn.cancel {
   background: var(--cor-vermelho);
 }
+
+.input-edit {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px;
+  border: 2px solid var(--cor-primaria);
+  border-radius: 4px;
+  text-align: center;
+}

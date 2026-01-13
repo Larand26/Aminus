@@ -67,6 +67,7 @@ const ClientesWpp = (props) => {
           tamMax="400px"
           loading={props.loading}
           onEdit={props.onEdit}
+          chave="CONTATO_ID"
         >
           {props.opcoes
             .filter((opcao) => opcao.checked)
