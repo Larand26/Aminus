@@ -540,14 +540,15 @@ ipcMain.on("search-contatos", async (event, filters) => {
     if (!tokenResult.success)
       event.reply("search-contatos-response", tokenResult);
 
+    const vendedorId = filters.vendedorId
+      ? filters.vendedorId
+      : tokenResult.data.ID_USUARIO == 1
+      ? null
+      : tokenResult.data.ID_USUARIO;
+
     const contatosResult = await pegaContatos({
       ...filters,
-      vendedorId:
-        filters.vendedorId !== undefined
-          ? filters.vendedorId
-          : tokenResult.data.ID_USUARIO == 1
-          ? null
-          : tokenResult.data.ID_USUARIO,
+      vendedorId: vendedorId,
     });
 
     event.reply("search-contatos-response", contatosResult);
