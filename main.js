@@ -114,7 +114,7 @@ ipcMain.on("search-nota", async (event, arg) => {
 
     if (tokenResult.data.ID_FUNCAO_USUARIO == 2) {
       const idVendedor = vendedoresJson.find(
-        (v) => v.label === tokenResult.data.NOME
+        (v) => v.label === tokenResult.data.NOME,
       )?.value;
       arg.vendedor = idVendedor || "";
     }
@@ -149,7 +149,7 @@ ipcMain.on("search-pedido", async (event, arg) => {
 
     if (tokenResult.data.ID_FUNCAO_USUARIO == 2) {
       const idVendedor = vendedoresJson.find(
-        (v) => v.label === tokenResult.data.NOME
+        (v) => v.label === tokenResult.data.NOME,
       )?.value;
       arg.vendedor = idVendedor || "";
     }
@@ -280,7 +280,7 @@ ipcMain.on("login", async (event, { user, password, semExpiracao }) => {
         DESCRICAO_FUNCAO: loginResult.data.DESCRICAO_FUNCAO,
         ID_FUNCAO_USUARIO: loginResult.data.ID_FUNCAO_USUARIO,
       },
-      semExpiracao || false
+      semExpiracao || false,
     );
     if (!tokenResult.success) return event.reply("login-response", tokenResult);
     const result = {
@@ -438,7 +438,7 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     let agora;
     try {
       const responseTime = await fetch(
-        "https://worldtimeapi.org/api/timezone/Etc/UTC"
+        "https://worldtimeapi.org/api/timezone/Etc/UTC",
       );
       const data = await responseTime.json();
       agora = new Date(data.utc_datetime);
@@ -520,7 +520,7 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       mensagensEnviadas,
       mensagensNaoEnviadas,
       taxaAcerto: Math.round(
-        (mensagensEnviadas / (mensagensEnviadas + mensagensNaoEnviadas)) * 100
+        (mensagensEnviadas / (mensagensEnviadas + mensagensNaoEnviadas)) * 100,
       ),
       vendedorId: tokenResult.data.ID_USUARIO,
     };
@@ -543,8 +543,8 @@ ipcMain.on("search-contatos", async (event, filters) => {
     const vendedorId = filters.vendedorId
       ? filters.vendedorId
       : tokenResult.data.ID_USUARIO == 1
-      ? null
-      : tokenResult.data.ID_USUARIO;
+        ? null
+        : tokenResult.data.ID_USUARIO;
 
     const contatosResult = await pegaContatos({
       ...filters,

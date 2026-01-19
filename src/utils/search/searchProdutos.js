@@ -1,7 +1,6 @@
-const searchProdutos = async (produtos) => {
+const searchProdutos = async (filters) => {
   // lida com os dados antes de enviar
-  if (!produtos) return [];
-
+  if (!filters) return [];
   if (
     Object.entries(filters)
       .filter(([key]) => key !== "token")
@@ -9,7 +8,7 @@ const searchProdutos = async (produtos) => {
   )
     return { success: false, error: "Nenhum filtro válido fornecido." };
 
-  window.electronApi?.searchProduto(produtos);
+  window.electronApi?.searchProduto(filters);
 
   const response = await new Promise((resolve) => {
     window.electronApi?.onSearchProdutoResponse((arg) => {

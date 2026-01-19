@@ -1,12 +1,12 @@
-const searchCadastroWeb = async (filtros) => {
-  if (!filtros) {
+const searchCadastroWeb = async (filters) => {
+  if (!filters) {
     return { success: false, error: "Nenhum filtro fornecido." };
   }
-  if (Object.values(filtros).every((value) => !value)) {
+  if (Object.values(filters).every((value) => !value)) {
     return { success: false, error: "Nenhum filtro fornecido." };
   }
 
-  window.electronApi?.searchCadastroProdutos(filtros);
+  window.electronApi?.searchCadastroProdutos(filters);
 
   const response = new Promise((resolve) => {
     window.electronApi?.onSearchCadastroProdutosResponse((arg) => {
