@@ -24,10 +24,9 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
     // soma a quantidade de todos os itens do pedido
     quantidade: Math.ceil(
       itensPedido.reduce((total, item) => total + (item.QUANTIDADE || 0), 0) /
-        12
+        12,
     ),
   };
-
   window.electronApi?.makeCotacao(frete);
 
   const response = new Promise((resolve) => {
@@ -40,7 +39,7 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
               return {
                 NOME_TRANSPORTADORA: item?.ServiceDescription || "--",
                 PRECO: transportadorsasPrecoPersonalizado.includes(
-                  item.CarrierCode
+                  item.CarrierCode,
                 )
                   ? arg.data.personalizado.ShippingSevicesArray[index]
                       .PresentationalPrice
@@ -52,15 +51,18 @@ const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
                 TEMPO_ENTREGA: `${item.DeliveryTime} - ${
                   parseInt(item.DeliveryTime) + 2
                 }`,
+                PRECO_203045:
+                  arg.data["20x30x45"].ShippingSevicesArray[index]
+                    .PresentationalPrice,
                 PERSONALIZADO: transportadorsasPrecoPersonalizado.includes(
-                  item.CarrierCode
+                  item.CarrierCode,
                 ),
               };
             } catch (error) {
               console.error("Erro ao processar item da cotação:", item, error);
               return null;
             }
-          }
+          },
         ).filter(Boolean);
         resolve({
           success: true,

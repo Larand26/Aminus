@@ -11,6 +11,12 @@
     "checked": true
   },
   {
+    "id": "PRECO_203045",
+    "label": "Preço (20x30x45)",
+    "format": "dinheiro",
+    "checked": true
+  },
+  {
     "id": "TEMPO_ENTREGA",
     "label": "Tempo de Entrega",
     "checked": true
