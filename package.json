@@ -68,7 +68,8 @@
           "./config",
           "./gemini",
           "./token",
-          "./transportadoras"
+          "./transportadoras",
+          "./erros"
         ]
       },
       "makers": [

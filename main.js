@@ -42,6 +42,9 @@ const { makeCotacao } = require("./transportadoras/frenet");
 // Gemini
 const { pegaRespostaGemini } = require("./gemini/gemini");
 
+// Erros
+const { enviaEmail } = require("./erros/email");
+
 // ENV
 require("dotenv").config();
 let MODE = "production";
@@ -469,6 +472,7 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     let progresso = 0;
     let mensagensEnviadas = 0;
     let mensagensNaoEnviadas = 0;
+    let erros = [];
 
     for (const contato of contatosResult.data) {
       const mensagemArgs = {
@@ -488,6 +492,11 @@ ipcMain.on("envia-mensagem", async (event, args) => {
           if (enviaImagemResult.success) {
             mensagensEnviadas++;
           } else {
+            erros.push({
+              numero: contato.CONTATO_NUMERO,
+              nome: contato.CONTATO_NOME,
+              erro: enviaImagemResult.error,
+            });
             mensagensNaoEnviadas++;
           }
           progresso++;
@@ -499,6 +508,11 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       if (enviaMensagemResult.success) {
         mensagensEnviadas++;
       } else {
+        erros.push({
+          numero: contato.CONTATO_NUMERO,
+          nome: contato.CONTATO_NOME,
+          erro: enviaMensagemResult.error,
+        });
         mensagensNaoEnviadas++;
       }
       progresso++;
@@ -525,6 +539,24 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       vendedorId: tokenResult.data.ID_USUARIO,
     };
     await salvaInfos(dashboardWppArgs);
+
+    // Trata os erros
+    if (erros.length > 0) {
+      const errosHtml =
+        "<table style='width: 100%; border-collapse: collapse;'> <tr><th style='border: 1px solid black; padding: 5px;'>Nome</th><th style='border: 1px solid black; padding: 5px;'>Número</th><th style='border: 1px solid black; padding: 5px;'>Erro</th></tr>" +
+        erros
+          .map(
+            (e) =>
+              `<tr><td style='border: 1px solid black; padding: 5px;'>${e.nome}</td><td style='border: 1px solid black; padding: 5px;'>${e.numero}</td><td style='border: 1px solid black; padding: 5px;'>${e.erro}</td></tr>`,
+          )
+          .join("") +
+        "</table>";
+      await enviaEmail(
+        "Erros ao enviar mensagens pelo Aminus",
+        `Foram encontrados ${erros.length} erros ao enviar mensagens pelo Aminus.`,
+        errosHtml,
+      );
+    }
   } catch (error) {
     console.error("Erro ao enviar mensagem:", error);
     event.reply("envia-mensagem-response", {
