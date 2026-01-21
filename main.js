@@ -1,7 +1,4 @@
 const { app, BrowserWindow, ipcMain, session } = require("electron");
-const { autoUpdater } = require("electron-updater");
-autoUpdater.logger = require("electron-log");
-autoUpdater.logger.transports.file.level = "info";
 
 const path = require("path");
 
@@ -93,9 +90,6 @@ const homeWindow = () => {
   } else {
     win.loadFile(path.join(app.getAppPath(), "dist", "index.html"));
   }
-
-  // Verifica atualizações
-  autoUpdater.checkForUpdatesAndNotify();
 };
 
 app.whenReady().then(homeWindow);
