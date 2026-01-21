@@ -81,7 +81,7 @@ const Fotos = () => {
     return fotos.filter(
       (foto) =>
         foto.nome_cor?.toLowerCase().includes(filtro.toLowerCase()) ||
-        foto.codigo_cor?.toLowerCase().includes(filtro.toLowerCase())
+        foto.codigo_cor?.toLowerCase().includes(filtro.toLowerCase()),
     );
   };
 
@@ -98,8 +98,8 @@ const Fotos = () => {
     if (updatedFoto && Object.keys(updatedFoto).length > 0) {
       setFotos((prevFotos) =>
         prevFotos.map((foto) =>
-          foto._id === updatedFoto._id ? updatedFoto : foto
-        )
+          foto._id === updatedFoto._id ? updatedFoto : foto,
+        ),
       );
 
       const resultado = await atualizaFotoMongo(updatedFoto);
@@ -121,7 +121,7 @@ const Fotos = () => {
 
   // Baixar fotos
   const [fotosSelecionadasDownload, setFotosSelecionadasDownload] = useState(
-    []
+    [],
   );
   const todasSelecionadas =
     fotos.length > 0 && fotosSelecionadasDownload.length === fotos.length;
@@ -147,12 +147,12 @@ const Fotos = () => {
     if (!foto) return;
 
     const isSelected = fotosSelecionadasDownload.some(
-      (f) => f._id === foto._id
+      (f) => f._id === foto._id,
     );
 
     if (isSelected) {
       setFotosSelecionadasDownload((prev) =>
-        prev.filter((f) => f._id !== foto._id)
+        prev.filter((f) => f._id !== foto._id),
       );
     } else {
       setFotosSelecionadasDownload((prev) => [...prev, foto]);
@@ -199,8 +199,14 @@ const Fotos = () => {
             label="Cod Interno"
             value={codInterno}
             onChange={setCodInterno}
+            onKeyDown={handleKeyDown}
           />
-          <InputLabel label="Cod Cor" value={codCor} onChange={setCodCor} />
+          <InputLabel
+            label="Cod Cor"
+            value={codCor}
+            onChange={setCodCor}
+            onKeyDown={handleKeyDown}
+          />
         </BarraLateral>
         <Content titulo="Fotos">
           <div className="container-fotos">
@@ -236,7 +242,7 @@ const Fotos = () => {
                 {isLoading && <Loading />}
                 {filtrarFotos().map((foto, index) => {
                   const isSelected = fotosSelecionadasDownload.some(
-                    (f) => f._id === foto._id
+                    (f) => f._id === foto._id,
                   );
                   return (
                     <Card
