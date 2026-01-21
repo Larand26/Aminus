@@ -3,10 +3,6 @@ const { autoUpdater } = require("electron-updater");
 autoUpdater.logger = require("electron-log");
 autoUpdater.logger.transports.file.level = "info";
 
-app.on("ready", () => {
-  autoUpdater.checkForUpdatesAndNotify();
-});
-
 const path = require("path");
 
 // SQL Server
@@ -97,6 +93,9 @@ const homeWindow = () => {
   } else {
     win.loadFile(path.join(app.getAppPath(), "dist", "index.html"));
   }
+
+  // Verifica atualizações
+  autoUpdater.checkForUpdatesAndNotify();
 };
 
 app.whenReady().then(homeWindow);
