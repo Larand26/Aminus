@@ -4,6 +4,10 @@
   "version": "2.15.0",
   "main": "main.js",
   "description": "Um sistema capaz de alterar e ver um banco de dados",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Larand26/Aminus"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -23,6 +27,7 @@
     "axios": "^1.11.0",
     "csv-parse": "^5.6.0",
     "dotenv": "^16.5.0",
+    "electron-updater": "^6.7.3",
     "env": "^0.0.2",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.3",

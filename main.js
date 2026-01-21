@@ -1,4 +1,6 @@
 const { app, BrowserWindow, ipcMain, session } = require("electron");
+const { autoUpdater } = require("electron-updater");
+
 const path = require("path");
 
 // SQL Server
@@ -667,4 +669,8 @@ ipcMain.on("edita-contato", async (event, contato) => {
       error: error.message || "Erro desconhecido",
     });
   }
+});
+
+app.on("ready", () => {
+  autoUpdater.checkForUpdatesAndNotify();
 });
