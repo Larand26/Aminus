@@ -1,5 +1,11 @@
 const { app, BrowserWindow, ipcMain, session } = require("electron");
 const { autoUpdater } = require("electron-updater");
+autoUpdater.logger = require("electron-log");
+autoUpdater.logger.transports.file.level = "info";
+
+app.on("ready", () => {
+  autoUpdater.checkForUpdatesAndNotify();
+});
 
 const path = require("path");
 
@@ -669,8 +675,4 @@ ipcMain.on("edita-contato", async (event, contato) => {
       error: error.message || "Erro desconhecido",
     });
   }
-});
-
-app.on("ready", () => {
-  autoUpdater.checkForUpdatesAndNotify();
 });
