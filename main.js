@@ -55,6 +55,19 @@ try {
   // globals.js não encontrado, segue com o padrão "production"
 }
 
+if (require("electron-squirrel-startup")) {
+  app.quit();
+}
+
+const { updateElectronApp, UpdateSourceType } = require("update-electron-app");
+
+if (MODE !== "development" && !process.env.IS_DEV) {
+  updateElectronApp({
+    updateInterval: "1 hour",
+    notifyUser: true,
+  });
+}
+
 // Token
 const { geraToken } = require("./token/geraToken");
 const { verificaToken } = require("./token/verificaToken");

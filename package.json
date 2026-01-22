@@ -17,6 +17,7 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "release": "npm run build && npm run make",
+    "publish-app": "npm run build && dotenv -- electron-forge publish",
     "dev:all": "npm-run-all --parallel dev start"
   },
   "dependencies": {
@@ -27,6 +28,7 @@
     "axios": "^1.11.0",
     "csv-parse": "^5.6.0",
     "dotenv": "^16.5.0",
+    "electron-squirrel-startup": "^1.0.1",
     "env": "^0.0.2",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.3",
@@ -43,7 +45,8 @@
     "primereact": "^10.9.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "recharts": "^3.6.0"
+    "recharts": "^3.6.0",
+    "update-electron-app": "^3.1.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.8.1",
@@ -51,10 +54,12 @@
     "@electron-forge/maker-rpm": "^7.4.0",
     "@electron-forge/maker-squirrel": "^7.4.0",
     "@electron-forge/maker-zip": "^7.4.0",
+    "@electron-forge/publisher-github": "^7.11.1",
     "@eslint/js": "^9.25.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
+    "dotenv-cli": "^11.0.0",
     "electron": "^36.3.2",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
@@ -99,6 +104,18 @@
         {
           "name": "@electron-forge/maker-rpm",
           "config": {}
+        }
+      ],
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "Larand26",
+              "name": "Aminus"
+            },
+            "prerelease": false
+          }
         }
       ]
     }
