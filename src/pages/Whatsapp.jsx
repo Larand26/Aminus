@@ -77,7 +77,15 @@ const Whatsapp = () => {
       onClick: async () => {
         setPopUpQrCodeOpen(true);
         const qrCodeResult = await geraQrcode(token);
-        console.log("QR Code Result:", qrCodeResult);
+        if (!qrCodeResult?.success) {
+          setToastInfo({
+            key: Date.now(),
+            message: qrCodeResult?.error || "Erro ao gerar QR Code.",
+            type: "falha",
+          });
+          return;
+        }
+        setQrcodeSrc(qrCodeResult.data.qrcode);
       },
     },
   ];
@@ -278,12 +286,33 @@ const Whatsapp = () => {
 
       <PopUp
         id="popup-qrcode"
-        width="300px"
-        height="300px"
+        width="400px"
+        height="400px"
         title="QR Code"
         open={popUpQrCodeOpen}
         setOpen={setPopUpQrCodeOpen}
-      ></PopUp>
+      >
+        <h1>QR Code</h1>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          {qrcodeSrc ? (
+            <img
+              src={qrcodeSrc}
+              alt="QR Code WhatsApp"
+              style={{ width: "inherit", height: "inherit" }}
+            />
+          ) : (
+            <p>Carregando QR Code...</p>
+          )}
+        </div>
+      </PopUp>
 
       <NavBar />
       <div className="main-container">
