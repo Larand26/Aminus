@@ -158,4 +158,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("edita-contato-response", (event, arg) => {
       callback(arg);
     }),
+  geraQrcode: (token) => ipcRenderer.send("gera-qrcode", token),
+  onGeraQrcodeResponse: (callback) =>
+    ipcRenderer.on("gera-qrcode-response", (event, arg) => {
+      callback(arg);
+    }),
 });

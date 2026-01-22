@@ -34,6 +34,7 @@ const {
   pegaUltimoUsoKey,
 } = require("./db/mysql/keys");
 const { salvaInfos, pegaInfos } = require("./db/mysql/dashboardWpp");
+const { geraQrcode } = require("./whatsapp/qrCode");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
@@ -692,6 +693,33 @@ ipcMain.on("edita-contato", async (event, contato) => {
   } catch (error) {
     console.error("Erro ao editar contato:", error);
     event.reply("edita-contato-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("gera-qrcode", async (event, token) => {
+  try {
+    const tokenResult = await verificaToken(token);
+    if (!tokenResult.success)
+      return event.reply("gera-qrcode-response", tokenResult);
+
+    const keysResult = await pegaKeys({
+      vendedorId: tokenResult.data.ID_USUARIO,
+    });
+    if (!keysResult.success)
+      return event.reply("gera-qrcode-response", keysResult);
+
+    const qrCodeResult = await geraQrcode({
+      session: keysResult.data[0].SESSION,
+      key: keysResult.data[0].KEY_VALUE,
+    });
+
+    event.reply("gera-qrcode-response", qrCodeResult);
+  } catch (error) {
+    console.error("Erro ao gerar QR Code:", error);
+    event.reply("gera-qrcode-response", {
       success: false,
       error: error.message || "Erro desconhecido",
     });

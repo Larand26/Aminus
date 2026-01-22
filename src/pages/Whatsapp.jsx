@@ -18,6 +18,7 @@ import adicionaContato from "../utils/whatsapp/adicionaContato";
 import onEnviaMensagemProgresso from "../utils/whatsapp/progresso";
 import pegaInfosDashboardWpp from "../utils/whatsapp/pegaInfosDashboardWpp";
 import editaContato from "../utils/whatsapp/editaContato";
+import geraQrcode from "../utils/whatsapp/geraQrcode";
 
 import vendedoresJson from "../assets/json/vendedoresAminus.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
@@ -47,6 +48,9 @@ const Whatsapp = () => {
   // PopUp
   const [popUpQrCodeOpen, setPopUpQrCodeOpen] = useState(false);
 
+  // QR Code
+  const [qrcodeSrc, setQrcodeSrc] = useState("");
+
   // Páginas para o Content
   const pages = [
     {
@@ -70,7 +74,11 @@ const Whatsapp = () => {
     {
       key: "qrcode",
       icon: "fa-solid fa-qrcode",
-      onClick: () => setPopUpQrCodeOpen(true),
+      onClick: async () => {
+        setPopUpQrCodeOpen(true);
+        const qrCodeResult = await geraQrcode(token);
+        console.log("QR Code Result:", qrCodeResult);
+      },
     },
   ];
 
