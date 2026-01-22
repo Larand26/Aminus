@@ -60,11 +60,26 @@ if (require("electron-squirrel-startup")) {
 }
 
 const { updateElectronApp, UpdateSourceType } = require("update-electron-app");
+const { dialog, autoUpdater } = require("electron"); // Importe dialog e autoUpdater
 
 if (MODE !== "development" && !process.env.IS_DEV) {
   updateElectronApp({
     updateInterval: "1 hour",
-    notifyUser: true,
+    notifyUser: false,
+  });
+
+  autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
+    const dialogOpts = {
+      type: "info",
+      buttons: ["Reiniciar", "Depois"],
+      title: "Nova atualização do Aminus",
+      message: process.platform === "win32" ? releaseNotes : releaseName,
+      detail: "Uma versão nova foi encontrada. Reinicie o aplicativo.",
+    };
+
+    dialog.showMessageBox(dialogOpts).then((returnValue) => {
+      if (returnValue.response === 0) autoUpdater.quitAndInstall();
+    });
   });
 }
 
