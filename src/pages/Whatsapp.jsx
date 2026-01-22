@@ -303,11 +303,7 @@ const Whatsapp = () => {
           }}
         >
           {qrcodeSrc ? (
-            <img
-              src={qrcodeSrc}
-              alt="QR Code WhatsApp"
-              style={{ width: "inherit", height: "inherit" }}
-            />
+            <img src={qrcodeSrc} alt="QR Code WhatsApp" />
           ) : (
             <p>Carregando QR Code...</p>
           )}
