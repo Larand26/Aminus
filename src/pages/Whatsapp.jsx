@@ -6,6 +6,7 @@ import InputLabel from "../components/InputLabel";
 import SelectLabel from "../components/SelectLabel";
 import Content from "../components/Content";
 import Toast from "../components/Toast";
+import PopUp from "../components/PopUp";
 
 import ClientesWpp from "../components/whatsapp/ClientesWpp";
 import Dashboard from "../components/whatsapp/DashboardWpp";
@@ -43,6 +44,9 @@ const Whatsapp = () => {
   // Dados
   const [contatos, setContatos] = useState([]);
 
+  // PopUp
+  const [popUpQrCodeOpen, setPopUpQrCodeOpen] = useState(false);
+
   // Páginas para o Content
   const pages = [
     {
@@ -62,6 +66,11 @@ const Whatsapp = () => {
       key: "mensagens",
       icon: "fa-brands fa-whatsapp",
       onClick: () => setPaginaAtiva("mensagens"),
+    },
+    {
+      key: "qrcode",
+      icon: "fa-solid fa-qrcode",
+      onClick: () => setPopUpQrCodeOpen(true),
     },
   ];
 
@@ -258,6 +267,15 @@ const Whatsapp = () => {
           type={toastInfo.type}
         />
       )}
+
+      <PopUp
+        id="popup-qrcode"
+        width="300px"
+        height="300px"
+        title="QR Code"
+        open={popUpQrCodeOpen}
+        setOpen={setPopUpQrCodeOpen}
+      ></PopUp>
 
       <NavBar />
       <div className="main-container">
