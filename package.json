@@ -1,7 +1,7 @@
 {
   "name": "aminus",
   "private": true,
-  "version": "2.20.6",
+  "version": "2.21.0",
   "main": "main.js",
   "description": "Um sistema capaz de alterar e ver um banco de dados",
   "repository": {
