@@ -18,7 +18,7 @@ const searchNotas = async (nota) => {
       }
       if (nota.cnpj) {
         conditions.push(`NF.[NF_CGCCPFENTIDADE] = @cnpj`);
-        request.input("cnpj", VarChar, nota.cnpj);
+        request.input("cnpj", VarChar, nota.cnpj.replace(/\D/g, ""));
       }
       if (nota.dataInicial) {
         conditions.push(`NF.[NF_DATAEMIS] >= @dataInicial`);
@@ -45,7 +45,7 @@ const searchNotas = async (nota) => {
     if (conditions.length > 0) {
       query = query.replace(
         "-- Os filtros serão adicionados aqui pelo Node.js",
-        `AND ${conditions.join(" AND ")}`
+        `AND ${conditions.join(" AND ")}`,
       );
     }
 

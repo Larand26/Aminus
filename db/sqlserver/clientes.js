@@ -18,7 +18,7 @@ const searchCliente = async (cliente) => {
       }
       if (cliente.cnpj) {
         conditions.push("[ENTI_CNPJCPF] = @cnpj");
-        request.input("cnpj", VarChar, cliente.cnpj);
+        request.input("cnpj", VarChar, cliente.cnpj.replace(/\D/g, ""));
       }
       if (cliente.numCliente) {
         conditions.push("[ID_CODENTIDADE] = @numCliente");
@@ -37,7 +37,7 @@ const searchCliente = async (cliente) => {
     if (conditions.length > 0) {
       query = query.replace(
         "-- Os filtros serão adicionados aqui pelo Node.js",
-        `AND ${conditions.join(" AND ")}`
+        `AND ${conditions.join(" AND ")}`,
       );
     }
 

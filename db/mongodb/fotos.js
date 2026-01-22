@@ -16,11 +16,11 @@ const searchFoto = async (produto) => {
     await connectDB();
     let pesquisa;
     if (produto.codFabricante === "") {
-      pesquisa = { codigo_cor: produto.codCor };
+      pesquisa = { codigo_cor: produto.codCor.toUpperCase() };
     } else {
       pesquisa = {
         referencia: produto.codFabricante,
-        codigo_cor: produto.codCor,
+        codigo_cor: produto.codCor.toUpperCase(),
       };
     }
     if (produto.codCor === "") {

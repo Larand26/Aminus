@@ -18,7 +18,7 @@ const searchPedido = async (pedido) => {
     }
     if (pedido?.cnpj) {
       conditions.push("E.[ENTI_CNPJCPF] = @cnpj");
-      request.input("cnpj", VarChar, pedido.cnpj);
+      request.input("cnpj", VarChar, pedido.cnpj.replace(/\D/g, ""));
     }
     if (pedido?.dataInicial) {
       conditions.push("PO.[PEDOR_DATA] >= @dataInicial");
@@ -40,7 +40,7 @@ const searchPedido = async (pedido) => {
     if (conditions.length > 0) {
       query = query.replace(
         "-- Os filtros serão adicionados aqui pelo Node.js",
-        `AND ${conditions.join(" AND ")}`
+        `AND ${conditions.join(" AND ")}`,
       );
     }
 
@@ -67,7 +67,7 @@ const getItensPedido = async (numero) => {
 
     query = query.replace(
       "-- Os filtros serão adicionados aqui pelo Node.js",
-      "AND IPO.[ID_NUMPEDORC] = @numero"
+      "AND IPO.[ID_NUMPEDORC] = @numero",
     );
 
     const result = await request.query(query);
