@@ -4,7 +4,8 @@ const pegaContatos = async (filtros) => {
   try {
     const connection = await connectMySql();
 
-    let query = "SELECT * FROM CONTATOS WHERE 1=1";
+    let query =
+      "SELECT `CONTATO_ID`, `CONTATO_NOME`, `CONTATO_NUMERO`, `CONTATO_CNPJ`,  U.`NOME` VENDEDOR_NOME FROM CONTATOS C LEFT JOIN USUARIOS U ON C.VENDEDOR_ID = U.ID_USUARIO WHERE 1=1";
     let params = [];
 
     if (filtros?.nome) {

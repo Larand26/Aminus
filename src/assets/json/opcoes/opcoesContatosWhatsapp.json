@@ -23,6 +23,6 @@
     "checked": true,
     "editavel": true
   },
-  { "id": "VENDEDOR_ID", "label": "Vendedor ID", "checked": true },
+  { "id": "VENDEDOR_NOME", "label": "Vendedor Nome", "checked": true },
   { "id": "", "label": "Ações", "format": "edit", "checked": true }
 ]
