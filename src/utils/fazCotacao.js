@@ -1,4 +1,4 @@
-const transportadorsasPrecoPersonalizado = ["BRAS", "JAM"];
+const transportadorsasPrecoPersonalizado = ["JAM"];
 
 const fazCotacao = async (itensPedido, itemSelecionado, pedidoSelecionado) => {
   /*
