@@ -8,6 +8,7 @@ const produtoSchema = new mongoose.Schema({
   preco_revenda: String,
   embalamento: String,
   fotos: [Buffer],
+  video_url: String,
 });
 
 const Produto =
