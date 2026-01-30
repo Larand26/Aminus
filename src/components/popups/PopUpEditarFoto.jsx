@@ -29,7 +29,7 @@ const PopUpEditarFoto = (props) => {
         props.onCloseAndSave(latestFormData.current);
       }
     };
-  }, [props.onCloseAndSave]);
+  }, []);
 
   const fileToBase64 = async (file) => {
     try {
@@ -96,40 +96,59 @@ const PopUpEditarFoto = (props) => {
           ></textarea>
         </div>
         <div className="infos-content">
-          <InputLabel
-            className="texto-preto"
-            label="Cod Fabricante"
-            value={formData.referencia || ""}
-            onChange={(value) => handleChange("referencia", value)}
-          />
-          <SelectLabel
-            className="texto-preto"
-            label="Embalamento"
-            value={formData.embalamento || ""}
-            onChange={(value) => handleChange("embalamento", value)}
-            options={[
-              { value: "f", label: "Favo" },
-              { value: "c", label: "Cartucho" },
-            ]}
-          />
-          <InputLabel
-            className="texto-preto"
-            label="Preco Revenda"
-            value={formData.preco_revenda || ""}
-            onChange={(value) => handleChange("preco_revenda", value)}
-          />
-          <InputLabel
-            className="texto-preto"
-            label="Cod Cor"
-            value={formData.codigo_cor || ""}
-            onChange={(value) => handleChange("codigo_cor", value)}
-          />
-          <InputLabel
-            className="texto-preto"
-            label="Nome Cor"
-            value={formData.nome_cor || ""}
-            onChange={(value) => handleChange("nome_cor", value)}
-          />
+          <div className="infos-inputs">
+            <InputLabel
+              className="texto-preto"
+              label="Cod Fabricante"
+              value={formData.referencia || ""}
+              onChange={(value) => handleChange("referencia", value)}
+            />
+            <SelectLabel
+              className="texto-preto"
+              label="Embalamento"
+              value={formData.embalamento || ""}
+              onChange={(value) => handleChange("embalamento", value)}
+              options={[
+                { value: "f", label: "Favo" },
+                { value: "c", label: "Cartucho" },
+              ]}
+            />
+            <InputLabel
+              className="texto-preto"
+              label="Preco Revenda"
+              value={formData.preco_revenda || ""}
+              onChange={(value) => handleChange("preco_revenda", value)}
+            />
+            <InputLabel
+              className="texto-preto"
+              label="Cod Cor"
+              value={formData.codigo_cor || ""}
+              onChange={(value) => handleChange("codigo_cor", value)}
+            />
+            <InputLabel
+              className="texto-preto"
+              label="Nome Cor"
+              value={formData.nome_cor || ""}
+              onChange={(value) => handleChange("nome_cor", value)}
+            />
+            <InputLabel
+              className="texto-preto"
+              label="Url Video"
+              value={formData.video_url || ""}
+              onChange={(value) => handleChange("video_url", value)}
+            />
+          </div>
+          <div className="video-content">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/4aSPVWb-7AE?si=551FSzerIjp4xTx9"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+          </div>
         </div>
       </div>
     </div>
