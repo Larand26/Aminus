@@ -11,7 +11,7 @@
 
 .info-geral-edit {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 20px;
   flex-wrap: wrap;
   width: 100%;
@@ -21,7 +21,7 @@
 }
 
 .descricao-content {
-  width: 40%;
+  width: 50%;
   min-width: 0;
   box-sizing: border-box;
   display: flex;
@@ -34,13 +34,12 @@
   width: 100%;
   height: 100%;
   min-height: 100px;
-  max-height: 300px; /* Ajuste conforme necessário */
   resize: vertical;
   box-sizing: border-box;
 }
 
 .infos-content {
-  width: 50%;
+  width: 45%;
   min-width: 0; /* Permite encolher corretamente */
   box-sizing: border-box;
 }
@@ -68,8 +67,28 @@
   display: block;
 }
 
+.video-content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
 .video-content iframe {
   width: 100%;
-  height: 200px;
+  height: 220px;
   border: none;
+  border-radius: 16px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.15),
+    0 1.5px 4px rgba(0, 0, 0, 0.08);
+  background: #f8f8f8;
+  transition: box-shadow 0.3s;
+}
+
+.video-content iframe:hover {
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.22),
+    0 2px 8px rgba(0, 0, 0, 0.12);
 }

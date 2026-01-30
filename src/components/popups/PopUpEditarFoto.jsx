@@ -3,6 +3,8 @@ import InputFile from "../InputFile";
 import InputLabel from "../InputLabel";
 import SelectLabel from "../SelectLabel";
 
+import pegaUrlIntegracao from "../../utils/fotos/pegaUrlIntegracao";
+
 import "../../styles/popup-editar-foto.css";
 
 const PopUpEditarFoto = (props) => {
@@ -140,9 +142,12 @@ const PopUpEditarFoto = (props) => {
           </div>
           <div className="video-content">
             <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/4aSPVWb-7AE?si=551FSzerIjp4xTx9"
+              width="100%"
+              height="220"
+              src={
+                pegaUrlIntegracao(formData.video_url) ||
+                "https://www.youtube.com/embed/"
+              }
               title="YouTube video player"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
