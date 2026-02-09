@@ -459,6 +459,7 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     const contatosResult = await pegaContatos({
       vendedorId:
         tokenResult.data.ID_USUARIO == 11 ? null : tokenResult.data.ID_USUARIO,
+      envia: true,
     });
     if (!contatosResult.success)
       return event.reply("envia-mensagem-response", contatosResult);

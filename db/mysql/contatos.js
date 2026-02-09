@@ -21,6 +21,11 @@ const pegaContatos = async (filtros) => {
       params.push(filtros.vendedorId);
     }
 
+    if (filtros?.envia) {
+      query += " AND CONTATO_RECEBER_MENSAGENS = ?";
+      params.push(filtros.envia);
+    }
+
     const [rows] = await connection.execute(query, params);
     connection.end();
 
