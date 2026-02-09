@@ -1,0 +1,28 @@
+[
+  {
+    "id": "search",
+    "label": "Pesquisa",
+    "checked": false
+  },
+  { "id": "CONTATO_ID", "label": "ID", "checked": false },
+  { "id": "CONTATO_NOME", "label": "Nome", "checked": true, "editavel": true },
+  {
+    "id": "CONTATO_NUMERO",
+    "label": "Número",
+    "checked": false,
+    "editavel": true
+  },
+  {
+    "id": "CONTATO_RECEBER_MENSAGENS",
+    "label": "Ativo",
+    "checked": false
+  },
+  {
+    "id": "CONTATO_CNPJ",
+    "label": "CNPJ",
+    "checked": false,
+    "editavel": true
+  },
+  { "id": "VENDEDOR_NOME", "label": "Vendedor Nome", "checked": false },
+  { "id": "", "label": "Ações", "format": "edit", "checked": false }
+]

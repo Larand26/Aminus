@@ -1,4 +1,6 @@
 import InputFile from "../InputFile.jsx";
+import Tabela from "../tabela/Tabela.jsx";
+import Coluna from "../tabela/Coluna.jsx";
 
 import "../../styles/whatsapp/mensagensWpp.css";
 
@@ -30,12 +32,28 @@ const MensagensWpp = (props) => {
           ></textarea>
         </div>
         <div className="mensagens-wpp-timer">
-          <div className="timer-box">
-            <div style={{ fontSize: 28, fontWeight: "bold", marginBottom: 8 }}>
-              Timer
-            </div>
-            <div className="timer">{props.timer}</div>
-          </div>
+          <Tabela
+            dados={props.dados}
+            semDados="Nenhum contato encontrado"
+            tamMax="400px"
+            loading={props.loading}
+            onEdit={props.onEdit}
+            chave="CONTATO_ID"
+            select="checkbox"
+          >
+            {props.opcoes
+              .filter((opcao) => opcao.checked)
+              .map((opcao) => (
+                <Coluna
+                  key={opcao.id}
+                  titulo={opcao.label}
+                  campo={opcao.id}
+                  format={opcao.format || ""}
+                  copy={opcao.copy || false}
+                  editavel={opcao.editavel || false}
+                />
+              ))}
+          </Tabela>
           <button
             className="mensagens-wpp-enviar"
             onClick={props.onEnviar}

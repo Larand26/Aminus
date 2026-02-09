@@ -23,6 +23,7 @@ import geraQrcode from "../utils/whatsapp/geraQrcode";
 import vendedoresJson from "../assets/json/vendedoresAminus.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
 import opcoesDashboardWpp from "../assets/json/opcoes/opcoesDashboardWpp.json";
+import opcoesMensagens from "../assets/json/opcoes/opcoesMensagens.json";
 
 const Whatsapp = () => {
   //token
@@ -349,6 +350,8 @@ const Whatsapp = () => {
               onEnviar={() => handleEnviarMensagem()}
               progresso={progresso}
               enviando={enviando}
+              dados={contatos}
+              opcoes={opcoesMensagens}
             />
           )}
         </Content>
