@@ -11,7 +11,7 @@
   border: 1px solid var(--cor-texto);
   box-sizing: border-box;
   padding: 10px;
-  min-height: 150px;
+  height: 150px;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -26,8 +26,6 @@
 }
 
 .foto-input {
-  width: 150px;
-  height: 150px;
   background-color: #fff;
   border-radius: 5px;
   position: relative;
