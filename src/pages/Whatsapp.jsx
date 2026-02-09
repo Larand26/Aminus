@@ -329,7 +329,16 @@ const Whatsapp = () => {
             />
           )}
         </BarraLateral>
-        <Content titulo="WhatsApp" pages={pages}>
+        <Content
+          titulo="WhatsApp"
+          pages={pages}
+          timer={
+            <>
+              {formatTimer(timerSegundos)}
+              <i className="fa fa-clock"></i>
+            </>
+          }
+        >
           {paginaAtiva === "clientes" && (
             <ClientesWpp
               dados={contatos}
