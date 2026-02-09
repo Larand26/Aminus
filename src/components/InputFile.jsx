@@ -71,7 +71,7 @@ const InputFile = (props) => {
 
   const removeFile = (fileIndex) => {
     setFiles((prevFiles) =>
-      prevFiles.filter((_, index) => index !== fileIndex)
+      prevFiles.filter((_, index) => index !== fileIndex),
     );
   };
 

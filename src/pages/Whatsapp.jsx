@@ -190,8 +190,6 @@ const Whatsapp = () => {
         message: "Mensagens enviadas com sucesso!",
         type: "sucesso",
       });
-      setMensagemEnviar("");
-      setImagens([]);
     }
   };
 
