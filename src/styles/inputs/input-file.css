@@ -6,9 +6,23 @@
   border-radius: 4px;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .input-file-container input[type="file"] {
   display: none;
+}
+
+.img-input-file {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.img-input-file img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
