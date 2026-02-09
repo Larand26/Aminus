@@ -20,6 +20,12 @@ const pegaContatos = async (filtros) => {
       query += " AND VENDEDOR_ID = ?";
       params.push(filtros.vendedorId);
     }
+    if (filtros?.contatos && filtros.contatos.length > 0) {
+      const numeros = filtros.contatos.map((num) => num.CONTATO_NUMERO);
+      const placeholders = numeros.map(() => "?").join(",");
+      query += ` AND CONTATO_NUMERO IN (${placeholders})`;
+      params.push(...numeros);
+    }
 
     if (filtros?.envia) {
       query += " AND CONTATO_RECEBER_MENSAGENS = ?";

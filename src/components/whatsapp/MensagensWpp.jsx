@@ -40,6 +40,7 @@ const MensagensWpp = (props) => {
             onEdit={props.onEdit}
             chave="CONTATO_ID"
             select="checkbox"
+            onSelectionChange={props.onSelectionChange}
           >
             {props.opcoes
               .filter((opcao) => opcao.checked)

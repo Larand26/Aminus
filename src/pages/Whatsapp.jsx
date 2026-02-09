@@ -130,6 +130,9 @@ const Whatsapp = () => {
   const [timerSegundos, setTimerSegundos] = useState(300); // Começa em 5 minutos (300 segundos)
   const [imagens, setImagens] = useState([]);
 
+  // Números selecionados para enviar mensagens
+  const [contatosSelecionados, setContatosSelecionados] = useState([]);
+
   // Timer regressivo de 5 minutos
   useEffect(() => {
     const ultimaMensagemWpp = localStorage.getItem("ultimaMensagemWpp");
@@ -168,6 +171,7 @@ const Whatsapp = () => {
       token,
       mensagem: mensagemEnviar,
       imagens,
+      contatos: contatosSelecionados,
     };
     const result = await enviaMensagem(args);
     setEnviando(false);
@@ -352,6 +356,7 @@ const Whatsapp = () => {
               enviando={enviando}
               dados={contatos}
               opcoes={opcoesMensagens}
+              onSelectionChange={setContatosSelecionados}
             />
           )}
         </Content>
