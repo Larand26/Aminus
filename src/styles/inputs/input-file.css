@@ -1,28 +1,90 @@
-.input-file-container {
+.container-input-file input {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+.fotos-input {
   width: 100%;
-  height: 120px;
-  background-color: #ffffff;
-  border: 1px solid #404040;
-  border-radius: 4px;
+  max-width: 100%;
   display: flex;
-  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--cor-texto);
+  box-sizing: border-box;
+  padding: 10px;
+  min-height: 150px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  flex-wrap: nowrap;
 }
 
-.input-file-container input[type="file"] {
-  display: none;
+@media (min-width: 1400px) {
+  .container-input-file {
+    max-width: 1260px;
+    margin: 0 auto;
+  }
 }
 
-.img-input-file {
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
+.foto-input {
+  width: 150px;
+  height: 150px;
+  background-color: #fff;
+  border-radius: 5px;
+  position: relative;
+  cursor: grab;
 }
 
-.img-input-file img {
-  width: 100%;
+.fotos-input img {
+  width: inherit;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+}
+
+.remove-file {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  transition: 0.2s;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--cor-texto);
+  border: 1px solid var(--cor-texto);
+}
+
+.foto-input:hover .remove-file {
+  opacity: 1;
+}
+
+.foto-input.dragging {
+  opacity: 0.5;
+}
+
+.fotos-input::-webkit-scrollbar {
+  height: 8px; /* Altura do scrollbar horizontal */
+  background: transparent;
+}
+
+.fotos-input::-webkit-scrollbar-thumb {
+  background: var(--cor-primaria, #415b72); /* Cor do thumb */
+  border-radius: 4px;
+  border: 2px solid #fff; /* Borda branca para destacar */
+  transition: background 0.3s;
+}
+
+.fotos-input::-webkit-scrollbar-thumb:hover {
+  background: #2d3e50; /* Cor ao passar o mouse */
+}
+
+.fotos-input::-webkit-scrollbar-track {
+  background: var(--cor-fundo, #eaeaea); /* Cor do track */
+  border-radius: 4px;
+}
+
+/* Para Firefox */
+.fotos-input {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cor-primaria, #415b72) var(--cor-fundo, #eaeaea);
 }
