@@ -123,7 +123,6 @@ const enviaStatus = async (args) => {
 
     return { success: true, data: "Status enviado com sucesso." };
   } catch (error) {
-    console.error("Erro ao enviar status:", JSON.stringify(error));
     return { success: false, error: error.message };
   }
 };

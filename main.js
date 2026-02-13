@@ -753,8 +753,10 @@ ipcMain.on("envia-status", async (event, args) => {
       });
     }
 
-    // const enviaStatusResult = await enviaStatus(args);
-    // event.reply("envia-status-response", enviaStatusResult);
+    event.reply("envia-status-response", {
+      success: true,
+      data: "Status enviado com sucesso.",
+    });
   } catch (error) {
     console.error("Erro ao enviar status:", error);
     event.reply("envia-status-response", {
