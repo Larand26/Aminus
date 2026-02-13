@@ -163,4 +163,9 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("gera-qrcode-response", (event, arg) => {
       callback(arg);
     }),
+  enviaStatus: (args) => ipcRenderer.send("envia-status", args),
+  onEnviaStatus: (callback) =>
+    ipcRenderer.on("envia-status-response", (event, arg) => {
+      callback(arg);
+    }),
 });

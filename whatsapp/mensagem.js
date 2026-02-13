@@ -74,4 +74,58 @@ const enviaMensagem = async (args) => {
   }
 };
 
-module.exports = { enviaMensagem, enviaImagens };
+const enviaStatus = async (args) => {
+  try {
+    const { texto, imagens, key, session } = args;
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${key}`,
+    };
+    let base64Imagens = imagens.map((img) => {
+      if (!img.startsWith("data:image")) {
+        return `data:image/jpeg;base64,${img}`;
+      }
+      return img;
+    });
+
+    const imgsPathsResult = await axios.post(
+      "https://servidor-para-subir-fotos-production.up.railway.app/upload",
+      { images: base64Imagens },
+    );
+    console.log(imgsPathsResult);
+
+    if (
+      !imgsPathsResult.data ||
+      !imgsPathsResult.data.urls ||
+      imgsPathsResult.data.urls.length === 0
+    ) {
+      return {
+        success: false,
+        error: "Erro ao subir imagens para o servidor.",
+      };
+    }
+
+    for (const urls of imgsPathsResult.data.urls) {
+      const body = {
+        path: urls,
+      };
+      const response = await axios.post(
+        `${WHATSAPP_API_URL}/${session}/send-image-storie`,
+        body,
+        {
+          headers: headers,
+        },
+      );
+      console.log(response.data);
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    }
+
+    return { success: true, data: "Status enviado com sucesso." };
+  } catch (error) {
+    console.error("Erro ao enviar status:", JSON.stringify(error));
+    return { success: false, error: error.message };
+  }
+};
+
+module.exports = { enviaMensagem, enviaImagens, enviaStatus };

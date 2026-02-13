@@ -20,6 +20,7 @@ import onEnviaMensagemProgresso from "../utils/whatsapp/progresso";
 import pegaInfosDashboardWpp from "../utils/whatsapp/pegaInfosDashboardWpp";
 import editaContato from "../utils/whatsapp/editaContato";
 import geraQrcode from "../utils/whatsapp/geraQrcode";
+import enviaStatus from "../utils/whatsapp/enviaStatus";
 
 import vendedoresJson from "../assets/json/vendedoresAminus.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
@@ -203,6 +204,16 @@ const Whatsapp = () => {
   const [textoStatus, setTextoStatus] = useState("");
   const [imagensStatus, setImagensStatus] = useState([]);
 
+  const handleEnviarStatus = async () => {
+    const args = {
+      token,
+      texto: textoStatus,
+      imagens: imagensStatus,
+    };
+    const result = await enviaStatus(args);
+    console.log(result);
+  };
+
   // Adiciona um cliente novo
   const [novoCliente, setNovoCliente] = useState({});
   const handleAdicionarCliente = async () => {
@@ -382,6 +393,7 @@ const Whatsapp = () => {
               setTextoStatus={setTextoStatus}
               imagensStatus={imagensStatus}
               setImagensStatus={setImagensStatus}
+              onEnviar={() => handleEnviarStatus()}
             />
           )}
         </Content>

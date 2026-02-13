@@ -92,7 +92,11 @@ const { verificaToken } = require("./token/verificaToken");
 const vendedoresJson = require("./db/vendedores.json");
 
 // Whatsapp
-const { enviaMensagem, enviaImagens } = require("./whatsapp/mensagem");
+const {
+  enviaMensagem,
+  enviaImagens,
+  enviaStatus,
+} = require("./whatsapp/mensagem");
 
 function isDev() {
   return MODE === "development" || process.env.NODE_ENV === "development";
@@ -722,6 +726,38 @@ ipcMain.on("gera-qrcode", async (event, token) => {
   } catch (error) {
     console.error("Erro ao gerar QR Code:", error);
     event.reply("gera-qrcode-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("envia-status", async (event, args) => {
+  try {
+    const tokenResult = await verificaToken(args.token);
+    if (!tokenResult.success)
+      return event.reply("envia-status-response", tokenResult);
+
+    const keysResult = await pegaKeys({
+      vendedorId:
+        tokenResult?.data?.ID_USUARIO == 11
+          ? null
+          : tokenResult.data.ID_USUARIO,
+    });
+
+    for (const key of keysResult.data) {
+      const result = await enviaStatus({
+        ...args,
+        key: key.KEY_VALUE,
+        session: key.SESSION,
+      });
+    }
+
+    // const enviaStatusResult = await enviaStatus(args);
+    // event.reply("envia-status-response", enviaStatusResult);
+  } catch (error) {
+    console.error("Erro ao enviar status:", error);
+    event.reply("envia-status-response", {
       success: false,
       error: error.message || "Erro desconhecido",
     });
