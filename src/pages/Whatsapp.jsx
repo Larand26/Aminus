@@ -11,6 +11,7 @@ import PopUp from "../components/PopUp";
 import ClientesWpp from "../components/whatsapp/ClientesWpp";
 import Dashboard from "../components/whatsapp/DashboardWpp";
 import MensagensWpp from "../components/whatsapp/MensagensWpp";
+import Status from "../components/whatsapp/Status";
 
 import enviaMensagem from "../utils/whatsapp/enviaMensagem";
 import searchContatos from "../utils/search/searchContatos";
@@ -58,6 +59,11 @@ const Whatsapp = () => {
       key: "clientes",
       icon: "fa fa-phone",
       onClick: () => setPaginaAtiva("clientes"),
+    },
+    {
+      key: "status",
+      icon: "fa-solid fa-comment-medical",
+      onClick: () => setPaginaAtiva("status"),
     },
     {
       key: "dashboard",
@@ -192,6 +198,10 @@ const Whatsapp = () => {
       });
     }
   };
+
+  // Estados para Status
+  const [textoStatus, setTextoStatus] = useState("");
+  const [imagensStatus, setImagensStatus] = useState([]);
 
   // Adiciona um cliente novo
   const [novoCliente, setNovoCliente] = useState({});
@@ -364,6 +374,14 @@ const Whatsapp = () => {
               dados={contatos}
               opcoes={opcoesMensagens}
               onSelectionChange={setContatosSelecionados}
+            />
+          )}
+          {paginaAtiva === "status" && (
+            <Status
+              textoStatus={textoStatus}
+              setTextoStatus={setTextoStatus}
+              imagensStatus={imagensStatus}
+              setImagensStatus={setImagensStatus}
             />
           )}
         </Content>
