@@ -498,7 +498,10 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     }
 
     const keysResult = await pegaKeys({
-      vendedorId: tokenResult.data.ID_USUARIO,
+      vendedorId:
+        tokenResult?.data?.ID_USUARIO == 11
+          ? null
+          : tokenResult.data.ID_USUARIO,
     });
     if (!keysResult.success)
       return event.reply("envia-mensagem-response", keysResult);
@@ -511,12 +514,22 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     let erros = [];
 
     for (const contato of contatosResult.data) {
+      const key = keysResult.data.find(
+        (k) => k.VENDEDOR_ID === contato.ID_VENDEDOR,
+      )?.KEY_VALUE;
+
+      const session = keysResult.data.find(
+        (k) => k.VENDEDOR_ID === contato.ID_VENDEDOR,
+      )?.SESSION;
+
+      if (!key || !session) continue;
+
       const mensagemArgs = {
         mensagem: args.mensagem.replace(/\$nome/g, contato.CONTATO_NOME),
         imagens: args.imagens,
         contatoNumero: contato.CONTATO_NUMERO,
-        key: keysResult.data[0].KEY_VALUE,
-        session: keysResult.data[0].SESSION,
+        key: key,
+        session: session,
       };
       // Envia imagens uma a uma, progresso o progresso
       if (args.imagens && args.imagens.length > 0) {
