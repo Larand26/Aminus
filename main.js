@@ -582,9 +582,11 @@ ipcMain.on("envia-mensagem", async (event, args) => {
       mensagem: args.mensagem,
       mensagensEnviadas,
       mensagensNaoEnviadas,
-      taxaAcerto: Math.round(
-        (mensagensEnviadas / (mensagensEnviadas + mensagensNaoEnviadas)) * 100,
-      ),
+      taxaAcerto: (() => {
+        const totalMensagens = mensagensEnviadas + mensagensNaoEnviadas;
+        if (!totalMensagens || isNaN(totalMensagens)) return 0;
+        return Math.round((mensagensEnviadas / totalMensagens) * 100);
+      })(),
       vendedorId: tokenResult.data.ID_USUARIO,
     };
     await salvaInfos(dashboardWppArgs);
