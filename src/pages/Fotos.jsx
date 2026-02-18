@@ -14,6 +14,7 @@ import Content from "../components/Content";
 
 import searchFotos from "../utils/search/searchFotos";
 import atualizaFotoMongo from "../utils/fotos/atualizaFotoMongo";
+import cadastraFotoMongo from "../utils/fotos/cadastraFotoMongo";
 import deletaFoto from "../utils/fotos/deletaFoto";
 import baixaFotos from "../utils/fotos/baixaFotos";
 
@@ -95,7 +96,10 @@ const Fotos = () => {
 
   // Função que recebe os dados do pop-up ao fechar
   const handleCloseAndSave = async (updatedFoto) => {
-    if (updatedFoto && Object.keys(updatedFoto).length > 0) {
+    if (!updatedFoto || Object.keys(updatedFoto).length === 0) return;
+
+    // Se tiver _id, trata como atualização
+    if (updatedFoto._id) {
       setFotos((prevFotos) =>
         prevFotos.map((foto) =>
           foto._id === updatedFoto._id ? updatedFoto : foto,
@@ -104,6 +108,30 @@ const Fotos = () => {
 
       const resultado = await atualizaFotoMongo(updatedFoto);
       console.log(resultado);
+      return;
+    }
+
+    // Senão, trata como novo cadastro: chama o util de cadastro e adiciona à lista
+    const resultado = await cadastraFotoMongo(updatedFoto);
+    console.log("Resultado cadastro foto:", resultado);
+
+    if (resultado && (resultado.success || resultado.error !== true)) {
+      // Se backend não retornar _id, cria um id temporário local
+      const tempId = `_local_${Date.now()}`;
+      const fotoNova = { ...updatedFoto, _id: resultado.id || tempId };
+      setFotos((prev) => [fotoNova, ...prev]);
+
+      setToastInfo({
+        key: Date.now(),
+        message: resultado.message || "Foto cadastrada com sucesso.",
+        type: resultado.success ? "sucesso" : "aviso",
+      });
+    } else {
+      setToastInfo({
+        key: Date.now(),
+        message: resultado?.message || "Erro ao cadastrar foto.",
+        type: "falha",
+      });
     }
   };
 
@@ -232,7 +260,10 @@ const Fotos = () => {
                 </button>
               </div>
               <div>
-                <button className="btn-adicionar-foto">
+                <button
+                  className="btn-adicionar-foto"
+                  onClick={() => openPopUpEditar({})}
+                >
                   <i className="fas fa-plus"></i>
                 </button>
               </div>
