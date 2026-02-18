@@ -521,11 +521,11 @@ ipcMain.on("envia-mensagem", async (event, args) => {
 
     for (const contato of contatosResult.data) {
       const key = keysResult.data.find(
-        (k) => k.VENDEDOR_ID === contato.ID_VENDEDOR,
+        (k) => k.VENDEDOR_ID === contato.VENDEDOR_ID,
       )?.KEY_VALUE;
 
       const session = keysResult.data.find(
-        (k) => k.VENDEDOR_ID === contato.ID_VENDEDOR,
+        (k) => k.VENDEDOR_ID === contato.VENDEDOR_ID,
       )?.SESSION;
 
       if (!key || !session) continue;
