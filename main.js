@@ -480,20 +480,26 @@ ipcMain.on("envia-mensagem", async (event, args) => {
         "https://worldtimeapi.org/api/timezone/Etc/UTC",
       );
       const data = await responseTime.json();
-      agora = new Date(data.utc_datetime);
+      if (data && data.utc_datetime) {
+        const parsed = new Date(data.utc_datetime);
+        agora = isNaN(parsed) ? new Date() : parsed;
+      } else {
+        agora = new Date();
+      }
     } catch (e) {
       agora = new Date();
     }
 
     // Verifica se passou pelo menos 5 minutos desde o último uso
-    const diffMs = agora - new Date(ultimoUsoKey.data);
-    const diffMinutes = Math.floor(diffMs / 60000);
+    const lastUso = new Date(ultimoUsoKey.data);
+    const diffMs = isNaN(lastUso) ? Infinity : agora - lastUso;
+    const diffMinutes = isFinite(diffMs)
+      ? Math.floor(diffMs / 60000)
+      : Infinity;
     if (diffMinutes < 5 && tokenResult.data.ID_FUNCAO_USUARIO !== 1) {
       return event.reply("envia-mensagem-response", {
         success: false,
-        error: `Aguarde mais ${
-          5 - diffMinutes
-        } minuto(s) para enviar novas mensagens.`,
+        error: `Aguarde mais ${5 - diffMinutes} minuto(s) para enviar novas mensagens.`,
       });
     }
 
