@@ -631,7 +631,7 @@ ipcMain.on("search-contatos", async (event, filters) => {
 
     const vendedorId = filters.vendedorId
       ? filters.vendedorId
-      : tokenResult.data.ID_USUARIO == 1
+      : tokenResult.data.ID_FUNCAO_USUARIO == 1
         ? null
         : tokenResult.data.ID_USUARIO;
 
