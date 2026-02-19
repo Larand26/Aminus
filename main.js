@@ -766,6 +766,9 @@ ipcMain.on("envia-status", async (event, args) => {
           : tokenResult.data.ID_USUARIO,
     });
 
+    if (!keysResult.success)
+      return event.reply("envia-status-response", keysResult);
+
     for (const key of keysResult.data) {
       const result = await enviaStatus({
         ...args,

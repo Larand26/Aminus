@@ -205,10 +205,6 @@ const Whatsapp = () => {
   const [imagensStatus, setImagensStatus] = useState([]);
   const [videosStatus, setVideosStatus] = useState([]);
 
-  useEffect(() => {
-    console.log("videosStatus:", videosStatus);
-  }, [videosStatus]);
-
   const handleEnviarStatus = async () => {
     const args = {
       token,
