@@ -76,7 +76,7 @@ const enviaMensagem = async (args) => {
 
 const enviaStatus = async (args) => {
   try {
-    const { texto, imagens, key, session } = args;
+    const { texto, imagens, videos, key, session } = args;
     const headers = {
       "Content-Type": "application/json",
       Authorization: `Bearer ${key}`,
@@ -88,37 +88,44 @@ const enviaStatus = async (args) => {
       return img;
     });
 
-    const imgsPathsResult = await axios.post(
-      "https://servidor-para-subir-fotos-production.up.railway.app/upload",
-      { images: base64Imagens },
-    );
-    console.log(imgsPathsResult);
-
-    if (
-      !imgsPathsResult.data ||
-      !imgsPathsResult.data.urls ||
-      imgsPathsResult.data.urls.length === 0
-    ) {
-      return {
-        success: false,
-        error: "Erro ao subir imagens para o servidor.",
-      };
-    }
-
-    for (const urls of imgsPathsResult.data.urls) {
-      const body = {
-        path: urls,
-      };
-      const response = await axios.post(
-        `${WHATSAPP_API_URL}/${session}/send-image-storie`,
-        body,
-        {
-          headers: headers,
-        },
+    if (imagens && imagens.length > 0) {
+      const imgsPathsResult = await axios.post(
+        "https://servidor-para-subir-fotos-production.up.railway.app/upload",
+        { images: base64Imagens },
       );
-      console.log(response.data);
+      console.log(imgsPathsResult);
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      if (
+        !imgsPathsResult.data ||
+        !imgsPathsResult.data.urls ||
+        imgsPathsResult.data.urls.length === 0
+      ) {
+        return {
+          success: false,
+          error: "Erro ao subir imagens para o servidor.",
+        };
+      }
+
+      try {
+        for (const urls of imgsPathsResult.data.urls) {
+          const body = {
+            path: urls,
+          };
+          const response = await axios.post(
+            `${WHATSAPP_API_URL}/${session}/send-image-storie`,
+            body,
+            {
+              headers: headers,
+            },
+          );
+          console.log(response.data);
+
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+      } catch (error) {
+        console.error("Erro ao processar imagens:", error);
+        return { success: false, error: error.message };
+      }
     }
 
     return { success: true, data: "Status enviado com sucesso." };
