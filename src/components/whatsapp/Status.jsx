@@ -1,14 +1,19 @@
 import InputFile from "../InputFile.jsx";
+import InputVideo from "../InputVideo.jsx";
 
 import "../../styles/whatsapp/mensagensWpp.css";
 
 const Status = (props) => {
   return (
     <div className="mensagens-wpp-container">
-      <div>
+      <div className="mensagens-wpp-inputs">
         <InputFile
           initialFiles={props.imagensStatus}
           onChange={props.setImagensStatus}
+        />
+        <InputVideo
+          videos={props.videosStatus}
+          onChange={props.setVideosStatus}
         />
       </div>
       <div className="mensagens-wpp-content">

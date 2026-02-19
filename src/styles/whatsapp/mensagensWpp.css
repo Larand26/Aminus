@@ -59,3 +59,14 @@
 .mensagens-wpp-enviar:hover {
   filter: brightness(0.95);
 }
+
+.mensagens-wpp-inputs {
+  display: flex;
+  width: 100%;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.mensagens-wpp-inputs > * {
+  flex: 1 1 200px;
+}

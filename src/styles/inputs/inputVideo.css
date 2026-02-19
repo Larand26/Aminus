@@ -1,0 +1,68 @@
+.input-video {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+  border: 1px solid #000;
+  overflow-x: auto;
+  padding-bottom: 5px;
+}
+
+/* Scroll */
+.input-video::-webkit-scrollbar {
+  height: 6px;
+}
+
+.input-video::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.input-video::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.input-video::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.input-video input[type="file"] {
+  display: none;
+}
+
+.video-preview {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 150px;
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  gap: 10px;
+}
+
+.video-preview video {
+  max-width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.botao-delete {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.5);
+}

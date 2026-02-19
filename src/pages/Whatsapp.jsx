@@ -203,12 +203,18 @@ const Whatsapp = () => {
   // Estados para Status
   const [textoStatus, setTextoStatus] = useState("");
   const [imagensStatus, setImagensStatus] = useState([]);
+  const [videosStatus, setVideosStatus] = useState([]);
+
+  useEffect(() => {
+    console.log("videosStatus:", videosStatus);
+  }, [videosStatus]);
 
   const handleEnviarStatus = async () => {
     const args = {
       token,
       texto: textoStatus,
       imagens: imagensStatus,
+      videos: videosStatus,
     };
     const result = await enviaStatus(args);
     console.log(result);
@@ -394,6 +400,8 @@ const Whatsapp = () => {
               imagensStatus={imagensStatus}
               setImagensStatus={setImagensStatus}
               onEnviar={() => handleEnviarStatus()}
+              videosStatus={videosStatus}
+              setVideosStatus={setVideosStatus}
             />
           )}
         </Content>
