@@ -20,6 +20,7 @@ const Content = (props) => {
                 key={index}
                 icon={page.icon}
                 onClick={page.onClick}
+                className={page.className}
               />
             ))}
           </div>

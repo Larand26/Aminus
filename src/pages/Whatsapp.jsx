@@ -96,6 +96,7 @@ const Whatsapp = () => {
     {
       key: "qrcode",
       icon: "fa-solid fa-qrcode",
+      className: !qrCodeConectado ? "connected-blink" : "connected-true",
       onClick: async () => {
         setPopUpQrCodeOpen(true);
         const qrCodeResult = await geraQrcode(token);

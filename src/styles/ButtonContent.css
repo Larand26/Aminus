@@ -22,3 +22,29 @@
   font-size: 15px;
   color: #fff;
 }
+
+@keyframes button-blink {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 var(--cor-falha);
+  }
+  70% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
+.button-content.connected-blink {
+  animation: button-blink 2s infinite;
+  background-color: var(--cor-falha);
+  border-color: var(--cor-vermelho);
+  z-index: 10;
+}
+
+.button-content.connected-true {
+  background-color: var(--cor-azulClaro) !important;
+}
