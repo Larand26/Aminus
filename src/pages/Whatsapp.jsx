@@ -56,15 +56,18 @@ const Whatsapp = () => {
   const [qrcodeSrc, setQrcodeSrc] = useState("");
   const [qrCodeConectado, setQrCodeConectado] = useState(false);
 
+  const verificarConexaoQrCode = async () => {
+    const result = await verificaQrCodeConectado(token);
+    console.log("pesquisou");
+
+    if (!result?.success) {
+      setQrCodeConectado(false);
+    } else {
+      setQrCodeConectado(result.data?.status || false);
+    }
+  };
+
   useEffect(() => {
-    const verificarConexaoQrCode = async () => {
-      const result = await verificaQrCodeConectado(token);
-      if (!result?.success) {
-        setQrCodeConectado(false);
-      } else {
-        setQrCodeConectado(result.data?.status || false);
-      }
-    };
     verificarConexaoQrCode();
   }, [qrCodeConectado]);
 
@@ -329,7 +332,10 @@ const Whatsapp = () => {
         height="400px"
         title="QR Code"
         open={popUpQrCodeOpen}
-        setOpen={setPopUpQrCodeOpen}
+        setOpen={(open) => {
+          setPopUpQrCodeOpen(open);
+          verificarConexaoQrCode();
+        }}
       >
         <h1>QR Code</h1>
         <div
