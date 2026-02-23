@@ -17,7 +17,7 @@ const geraQrcode = async (args) => {
       `${WHATSAPP_API_URL}/${session}/start-session`,
       {
         webhook: "",
-        waitQrCode: false,
+        waitQrCode: true,
       },
       { headers },
     );

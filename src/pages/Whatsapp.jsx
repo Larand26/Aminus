@@ -93,7 +93,9 @@ const Whatsapp = () => {
           });
           return;
         }
-        setQrcodeSrc(qrCodeResult.data.qrcode);
+        console.log(qrCodeResult);
+
+        setQrcodeSrc(`data:image/png;base64,${qrCodeResult.data.qrcode}`);
       },
     },
   ];
@@ -247,10 +249,6 @@ const Whatsapp = () => {
   // Progresso
   const [progresso, setProgresso] = useState({ progresso: 1, total: 1 });
   const [enviando, setEnviando] = useState(false);
-
-  useEffect(() => {
-    onEnviaMensagemProgresso(setProgresso);
-  }, []);
 
   // Para exibir o timer no formato mm:ss
   const formatTimer = (segundos) => {
