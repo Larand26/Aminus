@@ -28,4 +28,23 @@ const geraQrcode = async (args) => {
   }
 };
 
-module.exports = { geraQrcode };
+const verificaQrCodeConectado = async (args) => {
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${args.key}`,
+    };
+
+    const response = await axios.get(
+      `${WHATSAPP_API_URL}/${args.session}/check-connection-session`,
+      { headers },
+    );
+    return { success: true, data: response.data };
+  } catch (error) {
+    console.log(error);
+
+    return { success: false, error: error.message || "Erro desconhecido" };
+  }
+};
+
+module.exports = { geraQrcode, verificaQrCodeConectado };

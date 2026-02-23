@@ -21,6 +21,7 @@ import pegaInfosDashboardWpp from "../utils/whatsapp/pegaInfosDashboardWpp";
 import editaContato from "../utils/whatsapp/editaContato";
 import geraQrcode from "../utils/whatsapp/geraQrcode";
 import enviaStatus from "../utils/whatsapp/enviaStatus";
+import verificaQrCodeConectado from "../utils/whatsapp/verificaQrCodeConectado";
 
 import vendedoresJson from "../assets/json/vendedoresAminus.json";
 import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
@@ -53,6 +54,19 @@ const Whatsapp = () => {
 
   // QR Code
   const [qrcodeSrc, setQrcodeSrc] = useState("");
+  const [qrCodeConectado, setQrCodeConectado] = useState(false);
+
+  useEffect(() => {
+    const verificarConexaoQrCode = async () => {
+      const result = await verificaQrCodeConectado(token);
+      if (!result?.success) {
+        setQrCodeConectado(false);
+      } else {
+        setQrCodeConectado(result.data?.status || false);
+      }
+    };
+    verificarConexaoQrCode();
+  }, [qrCodeConectado]);
 
   // Páginas para o Content
   const pages = [

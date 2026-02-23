@@ -34,7 +34,7 @@ const {
   pegaUltimoUsoKey,
 } = require("./db/mysql/keys");
 const { salvaInfos, pegaInfos } = require("./db/mysql/dashboardWpp");
-const { geraQrcode } = require("./whatsapp/qrCode");
+const { geraQrcode, verificaQrCodeConectado } = require("./whatsapp/qrCode");
 
 // Transportadoras
 const { trackTNT } = require("./transportadoras/trackTNT");
@@ -784,6 +784,34 @@ ipcMain.on("envia-status", async (event, args) => {
   } catch (error) {
     console.error("Erro ao enviar status:", error);
     event.reply("envia-status-response", {
+      success: false,
+      error: error.message || "Erro desconhecido",
+    });
+  }
+});
+
+ipcMain.on("verifica-qrcode-conectado", async (event, token) => {
+  try {
+    const tokenResult = await verificaToken(token);
+    if (!tokenResult.success)
+      return event.reply("verifica-qrcode-conectado-response", tokenResult);
+
+    const keysResult = await pegaKeys({
+      vendedorId: tokenResult.data.ID_USUARIO,
+    });
+
+    if (!keysResult.success)
+      return event.reply("verifica-qrcode-conectado-response", keysResult);
+
+    const qrCodeResult = await verificaQrCodeConectado({
+      session: keysResult.data[0].SESSION,
+      key: keysResult.data[0].KEY_VALUE,
+    });
+
+    event.reply("verifica-qrcode-conectado-response", qrCodeResult);
+  } catch (error) {
+    console.error("Erro ao verificar conexão do QR Code:", error);
+    event.reply("verifica-qrcode-conectado-response", {
       success: false,
       error: error.message || "Erro desconhecido",
     });

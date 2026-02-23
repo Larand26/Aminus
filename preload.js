@@ -168,4 +168,10 @@ contextBridge.exposeInMainWorld("electronApi", {
     ipcRenderer.on("envia-status-response", (event, arg) => {
       callback(arg);
     }),
+  verificaQrCodeConectado: (token) =>
+    ipcRenderer.send("verifica-qrcode-conectado", token),
+  onVerificaQrCodeConectadoResponse: (callback) =>
+    ipcRenderer.on("verifica-qrcode-conectado-response", (event, arg) => {
+      callback(arg);
+    }),
 });
