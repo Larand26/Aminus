@@ -519,12 +519,23 @@ ipcMain.on("envia-mensagem", async (event, args) => {
     let mensagensNaoEnviadas = 0;
     let erros = [];
 
+    const keysConectadas = [];
+    for (const keyData of keysResult.data) {
+      const qrCodeResult = await verificaQrCodeConectado({
+        session: keyData.SESSION,
+        key: keyData.KEY_VALUE,
+      });
+      if (qrCodeResult.success && qrCodeResult.data?.status) {
+        keysConectadas.push(keyData);
+      }
+    }
+
     for (const contato of contatosResult.data) {
-      const key = keysResult.data.find(
+      const key = keysConectadas.find(
         (k) => k.VENDEDOR_ID === contato.VENDEDOR_ID,
       )?.KEY_VALUE;
 
-      const session = keysResult.data.find(
+      const session = keysConectadas.find(
         (k) => k.VENDEDOR_ID === contato.VENDEDOR_ID,
       )?.SESSION;
 

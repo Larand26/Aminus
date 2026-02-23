@@ -63,9 +63,13 @@ const MensagensWpp = (props) => {
               background: buttonColor,
               transition: "background 0.3s",
             }}
-            disabled={props.enviando}
+            disabled={props.enviando || !props.qrCodeConectado}
           >
-            {props.enviando ? "Enviando..." : "Enviar Mensagem"}
+            {props.qrCodeConectado
+              ? props.enviando
+                ? "Enviando..."
+                : "Enviar Mensagem"
+              : "Conecte o QR Code"}
           </button>
         </div>
       </div>

@@ -397,6 +397,7 @@ const Whatsapp = () => {
               onEnviar={() => handleEnviarMensagem()}
               progresso={progresso}
               enviando={enviando}
+              qrCodeConectado={qrCodeConectado}
               dados={contatos}
               opcoes={opcoesMensagens}
               onSelectionChange={setContatosSelecionados}
