@@ -11,8 +11,28 @@ const InputVideo = (props) => {
 
     if (file) {
       const videoUrl = URL.createObjectURL(file);
-      const novosVideos = [...videos, videoUrl];
-      onChange(novosVideos);
+
+      // Ler o arquivo como ArrayBuffer
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const buffer = e.target.result;
+
+        // Cria o objeto com a estrutura desejada
+        // Extraímos manualmente as propriedades do File para um objeto simples
+        const fileData = {
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          lastModified: file.lastModified,
+        };
+
+        // Cria o objeto com a estrutura desejada
+        const novoVideoObj = { url: videoUrl, buffer: buffer, file: fileData };
+        const novosVideos = [...videos, novoVideoObj];
+        onChange(novosVideos);
+      };
+
+      reader.readAsArrayBuffer(file);
     }
   };
 
@@ -39,12 +59,12 @@ const InputVideo = (props) => {
       />
       {videos.length > 0 && (
         <>
-          {videos.map((video, index) => (
+          {videos.map((videoObj, index) => (
             <div key={index} className="video-preview">
               <video controls onClick={(e) => e.stopPropagation()}>
-                <source src={video} type="video/mp4" />
-                <source src={video} type="video/quicktime" />
-                <source src={video} type="video/x-m4v" />
+                <source src={videoObj.url} type="video/mp4" />
+                <source src={videoObj.url} type="video/quicktime" />
+                <source src={videoObj.url} type="video/x-m4v" />
                 Seu navegador não suporta a tag de vídeo.
               </video>
               <button

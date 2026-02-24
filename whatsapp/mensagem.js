@@ -1,6 +1,9 @@
 const axios = require("axios");
 const path = require("path");
 const globals = require(path.join(__dirname, "../globals"));
+// Renomeamos para garantir que não conflite com a global FormData do Node
+const FormDataNode = require("form-data");
+const { Readable } = require("stream");
 
 const WHATSAPP_API_URL = globals.WHATSAPP_API_URL;
 
@@ -128,8 +131,50 @@ const enviaStatus = async (args) => {
       }
     }
 
+    console.log("Videos", videos);
+    if (videos && videos.length > 0) {
+      const videoObj = videos[0];
+      const formData = new FormDataNode(); // Usando a biblioteca form-data explicitamente
+
+      formData.append("name", "testando");
+      formData.append("typeVideo", "mov");
+
+      // 1. Converter ArrayBuffer para Buffer do Node
+      const bufferNode = Buffer.from(videoObj.buffer);
+
+      // 2. Anexar ao FormData
+      // A biblioteca 'form-data' aceita Buffer diretamente com opções
+      formData.append("buffer", bufferNode, {
+        filename: videoObj.file.name || "video.mov",
+        contentType: videoObj.file.type || "video/quicktime",
+        knownLength: bufferNode.length,
+      });
+
+      console.log("Enviando vídeo, tamanho:", bufferNode.length);
+
+      try {
+        const responseTempLink = await axios.post(
+          "https://temp-link-production.up.railway.app/api/video/buffer",
+          formData,
+          {
+            headers: {
+              ...formData.getHeaders(), // Isso só funciona com a lib 'form-data'
+              Authorization: `Bearer ${key}`, // Se precisar de auth
+            },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity,
+          },
+        );
+        console.log("Resposta API Vídeo:", responseTempLink.data);
+      } catch (error) {
+        console.error("Erro na requisição:", error.message);
+        if (error.response) console.error("Detalhes:", error.response.data);
+      }
+    }
+
     return { success: true, data: "Status enviado com sucesso." };
   } catch (error) {
+    console.log("Erro ao enviar status:", error);
     return { success: false, error: error.message };
   }
 };
