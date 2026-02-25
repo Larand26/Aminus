@@ -277,6 +277,8 @@ const Whatsapp = () => {
 
   // Dashboard WPP - Pega infos
   const [infosDashboardWpp, setInfosDashboardWpp] = useState([]);
+  const [contatosDashboardWpp, setContatosDashboardWpp] = useState(0);
+  const [sessoesDashboardWpp, setSessoesDashboardWpp] = useState([]);
 
   const handlePegaInfosDashboardWpp = async () => {
     const args = { token };
@@ -291,6 +293,8 @@ const Whatsapp = () => {
       return;
     }
     setInfosDashboardWpp(infosResult.data);
+    setContatosDashboardWpp(infosResult.contatos || 0);
+    setSessoesDashboardWpp(infosResult.sessoes || []);
   };
 
   // Handle Edit Cliente
@@ -391,7 +395,12 @@ const Whatsapp = () => {
             />
           )}
           {paginaAtiva === "dashboard" && (
-            <Dashboard opcoes={opcoesDashboardWpp} dados={infosDashboardWpp} />
+            <Dashboard
+              opcoes={opcoesDashboardWpp}
+              dados={infosDashboardWpp}
+              sessoes={sessoesDashboardWpp}
+              contatos={contatosDashboardWpp}
+            />
           )}
           {paginaAtiva === "mensagens" && (
             <MensagensWpp

@@ -703,6 +703,34 @@ ipcMain.on("pega-infos-dashboard-wpp", async (event, args) => {
         error: "Acesso negado.",
       });
     const infosResult = await pegaInfos();
+    const contatos = await pegaContatos({
+      vendedorId: null,
+    });
+    if (!contatos.success)
+      return event.reply("pega-infos-dashboard-wpp-response", contatos);
+
+    const sessoes = await pegaKeys({
+      vendedorId: null,
+    });
+
+    if (!sessoes.success)
+      return event.reply("pega-infos-dashboard-wpp-response", sessoes);
+
+    const sessoesConnects = await Promise.all(
+      sessoes.data.map(async (s) => {
+        const session = s.SESSION;
+        const key = s.KEY_VALUE;
+        const r = await verificaQrCodeConectado({ session, key });
+        if (r.success) {
+          return { session: session, conectado: r.data?.status || false };
+        }
+        return { session: session, conectado: false };
+      }),
+    );
+
+    infosResult.sessoes = sessoesConnects;
+    infosResult.contatos = contatos.data.length;
+
     event.reply("pega-infos-dashboard-wpp-response", infosResult);
   } catch (error) {
     console.error("Erro ao pegar infos do dashboard WPP:", error);

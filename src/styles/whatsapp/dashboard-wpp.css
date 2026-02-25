@@ -6,7 +6,6 @@
 .dashboard-wpp-cards-row {
   display: flex;
   gap: 15px;
-  margin-bottom: 15px;
 }
 
 .dashboard-wpp-card {
@@ -113,4 +112,88 @@
   color: #2d3a4a;
   margin-top: 8px;
   margin-bottom: 8px;
+}
+
+.dashboard-wpp-cards-container {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.dashboard-wpp-main-cards {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.sessions-container {
+  max-width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  max-height: 336px;
+}
+
+.sessions-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 10px;
+  width: 80%;
+  background-color: transparent;
+  overflow-y: auto;
+}
+
+/* Estilização opcional da barra de rolagem para ficar mais bonita */
+.sessions-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sessions-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.sessions-list::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.sessions-list::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.session {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.session p {
+  margin: 0;
+  font-weight: 500;
+  color: #2d3a4a;
+}
+
+.session-status {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.conectado {
+  background-color: var(--cor-sucesso);
+  box-shadow: 0 0 6px rgba(101, 136, 132, 0.6);
+}
+
+.desconectado {
+  background-color: var(--cor-falha);
+  box-shadow: 0 0 6px rgba(178, 71, 62, 0.6);
 }
