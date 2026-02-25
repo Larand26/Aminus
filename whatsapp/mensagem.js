@@ -165,7 +165,27 @@ const enviaStatus = async (args) => {
             maxBodyLength: Infinity,
           },
         );
-        console.log("Resposta API Vídeo:", responseTempLink.data);
+
+        if (!responseTempLink.data || !responseTempLink.data.success) {
+          return {
+            success: false,
+            error: "Erro ao gerar link temporário para o vídeo.",
+          };
+        }
+        const videoUrl = responseTempLink.data.url;
+
+        const body = {
+          path: videoUrl,
+        };
+        const response = await axios.post(
+          `${WHATSAPP_API_URL}/${session}/send-video-storie`,
+          body,
+          {
+            headers: headers,
+          },
+        );
+        console.log(response.data);
+        return { success: true, data: "Status enviado com sucesso." };
       } catch (error) {
         console.error("Erro na requisição:", error.message);
         if (error.response) console.error("Detalhes:", error.response.data);
