@@ -113,7 +113,12 @@ const Whatsapp = () => {
         }
         console.log(qrCodeResult);
 
-        setQrcodeSrc(`data:image/png;base64,${qrCodeResult.data.qrcode}`);
+        const qrcodeData = qrCodeResult.data.qrcode;
+        setQrcodeSrc(
+          qrcodeData.startsWith("data:image/")
+            ? qrcodeData
+            : `data:image/png;base64,${qrcodeData}`,
+        );
       },
     },
   ];

@@ -67,7 +67,7 @@ export default (data, cubagem, numPedido) => {
     y - fontSize + paddingY,
     textWidth + paddingX * 2,
     fontSize + paddingY * 2,
-    "F"
+    "F",
   );
 
   // Texto centralizado em branco
