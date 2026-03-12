@@ -1,7 +1,4 @@
 const { app, BrowserWindow, ipcMain, session } = require("electron");
-const electronContextMenu = require("electron-context-menu");
-// Pega a função do .default se existir, senão usa o próprio módulo
-const contextMenu = electronContextMenu.default || electronContextMenu;
 
 const path = require("path");
 
@@ -860,22 +857,26 @@ ipcMain.on("verifica-qrcode-conectado", async (event, token) => {
   }
 });
 
-// Inicializa o menu de contexto padrão (Copiar, Colar, Recortar, etc.)
-contextMenu({
-  showSelectAll: true,
-  showCopyImage: true,
-  showCopyImageAddress: true,
-  showSaveImageAs: true,
-  showCopyVideoAddress: true,
-  showSaveVideoAs: true,
-  showCopyLink: true,
-  showSaveLinkAs: true,
-  showInspectElement: isDev(),
-  labels: {
-    copy: "Copiar",
-    paste: "Colar",
-    cut: "Recortar",
-    selectAll: "Selecionar Tudo",
-    inspect: "Inspecionar Elemento",
-  },
-});
+import("electron-context-menu")
+  .then((electronContextMenu) => {
+    const contextMenu = electronContextMenu.default || electronContextMenu;
+    contextMenu({
+      showSelectAll: true,
+      showCopyImage: true,
+      showCopyImageAddress: true,
+      showSaveImageAs: true,
+      showCopyVideoAddress: true,
+      showSaveVideoAs: true,
+      showCopyLink: true,
+      showSaveLinkAs: true,
+      showInspectElement: isDev(),
+      labels: {
+        copy: "Copiar",
+        paste: "Colar",
+        cut: "Recortar",
+        selectAll: "Selecionar Tudo",
+        inspect: "Inspecionar Elemento",
+      },
+    });
+  })
+  .catch(console.error);
