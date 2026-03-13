@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
+import "./ipc.js";
 
 import ElectronConfig from "./src/config/ElectronConfig.js";
 

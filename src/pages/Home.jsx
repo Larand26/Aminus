@@ -1,4 +1,3 @@
-import { Button } from "primereact/button";
 import { useNavigate } from "react-router-dom";
 
 import NavBar from "../components/NavBar";
