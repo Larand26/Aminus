@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { Navigate } from "react-router-dom";
 
 import logo from "../assets/img/png/imagologo.png";
 
@@ -10,15 +11,25 @@ class Login extends Component {
   state = {
     username: "",
     password: "",
+    redirectToHome: false,
   };
 
   async handleLogin() {
     const { username, password } = this.state;
     const result = await LoginUtil.login({ username, password });
-    console.log(result);
+
+    if (result.success) {
+      this.setState({ redirectToHome: true });
+    } else {
+      alert("Login failed: " + result.message);
+    }
   }
 
   render() {
+    if (this.state.redirectToHome) {
+      return <Navigate to="/home" replace />;
+    }
+
     return (
       <div className="login-page">
         <div className="form">
