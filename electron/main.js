@@ -8,6 +8,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const createWindow = () => {
+  if (!app.isReady()) {
+    return;
+  }
+
   const win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -20,14 +24,14 @@ const createWindow = () => {
 
   win.maximize();
 
-  if (ElectronConfig.isDev) {
+  if (ElectronConfig.isDev || !app.isPackaged) {
     win.loadURL("http://localhost:5173");
   } else {
     win.loadFile(path.join(__dirname, "../build/index.html"));
   }
 };
 
-app.whenReady().then(() => {
+const bootstrapMainWindow = () => {
   createWindow();
 
   app.on("activate", () => {
@@ -35,7 +39,13 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
-});
+};
+
+if (app.isReady()) {
+  bootstrapMainWindow();
+} else {
+  app.once("ready", bootstrapMainWindow);
+}
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
