@@ -31,4 +31,5 @@ db/cadastraFotos.js
 globals.js
 
 # Testes
-/test
+/test/
+electron/test/
