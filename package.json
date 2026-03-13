@@ -2,7 +2,7 @@
   "name": "aminus",
   "private": true,
   "version": "2.26.3",
-  "main": "main.js",
+  "main": "electron/main.js",
   "type": "module",
   "description": "Um sistema capaz de alterar e ver um banco de dados",
   "repository": {
