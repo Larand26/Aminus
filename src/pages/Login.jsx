@@ -19,6 +19,8 @@ class Login extends Component {
     const result = await LoginUtil.login({ username, password });
 
     if (result.success) {
+      localStorage.setItem("token", result.token);
+      localStorage.setItem("user", JSON.stringify(result.user));
       this.setState({ redirectToHome: true });
     } else {
       alert("Login failed: " + result.message);

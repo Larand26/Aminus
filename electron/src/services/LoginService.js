@@ -10,9 +10,10 @@ class LoginService {
     const { username, password } = params;
 
     // Example login logic - replace with actual database query
-    const user = await MySQLDB.query("SELECT * FROM USUARIOS WHERE NOME = ?", [
-      username,
-    ]);
+    const user = await MySQLDB.query(
+      "SELECT * FROM USUARIOS LEFT JOIN TIPO_USUARIO ON USUARIOS.ID_FUNCAO_USUARIO = TIPO_USUARIO.ID_TIPO_USUARIO WHERE NOME = ?",
+      [username],
+    );
 
     if (!user || user.length === 0) {
       return {
@@ -33,6 +34,7 @@ class LoginService {
 
     return {
       success: true,
+      user: user[0],
       message: "Login successful.",
     };
   }
