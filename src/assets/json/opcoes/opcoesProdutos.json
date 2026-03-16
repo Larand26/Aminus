@@ -1,9 +1,4 @@
 [
-  {
-    "key": "search",
-    "name": "Pesquisa",
-    "checked": true
-  },
   { "key": "COD_INTERNO", "name": "Cod Interno", "checked": true },
   { "key": "COD_FABRICANTE", "name": "Cod Fabricante", "checked": true },
   { "key": "COD_BARRAS", "name": "Cod Barras", "checked": true },
@@ -18,14 +13,14 @@
     "key": "PRECO",
     "name": "Preço",
     "checked": true,
-    "format": "dinheiro"
+    "format": "currency"
   },
   {
     "key": "ENDERECO",
     "name": "Endereço",
     "checked": true,
-    "format": "junto",
-    "dados": ["RUA", "FILEIRA"]
+    "format": "paste",
+    "fields": ["RUA", "FILEIRA"]
   },
   { "key": "ALTURA", "name": "Altura", "checked": true },
   { "key": "LARGURA", "name": "Largura", "checked": true },
@@ -34,7 +29,7 @@
     "key": "DATA_ALTERACAO",
     "name": "Data Alteração",
     "checked": true,
-    "format": "data-hora"
+    "format": "date-time"
   },
   { "key": "PESO_BR", "name": "Peso Bruto", "checked": true },
   { "key": "PESO_LIQ", "name": "Peso Líquido", "checked": true }

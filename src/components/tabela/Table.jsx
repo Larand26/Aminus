@@ -1,12 +1,30 @@
 import { Component } from "react";
 
+import Utils from "../../utils/Utils";
+
 import "../../styles/components/table/table.css";
 
 class Table extends Component {
-  formatValue(value, format, data) {
+  formatValue(value, format, data, option) {
     switch (format) {
+      case "date-time":
+        return Utils.formatDateTime(value);
+
+      case "paste":
+        const fields = option.fields || [];
+        const valuesToPaste = fields.map((field) => data[field]);
+        return Utils.formatPasteValues(valuesToPaste);
+
+      case "currency":
+        return Utils.formatCurrency(value);
+
       default:
-        return value;
+        if (value instanceof Date) {
+          return value.toLocaleString("pt-BR", {
+            timeZone: "UTC",
+          });
+        }
+        return value || "";
     }
   }
 
@@ -54,8 +72,9 @@ class Table extends Component {
                   <td key={option.key}>
                     {this.formatValue(
                       data[option.key],
-                      (option.format = ""),
+                      option.format || "",
                       data,
+                      option,
                     )}
                   </td>
                 ))}
