@@ -12,5 +12,13 @@ class Login {
       };
     }
   }
+
+  static async validateToken(token) {
+    try {
+      return await window.api.validateToken(token);
+    } catch (error) {
+      return false;
+    }
+  }
 }
 export default Login;

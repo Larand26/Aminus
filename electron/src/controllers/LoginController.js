@@ -45,6 +45,15 @@ class LoginController {
       };
     }
   }
+
+  static async validateToken(token) {
+    try {
+      return await JwtService.isTokenValid(token);
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
 }
 
 export default LoginController;

@@ -14,6 +14,10 @@ class Login extends Component {
     redirectToHome: false,
   };
 
+  componentDidMount() {
+    this.checkExistingLogin();
+  }
+
   async handleLogin() {
     const { username, password } = this.state;
     const result = await LoginUtil.login({ username, password });
@@ -24,6 +28,19 @@ class Login extends Component {
       this.setState({ redirectToHome: true });
     } else {
       alert("Login failed: " + result.message);
+    }
+  }
+
+  async checkExistingLogin() {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const isValid = await LoginUtil.validateToken(token);
+      if (isValid) {
+        this.setState({ redirectToHome: true });
+      } else {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
     }
   }
 
