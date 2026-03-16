@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import NavBar from "../components/NavBar";
-import BarraLateral from "../components/BarraLateral";
+import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
 import InputNumeroLabel from "../components/InputNumeroLabel";
 import Tabela from "../components/tabela/Tabela";
@@ -110,7 +110,7 @@ const Produtos = () => {
         />
       )}
       <div className="main-container">
-        <BarraLateral onSearch={handleSearch}>
+        <SideBar onSearch={handleSearch}>
           <InputText
             label="Cod Fabricante"
             value={codFabricante}
@@ -142,7 +142,7 @@ const Produtos = () => {
             onChange={setQuantidade}
             onKeyDown={handleKeyDown}
           />
-        </BarraLateral>
+        </SideBar>
         <Content titulo="Produtos">
           <Tabela
             dados={produtos}

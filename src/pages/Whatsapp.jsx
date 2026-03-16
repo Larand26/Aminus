@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import NavBar from "../components/NavBar";
-import BarraLateral from "../components/BarraLateral";
+import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
 import SelectLabel from "../components/SelectLabel";
 import Content from "../components/Content";
@@ -366,7 +366,7 @@ const Whatsapp = () => {
 
       <NavBar />
       <div className="main-container">
-        <BarraLateral onSearch={handleSearch}>
+        <SideBar onSearch={handleSearch}>
           <InputLabel label="Número" value={numero} onChange={setNumero} />
           <InputLabel label="Cliente" value={cliente} onChange={setCliente} />
           {idFuncao != 2 && (
@@ -377,7 +377,7 @@ const Whatsapp = () => {
               onChange={setVendedor}
             />
           )}
-        </BarraLateral>
+        </SideBar>
         <Content
           titulo="WhatsApp"
           pages={pages}

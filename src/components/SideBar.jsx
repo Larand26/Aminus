@@ -2,13 +2,13 @@ import { Component } from "react";
 
 import SearchButton from "./SearchButton";
 
-import "../styles/barra-lateral.css";
+import "../styles/side-bar.css";
 
-class BarraLateral extends Component {
+class SideBar extends Component {
   render() {
     const { onSearch, children } = this.props;
     return (
-      <div className="barra-lateral">
+      <div className="side-bar">
         {children}
         {onSearch && <SearchButton onClick={onSearch} />}
       </div>
@@ -16,4 +16,4 @@ class BarraLateral extends Component {
   }
 }
 
-export default BarraLateral;
+export default SideBar;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import NavBar from "../components/NavBar";
-import BarraLateral from "../components/BarraLateral";
+import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
 import CheckBox from "../components/CheckBox";
 import Card from "../components/Card";
@@ -216,7 +216,7 @@ const Fotos = () => {
         />
       )}
       <div className="main-container">
-        <BarraLateral onSearch={handleSearch}>
+        <SideBar onSearch={handleSearch}>
           <InputLabel
             label="Cod Fabricante"
             value={codFabricante}
@@ -235,7 +235,7 @@ const Fotos = () => {
             onChange={setCodCor}
             onKeyDown={handleKeyDown}
           />
-        </BarraLateral>
+        </SideBar>
         <Content titulo="Fotos">
           <div className="container-fotos">
             <div className="navBar-fotos">

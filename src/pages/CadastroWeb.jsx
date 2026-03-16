@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import NavBar from "../components/NavBar";
-import BarraLateral from "../components/BarraLateral";
+import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
@@ -94,7 +94,7 @@ const CadastroWeb = () => {
     setCoresSelecionadas(coresIniciais);
     const coresUnicas = coresIniciais.filter(
       (cor, index, self) =>
-        index === self.findIndex((c) => c.value === cor.value)
+        index === self.findIndex((c) => c.value === cor.value),
     );
     setCores(coresUnicas);
   }, [produtos]);
@@ -113,7 +113,7 @@ const CadastroWeb = () => {
           };
         }
         return p;
-      })
+      }),
     );
   };
 
@@ -137,7 +137,7 @@ const CadastroWeb = () => {
     const coresCombinadas = [...coresSelecionadas, ...novasCores];
     const coresUnicas = coresCombinadas.filter(
       (cor, index, self) =>
-        index === self.findIndex((c) => c.value === cor.value)
+        index === self.findIndex((c) => c.value === cor.value),
     );
 
     setCores(coresUnicas);
@@ -167,7 +167,7 @@ const CadastroWeb = () => {
         ...produto,
         ATIVO_ECOMMERCE: checked,
         INTEGRACAO_ECOMMERCE: checked,
-      }))
+      })),
     );
   };
 
@@ -247,7 +247,7 @@ const CadastroWeb = () => {
       itensSelecionados,
       produtos,
       nome,
-      pai
+      pai,
     );
     if (response.success) {
       setToastInfo({
@@ -273,7 +273,7 @@ const CadastroWeb = () => {
   const handleOptionClick = (e) => {
     const { id } = e.target;
     const updatedOptions = opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
     );
     setOpcoes(updatedOptions);
     localStorage.setItem("opcoesCadastroWeb", JSON.stringify(updatedOptions));
@@ -301,7 +301,7 @@ const CadastroWeb = () => {
         />
       )}
       <div className="main-container">
-        <BarraLateral onSearch={handleSearch}>
+        <SideBar onSearch={handleSearch}>
           <InputLabel
             label="Cod Fabricante"
             value={codFabricante}
@@ -314,7 +314,7 @@ const CadastroWeb = () => {
             onChange={setCodInterno}
             onKeyDown={handleKeyDown}
           />
-        </BarraLateral>
+        </SideBar>
         <div className="content container-cadastro-web">
           <div className="container-dados">
             <div className="container tipo-genero">
@@ -460,7 +460,7 @@ const CadastroWeb = () => {
                 format="checkbox"
                 id="ATIVO_ECOMMERCE"
                 state={produtos.map(
-                  (p) => p.ATIVO_ECOMMERCE && p.INTEGRACAO_ECOMMERCE
+                  (p) => p.ATIVO_ECOMMERCE && p.INTEGRACAO_ECOMMERCE,
                 )}
                 onChange={(index) => handleAtivoEcommerceChange(index)}
                 onChangeAll={(checked) =>

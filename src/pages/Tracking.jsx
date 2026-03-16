@@ -1,4 +1,4 @@
-import BarraLateral from "../components/BarraLateral";
+import SideBar from "../components/SideBar";
 import Content from "../components/Content";
 
 import { InputText } from "primereact/inputtext";
@@ -73,7 +73,7 @@ const Tracking = () => {
   return (
     <div className="flex">
       <Toast ref={toast} />
-      <BarraLateral search={search}>
+      <SideBar search={search}>
         <FloatLabel>
           <InputText
             id="input-nota"
@@ -95,7 +95,7 @@ const Tracking = () => {
           />
           <label htmlFor="input-transportadora">Transportadora</label>
         </FloatLabel>
-      </BarraLateral>
+      </SideBar>
       <Content titulo={"Rastreamento"}>
         <h2>Nome: {result.nome}</h2>
         <div>

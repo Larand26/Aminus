@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import NavBar from "../components/NavBar";
-import BarraLateral from "../components/BarraLateral";
+import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
@@ -80,7 +80,7 @@ const Clientes = () => {
   const handleOptionClick = (e) => {
     const { id } = e.target;
     const updatedOptions = opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
     );
     setOpcoes(updatedOptions);
     localStorage.setItem("opcoesClientes", JSON.stringify(updatedOptions));
@@ -108,7 +108,7 @@ const Clientes = () => {
         />
       )}
       <div className="main-container">
-        <BarraLateral onSearch={handleSearch}>
+        <SideBar onSearch={handleSearch}>
           <InputLabel
             label="Número do Cliente"
             type="text"
@@ -144,7 +144,7 @@ const Clientes = () => {
             onChange={setEmail}
             onKeyDown={handleKeyDown}
           />
-        </BarraLateral>
+        </SideBar>
         <Content titulo="Clientes">
           <Tabela
             dados={clientes}

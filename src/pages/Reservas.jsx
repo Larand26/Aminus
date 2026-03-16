@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import NavBar from "../components/NavBar";
-import BarraLateral from "../components/BarraLateral";
+import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
 import SelectLabel from "../components/SelectLabel";
 import InputDataLabel from "../components/InputDataLabel";
@@ -90,7 +90,7 @@ const Reservas = () => {
   const handleOptionClick = (e) => {
     const { id } = e.target;
     const updatedOptions = opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
     );
     setOpcoes(updatedOptions);
     localStorage.setItem("opcoesReserva", JSON.stringify(updatedOptions));
@@ -174,7 +174,7 @@ const Reservas = () => {
       </Configuracoes>
       <NavBar />
       <div className="main-container">
-        <BarraLateral onSearch={handleSearch}>
+        <SideBar onSearch={handleSearch}>
           <InputLabel
             label="Cod Fabricante"
             value={codFabricante}
@@ -206,7 +206,7 @@ const Reservas = () => {
             onChange={setVendedor}
             onKeyDown={handleKeyDown}
           />
-        </BarraLateral>
+        </SideBar>
         <Content titulo="Reservas">
           <Tabela
             dados={reservas}

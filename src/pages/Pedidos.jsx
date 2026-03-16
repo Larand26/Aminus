@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import NavBar from "../components/NavBar";
-import BarraLateral from "../components/BarraLateral";
+import SideBar from "../components/SideBar";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
 import SelectLabel from "../components/SelectLabel";
@@ -111,7 +111,7 @@ const Pedidos = () => {
   const handleOptionClick = (e) => {
     const { id } = e.target;
     const updatedOptions = opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
     );
     setOpcoes(updatedOptions);
     localStorage.setItem("opcoesPedidos", JSON.stringify(updatedOptions));
@@ -124,7 +124,7 @@ const Pedidos = () => {
     if (response.success && response.data.length > 0) {
       setItensPedido(response.data);
       const itemMaisPesado = response.data.reduce((max, item) =>
-        item.PESO_BRUTO > max.PESO_BRUTO ? item : max
+        item.PESO_BRUTO > max.PESO_BRUTO ? item : max,
       );
       setLinhaSelecionada(itemMaisPesado);
     } else if (response.success) {
@@ -161,7 +161,7 @@ const Pedidos = () => {
     const response = await fazCotacao(
       itensPedido,
       linhaSelecionada,
-      pedidoSelecionado
+      pedidoSelecionado,
     );
 
     if (response.success) {
@@ -276,7 +276,7 @@ const Pedidos = () => {
         />
       )}
       <div className="main-container">
-        <BarraLateral onSearch={handleSearch}>
+        <SideBar onSearch={handleSearch}>
           <InputLabel
             label="Num Pedido"
             value={numPedido}
@@ -310,7 +310,7 @@ const Pedidos = () => {
               onKeyDown={handleKeyDown}
             />
           )}
-        </BarraLateral>
+        </SideBar>
         <Content titulo="Pedidos">
           <Tabela
             dados={pedidos}

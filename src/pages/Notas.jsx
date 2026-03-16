@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import NavBar from "../components/NavBar";
-import BarraLateral from "../components/BarraLateral";
+import SideBar from "../components/SideBar";
 import SelectLabel from "../components/SelectLabel";
 import InputLabel from "../components/InputLabel";
 import InputDataLabel from "../components/InputDataLabel";
@@ -98,7 +98,7 @@ const Notas = () => {
   const handleOptionClick = (e) => {
     const { id } = e.target;
     const updatedOptions = opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
     );
     setOpcoes(updatedOptions);
     localStorage.setItem("opcoesNotas", JSON.stringify(updatedOptions));
@@ -126,7 +126,7 @@ const Notas = () => {
         />
       )}
       <div className="main-container">
-        <BarraLateral onSearch={handleSearch}>
+        <SideBar onSearch={handleSearch}>
           <InputLabel
             label="Num Nota"
             value={numNota}
@@ -168,7 +168,7 @@ const Notas = () => {
             value={transportadora}
             onKeyDown={handleKeyDown}
           />
-        </BarraLateral>
+        </SideBar>
         <Content titulo="Notas Fiscais">
           <Tabela
             dados={notas}
