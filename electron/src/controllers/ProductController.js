@@ -1,7 +1,7 @@
 import ProductService from "../services/ProductService.js";
 
 class ProductController {
-  static getProducts(filters) {
+  static getProducts(filters = {}) {
     try {
       return ProductService.getProducts(filters);
     } catch (error) {

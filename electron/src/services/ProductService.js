@@ -28,18 +28,19 @@ class ProductService {
    * @param {Object} filters { idProduto, idFabric, barcode, quantity, description }
    * @returns {Promise<Array|Object>} Array of products or error object
    */
-  static async getProducts(filters) {
+  static async getProducts(filters = {}) {
     try {
+      const safeFilters = filters && typeof filters === "object" ? filters : {};
       const params = [];
       const extraConditions = [];
 
       for (const [key, { condition, transform }] of Object.entries(
         FILTER_MAP,
       )) {
-        if (filters[key] != null) {
+        if (safeFilters[key] != null) {
           params.push({
             name: key,
-            value: transform ? transform(filters[key]) : filters[key],
+            value: transform ? transform(safeFilters[key]) : safeFilters[key],
           });
           extraConditions.push(condition);
         }

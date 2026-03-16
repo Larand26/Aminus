@@ -12,7 +12,7 @@ import Toast from "../components/Toast";
 import Content from "../components/Content";
 import InputText from "../components/inputs/InputText.jsx";
 
-import searchProdutos from "../utils/search/searchProdutos";
+import ProductUtil from "../utils/Product.js";
 
 import opcoesProdutos from "../assets/json/opcoes/opcoesProdutos.json";
 
@@ -20,11 +20,11 @@ import atualizaOpcoes from "../utils/atualizaOpcoes";
 
 const Produtos = () => {
   // Estados dos inputs
-  const [codFabricante, setCodFabricante] = useState("");
-  const [codInterno, setCodInterno] = useState("");
-  const [codBarras, setCodBarras] = useState("");
-  const [nome, setNome] = useState("");
-  const [quantidade, setQuantidade] = useState("");
+  const [codFabricante, setCodFabricante] = useState(null);
+  const [codInterno, setCodInterno] = useState(null);
+  const [codBarras, setCodBarras] = useState(null);
+  const [nome, setNome] = useState(null);
+  const [quantidade, setQuantidade] = useState(null);
 
   // Toast
   const [toastInfo, setToastInfo] = useState(null);
@@ -39,12 +39,12 @@ const Produtos = () => {
   const handleSearch = async () => {
     setProdutos([]);
     setIsLoading(true);
-    const response = await searchProdutos({
-      codFabricante: codFabricante,
-      codInterno: codInterno,
-      codBarras: codBarras,
-      nome: nome,
-      quantidade: quantidade,
+    const response = await ProductUtil.getProducts("0", {
+      idFabric: codFabricante,
+      idProduto: codInterno,
+      barcode: codBarras,
+      description: nome,
+      quantity: quantidade,
     });
     setIsLoading(false);
 
