@@ -1,41 +1,41 @@
 [
   {
-    "id": "search",
-    "label": "Pesquisa",
+    "key": "search",
+    "name": "Pesquisa",
     "checked": true
   },
-  { "id": "COD_INTERNO", "label": "Cod Interno", "checked": true },
-  { "id": "COD_FABRICANTE", "label": "Cod Fabricante", "checked": true },
-  { "id": "COD_BARRAS", "label": "Cod Barras", "checked": true },
-  { "id": "DESCRICAO", "label": "Descrição", "checked": true },
-  { "id": "QUANT_TOTAL", "label": "Quantidade Total", "checked": true },
+  { "key": "COD_INTERNO", "name": "Cod Interno", "checked": true },
+  { "key": "COD_FABRICANTE", "name": "Cod Fabricante", "checked": true },
+  { "key": "COD_BARRAS", "name": "Cod Barras", "checked": true },
+  { "key": "DESCRICAO", "name": "Descrição", "checked": true },
+  { "key": "QUANT_TOTAL", "name": "Quantidade Total", "checked": true },
   {
-    "id": "ESTOQUE_DISPONIVEL",
-    "label": "Estoque Disponível",
+    "key": "ESTOQUE_DISPONIVEL",
+    "name": "Estoque Disponível",
     "checked": true
   },
   {
-    "id": "PRECO",
-    "label": "Preço",
+    "key": "PRECO",
+    "name": "Preço",
     "checked": true,
     "format": "dinheiro"
   },
   {
-    "id": "ENDERECO",
-    "label": "Endereço",
+    "key": "ENDERECO",
+    "name": "Endereço",
     "checked": true,
     "format": "junto",
     "dados": ["RUA", "FILEIRA"]
   },
-  { "id": "ALTURA", "label": "Altura", "checked": true },
-  { "id": "LARGURA", "label": "Largura", "checked": true },
-  { "id": "COMPRIMENTO", "label": "Comprimento", "checked": true },
+  { "key": "ALTURA", "name": "Altura", "checked": true },
+  { "key": "LARGURA", "name": "Largura", "checked": true },
+  { "key": "COMPRIMENTO", "name": "Comprimento", "checked": true },
   {
-    "id": "DATA_ALTERACAO",
-    "label": "Data Alteração",
+    "key": "DATA_ALTERACAO",
+    "name": "Data Alteração",
     "checked": true,
     "format": "data-hora"
   },
-  { "id": "PESO_BR", "label": "Peso Bruto", "checked": true },
-  { "id": "PESO_LIQ", "label": "Peso Líquido", "checked": true }
+  { "key": "PESO_BR", "name": "Peso Bruto", "checked": true },
+  { "key": "PESO_LIQ", "name": "Peso Líquido", "checked": true }
 ]

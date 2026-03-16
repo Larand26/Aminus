@@ -4,13 +4,12 @@ import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
 import InputNumeroLabel from "../components/InputNumeroLabel";
-import Tabela from "../components/tabela/Tabela";
-import Coluna from "../components/tabela/Coluna";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
 import Content from "../components/Content";
 import InputText from "../components/inputs/InputText.jsx";
+import Table from "../components/tabela/Table.jsx";
 
 import ProductUtil from "../utils/Product.js";
 
@@ -39,14 +38,18 @@ const Produtos = () => {
   const handleSearch = async () => {
     setProdutos([]);
     setIsLoading(true);
-    const response = await ProductUtil.getProducts("0", {
-      idFabric: codFabricante,
-      idProduto: codInterno,
-      barcode: codBarras,
-      description: nome,
-      quantity: quantidade,
+    const response = await ProductUtil.getProducts({
+      token: "token",
+      filters: {
+        idFabric: codFabricante,
+        idProduto: codInterno,
+        barcode: codBarras,
+        description: nome,
+        quantity: quantidade,
+      },
     });
     setIsLoading(false);
+    console.log(response);
 
     if (response.success) {
       setProdutos(response.data);
@@ -144,24 +147,11 @@ const Produtos = () => {
           />
         </SideBar>
         <Content titulo="Produtos">
-          <Tabela
-            dados={produtos}
-            semDados="Nenhum produto encontrado"
+          <Table
+            options={opcoes.filter((opcao) => opcao.checked)}
+            datas={produtos}
             loading={isLoading}
-            search={opcoes.find((opcao) => opcao.id === "search").checked}
-          >
-            {opcoes
-              .filter((opcao) => opcao.checked)
-              .map((opcao) => (
-                <Coluna
-                  key={opcao.id}
-                  titulo={opcao.label}
-                  campo={opcao.id}
-                  format={opcao.format || ""}
-                  dados={opcao.dados || []}
-                />
-              ))}
-          </Tabela>
+          ></Table>
         </Content>
       </div>
     </>

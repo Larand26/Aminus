@@ -51,7 +51,15 @@ class ProductService {
           ? `AND ${extraConditions.join(" AND ")}`
           : "";
 
-      return SQLServerDB.query(`${BASE_QUERY} ${suffix}`, params);
+      const products = await SQLServerDB.query(
+        `${BASE_QUERY} ${suffix}`,
+        params,
+      );
+
+      return {
+        success: true,
+        data: products,
+      };
     } catch (error) {
       console.log(error);
       return {
