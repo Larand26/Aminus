@@ -10,6 +10,7 @@ import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
 import Content from "../components/Content";
+import InputText from "../components/inputs/InputText.jsx";
 
 import searchProdutos from "../utils/search/searchProdutos";
 
@@ -81,7 +82,7 @@ const Produtos = () => {
   const handleOptionClick = (e) => {
     const { id } = e.target;
     const updatedOptions = opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao
+      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
     );
     setOpcoes(updatedOptions);
     localStorage.setItem("opcoesProdutos", JSON.stringify(updatedOptions));
@@ -110,25 +111,25 @@ const Produtos = () => {
       )}
       <div className="main-container">
         <BarraLateral onSearch={handleSearch}>
-          <InputLabel
+          <InputText
             label="Cod Fabricante"
             value={codFabricante}
             onChange={setCodFabricante}
             onKeyDown={handleKeyDown}
           />
-          <InputLabel
+          <InputText
             label="Cod Interno"
             value={codInterno}
             onChange={setCodInterno}
             onKeyDown={handleKeyDown}
           />
-          <InputLabel
+          <InputText
             label="Cod Barras"
             value={codBarras}
             onChange={setCodBarras}
             onKeyDown={handleKeyDown}
           />
-          <InputLabel
+          <InputText
             label="Nome"
             value={nome}
             onChange={setNome}
