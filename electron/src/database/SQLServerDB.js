@@ -14,7 +14,7 @@ class SQLServerDB {
   static async query(queryString, params = []) {
     const pool = await this.pool;
     const request = pool.request();
-    params.forEach((value, index) => request.input(`p${index}`, value));
+    params.forEach(({ name, value }) => request.input(name, value));
     const result = await request.query(queryString);
     return result.recordset;
   }
