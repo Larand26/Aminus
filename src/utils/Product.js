@@ -24,6 +24,19 @@ class Product {
       };
     }
   }
+
+  static async getProductRegistrations(args) {
+    const { token, filters } = args;
+    try {
+      return await window.api.getProductRegistrations({ token, filters });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching registration products.",
+      };
+    }
+  }
 }
 
 export default Product;

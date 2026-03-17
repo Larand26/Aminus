@@ -27,3 +27,4 @@ LEFT JOIN [PRODUTOS]                 PR ON P.[ID_CODPRODUTO] = PR.[ID_CODPRODUTO
 LEFT JOIN [PRODUTODEPOSITO]          PD ON P.[ID_CODPRODUTO] = PD.[ID_CODPRODUTO] AND PD.[ID_DEPOSITOS] = 2
 LEFT JOIN Reservas                    R ON P.[ID_CODPRODUTO] = R.[ID_CODPRODUTO]
 WHERE P.[ID_DEPOSITOS] = 2
+-- Os filtros serão adicionados aqui pelo Node.js

@@ -12,6 +12,10 @@ const RESERVATION_BASE_QUERY = readFileSync(
   path.resolve(__dirname, "../database/queries/qureyReservationProduct.sql"),
   "utf-8",
 );
+const REGISTRATION_BASE_QUERY = readFileSync(
+  path.resolve(__dirname, "../database/queries/queryRegistrationProduct.sql"),
+  "utf-8",
+);
 const FILTER_PLACEHOLDER = "-- Os filtros serão adicionados aqui pelo Node.js";
 
 const FILTER_MAP = {
@@ -36,6 +40,11 @@ const RESERVATION_FILTER_MAP = {
     transform: (v) => `%${v}%`,
   },
   vendedor: { condition: `PO.[ID_CODVENDEDOR] = @vendedor` },
+};
+
+const REGISTRATION_FILTER_MAP = {
+  codFabricante: { condition: `P.[PROD_CODFABRIC] = @codFabricante` },
+  codInterno: { condition: `P.[ID_CODPRODUTO] = @codInterno` },
 };
 
 const hasFilterValue = (value) => {
@@ -133,6 +142,52 @@ class ProductService {
         success: false,
         error: error.message,
         message: "An error occurred while fetching product reservations.",
+      };
+    }
+  }
+
+  /**
+   * Pega os produtos para cadastro web com base nos filtros fornecidos
+   * @param {Object} filters { codFabricante, codInterno }
+   * @returns {Promise<Array|Object>} Array of registration products or error object
+   */
+  static async getProductRegistrations(filters = {}) {
+    try {
+      const safeFilters = filters && typeof filters === "object" ? filters : {};
+      const params = [];
+      const extraConditions = [];
+
+      for (const [key, { condition, transform }] of Object.entries(
+        REGISTRATION_FILTER_MAP,
+      )) {
+        if (!hasFilterValue(safeFilters[key])) continue;
+
+        params.push({
+          name: key,
+          value: transform ? transform(safeFilters[key]) : safeFilters[key],
+        });
+        extraConditions.push(condition);
+      }
+
+      const suffix =
+        extraConditions.length > 0
+          ? `AND ${extraConditions.join(" AND ")}`
+          : "";
+
+      const query = REGISTRATION_BASE_QUERY.replace(FILTER_PLACEHOLDER, suffix);
+
+      const products = await SQLServerDB.query(query, params);
+
+      return {
+        success: true,
+        data: products,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching registration products.",
       };
     }
   }

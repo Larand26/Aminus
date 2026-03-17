@@ -26,6 +26,19 @@ class ProductController {
       };
     }
   }
+
+  static async getProductRegistrations(filters = {}) {
+    try {
+      return await ProductService.getProductRegistrations(filters);
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching registration products.",
+      };
+    }
+  }
 }
 
 export default ProductController;
