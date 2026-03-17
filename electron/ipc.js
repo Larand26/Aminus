@@ -25,6 +25,10 @@ ipcMain.handle("get-products", async (event, args) => {
   return await ProductController.getProducts(args.filters);
 });
 
+ipcMain.handle("get-product-reservations", async (event, args) => {
+  return await ProductController.getProductReservations(args.filters);
+});
+
 ipcMain.handle("get-invoices", async (event, args) => {
   return await InvoiceController.getInvoices(args.filters);
 });

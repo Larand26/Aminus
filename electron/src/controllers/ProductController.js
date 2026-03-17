@@ -13,6 +13,19 @@ class ProductController {
       };
     }
   }
+
+  static async getProductReservations(filters = {}) {
+    try {
+      return await ProductService.getProductReservations(filters);
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching product reservations.",
+      };
+    }
+  }
 }
 
 export default ProductController;

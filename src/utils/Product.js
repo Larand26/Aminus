@@ -11,6 +11,19 @@ class Product {
       };
     }
   }
+
+  static async getProductReservations(args) {
+    const { token, filters } = args;
+    try {
+      return await window.api.getProductReservations({ token, filters });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching product reservations.",
+      };
+    }
+  }
 }
 
 export default Product;
