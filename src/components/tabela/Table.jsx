@@ -4,6 +4,7 @@ import Utils from "../../utils/Utils";
 
 // Components
 import CheckBox from "../inputs/CheckBox";
+import Loading from "../Loading";
 
 import "../../styles/components/table/table.css";
 
@@ -94,9 +95,13 @@ class Table extends Component {
       search = true,
     } = this.props;
 
-    if (loading) {
-      return <div className="table-loading">Loading...</div>;
-    }
+    // if (loading) {
+    //   return (
+    //     <div className="table-loading">
+    //       <Loading />
+    //     </div>
+    //   );
+    // }
 
     const filteredDatas = datas.filter((data) => this.searchData(data));
     const emptyMessage =
@@ -132,7 +137,11 @@ class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            {emptyMessage ? (
+            {loading ? (
+              <div className="table-loading">
+                <Loading />
+              </div>
+            ) : emptyMessage ? (
               <tr>
                 <td
                   className="table-no-data"

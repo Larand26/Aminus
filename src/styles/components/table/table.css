@@ -7,6 +7,7 @@
   box-sizing: border-box;
   padding: 8px;
   height: 100%;
+  position: relative;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -195,4 +196,16 @@ th {
   border: 3px solid var(--cor-primaria);
   border-radius: 50px;
   background-color: transparent;
+}
+
+.table-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 10;
 }
