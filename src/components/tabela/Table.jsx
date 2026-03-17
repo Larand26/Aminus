@@ -58,14 +58,12 @@ class Table extends Component {
     }
 
     const filteredDatas = datas.filter((data) => this.searchData(data));
-
-    if (datas.length === 0) {
-      return <div className="table-no-data">{noDataMessage}</div>;
-    }
-
-    if (search && filteredDatas.length === 0) {
-      return <div className="table-no-data">Nenhum resultado encontrado</div>;
-    }
+    const emptyMessage =
+      datas.length === 0
+        ? noDataMessage
+        : search && filteredDatas.length === 0
+          ? "Nenhum resultado encontrado"
+          : null;
 
     return (
       <div
@@ -95,23 +93,34 @@ class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            {filteredDatas.map((data, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={rowIndex % 2 === 0 ? "even-row" : "odd-row"}
-              >
-                {options.map((option) => (
-                  <td key={option.key}>
-                    {this.formatValue(
-                      data[option.key],
-                      option.format || "",
-                      data,
-                      option,
-                    )}
-                  </td>
-                ))}
+            {emptyMessage ? (
+              <tr>
+                <td
+                  className="table-no-data"
+                  colSpan={Math.max(options.length, 1)}
+                >
+                  {emptyMessage}
+                </td>
               </tr>
-            ))}
+            ) : (
+              filteredDatas.map((data, rowIndex) => (
+                <tr
+                  key={rowIndex}
+                  className={rowIndex % 2 === 0 ? "even-row" : "odd-row"}
+                >
+                  {options.map((option) => (
+                    <td key={option.key}>
+                      {this.formatValue(
+                        data[option.key],
+                        option.format || "",
+                        data,
+                        option,
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
