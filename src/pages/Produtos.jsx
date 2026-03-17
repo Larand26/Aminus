@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Component } from "react";
 
 import NavBar from "../components/NavBar";
 import SideBar from "../components/SideBar";
@@ -17,145 +17,164 @@ import opcoesProdutos from "../assets/json/opcoes/opcoesProdutos.json";
 
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 
-const Produtos = () => {
-  // Estados dos inputs
-  const [codFabricante, setCodFabricante] = useState(null);
-  const [codInterno, setCodInterno] = useState(null);
-  const [codBarras, setCodBarras] = useState(null);
-  const [nome, setNome] = useState(null);
-  const [quantidade, setQuantidade] = useState(null);
+class Produtos extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      codFabricante: null,
+      codInterno: null,
+      codBarras: null,
+      nome: null,
+      quantidade: null,
+      toastInfo: null,
+      isLoading: false,
+      produtos: [],
+      selectedItems: [],
+      opcoes: atualizaOpcoes(
+        opcoesProdutos,
+        localStorage.getItem("opcoesProdutos"),
+      ),
+    };
+  }
 
-  // Toast
-  const [toastInfo, setToastInfo] = useState(null);
-
-  // Loading
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Produtos
-  const [produtos, setProdutos] = useState([]);
-
-  // Função que executa a busca
-  const handleSearch = async () => {
-    setProdutos([]);
-    setIsLoading(true);
+  handleSearch = async () => {
+    this.setState({ produtos: [], isLoading: true });
     const response = await ProductUtil.getProducts({
       token: "token",
       filters: {
-        idFabric: codFabricante,
-        idProduto: codInterno,
-        barcode: codBarras,
-        description: nome,
-        quantity: quantidade,
+        idFabric: this.state.codFabricante,
+        idProduto: this.state.codInterno,
+        barcode: this.state.codBarras,
+        description: this.state.nome,
+        quantity: this.state.quantidade,
       },
     });
-    setIsLoading(false);
+    this.setState({ isLoading: false });
     console.log(response);
 
     if (response.success) {
-      setProdutos(response.data);
+      this.setState({ produtos: response.data });
       if (response.data.length === 0) {
-        setToastInfo({
-          key: Date.now(),
-          message: "Nenhum produto encontrado com os filtros informados.",
-          type: "aviso",
+        this.setState({
+          toastInfo: {
+            key: Date.now(),
+            message: "Nenhum produto encontrado com os filtros informados.",
+            type: "aviso",
+          },
         });
       }
     } else {
-      setToastInfo({
-        key: Date.now(),
-        message: "Erro ao buscar produtos.",
-        type: "falha",
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao buscar produtos.",
+          type: "falha",
+        },
       });
     }
   };
 
-  // Função para lidar com a tecla Enter
-  const handleKeyDown = (event) => {
+  handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      handleSearch();
+      this.handleSearch();
     }
   };
 
-  //Opções
-  const [opcoes, setOpcoes] = useState(() => {
-    const savedOpcoes = localStorage.getItem("opcoesProdutos");
-    return atualizaOpcoes(opcoesProdutos, savedOpcoes);
-  });
-
-  const handleOptionClick = (e) => {
+  handleOptionClick = (e) => {
     const { id } = e.target;
-    const updatedOptions = opcoes.map((opcao) =>
+    const updatedOptions = this.state.opcoes.map((opcao) =>
       opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
     );
-    setOpcoes(updatedOptions);
+    this.setState({ opcoes: updatedOptions });
     localStorage.setItem("opcoesProdutos", JSON.stringify(updatedOptions));
   };
 
-  return (
-    <>
-      <Configuracoes>
-        {opcoes.map((opcao) => (
-          <Opcao
-            key={opcao.id}
-            id={opcao.id}
-            label={opcao.label}
-            checked={opcao.checked}
-            onChange={handleOptionClick}
+  handleSelectionChange = (selectedItems) => {
+    this.setState({ selectedItems });
+  };
+
+  render() {
+    const {
+      codFabricante,
+      codInterno,
+      codBarras,
+      nome,
+      quantidade,
+      toastInfo,
+      isLoading,
+      produtos,
+      selectedItems,
+      opcoes,
+    } = this.state;
+
+    return (
+      <>
+        <Configuracoes>
+          {opcoes.map((opcao) => (
+            <Opcao
+              key={opcao.id}
+              id={opcao.id}
+              label={opcao.label}
+              checked={opcao.checked}
+              onChange={this.handleOptionClick}
+            />
+          ))}
+        </Configuracoes>
+        <NavBar />
+        {toastInfo && (
+          <Toast
+            key={toastInfo.key}
+            message={toastInfo.message}
+            type={toastInfo.type}
           />
-        ))}
-      </Configuracoes>
-      <NavBar />
-      {toastInfo && (
-        <Toast
-          key={toastInfo.key}
-          message={toastInfo.message}
-          type={toastInfo.type}
-        />
-      )}
-      <div className="main-container">
-        <SideBar onSearch={handleSearch}>
-          <InputText
-            label="Cod Fabricante"
-            value={codFabricante}
-            onChange={setCodFabricante}
-            onKeyDown={handleKeyDown}
-          />
-          <InputText
-            label="Cod Interno"
-            value={codInterno}
-            onChange={setCodInterno}
-            onKeyDown={handleKeyDown}
-          />
-          <InputText
-            label="Cod Barras"
-            value={codBarras}
-            onChange={setCodBarras}
-            onKeyDown={handleKeyDown}
-          />
-          <InputText
-            label="Nome"
-            value={nome}
-            onChange={setNome}
-            onKeyDown={handleKeyDown}
-          />
-          <InputNumeroLabel
-            adicional={12}
-            label="Quantidade"
-            value={quantidade}
-            onChange={setQuantidade}
-            onKeyDown={handleKeyDown}
-          />
-        </SideBar>
-        <Content titulo="Produtos">
-          <Table
-            options={opcoes.filter((opcao) => opcao.checked)}
-            datas={produtos}
-            loading={isLoading}
-          ></Table>
-        </Content>
-      </div>
-    </>
-  );
-};
+        )}
+        <div className="main-container">
+          <SideBar onSearch={this.handleSearch}>
+            <InputText
+              label="Cod Fabricante"
+              value={codFabricante}
+              onChange={(value) => this.setState({ codFabricante: value })}
+              onKeyDown={this.handleKeyDown}
+            />
+            <InputText
+              label="Cod Interno"
+              value={codInterno}
+              onChange={(value) => this.setState({ codInterno: value })}
+              onKeyDown={this.handleKeyDown}
+            />
+            <InputText
+              label="Cod Barras"
+              value={codBarras}
+              onChange={(value) => this.setState({ codBarras: value })}
+              onKeyDown={this.handleKeyDown}
+            />
+            <InputText
+              label="Nome"
+              value={nome}
+              onChange={(value) => this.setState({ nome: value })}
+              onKeyDown={this.handleKeyDown}
+            />
+            <InputNumeroLabel
+              adicional={12}
+              label="Quantidade"
+              value={quantidade}
+              onChange={(value) => this.setState({ quantidade: value })}
+              onKeyDown={this.handleKeyDown}
+            />
+          </SideBar>
+          <Content titulo="Produtos">
+            <Table
+              options={opcoes.filter((opcao) => opcao.checked)}
+              datas={produtos}
+              loading={isLoading}
+              selectedItems={selectedItems}
+              onSelectionChange={this.handleSelectionChange}
+            ></Table>
+          </Content>
+        </div>
+      </>
+    );
+  }
+}
 
 export default Produtos;
