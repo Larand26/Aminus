@@ -28,6 +28,6 @@ ipcMain.handle("get-invoices", async (event, args) => {
   return await InvoiceController.getInvoices(args.filters);
 });
 
-ipcMain.handle("get-order", async (event, args) => {
-  return await OrderController.getOrder(args.orderId);
+ipcMain.handle("get-orders", async (event, args) => {
+  return await OrderController.getOrders(args.filters);
 });
