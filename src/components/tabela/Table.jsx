@@ -8,6 +8,9 @@ import CheckBox from "../inputs/CheckBox";
 import "../../styles/components/table/table.css";
 
 class Table extends Component {
+  constructor(props) {
+    super(props);
+  }
   state = {
     searchTerm: "",
     handleSearchChange: (e) => {
@@ -28,7 +31,21 @@ class Table extends Component {
     const { format, name } = option;
     switch (format) {
       case "checkbox":
-        return <CheckBox checked={false} onChange={() => {}} />;
+        return (
+          <CheckBox
+            checked={
+              (this.props.selectedItems.length == this.props.datas.length &&
+                this.props.datas.length > 0) ||
+              false
+            }
+            onChange={() => {
+              this.props.selectedItems.length == this.props.datas.length &&
+              this.props.datas.length > 0
+                ? this.props.onSelectionChange([])
+                : this.props.onSelectionChange(this.props.datas);
+            }}
+          />
+        );
       default:
         return name || "";
     }
@@ -46,6 +63,17 @@ class Table extends Component {
 
       case "currency":
         return Utils.formatCurrency(value);
+
+      case "checkbox":
+        return (
+          <CheckBox
+            checked={this.props.selectedItems?.includes(data) || false}
+            onChange={() => {
+              this.props.onSelectionChange &&
+                this.props.onSelectionChange(data);
+            }}
+          />
+        );
 
       default:
         if (value instanceof Date) {

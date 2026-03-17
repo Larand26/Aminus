@@ -8,6 +8,7 @@
   border-radius: 5px;
   border: 2px solid var(--cor-amarelo);
   box-sizing: border-box;
+  background-color: #fff;
 }
 
 .checkbox-container input[type="checkbox"] {

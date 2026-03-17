@@ -89,8 +89,16 @@ class Produtos extends Component {
     localStorage.setItem("opcoesProdutos", JSON.stringify(updatedOptions));
   };
 
-  handleSelectionChange = (selectedItems) => {
-    this.setState({ selectedItems });
+  handleSelectionChange = (items) => {
+    if (Array.isArray(items)) {
+      this.setState({ selectedItems: items });
+    } else {
+      this.setState((prevState) => ({
+        selectedItems: prevState.selectedItems.includes(items)
+          ? prevState.selectedItems.filter((item) => item !== items)
+          : [...prevState.selectedItems, items],
+      }));
+    }
   };
 
   render() {
