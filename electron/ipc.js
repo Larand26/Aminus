@@ -5,6 +5,7 @@ import LoginController from "./src/controllers/LoginController.js";
 import ProductController from "./src/controllers/ProductController.js";
 import InvoiceController from "./src/controllers/InvoiceController.js";
 import OrderController from "./src/controllers/OrderController.js";
+import ClientController from "./src/controllers/ClientController.js";
 
 ipcMain.handle("login", async (event, args) => {
   return await LoginController.login(args);
@@ -30,4 +31,8 @@ ipcMain.handle("get-invoices", async (event, args) => {
 
 ipcMain.handle("get-orders", async (event, args) => {
   return await OrderController.getOrders(args.filters);
+});
+
+ipcMain.handle("get-clients", async (event, args) => {
+  return await ClientController.getClients(args.filters);
 });
