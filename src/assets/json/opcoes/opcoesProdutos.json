@@ -1,4 +1,10 @@
 [
+  {
+    "key": "ID",
+    "name": "",
+    "checked": true,
+    "format": "checkbox"
+  },
   { "key": "COD_INTERNO", "name": "Cod Interno", "checked": true },
   { "key": "COD_FABRICANTE", "name": "Cod Fabricante", "checked": true },
   { "key": "COD_BARRAS", "name": "Cod Barras", "checked": true },

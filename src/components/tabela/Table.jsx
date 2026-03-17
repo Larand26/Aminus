@@ -2,6 +2,9 @@ import { Component } from "react";
 
 import Utils from "../../utils/Utils";
 
+// Components
+import CheckBox from "../inputs/CheckBox";
+
 import "../../styles/components/table/table.css";
 
 class Table extends Component {
@@ -19,6 +22,16 @@ class Table extends Component {
     return Object.values(data).some((value) =>
       String(value).toLowerCase().includes(lowerSearchTerm),
     );
+  }
+
+  formatheader(option) {
+    const { format, name } = option;
+    switch (format) {
+      case "checkbox":
+        return <CheckBox checked={false} onChange={() => {}} />;
+      default:
+        return name || "";
+    }
   }
 
   formatValue(value, format, data, option) {
@@ -86,9 +99,7 @@ class Table extends Component {
           <thead>
             <tr>
               {options.map((option) => (
-                <th key={option.key}>
-                  {option.format === "checkbox" ? <></> : option.name}
-                </th>
+                <th key={option.key}>{this.formatheader(option)}</th>
               ))}
             </tr>
           </thead>

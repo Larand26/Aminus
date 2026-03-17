@@ -57,7 +57,7 @@ const Tabela = (props) => {
 
   // Filtra os filhos para remover valores nulos ou falsos
   const colunasVisiveis = React.Children.toArray(props.children).filter(
-    Boolean
+    Boolean,
   );
 
   const dadosFiltrados = useMemo(() => {
@@ -129,11 +129,11 @@ const Tabela = (props) => {
   const handleSelectItem = (item) => {
     setSelecionados((prevSelecionados) => {
       const isSelected = prevSelecionados.some(
-        (selecionado) => selecionado[chave] === item[chave]
+        (selecionado) => selecionado[chave] === item[chave],
       );
       if (isSelected) {
         return prevSelecionados.filter(
-          (selecionado) => selecionado[chave] !== item[chave]
+          (selecionado) => selecionado[chave] !== item[chave],
         );
       } else {
         return [...prevSelecionados, item];
@@ -239,7 +239,7 @@ const Tabela = (props) => {
               dadosFiltrados.map((item, index) => {
                 // Encontra a coluna que tem uma função onClick
                 const clickableColumn = colunasVisiveis.find(
-                  (child) => child.props.onClick
+                  (child) => child.props.onClick,
                 );
 
                 // Define o manipulador de clique para a linha inteira
@@ -276,7 +276,7 @@ const Tabela = (props) => {
                             !!chave &&
                             selecionados.some(
                               (selecionado) =>
-                                selecionado[chave] === item[chave]
+                                selecionado[chave] === item[chave],
                             )
                           }
                           id={`select-item-checkbox-${index}`}
@@ -302,7 +302,7 @@ const Tabela = (props) => {
                               onChange={(e) =>
                                 handleInputChange(
                                   child.props.campo,
-                                  e.target.value
+                                  e.target.value,
                                 )
                               }
                             />
@@ -422,7 +422,7 @@ const Tabela = (props) => {
                       const handleCopy = (
                         rowIndex,
                         childIndex,
-                        cellContent
+                        cellContent,
                       ) => {
                         if (colunasVisiveis[childIndex].props.copy) {
                           let textoCopiar = cellContent;
