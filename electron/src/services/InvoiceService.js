@@ -10,17 +10,17 @@ const BASE_QUERY = readFileSync(
 );
 
 const FILTER_MAP = {
-  numNota: { condition: `NF.[NF_NUMDOCUM] = @numNota` },
+  numInvoice: { condition: `NF.[NF_NUMDOCUM] = @numInvoice` },
   cnpj: { condition: `NF.[NF_CGCCPFENTIDADE] = @cnpj` },
-  dataInicial: {
-    condition: `CONVERT(date, NF.[NF_DATAEMIS]) >= CONVERT(date, @dataInicial)`,
+  initialDate: {
+    condition: `CONVERT(date, NF.[NF_DATAEMIS]) >= CONVERT(date, @initialDate)`,
   },
-  dataFinal: {
-    condition: `CONVERT(date, NF.[NF_DATAEMIS]) <= CONVERT(date, @dataFinal)`,
+  finalDate: {
+    condition: `CONVERT(date, NF.[NF_DATAEMIS]) <= CONVERT(date, @finalDate)`,
   },
-  vendedor: { condition: `NF.[ID_CODVENDEDOR] = @vendedor` },
+  sellerId: { condition: `NF.[ID_CODVENDEDOR] = @sellerId` },
   uf: { condition: `NF.[NF_UNIDFEDENTD] = @uf` },
-  transportadora: { condition: `NF.[ID_CODTRANSP] = @transportadora` },
+  transporter: { condition: `NF.[ID_CODTRANSP] = @transporter` },
 };
 
 const hasFilterValue = (value) => {
@@ -38,7 +38,7 @@ const hasFilterValue = (value) => {
 class InvoiceService {
   /**
    * Pega as notas fiscais com base nos filtros fornecidos
-   * @param {Object} filters { numNota, cnpj, dataInicial, dataFinal, vendedor, uf, transportadora }
+   * @param {Object} filters { numInvoice String, cnpj String, initialDate Date, finalDate Date, sellerId Number, uf String, transporter Number }
    * @returns {Promise<Array|Object>} Array of invoices or error object
    */
   static async getInvoices(filters = {}) {

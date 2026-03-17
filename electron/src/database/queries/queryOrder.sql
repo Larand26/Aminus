@@ -1,0 +1,39 @@
+SELECT
+  PO.[ID_NUMPEDORC]                               AS NUM_PEDIDO,
+  PO.[PEDOR_DATA]                                 AS DATA_PEDIDO,
+  PO.[ID_TRANSPORTADORA]                          AS ID_TRANSPORTADORA,
+  PO.[ID_CODENTIDADE]                             AS ID_CLIENTE,
+  PO.[PEDOR_VLRTOTAL]                             AS VALOR_TOTAL,
+  E.[ENTI_RAZAOSOCIAL]                            AS RAZAO_SOCIAL,
+  PO.[ID_CODVENDEDOR]                             AS ID_VENDEDOR,
+  PO.[PEDOR_TOTQUANT]                             AS QUANTIDADE,
+  PO.[PEDOR_SITUACAO]                             AS SITUACAO,
+  CAST(PO.[PEDOR_OBSERVACAO] AS VARCHAR(MAX))     AS OBSERVACAO,
+  PO.[PEDOR_PESOBRUTO]                            AS PESO_BRUTO,
+  T.[TRAN_NOME]                                   AS NOME_TRANSPORTADORA,
+  V.[VEND_NOME]                                   AS NOME_VENDEDOR,
+  E.[ENTI_CNPJCPF]                                AS CNPJ,
+  E.[ENTI_CEP]                                    AS CEP
+FROM [PEDIDOORCAMENTO]       PO
+LEFT JOIN [TRANSPORTADORAS]  T ON PO.[ID_TRANSPORTADORA] = T.[ID_CODTRANSP]
+LEFT JOIN [VENDEDORES]       V ON PO.[ID_CODVENDEDOR]    = V.[ID_CODVENDEDOR]
+LEFT JOIN [ENTIDADES]        E ON PO.[ID_CODENTIDADE]    = E.[ID_CODENTIDADE]
+LEFT JOIN [ITENSPEDIDOORCAMENTO] I ON PO.[ID_NUMPEDORC]  = I.[ID_NUMPEDORC]
+WHERE PO.[ID_CODFILIAIS] = 1
+-- Os filtros serão adicionados aqui pelo Node.js
+GROUP BY
+  PO.[ID_NUMPEDORC],
+  PO.[PEDOR_DATA],
+  PO.[ID_TRANSPORTADORA],
+  PO.[ID_CODENTIDADE],
+  PO.[PEDOR_VLRTOTAL],
+  PO.[PEDOR_TOTQUANT],
+  E.[ENTI_RAZAOSOCIAL],
+  PO.[ID_CODVENDEDOR],
+  PO.[PEDOR_SITUACAO],
+  CAST(PO.[PEDOR_OBSERVACAO] AS VARCHAR(MAX)),
+  PO.[PEDOR_PESOBRUTO],
+  T.[TRAN_NOME],
+  V.[VEND_NOME],
+  E.[ENTI_CNPJCPF],
+  E.[ENTI_CEP]
