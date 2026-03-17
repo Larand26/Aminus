@@ -13,6 +13,19 @@ class OrderController {
       };
     }
   }
+
+  static async getOrderItems(orderId) {
+    try {
+      return await OrderService.getOrderItems(orderId);
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching order items.",
+      };
+    }
+  }
 }
 
 export default OrderController;

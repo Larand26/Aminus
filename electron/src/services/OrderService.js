@@ -8,6 +8,10 @@ const BASE_QUERY = readFileSync(
   path.resolve(__dirname, "../database/queries/queryOrder.sql"),
   "utf-8",
 );
+const ITEMS_BASE_QUERY = readFileSync(
+  path.resolve(__dirname, "../database/queries/queryItemsOrder.sql"),
+  "utf-8",
+);
 const FILTER_PLACEHOLDER = "-- Os filtros serão adicionados aqui pelo Node.js";
 
 const FILTER_MAP = {
@@ -77,6 +81,49 @@ class OrderService {
         success: false,
         error: error.message,
         message: "An error occurred while fetching orders.",
+      };
+    }
+  }
+
+  /**
+   * Pega os itens de um pedido específico
+   * @param {Number} orderId
+   * @returns {Promise<Array|Object>} Array of order items or error object
+   */
+  static async getOrderItems(orderId) {
+    try {
+      const isValidOrderId =
+        orderId !== null &&
+        orderId !== undefined &&
+        String(orderId).trim() !== "";
+
+      if (!isValidOrderId) {
+        return {
+          success: false,
+          error: "Invalid order id.",
+          message: "An order id is required to fetch order items.",
+        };
+      }
+
+      const query = ITEMS_BASE_QUERY.replace(
+        FILTER_PLACEHOLDER,
+        "AND IPO.[ID_NUMPEDORC] = @orderId",
+      );
+
+      const items = await SQLServerDB.query(query, [
+        { name: "orderId", value: orderId },
+      ]);
+
+      return {
+        success: true,
+        data: items,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching order items.",
       };
     }
   }

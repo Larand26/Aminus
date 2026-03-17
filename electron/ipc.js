@@ -33,6 +33,10 @@ ipcMain.handle("get-orders", async (event, args) => {
   return await OrderController.getOrders(args.filters);
 });
 
+ipcMain.handle("get-order-items", async (event, args) => {
+  return await OrderController.getOrderItems(args.orderId);
+});
+
 ipcMain.handle("get-clients", async (event, args) => {
   return await ClientController.getClients(args.filters);
 });
