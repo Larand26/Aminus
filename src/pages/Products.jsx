@@ -2,7 +2,6 @@ import { Component } from "react";
 
 import NavBar from "../components/NavBar.jsx";
 import SideBar from "../components/SideBar.jsx";
-import InputLabel from "../components/InputLabel.jsx";
 import InputNumeroLabel from "../components/InputNumeroLabel.jsx";
 import Configuracoes from "../components/Configuracoes.jsx";
 import Opcao from "../components/Opcao.jsx";
@@ -58,7 +57,7 @@ class Products extends Component {
         this.setState({
           toastInfo: {
             key: Date.now(),
-            message: "No products found with the selected filters.",
+            message: "Nenhum produto encontrado com os filtros selecionados.",
             type: "aviso",
           },
         });
@@ -67,7 +66,7 @@ class Products extends Component {
       this.setState({
         toastInfo: {
           key: Date.now(),
-          message: "Error while searching products.",
+          message: "Erro ao pesquisar produtos.",
           type: "falha",
         },
       });
@@ -139,38 +138,38 @@ class Products extends Component {
         <div className="main-container">
           <SideBar onSearch={this.handleSearch}>
             <InputText
-              label="Manufacturer Code"
+              label="Código Fabricante"
               value={codFabricante}
               onChange={(value) => this.setState({ codFabricante: value })}
               onKeyDown={this.handleKeyDown}
             />
             <InputText
-              label="Internal Code"
+              label="Código Interno"
               value={codInterno}
               onChange={(value) => this.setState({ codInterno: value })}
               onKeyDown={this.handleKeyDown}
             />
             <InputText
-              label="Barcode"
+              label="Código de Barras"
               value={codBarras}
               onChange={(value) => this.setState({ codBarras: value })}
               onKeyDown={this.handleKeyDown}
             />
             <InputText
-              label="Name"
+              label="Descrição"
               value={nome}
               onChange={(value) => this.setState({ nome: value })}
               onKeyDown={this.handleKeyDown}
             />
             <InputNumeroLabel
               adicional={12}
-              label="Quantity"
+              label="Quantidade"
               value={quantidade}
               onChange={(value) => this.setState({ quantidade: value })}
               onKeyDown={this.handleKeyDown}
             />
           </SideBar>
-          <Content titulo="Products">
+          <Content titulo="Produtos">
             <Table
               options={opcoes.filter((opcao) => opcao.checked)}
               datas={produtos}
