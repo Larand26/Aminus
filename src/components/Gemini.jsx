@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import InputButton from "../components/InputButton";
+import InputButton from "../components/inputs/InputButton";
 import Toast from "../components/Toast";
 import MensagemComEfeitoDigitacao from "../components/EfeitoDigitacao";
 

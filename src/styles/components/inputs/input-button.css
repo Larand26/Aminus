@@ -1,0 +1,24 @@
+.input-button-container {
+  border: 2px solid var(--cor-primaria);
+  border-radius: 50px;
+  padding: 5px;
+  display: flex;
+}
+
+.input-button-container input {
+  flex: 1;
+  border: none;
+  outline: none;
+  border-radius: 50px;
+  padding: 6px;
+}
+
+.input-button-container button {
+  border: none;
+  background: var(--cor-amarelo);
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+}

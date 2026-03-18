@@ -8,7 +8,7 @@ import SelectLabel from "../components/SelectLabel";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import ButtonTypeGender from "../components/buttons/ButtonTypeGender";
-import InputButton from "../components/InputButton";
+import InputButton from "../components/inputs/InputButton";
 import Toast from "../components/Toast";
 
 import searchWebRegistration from "../utils/search/searchCadastroWeb";
