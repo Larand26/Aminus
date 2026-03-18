@@ -15,4 +15,5 @@ contextBridge.exposeInMainWorld("api", {
   getPhotos: (args) => ipcRenderer.invoke("get-photos", args),
   updatePhoto: (args) => ipcRenderer.invoke("update-photo", args),
   createPhoto: (args) => ipcRenderer.invoke("create-photo", args),
+  calculateFreight: (args) => ipcRenderer.invoke("calculate-freight", args),
 });

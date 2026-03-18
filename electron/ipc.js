@@ -7,6 +7,7 @@ import InvoiceController from "./src/controllers/InvoiceController.js";
 import OrderController from "./src/controllers/OrderController.js";
 import ClientController from "./src/controllers/ClientController.js";
 import PhotoController from "./src/controllers/PhotoController.js";
+import FrenetController from "./src/controllers/FrenetController.js";
 
 ipcMain.handle("login", async (event, args) => {
   return await LoginController.login(args);
@@ -60,4 +61,8 @@ ipcMain.handle("update-photo", async (event, args) => {
 
 ipcMain.handle("create-photo", async (event, args) => {
   return await PhotoController.createPhoto(args);
+});
+
+ipcMain.handle("calculate-freight", async (event, args) => {
+  return await FrenetController.calculateFreight(args);
 });
