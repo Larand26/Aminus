@@ -13,4 +13,5 @@ contextBridge.exposeInMainWorld("api", {
   getOrderItems: (args) => ipcRenderer.invoke("get-order-items", args),
   getClients: (args) => ipcRenderer.invoke("get-clients", args),
   getPhotos: (args) => ipcRenderer.invoke("get-photos", args),
+  updatePhoto: (args) => ipcRenderer.invoke("update-photo", args),
 });

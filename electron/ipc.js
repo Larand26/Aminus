@@ -53,3 +53,7 @@ ipcMain.handle("get-clients", async (event, args) => {
 ipcMain.handle("get-photos", async (event, args) => {
   return await PhotoController.getPhotosProduct(args.filters);
 });
+
+ipcMain.handle("update-photo", async (event, args) => {
+  return await PhotoController.updatePhoto(args);
+});

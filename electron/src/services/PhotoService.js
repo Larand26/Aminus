@@ -18,6 +18,19 @@ class PhotoService {
       };
     }
   }
+
+  static async updatePhoto(args) {
+    const { id, newData } = args;
+    try {
+      return await MongoDB.update(ProductModel, id, newData);
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while updating the photo.",
+      };
+    }
+  }
 }
 
 export default PhotoService;
