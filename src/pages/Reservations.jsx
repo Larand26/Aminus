@@ -16,19 +16,19 @@ import Content from "../components/Content";
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesReserva from "../assets/json/opcoes/opcoesReserva.json";
 
-import searchReservas from "../utils/search/searchReservas";
+import searchReservations from "../utils/search/searchReservas";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
-import searchData from "../utils/search/searchData";
+import searchDate from "../utils/search/searchData";
 
 import "../styles/reservas.css";
 
-const Reservas = () => {
-  // Estados dos inputs
-  const [codFabricante, setCodFabricante] = useState("");
-  const [codInterno, setCodInterno] = useState("");
-  const [numPedido, setNumPedido] = useState("");
-  const [nomeCliente, setNomeCliente] = useState("");
-  const [vendedor, setVendedor] = useState("");
+const Reservations = () => {
+  // Input states
+  const [manufacturerCode, setManufacturerCode] = useState("");
+  const [internalCode, setInternalCode] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
+  const [clientName, setClientName] = useState("");
+  const [seller, setSeller] = useState("");
 
   // Toast
   const [toastInfo, setToastInfo] = useState(null);
@@ -36,52 +36,52 @@ const Reservas = () => {
   // Loading
   const [isLoading, setIsLoading] = useState(false);
 
-  // Reservas
-  const [reservas, setReservas] = useState([]);
+  // Reservations
+  const [reservations, setReservations] = useState([]);
 
   // Popups
-  const [pegaDataOpen, setPegaDataOpen] = useState(false);
+  const [isDatePopupOpen, setIsDatePopupOpen] = useState(false);
 
   const handleSearch = async () => {
-    setReservas([]);
+    setReservations([]);
     setIsLoading(true);
     const filters = {
-      codFabricante: codFabricante,
-      codInterno: codInterno,
-      numPedido: numPedido,
-      nomeCliente: nomeCliente,
-      vendedor: vendedor,
+      codFabricante: manufacturerCode,
+      codInterno: internalCode,
+      numPedido: orderNumber,
+      nomeCliente: clientName,
+      vendedor: seller,
     };
 
-    const response = await searchReservas(filters);
+    const response = await searchReservations(filters);
     setIsLoading(false);
 
     if (response.success) {
-      setReservas(response.data);
+      setReservations(response.data);
       if (response.data.length === 0) {
         setToastInfo({
           key: Date.now(),
-          message: "Nenhuma reserva encontrada com os filtros informados.",
+          message: "No reservations found with the selected filters.",
           type: "aviso",
         });
       }
     } else {
       setToastInfo({
         key: Date.now(),
-        message: "Erro ao buscar reservas.",
+        message: "Error while searching reservations.",
         type: "falha",
       });
     }
   };
 
-  // Função para lidar com a tecla Enter
+  // Handles Enter key submit
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
 
-  //Opções
+  // Options
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesReserva");
     return atualizaOpcoes(opcoesReserva, savedOpcoes);
@@ -97,36 +97,36 @@ const Reservas = () => {
   };
 
   // PopUp
-  const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const openPopUp = (item) => {
-    setPedidoSelecionado(item);
-    setPegaDataOpen(true);
+  const openPopup = (item) => {
+    setSelectedOrder(item);
+    setIsDatePopupOpen(true);
   };
 
-  const handleClosePopUp = () => {
-    setDataReservaResponse("Selecione uma data");
+  const handleClosePopup = () => {
+    setReservationDateResponse("Select a date");
   };
 
-  // Data Reserva
-  const [dataReserva, setDataReserva] = useState([null, null]);
-  const [dataReservaResponse, setDataReservaResponse] =
-    useState("Selecione uma data");
+  // Reservation date
+  const [reservationDate, setReservationDate] = useState([null, null]);
+  const [reservationDateResponse, setReservationDateResponse] =
+    useState("Select a date");
 
   const handleSearchData = async () => {
     const filters = {
-      codInterno: pedidoSelecionado.COD_INTERNO || null,
-      numPedido: pedidoSelecionado.NUM_PEDIDO || null,
-      dataPesquisa: dataReserva || null,
+      codInterno: selectedOrder.COD_INTERNO || null,
+      numPedido: selectedOrder.NUM_PEDIDO || null,
+      dataPesquisa: reservationDate || null,
     };
 
-    const results = await searchData(filters);
+    const results = await searchDate(filters);
 
     if (results.success) {
-      setDataReservaResponse(results.data);
+      setReservationDateResponse(results.data);
       console.log(results.data);
     } else {
-      setDataReservaResponse("Erro ao buscar dados");
+      setReservationDateResponse("Error while searching data");
     }
   };
 
@@ -136,21 +136,25 @@ const Reservas = () => {
         id="popup-reservas"
         width="400px"
         height="250px"
-        onClose={handleClosePopUp}
-        open={pegaDataOpen}
-        setOpen={setPegaDataOpen}
+        onClose={handleClosePopup}
+        open={isDatePopupOpen}
+        setOpen={setIsDatePopupOpen}
       >
-        <h2>Consulte a data da reserva</h2>
+        <h2>Check reservation date</h2>
         <div className="content-popup-reservas">
-          <InputDataLabel value={dataReserva} onChange={setDataReserva} />
+          <InputDataLabel
+            value={reservationDate}
+            onChange={setReservationDate}
+          />
           <button className="btn-consulta-reserva" onClick={handleSearchData}>
             <i className="fa fa-search" />
           </button>
         </div>
         <div>
-          {Array.isArray(dataReservaResponse) && dataReservaResponse.length > 0
-            ? new Date(dataReservaResponse[0].DATA).toLocaleString("pt-BR")
-            : dataReservaResponse}
+          {Array.isArray(reservationDateResponse) &&
+          reservationDateResponse.length > 0
+            ? new Date(reservationDateResponse[0].DATA).toLocaleString("pt-BR")
+            : reservationDateResponse}
         </div>
         <div className="footer-popup-reservas"></div>
       </PopUp>
@@ -176,41 +180,41 @@ const Reservas = () => {
       <div className="main-container">
         <SideBar onSearch={handleSearch}>
           <InputLabel
-            label="Cod Fabricante"
-            value={codFabricante}
-            onChange={setCodFabricante}
+            label="Manufacturer Code"
+            value={manufacturerCode}
+            onChange={setManufacturerCode}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
-            label="Cod Interno"
-            value={codInterno}
-            onChange={setCodInterno}
+            label="Internal Code"
+            value={internalCode}
+            onChange={setInternalCode}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
-            label="Num Pedido"
-            value={numPedido}
-            onChange={setNumPedido}
+            label="Order No."
+            value={orderNumber}
+            onChange={setOrderNumber}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
-            label="Nome Cliente"
-            value={nomeCliente}
-            onChange={setNomeCliente}
+            label="Client Name"
+            value={clientName}
+            onChange={setClientName}
             onKeyDown={handleKeyDown}
           />
           <SelectLabel
-            label="Vendedor"
+            label="Seller"
             options={vendedoresJson}
-            value={vendedor}
-            onChange={setVendedor}
+            value={seller}
+            onChange={setSeller}
             onKeyDown={handleKeyDown}
           />
         </SideBar>
-        <Content titulo="Reservas">
+        <Content titulo="Reservations">
           <Tabela
-            dados={reservas}
-            semDados="Nenhuma reserva encontrada"
+            dados={reservations}
+            semDados="No reservations found"
             hover
             loading={isLoading}
             search={opcoes.find((opcao) => opcao.id === "search").checked}
@@ -224,7 +228,7 @@ const Reservas = () => {
                   campo={opcao.id}
                   format={opcao.format || ""}
                   dados={opcao.dados || []}
-                  onClick={openPopUp}
+                  onClick={openPopup}
                 />
               ))}
           </Tabela>
@@ -233,4 +237,4 @@ const Reservas = () => {
     </>
   );
 };
-export default Reservas;
+export default Reservations;

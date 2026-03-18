@@ -1,13 +1,13 @@
 import { Component } from "react";
 
-import NavBar from "../components/NavBar";
-import SideBar from "../components/SideBar";
-import InputLabel from "../components/InputLabel";
-import InputNumeroLabel from "../components/InputNumeroLabel";
-import Configuracoes from "../components/Configuracoes";
-import Opcao from "../components/Opcao";
-import Toast from "../components/Toast";
-import Content from "../components/Content";
+import NavBar from "../components/NavBar.jsx";
+import SideBar from "../components/SideBar.jsx";
+import InputLabel from "../components/InputLabel.jsx";
+import InputNumeroLabel from "../components/InputNumeroLabel.jsx";
+import Configuracoes from "../components/Configuracoes.jsx";
+import Opcao from "../components/Opcao.jsx";
+import Toast from "../components/Toast.jsx";
+import Content from "../components/Content.jsx";
 import InputText from "../components/inputs/InputText.jsx";
 import Table from "../components/tabela/Table.jsx";
 
@@ -15,9 +15,9 @@ import ProductUtil from "../utils/Product.js";
 
 import opcoesProdutos from "../assets/json/opcoes/opcoesProdutos.json";
 
-import atualizaOpcoes from "../utils/atualizaOpcoes";
+import atualizaOpcoes from "../utils/atualizaOpcoes.js";
 
-class Produtos extends Component {
+class Products extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -58,7 +58,7 @@ class Produtos extends Component {
         this.setState({
           toastInfo: {
             key: Date.now(),
-            message: "Nenhum produto encontrado com os filtros informados.",
+            message: "No products found with the selected filters.",
             type: "aviso",
           },
         });
@@ -67,7 +67,7 @@ class Produtos extends Component {
       this.setState({
         toastInfo: {
           key: Date.now(),
-          message: "Erro ao buscar produtos.",
+          message: "Error while searching products.",
           type: "falha",
         },
       });
@@ -139,38 +139,38 @@ class Produtos extends Component {
         <div className="main-container">
           <SideBar onSearch={this.handleSearch}>
             <InputText
-              label="Cod Fabricante"
+              label="Manufacturer Code"
               value={codFabricante}
               onChange={(value) => this.setState({ codFabricante: value })}
               onKeyDown={this.handleKeyDown}
             />
             <InputText
-              label="Cod Interno"
+              label="Internal Code"
               value={codInterno}
               onChange={(value) => this.setState({ codInterno: value })}
               onKeyDown={this.handleKeyDown}
             />
             <InputText
-              label="Cod Barras"
+              label="Barcode"
               value={codBarras}
               onChange={(value) => this.setState({ codBarras: value })}
               onKeyDown={this.handleKeyDown}
             />
             <InputText
-              label="Nome"
+              label="Name"
               value={nome}
               onChange={(value) => this.setState({ nome: value })}
               onKeyDown={this.handleKeyDown}
             />
             <InputNumeroLabel
               adicional={12}
-              label="Quantidade"
+              label="Quantity"
               value={quantidade}
               onChange={(value) => this.setState({ quantidade: value })}
               onKeyDown={this.handleKeyDown}
             />
           </SideBar>
-          <Content titulo="Produtos">
+          <Content titulo="Products">
             <Table
               options={opcoes.filter((opcao) => opcao.checked)}
               datas={produtos}
@@ -185,4 +185,4 @@ class Produtos extends Component {
   }
 }
 
-export default Produtos;
+export default Products;

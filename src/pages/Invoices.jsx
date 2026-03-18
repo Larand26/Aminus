@@ -12,7 +12,7 @@ import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
 import Content from "../components/Content";
 
-import searchNotas from "../utils/search/searchNotas";
+import searchInvoices from "../utils/search/searchNotas";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import ufsJson from "../assets/json/ufs.json";
@@ -22,20 +22,20 @@ import opcoesNotas from "../assets/json/opcoes/opcoesNotas.json";
 
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 
-const Notas = () => {
+const Invoices = () => {
   // Token
   const token = localStorage.getItem("token");
 
-  // Função do usuário
-  const idFuncao = localStorage.getItem("ID_FUNCAO_USUARIO");
+  // User role
+  const userRoleId = localStorage.getItem("ID_FUNCAO_USUARIO");
 
-  // Estados dos inputs
-  const [numNota, setNumNota] = useState("");
+  // Input states
+  const [invoiceNumber, setInvoiceNumber] = useState("");
   const [cnpj, setCnpj] = useState("");
-  const [data, setData] = useState([null, null]);
-  const [vendedor, setVendedor] = useState("");
-  const [uf, setUf] = useState("");
-  const [transportadora, setTransportadora] = useState("");
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [seller, setSeller] = useState("");
+  const [stateCode, setStateCode] = useState("");
+  const [carrier, setCarrier] = useState("");
 
   // Toast
   const [toastInfo, setToastInfo] = useState(null);
@@ -43,76 +43,76 @@ const Notas = () => {
   // Loading
   const [isLoading, setIsLoading] = useState(false);
 
-  // Notas
-  const [notas, setNotas] = useState([]);
+  // Invoices
+  const [invoices, setInvoices] = useState([]);
 
   const handleSearch = async () => {
-    setNotas([]);
+    setInvoices([]);
     setIsLoading(true);
-    const filtros = {
+    const filters = {
       token: token,
-      numNota: numNota,
+      numNota: invoiceNumber,
       cnpj: cnpj.replace(/\D/g, ""),
-      dataInicial: data[0],
-      dataFinal: data[1],
-      vendedor: vendedor,
-      uf: uf,
-      transportadora: transportadora,
+      dataInicial: dateRange[0],
+      dataFinal: dateRange[1],
+      vendedor: seller,
+      uf: stateCode,
+      transportadora: carrier,
     };
-    console.log(filtros);
+    console.log(filters);
 
-    const response = await searchNotas(filtros);
+    const response = await searchInvoices(filters);
     setIsLoading(false);
 
     if (response.success) {
-      setNotas(response.data);
+      setInvoices(response.data);
       if (response.data.length === 0) {
         setToastInfo({
           key: Date.now(),
-          message: "Nenhuma nota fiscal encontrada com os filtros informados.",
+          message: "No invoices found with the selected filters.",
           type: "aviso",
         });
       }
     } else {
       setToastInfo({
         key: Date.now(),
-        message: "Erro ao buscar notas fiscais.",
+        message: "Error while searching invoices.",
         type: "falha",
       });
     }
   };
 
-  // Função para lidar com a tecla Enter
+  // Handles Enter key submit
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
 
-  //Opções
-  const [opcoes, setOpcoes] = useState(() => {
-    const savedOpcoes = localStorage.getItem("opcoesNotas");
-    return atualizaOpcoes(opcoesNotas, savedOpcoes);
+  // Options
+  const [options, setOptions] = useState(() => {
+    const savedOptions = localStorage.getItem("opcoesNotas");
+    return atualizaOpcoes(opcoesNotas, savedOptions);
   });
 
   const handleOptionClick = (e) => {
     const { id } = e.target;
-    const updatedOptions = opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
+    const updatedOptions = options.map((option) =>
+      option.id === id ? { ...option, checked: !option.checked } : option,
     );
-    setOpcoes(updatedOptions);
+    setOptions(updatedOptions);
     localStorage.setItem("opcoesNotas", JSON.stringify(updatedOptions));
   };
 
   return (
     <>
       <Configuracoes>
-        {opcoes.map((opcao) => (
+        {options.map((option) => (
           <Opcao
-            key={opcao.id}
-            id={opcao.id}
-            label={opcao.label}
-            checked={opcao.checked}
+            key={option.id}
+            id={option.id}
+            label={option.label}
+            checked={option.checked}
             onChange={handleOptionClick}
           />
         ))}
@@ -128,64 +128,64 @@ const Notas = () => {
       <div className="main-container">
         <SideBar onSearch={handleSearch}>
           <InputLabel
-            label="Num Nota"
-            value={numNota}
-            onChange={setNumNota}
+            label="Invoice No."
+            value={invoiceNumber}
+            onChange={setInvoiceNumber}
             onKeyDown={handleKeyDown}
           />
           <InputDataLabel
-            label="Data"
-            value={data}
-            onChange={setData}
+            label="Date"
+            value={dateRange}
+            onChange={setDateRange}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
-            label="Cnpj"
+            label="CNPJ"
             value={cnpj}
             onChange={setCnpj}
             onKeyDown={handleKeyDown}
           />
-          {idFuncao != 2 && (
+          {userRoleId != 2 && (
             <SelectLabel
-              label="Vendedores"
+              label="Sellers"
               options={vendedoresJson}
-              onChange={setVendedor}
-              value={vendedor}
+              onChange={setSeller}
+              value={seller}
               onKeyDown={handleKeyDown}
             />
           )}
           <SelectLabel
-            label="UF"
+            label="State"
             options={ufsJson}
-            onChange={setUf}
-            value={uf}
+            onChange={setStateCode}
+            value={stateCode}
             onKeyDown={handleKeyDown}
           />
           <SelectLabel
-            label="Transportadora"
+            label="Carrier"
             options={transportadorasJson}
-            onChange={setTransportadora}
-            value={transportadora}
+            onChange={setCarrier}
+            value={carrier}
             onKeyDown={handleKeyDown}
           />
         </SideBar>
-        <Content titulo="Notas Fiscais">
+        <Content titulo="Invoices">
           <Tabela
-            dados={notas}
-            semDados="Nenhuma nota fiscal encontrada"
+            dados={invoices}
+            semDados="No invoices found"
             loading={isLoading}
-            search={opcoes.find((opcao) => opcao.id === "search").checked}
+            search={options.find((option) => option.id === "search").checked}
           >
-            {opcoes
-              .filter((opcao) => opcao.checked)
-              .map((opcao) => (
+            {options
+              .filter((option) => option.checked)
+              .map((option) => (
                 <Coluna
-                  key={opcao.id}
-                  titulo={opcao.label}
-                  campo={opcao.id}
-                  format={opcao.format || ""}
-                  dados={opcao.dados || []}
-                  copy={opcao.copy || false}
+                  key={option.id}
+                  titulo={option.label}
+                  campo={option.id}
+                  format={option.format || ""}
+                  dados={option.dados || []}
+                  copy={option.copy || false}
                 />
               ))}
           </Tabela>
@@ -194,4 +194,4 @@ const Notas = () => {
     </>
   );
 };
-export default Notas;
+export default Invoices;

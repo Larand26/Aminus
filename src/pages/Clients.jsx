@@ -10,17 +10,17 @@ import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
 import Content from "../components/Content";
 
-import searchClientes from "../utils/search/searchClientes";
+import searchClients from "../utils/search/searchClientes";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 
 import opcoesClientes from "../assets/json/opcoes/opcoesClientes.json";
 
-const Clientes = () => {
-  // Estados dos inputs
-  const [numCliente, setNumCliente] = useState("");
-  const [nome, setNome] = useState("");
+const Clients = () => {
+  // Input states
+  const [clientNumber, setClientNumber] = useState("");
+  const [clientName, setClientName] = useState("");
   const [cnpj, setCnpj] = useState("");
-  const [celular, setCelular] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
 
   // Toast
@@ -29,49 +29,49 @@ const Clientes = () => {
   // Loading
   const [isLoading, setIsLoading] = useState(false);
 
-  // Clientes
-  const [clientes, setClientes] = useState([]);
+  // Clients
+  const [clients, setClients] = useState([]);
 
   const handleSearch = async () => {
-    setClientes([]);
+    setClients([]);
     setIsLoading(true);
     const filters = {
-      numCliente,
-      nome,
+      numCliente: clientNumber,
+      nome: clientName,
       cnpj: cnpj.replace(/\D/g, ""),
-      celular,
+      celular: phone,
       email,
     };
-    const response = await searchClientes(filters);
+    const response = await searchClients(filters);
     setIsLoading(false);
     // console.log(response);
 
     if (response.success) {
-      setClientes(response.data);
+      setClients(response.data);
       if (response.data.length === 0) {
         setToastInfo({
           key: Date.now(),
-          message: "Nenhum cliente encontrado com os filtros informados.",
+          message: "No clients found with the selected filters.",
           type: "aviso",
         });
       }
     } else {
       setToastInfo({
         key: Date.now(),
-        message: "Erro ao buscar clientes.",
+        message: "Error while searching clients.",
         type: "falha",
       });
     }
   };
 
-  // Função para lidar com a tecla Enter
+  // Handles Enter key submit
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
 
-  // Opções
+  // Options
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesClientes");
     return atualizaOpcoes(opcoesClientes, savedOpcoes);
@@ -110,17 +110,17 @@ const Clientes = () => {
       <div className="main-container">
         <SideBar onSearch={handleSearch}>
           <InputLabel
-            label="Número do Cliente"
+            label="Client Number"
             type="text"
-            value={numCliente}
-            onChange={setNumCliente}
+            value={clientNumber}
+            onChange={setClientNumber}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
-            label="Nome do Cliente"
+            label="Client Name"
             type="text"
-            value={nome}
-            onChange={setNome}
+            value={clientName}
+            onChange={setClientName}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
@@ -131,10 +131,10 @@ const Clientes = () => {
             onKeyDown={handleKeyDown}
           />
           <InputLabel
-            label="Celular"
+            label="Phone"
             type="text"
-            value={celular}
-            onChange={setCelular}
+            value={phone}
+            onChange={setPhone}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
@@ -145,10 +145,10 @@ const Clientes = () => {
             onKeyDown={handleKeyDown}
           />
         </SideBar>
-        <Content titulo="Clientes">
+        <Content titulo="Clients">
           <Tabela
-            dados={clientes}
-            semDados="Nenhum cliente encontrado"
+            dados={clients}
+            semDados="No clients found"
             loading={isLoading}
             search={opcoes.find((opcao) => opcao.id === "search").checked}
           >
@@ -169,4 +169,4 @@ const Clientes = () => {
     </>
   );
 };
-export default Clientes;
+export default Clients;

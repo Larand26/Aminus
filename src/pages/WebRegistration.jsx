@@ -12,13 +12,13 @@ import BotaoTipoGen from "../components/BotaoTipoGen";
 import InputButton from "../components/InputButton";
 import Toast from "../components/Toast";
 
-import searchCadastroWeb from "../utils/search/searchCadastroWeb";
+import searchWebRegistration from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
-import searchCores from "../utils/search/searchCores";
-import atualizaItemSelecionado from "../utils/cadastroweb/atualizaItemSelecionado";
-import atualizaNome from "../utils/cadastroweb/atualizaNome";
-import criaCorNova from "../utils/cadastroweb/criaCorNova";
-import cadastraProdutos from "../utils/cadastroweb/cadastraProdutos";
+import searchColors from "../utils/search/searchCores";
+import updateSelectedItem from "../utils/cadastroweb/atualizaItemSelecionado";
+import updateName from "../utils/cadastroweb/atualizaNome";
+import createNewColor from "../utils/cadastroweb/criaCorNova";
+import registerProducts from "../utils/cadastroweb/cadastraProdutos";
 
 import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
@@ -31,12 +31,12 @@ import "../styles/inputs/input-styled.css";
 
 import uknown from "../assets/img/unknown.jpg";
 
-const CadastroWeb = () => {
-  // Estados dos inputs
+const WebRegistration = () => {
+  // Input states
   const [codFabricante, setCodFabricante] = useState("");
   const [codInterno, setCodInterno] = useState("");
 
-  // Produtos
+  // Products
   const [produtos, setProdutos] = useState([]);
 
   const handleSearch = async () => {
@@ -44,14 +44,14 @@ const CadastroWeb = () => {
       codFabricante: codFabricante,
       codInterno: codInterno,
     };
-    console.log("Buscando com os filtros:", filtros);
-    const response = await searchCadastroWeb(filtros);
-    console.log("Resultados da busca:", response);
+    console.log("Searching with filters:", filtros);
+    const response = await searchWebRegistration(filtros);
+    console.log("Search results:", response);
     if (response.success) {
       if (response.data.length === 0) {
         setToastInfo({
           key: Date.now(),
-          message: "Nenhum produto encontrado com os filtros fornecidos.",
+          message: "No products found with the selected filters.",
           type: "aviso",
         });
 
@@ -63,21 +63,21 @@ const CadastroWeb = () => {
     } else {
       setToastInfo({
         key: Date.now(),
-        message: "Erro ao buscar cores.",
+        message: "Error while searching colors.",
         type: "falha",
       });
       return;
     }
   };
 
-  // Função para lidar com a tecla Enter
+  // Handles Enter key submit
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
 
-  // Estados da tabela
+  // Table states
   const [cores, setCores] = useState([]);
   const [coresSelecionadas, setCoresSelecionadas] = useState([]);
   const [itensSelecionados, setItensSelecionados] = useState([]); // Estado para itens selecionados
@@ -85,7 +85,7 @@ const CadastroWeb = () => {
   // Toast
   const [toastInfo, setToastInfo] = useState(null);
 
-  // Cores
+  // Colors
   useEffect(() => {
     const coresIniciais = produtos.map((produto) => ({
       value: produto.COD_COR_ECOMMERCE,
@@ -118,12 +118,12 @@ const CadastroWeb = () => {
   };
 
   const handleSearchCores = async (term) => {
-    const response = await searchCores(term);
+    const response = await searchColors(term);
 
     if (!response.success) {
       setToastInfo({
         key: Date.now(),
-        message: "Erro ao buscar cores.",
+        message: "Error while searching colors.",
         type: "falha",
       });
       return;
@@ -143,12 +143,12 @@ const CadastroWeb = () => {
     setCores(coresUnicas);
   };
 
-  // Ativos Ecommerce
+  // Ecommerce active flags
   const handleAtivoEcommerceChange = (index) => {
     setProdutos((prevProdutos) => {
       const novosProdutos = [...prevProdutos];
       const produto = novosProdutos[index];
-      // Inverte o valor de ATIVO_ECOMMERCE e INTEGRACAO_ECOMMERCE
+      // Toggle both ecommerce flags together
       const novoEstado = !(
         produto.ATIVO_ECOMMERCE && produto.INTEGRACAO_ECOMMERCE
       );
@@ -171,19 +171,19 @@ const CadastroWeb = () => {
     );
   };
 
-  // Item selecionado
+  // Selected item
   const [itemSelecionado, setItemSelecionado] = useState(null);
 
   const handleItemSelecionado = async (item) => {
     if (item?.COD_INTERNO === itemSelecionado?.COD_INTERNO) return;
 
-    const { itemAtualizado, cor } = await atualizaItemSelecionado(item);
-    console.log("Item selecionado atualizado no componente:", itemAtualizado);
+    const { itemAtualizado, cor } = await updateSelectedItem(item);
+    console.log("Updated selected item in component:", itemAtualizado);
     setItemSelecionado(itemAtualizado);
     setCorNova(cor);
   };
 
-  // Tipo e Gênero
+  // Type and gender
   const handleTipoGeneroClick = (field, value) => {
     let valor = value;
     switch (field) {
@@ -196,7 +196,7 @@ const CadastroWeb = () => {
           : (valor = "PROMO");
         break;
       default:
-        console.error("Campo inválido para Tipo/Gênero:", field);
+        console.error("Invalid field for type/gender:", field);
         return;
     }
     setItemSelecionado((prevItem) => ({
@@ -205,12 +205,12 @@ const CadastroWeb = () => {
     }));
   };
 
-  // Nome e pai
+  // Name and parent
   const [nome, setNome] = useState("");
   const [pai, setPai] = useState("");
 
   useEffect(() => {
-    const novoNome = atualizaNome(itemSelecionado);
+    const novoNome = updateName(itemSelecionado);
     setNome(novoNome);
     const novoPai = `${itemSelecionado?.codFabricante || ""}-${
       itemSelecionado?.colecao == "PROMO" ? "PROMO" : "GREN"
@@ -218,32 +218,32 @@ const CadastroWeb = () => {
     setPai(novoPai);
   }, [itemSelecionado]);
 
-  // Cor nova
+  // New color
   const [corNova, setCorNova] = useState("");
 
   const handleCorNova = async () => {
     if (!corNova) return;
 
-    const response = await criaCorNova(corNova.toUpperCase());
+    const response = await createNewColor(corNova.toUpperCase());
     if (response.success) {
       setToastInfo({
         key: Date.now(),
-        message: "Cor criada com sucesso!",
+        message: "Color created successfully!",
         type: "sucesso",
       });
     } else {
       setToastInfo({
         key: Date.now(),
-        message: response.message || "Falha ao criar a cor.",
+        message: response.message || "Failed to create color.",
         type: "falha",
       });
     }
   };
 
-  // Cadastra os produtos
+  // Register products
   const handleCadastrarProduto = async () => {
     if (itensSelecionados.length === 0) return;
-    const response = await cadastraProdutos(
+    const response = await registerProducts(
       itensSelecionados,
       produtos,
       nome,
@@ -252,19 +252,19 @@ const CadastroWeb = () => {
     if (response.success) {
       setToastInfo({
         key: Date.now(),
-        message: "Produtos cadastrados com sucesso!",
+        message: "Products registered successfully!",
         type: "sucesso",
       });
     } else {
       setToastInfo({
         key: Date.now(),
-        message: response.error || "Falha ao cadastrar produtos.",
+        message: response.error || "Failed to register products.",
         type: "falha",
       });
     }
   };
 
-  //Opções
+  // Options
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesCadastroWeb");
     return atualizaOpcoes(opcoesCadastroWeb, savedOpcoes);
@@ -303,13 +303,13 @@ const CadastroWeb = () => {
       <div className="main-container">
         <SideBar onSearch={handleSearch}>
           <InputLabel
-            label="Cod Fabricante"
+            label="Manufacturer Code"
             value={codFabricante}
             onChange={setCodFabricante}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
-            label="Cod Interno"
+            label="Internal Code"
             value={codInterno}
             onChange={setCodInterno}
             onKeyDown={handleKeyDown}
@@ -358,12 +358,12 @@ const CadastroWeb = () => {
             <div className="container display">
               <div className="nome-pai">
                 <div className="nome-produto">
-                  <h3>Nome:</h3>
+                  <h3>Name:</h3>
                   <p>{nome}</p>
                 </div>
                 <hr />
                 <div className="pai">
-                  <h3>Pai:</h3>
+                  <h3>Parent:</h3>
                   <p>{pai}</p>
                 </div>
                 <div className="container-btn-cadastro">
@@ -371,7 +371,7 @@ const CadastroWeb = () => {
                     className="btn-cadastrar"
                     onClick={handleCadastrarProduto}
                   >
-                    Cadastrar
+                    Register
                   </button>
                 </div>
               </div>
@@ -382,7 +382,7 @@ const CadastroWeb = () => {
             <div className="container grade-corNova">
               <div className="inputs">
                 <InputButton
-                  placeholder="Adicionar cor nova"
+                  placeholder="Add new color"
                   icon="fa fa-plus"
                   value={corNova}
                   onChange={(e) => setCorNova(e.target.value)}
@@ -417,8 +417,8 @@ const CadastroWeb = () => {
               isLoading={false}
               hover
               select="checkbox"
-              chave="COD_INTERNO" // Propriedade única para identificar cada item
-              onSelectionChange={setItensSelecionados} // Função para receber os itens selecionados
+              chave="COD_INTERNO" // Unique property used to identify each item
+              onSelectionChange={setItensSelecionados} // Receives selected items
               itemSelecionado={itemSelecionado}
               search={
                 opcoes.find((opcao) => opcao.id === "search").checked || false
@@ -439,7 +439,7 @@ const CadastroWeb = () => {
                   />
                 ))}
               <Coluna
-                titulo="Cor"
+                titulo="Color"
                 body={(item) => {
                   return (
                     <SelectLabel
@@ -456,7 +456,7 @@ const CadastroWeb = () => {
                 }}
               />
               <Coluna
-                titulo="Ativo Ecommerce"
+                titulo="Ecommerce Active"
                 format="checkbox"
                 id="ATIVO_ECOMMERCE"
                 state={produtos.map(
@@ -479,4 +479,4 @@ const CadastroWeb = () => {
     </>
   );
 };
-export default CadastroWeb;
+export default WebRegistration;

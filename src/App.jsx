@@ -1,14 +1,14 @@
-import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Pedidos from "./pages/Pedidos";
-import Produtos from "./pages/Produtos";
-import Notas from "./pages/Notas";
-import Clientes from "./pages/Clientes";
-import Reservas from "./pages/Reservas";
-import Fotos from "./pages/Fotos";
-import CadastroWeb from "./pages/CadastroWeb";
+import Orders from "./pages/Orders";
+import Products from "./pages/Products";
+import Invoices from "./pages/Invoices";
+import Clients from "./pages/Clients";
+import Reservations from "./pages/Reservations";
+import Photos from "./pages/Photos";
+import WebRegistration from "./pages/WebRegistration";
 import Login from "./pages/Login";
-import Whatsapp from "./pages/Whatsapp";
+import WhatsApp from "./pages/Whatsapp";
 
 function App() {
   return (
@@ -16,14 +16,14 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/produtos" element={<Produtos />} />
-        <Route path="/notas" element={<Notas />} />
-        <Route path="/pedidos" element={<Pedidos />} />
-        <Route path="/clientes" element={<Clientes />} />
-        <Route path="/reservas" element={<Reservas />} />
-        <Route path="/fotos" element={<Fotos />} />
-        <Route path="/cadastro-web" element={<CadastroWeb />} />
-        <Route path="/whatsapp" element={<Whatsapp />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/invoices" element={<Invoices />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/clients" element={<Clients />} />
+        <Route path="/reservations" element={<Reservations />} />
+        <Route path="/photos" element={<Photos />} />
+        <Route path="/web-registration" element={<WebRegistration />} />
+        <Route path="/whatsapp" element={<WhatsApp />} />
       </Routes>
     </Router>
   );

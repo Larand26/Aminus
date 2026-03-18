@@ -15,11 +15,11 @@ import Content from "../components/Content";
 
 import PopUp from "../components/PopUp";
 
-import searchPedidos from "../utils/search/searchPedidos";
+import searchOrders from "../utils/search/searchPedidos";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
-import getItensPedido from "../utils/getItensPedido";
-import fazCotacao from "../utils/fazCotacao";
-import fazCubagem from "../utils/fazCubagem";
+import getOrderItems from "../utils/getItensPedido";
+import calculateQuote from "../utils/fazCotacao";
+import calculateVolume from "../utils/fazCubagem";
 import createPDF from "../utils/createPDF";
 
 import vendedoresJson from "../assets/json/vendedores.json";
@@ -30,79 +30,79 @@ import opcoesCotacao from "../assets/json/opcoes/opcoesCotacao.json";
 
 import "../styles/pedidos.css";
 
-const Pedidos = () => {
+const Orders = () => {
   // Token
   const token = localStorage.getItem("token");
 
-  // Função do usuário
-  const idFuncao = localStorage.getItem("ID_FUNCAO_USUARIO");
+  // User role
+  const userRoleId = localStorage.getItem("ID_FUNCAO_USUARIO");
 
-  // Estados dos inputs
-  const [numPedido, setNumPedido] = useState("");
-  const [data, setData] = useState([null, null]);
-  const [cliente, setCliente] = useState("");
+  // Input states
+  const [orderNumber, setOrderNumber] = useState("");
+  const [dateRange, setDateRange] = useState([null, null]);
+  const [client, setClient] = useState("");
   const [cnpj, setCnpj] = useState("");
-  const [vendedor, setVendedor] = useState("");
+  const [seller, setSeller] = useState("");
 
   // Toast
   const [toastInfo, setToastInfo] = useState(null);
 
   // Loading
   const [isLoading, setIsLoading] = useState(false);
-  const [isCotacaoLoading, setIsCotacaoLoading] = useState(false);
+  const [isQuoteLoading, setIsQuoteLoading] = useState(false);
 
-  // Pedidos
-  const [pedidos, setPedidos] = useState([]);
-  const [pedidoSelecionado, setPedidoSelecionado] = useState(null);
-  const [itensPedido, setItensPedido] = useState([]);
+  // Orders
+  const [orders, setOrders] = useState([]);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [orderItems, setOrderItems] = useState([]);
 
-  // PopUps
-  const [popUpItensOpen, setPopUpItensOpen] = useState(false);
-  const [popUpCotacaoOpen, setPopUpCotacaoOpen] = useState(false);
+  // Popups
+  const [isItemsPopupOpen, setIsItemsPopupOpen] = useState(false);
+  const [isQuotePopupOpen, setIsQuotePopupOpen] = useState(false);
 
   const handleSearch = async () => {
-    searchPedidos([]);
+    searchOrders([]);
     setIsLoading(true);
     const filters = {
       token: token,
-      numPedido: numPedido,
-      dataInicial: data[0],
-      dataFinal: data[1] || data[0],
-      cliente: cliente,
+      numPedido: orderNumber,
+      dataInicial: dateRange[0],
+      dataFinal: dateRange[1] || dateRange[0],
+      cliente: client,
       cnpj: cnpj,
-      vendedor: vendedor,
+      vendedor: seller,
     };
     console.log(filters);
 
-    const response = await searchPedidos(filters);
+    const response = await searchOrders(filters);
     setIsLoading(false);
 
     if (response.success) {
       if (response.data.length === 0) {
         setToastInfo({
           key: Date.now(),
-          message: "Nenhum pedido encontrado com os filtros informados.",
+          message: "No orders found with the selected filters.",
           type: "aviso",
         });
       }
-      setPedidos(response.data);
+      setOrders(response.data);
     } else {
       setToastInfo({
         key: Date.now(),
-        message: "Erro ao buscar pedidos.",
+        message: "Error while searching orders.",
         type: "falha",
       });
     }
   };
 
-  // Função para lidar com a tecla Enter
+  // Handles Enter key submit
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
 
-  //Opções
+  // Options
   const [opcoes, setOpcoes] = useState(() => {
     const savedOpcoes = localStorage.getItem("opcoesPedidos");
     return atualizaOpcoes(opcoesPedidos, savedOpcoes);
@@ -118,70 +118,70 @@ const Pedidos = () => {
   };
 
   // Popup
-  const openPopupPedido = async (item) => {
-    setPedidoSelecionado(item);
-    const response = await getItensPedido(item.NUM_PEDIDO);
+  const openOrderPopup = async (item) => {
+    setSelectedOrder(item);
+    const response = await getOrderItems(item.NUM_PEDIDO);
     if (response.success && response.data.length > 0) {
-      setItensPedido(response.data);
-      const itemMaisPesado = response.data.reduce((max, item) =>
+      setOrderItems(response.data);
+      const heaviestItem = response.data.reduce((max, item) =>
         item.PESO_BRUTO > max.PESO_BRUTO ? item : max,
       );
-      setLinhaSelecionada(itemMaisPesado);
+      setSelectedRow(heaviestItem);
     } else if (response.success) {
-      setItensPedido(response.data);
-      setLinhaSelecionada(null);
+      setOrderItems(response.data);
+      setSelectedRow(null);
       setToastInfo({
         key: Date.now(),
-        message: "Nenhum item encontrado para este pedido.",
+        message: "No items found for this order.",
         type: "aviso",
       });
     } else {
-      setItensPedido([]);
-      setLinhaSelecionada(null);
+      setOrderItems([]);
+      setSelectedRow(null);
       setToastInfo({
         key: Date.now(),
-        message: "Erro ao pesquisar itens do pedido.",
+        message: "Error while searching order items.",
         type: "falha",
       });
     }
-    setPopUpItensOpen(true);
+    setIsItemsPopupOpen(true);
   };
 
-  const [linhaSelecionada, setLinhaSelecionada] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
 
-  // Cotação
-  const [cotacao, setCotacao] = useState(null);
+  // Quote
+  const [quote, setQuote] = useState(null);
 
-  const handleCotacao = async () => {
-    if (!linhaSelecionada) return;
-    setPopUpCotacaoOpen(true);
-    setCotacao(null);
-    setIsCotacaoLoading(true);
+  const handleQuote = async () => {
+    if (!selectedRow) return;
+    setIsQuotePopupOpen(true);
+    setQuote(null);
+    setIsQuoteLoading(true);
 
-    const response = await fazCotacao(
-      itensPedido,
-      linhaSelecionada,
-      pedidoSelecionado,
+    const response = await calculateQuote(
+      orderItems,
+      selectedRow,
+      selectedOrder,
     );
 
     if (response.success) {
-      setCotacao(response.data);
+      setQuote(response.data);
     } else {
-      setCotacao([]);
+      setQuote([]);
       setToastInfo({
         key: Date.now(),
-        message: "Erro ao pesquisar itens do pedido.",
+        message: "Error while searching order items.",
         type: "falha",
       });
     }
-    setIsCotacaoLoading(false);
+    setIsQuoteLoading(false);
   };
 
-  // Cubagem
-  const handleCubagem = () => {
-    if (itensPedido.length === 0) return;
-    const cubagem = fazCubagem(itensPedido);
-    createPDF(itensPedido, cubagem, pedidoSelecionado.NUM_PEDIDO);
+  // Cubic volume
+  const handleVolume = () => {
+    if (orderItems.length === 0) return;
+    const volume = calculateVolume(orderItems);
+    createPDF(orderItems, volume, selectedOrder.NUM_PEDIDO);
   };
 
   return (
@@ -190,18 +190,18 @@ const Pedidos = () => {
         id="popup-pedido"
         width="1200px"
         height="600px"
-        title="Itens do Pedido"
-        open={popUpItensOpen}
-        setOpen={setPopUpItensOpen}
+        title="Order Items"
+        open={isItemsPopupOpen}
+        setOpen={setIsItemsPopupOpen}
       >
-        {pedidoSelecionado && (
+        {selectedOrder && (
           <div className="popup-pedido-content">
-            <h1>{pedidoSelecionado.NUM_PEDIDO}</h1>
+            <h1>{selectedOrder.NUM_PEDIDO}</h1>
             <Tabela
-              dados={itensPedido}
-              semDados="Nenhum item encontrado"
-              linhaSelecionada={linhaSelecionada}
-              onLinhaSelecionadaChange={setLinhaSelecionada}
+              dados={orderItems}
+              semDados="No items found"
+              linhaSelecionada={selectedRow}
+              onLinhaSelecionadaChange={setSelectedRow}
             >
               {opcoesItensPedido
                 .filter((opcao) => opcao.checked)
@@ -216,31 +216,27 @@ const Pedidos = () => {
                 ))}
             </Tabela>
             <div className="buttons-container">
-              <Button text="Cubagem" icon="fa fa-box" onClick={handleCubagem} />
-              <Button
-                text="Cotação"
-                icon="fa fa-truck"
-                onClick={handleCotacao}
-              />
-              <Button text="Imprimir" icon="fa fa-print" />
+              <Button text="Volume" icon="fa fa-box" onClick={handleVolume} />
+              <Button text="Quote" icon="fa fa-truck" onClick={handleQuote} />
+              <Button text="Print" icon="fa fa-print" />
             </div>
           </div>
         )}
       </PopUp>
       <PopUp
         id="popup-cotacao"
-        title="Cotação"
+        title="Quote"
         width="600px"
-        open={popUpCotacaoOpen}
-        setOpen={setPopUpCotacaoOpen}
+        open={isQuotePopupOpen}
+        setOpen={setIsQuotePopupOpen}
       >
         <div className="popup-cotacao-content" style={{ paddingTop: "45px" }}>
           <Tabela
-            dados={cotacao}
-            semDados="Nenhuma cotação encontrada"
-            linhaSelecionada={linhaSelecionada}
-            onLinhaSelecionadaChange={setLinhaSelecionada}
-            loading={isCotacaoLoading}
+            dados={quote}
+            semDados="No quotes found"
+            linhaSelecionada={selectedRow}
+            onLinhaSelecionadaChange={setSelectedRow}
+            loading={isQuoteLoading}
           >
             {opcoesCotacao
               .filter((opcao) => opcao.checked)
@@ -278,21 +274,21 @@ const Pedidos = () => {
       <div className="main-container">
         <SideBar onSearch={handleSearch}>
           <InputLabel
-            label="Num Pedido"
-            value={numPedido}
-            onChange={setNumPedido}
+            label="Order No."
+            value={orderNumber}
+            onChange={setOrderNumber}
             onKeyDown={handleKeyDown}
           />
           <InputDataLabel
-            label="Data"
-            value={data}
-            onChange={setData}
+            label="Date"
+            value={dateRange}
+            onChange={setDateRange}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
-            label="Cliente"
-            value={cliente}
-            onChange={setCliente}
+            label="Client"
+            value={client}
+            onChange={setClient}
             onKeyDown={handleKeyDown}
           />
           <InputLabel
@@ -301,20 +297,20 @@ const Pedidos = () => {
             onChange={setCnpj}
             onKeyDown={handleKeyDown}
           />
-          {idFuncao != 2 && (
+          {userRoleId != 2 && (
             <SelectLabel
               options={vendedoresJson}
-              label="Vendedor"
-              value={vendedor}
-              onChange={setVendedor}
+              label="Seller"
+              value={seller}
+              onChange={setSeller}
               onKeyDown={handleKeyDown}
             />
           )}
         </SideBar>
-        <Content titulo="Pedidos">
+        <Content titulo="Orders">
           <Tabela
-            dados={pedidos}
-            semDados="Nenhum pedido encontrado"
+            dados={orders}
+            semDados="No orders found"
             hover
             loading={isLoading}
             search={opcoes.find((opcao) => opcao.id === "search").checked}
@@ -328,7 +324,7 @@ const Pedidos = () => {
                   campo={opcao.id}
                   format={opcao.format || ""}
                   dados={opcao.dados || []}
-                  onClick={opcao.id === "NUM_PEDIDO" ? openPopupPedido : null}
+                  onClick={opcao.id === "NUM_PEDIDO" ? openOrderPopup : null}
                 />
               ))}
           </Tabela>
@@ -338,4 +334,4 @@ const Pedidos = () => {
   );
 };
 
-export default Pedidos;
+export default Orders;
