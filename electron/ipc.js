@@ -6,6 +6,7 @@ import ProductController from "./src/controllers/ProductController.js";
 import InvoiceController from "./src/controllers/InvoiceController.js";
 import OrderController from "./src/controllers/OrderController.js";
 import ClientController from "./src/controllers/ClientController.js";
+import PhotoController from "./src/controllers/PhotoController.js";
 
 ipcMain.handle("login", async (event, args) => {
   return await LoginController.login(args);
@@ -47,4 +48,8 @@ ipcMain.handle("get-order-items", async (event, args) => {
 
 ipcMain.handle("get-clients", async (event, args) => {
   return await ClientController.getClients(args.filters);
+});
+
+ipcMain.handle("get-photos", async (event, args) => {
+  return await PhotoController.getPhotosProduct(args.filters);
 });
