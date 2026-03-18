@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import NavBar from "../components/NavBar";
+import NavBar from "../components/misc/NavBar";
 import Card from "../components/Card";
 
 import pages from "../assets/json/pages.json";

@@ -1,92 +1,127 @@
-import { useState, useEffect } from "react";
+import React, { Component } from "react";
 
 import InputButton from "../components/InputButton";
 import Toast from "../components/Toast";
-import MensagemComEfeitoDigitacao from "../components/EfeitoDigitacao"; // Importe o novo componente
+import MensagemComEfeitoDigitacao from "../components/EfeitoDigitacao";
 
 import pegaRespostaGemini from "../utils/pegaRespostaGemini";
 
 import "../styles/gemini.css";
 
-const Gemini = () => {
-  const [pergunta, setPergunta] = useState("");
-  const [respostas, setRespostas] = useState([]);
+class Gemini extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      question: "",
+      responses: [],
+      toastInfo: null,
+    };
+    this.toastTimer = null;
+  }
 
-  const [toastInfo, setToastInfo] = useState(null);
+  componentDidUpdate(prevProps, prevState) {
+    const { toastInfo } = this.state;
 
-  const handleEnviarPergunta = async () => {
-    if (pergunta.trim() === "") return;
+    if (toastInfo && !prevState.toastInfo) {
+      this.toastTimer = setTimeout(() => {
+        this.setState({ toastInfo: null });
+      }, 3000);
+    }
 
-    const novasRespostasUsuario = [
-      ...respostas,
-      { conteudo: pergunta, user: "usuário" },
+    if (!toastInfo && prevState.toastInfo && this.toastTimer) {
+      clearTimeout(this.toastTimer);
+      this.toastTimer = null;
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.toastTimer) {
+      clearTimeout(this.toastTimer);
+    }
+  }
+
+  handleSendQuestion = async () => {
+    const { question, responses } = this.state;
+
+    if (question.trim() === "") return;
+
+    const newUserResponses = [
+      ...responses,
+      { content: question, user: "user" },
     ];
-    setRespostas(novasRespostasUsuario);
-    setPergunta("");
+    this.setState({ responses: newUserResponses, question: "" });
 
-    // Passe o histórico de respostas para a função
-    const resposta = await pegaRespostaGemini(pergunta, respostas);
+    const answer = await pegaRespostaGemini(question, responses);
 
-    if (!resposta.success) {
-      setToastInfo({
-        tipo: "erro",
-        mensagem: resposta.mensagem || "Erro ao obter resposta do Gemini.",
+    if (!answer.success) {
+      this.setState({
+        toastInfo: {
+          tipo: "erro",
+          mensagem: answer.mensagem || "Error getting Gemini response.",
+        },
+        responses,
       });
-      // Remove a pergunta do usuário se a API falhar para evitar confusão
-      setRespostas(respostas);
       return;
     }
-    setRespostas((prevRespostas) => [
-      ...prevRespostas,
-      { conteudo: resposta.data, user: "gemini" },
-    ]);
+
+    this.setState((prevState) => ({
+      responses: [
+        ...prevState.responses,
+        { content: answer.data, user: "gemini" },
+      ],
+    }));
   };
 
-  useEffect(() => {
-    if (toastInfo) {
-      const timer = setTimeout(() => {
-        setToastInfo(null);
-      }, 3000);
+  handleInputChange = (e) => {
+    this.setState({ question: e.target.value });
+  };
 
-      return () => clearTimeout(timer);
+  handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      this.handleSendQuestion();
     }
-  }, [toastInfo]);
+  };
 
-  return (
-    <div className="gemini-container" id="gemini">
-      {toastInfo && (
-        <Toast tipo={toastInfo.tipo} mensagem={toastInfo.mensagem} />
-      )}
-      <div className="respostas">
-        <div className="mensagem-gemini">
-          <p>Olá! Como posso ajudar você hoje?</p>
-        </div>
-        {respostas.map((resposta, index) => (
-          <div
-            key={index}
-            className={`mensagem-gemini ${
-              resposta.user === "usuário" ? "usuario" : "gemini"
-            }`}
-          >
-            {resposta.user === "gemini" ? (
-              <MensagemComEfeitoDigitacao texto={resposta.conteudo} />
-            ) : (
-              <p>{resposta.conteudo}</p>
-            )}
+  render() {
+    const { question, responses, toastInfo } = this.state;
+
+    return (
+      <div className="gemini-container" id="gemini">
+        {toastInfo && (
+          <Toast tipo={toastInfo.tipo} mensagem={toastInfo.mensagem} />
+        )}
+        <div className="responses">
+          <div className="gemini-message">
+            <p>Hello! How can I help you today?</p>
           </div>
-        ))}
+          {responses.map((response, index) => (
+            <div
+              key={index}
+              className={`gemini-message ${
+                response.user === "user" ? "user" : "gemini"
+              }`}
+            >
+              {response.user === "gemini" ? (
+                <MensagemComEfeitoDigitacao texto={response.content} />
+              ) : (
+                <p>{response.content}</p>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="gemini-input-container">
+          <InputButton
+            placeholder="Type your message..."
+            icon="fa fa-paper-plane"
+            value={question}
+            onChange={this.handleInputChange}
+            onClick={this.handleSendQuestion}
+            onKeyPress={this.handleKeyPress}
+          />
+        </div>
       </div>
-      <div className="input-container-gemini ">
-        <InputButton
-          placeholder="Digite sua mensagem..."
-          icon="fa fa-paper-plane"
-          value={pergunta}
-          onChange={(e) => setPergunta(e.target.value)}
-          onClick={handleEnviarPergunta}
-          onKeyPress={(e) => e.key === "Enter" && handleEnviarPergunta()}
-        />
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
+
 export default Gemini;

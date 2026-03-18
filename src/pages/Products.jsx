@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-import NavBar from "../components/NavBar.jsx";
+import NavBar from "../components/misc/NavBar.jsx";
 import SideBar from "../components/SideBar.jsx";
 import InputNumeroLabel from "../components/InputNumeroLabel.jsx";
 import Configuracoes from "../components/Configuracoes.jsx";

@@ -1,35 +1,45 @@
+import { Component } from "react";
+
 import "../styles/pop-up.css";
 
-const PopUp = (props) => {
-  const closePopup = () => {
-    if (props.setOpen) {
-      props.setOpen(false);
+class PopUp extends Component {
+  closePopup = () => {
+    const { setOpen, onClose } = this.props;
+
+    if (setOpen) {
+      setOpen(false);
     }
-    if (props.onClose) {
-      props.onClose();
+
+    if (onClose) {
+      onClose();
     }
   };
 
-  // Se a prop 'open' for falsa, não renderiza nada.
-  if (!props.open) {
-    return null;
-  }
+  render() {
+    const { open, className, height, width, id, children } = this.props;
 
-  return (
-    <>
-      {/* Adiciona a classe 'open-blur' quando o popup estiver aberto */}
-      <div className="blur open-blur" onClick={closePopup}></div>
-      <div
-        className={`pop-up open-pop-up ${props.className || ""}`}
-        style={{ height: props.height || "400px", width: props.width || "50%" }}
-        id={props.id}
-      >
-        <button className="close-button" onClick={closePopup}>
-          <i className="fa fa-times"></i>
-        </button>
-        {props.children}
-      </div>
-    </>
-  );
-};
+    // If the popup is closed, do not render anything.
+    if (!open) {
+      return null;
+    }
+
+    return (
+      <>
+        {/* Adds blur overlay while popup is open */}
+        <div className="blur open-blur" onClick={this.closePopup}></div>
+        <div
+          className={`pop-up open-pop-up ${className || ""}`}
+          style={{ height: height || "400px", width: width || "50%" }}
+          id={id}
+        >
+          <button className="close-button" onClick={this.closePopup}>
+            <i className="fa fa-times"></i>
+          </button>
+          {children}
+        </div>
+      </>
+    );
+  }
+}
+
 export default PopUp;

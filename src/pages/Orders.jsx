@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import NavBar from "../components/NavBar";
+import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
 import Tabela from "../components/tabela/Tabela";
 import Coluna from "../components/tabela/Coluna";
