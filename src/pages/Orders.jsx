@@ -9,7 +9,7 @@ import InputLabel from "../components/InputLabel";
 import InputDataLabel from "../components/InputDataLabel";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
-import Button from "../components/Button";
+import Button from "../components/buttons/Button";
 import Toast from "../components/Toast";
 import Content from "../components/Content";
 

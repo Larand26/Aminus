@@ -8,7 +8,7 @@ import Coluna from "../components/tabela/Coluna";
 import SelectLabel from "../components/SelectLabel";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
-import BotaoTipoGen from "../components/BotaoTipoGen";
+import ButtonTypeGender from "../components/buttons/ButtonTypeGender";
 import InputButton from "../components/InputButton";
 import Toast from "../components/Toast";
 

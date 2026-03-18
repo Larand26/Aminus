@@ -1,4 +1,4 @@
-.botao-tipo-gen {
+.button-type-gender {
   background-color: var(--cor-primaria);
   border-radius: 50%;
   width: 50px;
@@ -8,18 +8,18 @@
   transition: 0.2s ease-in-out;
 }
 
-.botao-tipo-gen:hover {
+.button-type-gender:hover {
   filter: brightness(1.1);
 }
 
-.botao-tipo-gen i {
+.button-type-gender i {
   color: var(--cor-branco);
 }
 
-.selecionado {
+.selected {
   background-color: var(--cor-amarelo) !important;
 }
 
-.selecionado.promo {
+.selected.promotion {
   background-color: var(--cor-vermelho) !important;
 }

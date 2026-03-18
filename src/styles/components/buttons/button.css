@@ -1,0 +1,6 @@
+.custom-button {
+  cursor: pointer;
+}
+.custom-button:hover {
+  filter: brightness(0.9);
+}

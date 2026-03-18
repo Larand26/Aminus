@@ -1,4 +1,4 @@
-import ButtonContent from "./ButtonContent";
+import ButtonContent from "./buttons/ButtonContent.jsx";
 
 import "../styles/content.css";
 

@@ -5,7 +5,7 @@ import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
 import CheckBox from "../components/CheckBox";
 import Card from "../components/Card";
-import BotoesFotos from "../components/BotoesFotos";
+import ActionButtons from "../components/buttons/ActionButtons";
 import PopUp from "../components/PopUp";
 import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 import Loading from "../components/Loading";
