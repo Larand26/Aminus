@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import Table from "../tabela/Tabela";
-import Coluna from "../tabela/Coluna";
+import Table from "../table/Table";
 
 import "../../styles/clientesWpp.css";
 
@@ -68,20 +67,7 @@ const ClientesWpp = (props) => {
           loading={props.loading}
           onEdit={props.onEdit}
           chave="CONTATO_ID"
-        >
-          {props.opcoes
-            .filter((opcao) => opcao.checked)
-            .map((opcao) => (
-              <Coluna
-                key={opcao.id}
-                titulo={opcao.label}
-                campo={opcao.id}
-                format={opcao.format || ""}
-                copy={opcao.copy || false}
-                editavel={opcao.editavel || false}
-              />
-            ))}
-        </Table>
+        ></Table>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { Component } from "react";
 import Utils from "../../utils/Utils";
 
 // Components
-import CheckBox from "../inputs/CheckBox";
+import CheckBox from "../inputs/InputCheckBox";
 import Loading from "../Loading";
 
 import "../../styles/components/table/table.css";

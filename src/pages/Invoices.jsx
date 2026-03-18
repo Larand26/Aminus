@@ -5,8 +5,7 @@ import SideBar from "../components/SideBar";
 import SelectLabel from "../components/SelectLabel";
 import InputLabel from "../components/InputLabel";
 import InputDataLabel from "../components/InputDataLabel";
-import Tabela from "../components/tabela/Tabela";
-import Coluna from "../components/tabela/Coluna";
+import Tabela from "../components/table/Table";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
@@ -175,20 +174,7 @@ const Invoices = () => {
             semDados="No invoices found"
             loading={isLoading}
             search={options.find((option) => option.id === "search").checked}
-          >
-            {options
-              .filter((option) => option.checked)
-              .map((option) => (
-                <Coluna
-                  key={option.id}
-                  titulo={option.label}
-                  campo={option.id}
-                  format={option.format || ""}
-                  dados={option.dados || []}
-                  copy={option.copy || false}
-                />
-              ))}
-          </Tabela>
+          ></Tabela>
         </Content>
       </div>
     </>

@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
-import Tabela from "../components/tabela/Tabela";
-import Coluna from "../components/tabela/Coluna";
+import Tabela from "../components/table/Table";
 import SelectLabel from "../components/SelectLabel";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
@@ -397,17 +396,10 @@ const WebRegistration = () => {
                 />
               </div>
               <div className="tabela-grade">
-                <Tabela dados={itemSelecionado?.grade} isLoading={false}>
-                  {opcoesGrade.map((opcao) => (
-                    <Coluna
-                      key={opcao.id}
-                      titulo={opcao.label}
-                      campo={opcao.id}
-                      format={opcao.format || ""}
-                      dados={opcao.dados || []}
-                    />
-                  ))}
-                </Tabela>
+                <Tabela
+                  dados={itemSelecionado?.grade}
+                  isLoading={false}
+                ></Tabela>
               </div>
             </div>
           </div>
@@ -423,56 +415,7 @@ const WebRegistration = () => {
               search={
                 opcoes.find((opcao) => opcao.id === "search").checked || false
               }
-            >
-              {opcoes
-                .filter((opcao) => opcao.checked)
-                .map((opcao) => (
-                  <Coluna
-                    key={opcao.id}
-                    titulo={opcao.label}
-                    campo={opcao.id}
-                    format={opcao.format || ""}
-                    dados={opcao.dados || []}
-                    onClick={(i) => {
-                      handleItemSelecionado(i);
-                    }}
-                  />
-                ))}
-              <Coluna
-                titulo="Color"
-                body={(item) => {
-                  return (
-                    <SelectLabel
-                      search
-                      options={cores}
-                      value={item.COD_COR_ECOMMERCE}
-                      label={null}
-                      onChange={(newValue) => {
-                        handleChangeCor(item.COD_INTERNO, newValue);
-                      }}
-                      onSearchChange={handleSearchCores}
-                    />
-                  );
-                }}
-              />
-              <Coluna
-                titulo="Ecommerce Active"
-                format="checkbox"
-                id="ATIVO_ECOMMERCE"
-                state={produtos.map(
-                  (p) => p.ATIVO_ECOMMERCE && p.INTEGRACAO_ECOMMERCE,
-                )}
-                onChange={(index) => handleAtivoEcommerceChange(index)}
-                onChangeAll={(checked) =>
-                  handleAtivoEcommerceChangeAll(checked)
-                }
-                disabled={(item) =>
-                  item.ALTURA === 0 ||
-                  item.LARGURA === 0 ||
-                  item.COMPRIMENTO === 0
-                }
-              />
-            </Tabela>
+            ></Tabela>
           </div>
         </div>
       </div>

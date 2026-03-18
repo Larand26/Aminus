@@ -2,8 +2,7 @@ import { useState } from "react";
 
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
-import Tabela from "../components/tabela/Tabela";
-import Coluna from "../components/tabela/Coluna";
+import Tabela from "../components/table/Table";
 import SelectLabel from "../components/SelectLabel";
 import InputLabel from "../components/InputLabel";
 import InputDataLabel from "../components/InputDataLabel";
@@ -202,19 +201,7 @@ const Orders = () => {
               semDados="No items found"
               linhaSelecionada={selectedRow}
               onLinhaSelecionadaChange={setSelectedRow}
-            >
-              {opcoesItensPedido
-                .filter((opcao) => opcao.checked)
-                .map((opcao) => (
-                  <Coluna
-                    key={opcao.id}
-                    titulo={opcao.label}
-                    campo={opcao.id}
-                    format={opcao.format || ""}
-                    dados={opcao.dados || []}
-                  />
-                ))}
-            </Tabela>
+            ></Tabela>
             <div className="buttons-container">
               <Button text="Volume" icon="fa fa-box" onClick={handleVolume} />
               <Button text="Quote" icon="fa fa-truck" onClick={handleQuote} />
@@ -237,19 +224,7 @@ const Orders = () => {
             linhaSelecionada={selectedRow}
             onLinhaSelecionadaChange={setSelectedRow}
             loading={isQuoteLoading}
-          >
-            {opcoesCotacao
-              .filter((opcao) => opcao.checked)
-              .map((opcao) => (
-                <Coluna
-                  key={opcao.id}
-                  titulo={opcao.label}
-                  campo={opcao.id}
-                  format={opcao.format || ""}
-                  dados={opcao.dados || []}
-                />
-              ))}
-          </Tabela>
+          ></Tabela>
         </div>
       </PopUp>
       <Configuracoes>
@@ -314,20 +289,7 @@ const Orders = () => {
             hover
             loading={isLoading}
             search={opcoes.find((opcao) => opcao.id === "search").checked}
-          >
-            {opcoes
-              .filter((opcao) => opcao.checked)
-              .map((opcao) => (
-                <Coluna
-                  key={opcao.id}
-                  titulo={opcao.label}
-                  campo={opcao.id}
-                  format={opcao.format || ""}
-                  dados={opcao.dados || []}
-                  onClick={opcao.id === "NUM_PEDIDO" ? openOrderPopup : null}
-                />
-              ))}
-          </Tabela>
+          ></Tabela>
         </Content>
       </div>
     </>

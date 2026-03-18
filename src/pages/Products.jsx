@@ -8,7 +8,7 @@ import Opcao from "../components/Opcao.jsx";
 import Toast from "../components/Toast.jsx";
 import Content from "../components/Content.jsx";
 import InputText from "../components/inputs/InputText.jsx";
-import Table from "../components/tabela/Table.jsx";
+import Table from "../components/table/Table.jsx";
 
 import ProductUtil from "../utils/Product.js";
 

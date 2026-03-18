@@ -5,8 +5,7 @@ import SideBar from "../components/SideBar";
 import InputLabel from "../components/InputLabel";
 import SelectLabel from "../components/SelectLabel";
 import InputDataLabel from "../components/InputDataLabel";
-import Tabela from "../components/tabela/Tabela";
-import Coluna from "../components/tabela/Coluna";
+import Tabela from "../components/table/Table";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import PopUp from "../components/PopUp";
@@ -218,20 +217,7 @@ const Reservations = () => {
             hover
             loading={isLoading}
             search={opcoes.find((opcao) => opcao.id === "search").checked}
-          >
-            {opcoes
-              .filter((opcao) => opcao.checked)
-              .map((opcao) => (
-                <Coluna
-                  key={opcao.id}
-                  titulo={opcao.label}
-                  campo={opcao.id}
-                  format={opcao.format || ""}
-                  dados={opcao.dados || []}
-                  onClick={openPopup}
-                />
-              ))}
-          </Tabela>
+          ></Tabela>
         </Content>
       </div>
     </>

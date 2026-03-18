@@ -1,5 +1,4 @@
-import Tabela from "../tabela/Tabela";
-import Coluna from "../tabela/Coluna";
+import Tabela from "../table/Table";
 
 import { PieChart, Pie, Cell, Legend } from "recharts";
 
@@ -150,20 +149,7 @@ const Dashboard = (props) => {
           semDados="Nenhum produto encontrado"
           dados={props.dados || []}
           tamMax={"120px"}
-        >
-          {props.opcoes &&
-            props.opcoes
-              .filter((opcao) => opcao.checked)
-              .map((opcao) => (
-                <Coluna
-                  key={opcao.id}
-                  titulo={opcao.label}
-                  campo={opcao.id}
-                  format={opcao.format || ""}
-                  dados={opcao.dados || []}
-                />
-              ))}
-        </Tabela>
+        ></Tabela>
       </div>
     </div>
   );

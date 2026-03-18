@@ -1,6 +1,5 @@
 import InputFile from "../InputFile.jsx";
-import Tabela from "../tabela/Tabela.jsx";
-import Coluna from "../tabela/Coluna.jsx";
+import Tabela from "../table/Table";
 
 import "../../styles/whatsapp/mensagensWpp.css";
 
@@ -41,20 +40,7 @@ const MensagensWpp = (props) => {
             chave="CONTATO_ID"
             select="checkbox"
             onSelectionChange={props.onSelectionChange}
-          >
-            {props.opcoes
-              .filter((opcao) => opcao.checked)
-              .map((opcao) => (
-                <Coluna
-                  key={opcao.id}
-                  titulo={opcao.label}
-                  campo={opcao.id}
-                  format={opcao.format || ""}
-                  copy={opcao.copy || false}
-                  editavel={opcao.editavel || false}
-                />
-              ))}
-          </Tabela>
+          ></Tabela>
           <button
             className="mensagens-wpp-enviar"
             onClick={props.onEnviar}
