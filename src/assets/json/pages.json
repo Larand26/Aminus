@@ -1,58 +1,58 @@
 [
   {
-    "page": "produtos",
+    "page": "products",
     "title": "Produtos",
     "icon": "fa fa-box-open",
-    "path": "/produtos",
+    "path": "/products",
     "restrition": []
   },
   {
-    "page": "notas",
+    "page": "invoices",
     "title": "Notas",
     "icon": "fa fa-newspaper",
-    "path": "/notas",
+    "path": "/invoices",
     "restrition": []
   },
   {
-    "page": "pedidos",
+    "page": "orders",
     "title": "Pedidos",
     "icon": "fa fa-cart-plus",
-    "path": "/pedidos",
+    "path": "/orders",
     "restrition": []
   },
   {
-    "page": "clientes",
+    "page": "clients",
     "title": "Clientes",
     "icon": "fa fa-users",
-    "path": "/clientes",
+    "path": "/clients",
     "restrition": []
   },
   {
-    "page": "reservas",
+    "page": "reservations",
     "title": "Reservas",
     "icon": "fa fa-box",
-    "path": "/reservas",
+    "path": "/reservations",
     "restrition": [2, 4]
   },
   {
-    "page": "fotos",
+    "page": "photos",
     "title": "Fotos",
     "icon": "fa fa-camera-retro",
-    "path": "/fotos",
+    "path": "/photos",
     "restrition": []
   },
   {
-    "page": "cadastro",
+    "page": "web-registration",
     "title": "Cadastro",
     "icon": "fa fa-table",
-    "path": "/cadastro-web",
+    "path": "/web-registration",
     "restrition": [2, 4]
   },
   {
-    "page": "rastreio",
+    "page": "tracking",
     "title": "Rastreio",
     "icon": "fa fa-truck",
-    "path": "/rastreio",
+    "path": "/tracking",
     "restrition": [4]
   },
   {
