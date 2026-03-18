@@ -16,6 +16,18 @@ class PhotoController {
       };
     }
   }
+
+  static async createPhoto(args) {
+    try {
+      return await PhotoService.createPhoto(args);
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while creating the photo.",
+      };
+    }
+  }
 }
 
 export default PhotoController;

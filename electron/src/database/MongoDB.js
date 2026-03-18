@@ -11,6 +11,11 @@ class MongoDB {
   static update(model, id, newData) {
     return model.findByIdAndUpdate(id, newData, { new: true }).exec();
   }
+
+  static create(model, data) {
+    const instance = new model(data);
+    return instance.save();
+  }
 }
 
 export default MongoDB;

@@ -14,4 +14,5 @@ contextBridge.exposeInMainWorld("api", {
   getClients: (args) => ipcRenderer.invoke("get-clients", args),
   getPhotos: (args) => ipcRenderer.invoke("get-photos", args),
   updatePhoto: (args) => ipcRenderer.invoke("update-photo", args),
+  createPhoto: (args) => ipcRenderer.invoke("create-photo", args),
 });

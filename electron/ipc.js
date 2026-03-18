@@ -57,3 +57,7 @@ ipcMain.handle("get-photos", async (event, args) => {
 ipcMain.handle("update-photo", async (event, args) => {
   return await PhotoController.updatePhoto(args);
 });
+
+ipcMain.handle("create-photo", async (event, args) => {
+  return await PhotoController.createPhoto(args);
+});
