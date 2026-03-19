@@ -12,6 +12,7 @@ class InputDate extends Component {
     this.state = {
       showCalendar: false,
       selectedDate: [null, null], // [Date, Date]
+      clearSignal: 0,
     };
 
     this.containerRef = null;
@@ -41,6 +42,18 @@ class InputDate extends Component {
 
   handleHideCalendar = () => {
     this.setState((prevState) => ({ showCalendar: false }));
+  };
+
+  handleRemoveDates = (event) => {
+    const { onChange = () => {} } = this.props;
+
+    event.stopPropagation();
+    this.setState((prevState) => ({
+      selectedDate: [null, null],
+      clearSignal: prevState.clearSignal + 1,
+    }));
+
+    onChange([null, null]);
   };
 
   handleCallbackCalendar = (dates) => {
@@ -86,11 +99,19 @@ class InputDate extends Component {
             placeholder={placeholder}
             readOnly
           />
-          <i className="fas fa-calendar-alt"></i>
+          <i
+            className={`fas ${this.state.selectedDate[0] || this.state.selectedDate[1] ? "fa-times" : "fa-calendar-alt"} icon-calendar`}
+            onClick={
+              this.state.selectedDate[0] || this.state.selectedDate[1]
+                ? this.handleRemoveDates
+                : this.handleShowCalendar
+            }
+          ></i>
         </div>
         <Calendar
           handleCallbackCalendar={this.handleCallbackCalendar}
           showCalendar={this.state.showCalendar}
+          clearSignal={this.state.clearSignal}
         />
       </div>
     );

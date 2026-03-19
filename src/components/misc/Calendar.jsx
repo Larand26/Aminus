@@ -33,6 +33,12 @@ class Calendar extends Component {
     "Dezembro",
   ];
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.clearSignal !== this.props.clearSignal) {
+      this.setState({ selectedDate: [null, null] });
+    }
+  }
+
   handlePreviousMonth = () => {
     this.setState((prevState) => {
       const { month, year } = prevState.currentDate;

@@ -35,4 +35,5 @@
   color: var(--cor-primaria);
   font-size: 18px;
   margin-left: 10px;
+  transition: 0.2s;
 }
