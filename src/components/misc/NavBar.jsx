@@ -3,7 +3,6 @@ import { Component } from "react";
 import ProfileMenu from "../ProfileMenu";
 import PopUp from "../PopUp";
 import ProfilePopupContent from "../PopUps/PopUpMeuPerfil";
-import Gemini from "../Gemini";
 
 import "../../styles/components/misc/nav-bar.css";
 
@@ -12,7 +11,6 @@ class NavBar extends Component {
     super(props);
     this.state = {
       isProfileOpen: false,
-      isGeminiOpen: false,
       isSettingsOpen: false,
       isMenuOpen: false,
     };
@@ -36,10 +34,6 @@ class NavBar extends Component {
     this.setState((prevState) => ({ isMenuOpen: !prevState.isMenuOpen }));
   };
 
-  toggleGemini = () => {
-    document.querySelector("#gemini").classList.toggle("open-gemini-container");
-  };
-
   toggleSettings = () => {
     document
       .querySelector("#configuracoes")
@@ -56,7 +50,6 @@ class NavBar extends Component {
 
     return (
       <>
-        <Gemini />
         <PopUp
           id="meu-perfil-popup"
           open={isProfileOpen}
@@ -81,9 +74,6 @@ class NavBar extends Component {
                 <i className="fa fa-cog"></i>
               </button>
             )}
-            <button onClick={this.toggleGemini}>
-              <i className="icon-gemini"></i>
-            </button>
             <button onClick={this.toggleMenu}>
               <div className="meu-perfil"></div>
             </button>
