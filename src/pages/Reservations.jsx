@@ -8,7 +8,7 @@ import InputDataLabel from "../components/inputs/InputDate";
 import Tabela from "../components/table/Table";
 import PopUp from "../components/PopUp";
 import Toast from "../components/Toast";
-import Content from "../components/Content";
+import Content from "../components/misc/Content";
 
 import vendedoresJson from "../assets/json/vendedores.json";
 import opcoesReserva from "../assets/json/opcoes/opcoesReserva.json";

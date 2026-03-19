@@ -1,5 +1,5 @@
 import SideBar from "../components/SideBar";
-import Content from "../components/Content";
+import Content from "../components/misc/Content";
 
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";

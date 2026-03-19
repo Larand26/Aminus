@@ -1,12 +1,12 @@
 import { Component } from "react";
 
-import NavBar from "../components/misc/NavBar.jsx";
-import SideBar from "../components/SideBar.jsx";
-import InputNumeroLabel from "../components/inputs/InputNumber.jsx";
-import Toast from "../components/Toast.jsx";
-import Content from "../components/Content.jsx";
-import InputText from "../components/inputs/InputText.jsx";
-import Table from "../components/table/Table.jsx";
+import NavBar from "../components/misc/NavBar";
+import SideBar from "../components/SideBar";
+import InputNumeroLabel from "../components/inputs/InputNumber";
+import Toast from "../components/Toast";
+import Content from "../components/misc/Content";
+import InputText from "../components/inputs/InputText";
+import Table from "../components/table/Table";
 
 import ProductUtil from "../utils/Product.js";
 

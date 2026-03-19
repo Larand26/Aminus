@@ -10,7 +10,7 @@ import PopUp from "../components/PopUp";
 import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 import Loading from "../components/misc/Loading";
 import Toast from "../components/Toast";
-import Content from "../components/Content";
+import Content from "../components/misc/Content";
 
 import searchPhotos from "../utils/search/searchFotos";
 import updatePhotoMongo from "../utils/fotos/atualizaFotoMongo";

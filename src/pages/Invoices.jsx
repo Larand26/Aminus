@@ -7,7 +7,7 @@ import InputLabel from "../components/inputs/InputText";
 import InputDataLabel from "../components/inputs/InputDate";
 import Tabela from "../components/table/Table";
 import Toast from "../components/Toast";
-import Content from "../components/Content";
+import Content from "../components/misc/Content";
 
 import searchInvoices from "../utils/search/searchNotas";
 
