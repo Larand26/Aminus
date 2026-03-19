@@ -4,8 +4,6 @@ import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
 import InputLabel from "../components/inputs/InputText";
 import Tabela from "../components/table/Table";
-import Configuracoes from "../components/misc/Configuration";
-import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
 import Content from "../components/Content";
 
@@ -87,17 +85,6 @@ const Clients = () => {
 
   return (
     <>
-      <Configuracoes>
-        {opcoes.map((opcao) => (
-          <Opcao
-            key={opcao.id}
-            id={opcao.id}
-            label={opcao.label}
-            checked={opcao.checked}
-            onChange={handleOptionClick}
-          />
-        ))}
-      </Configuracoes>
       <NavBar />
       {toastInfo && (
         <Toast

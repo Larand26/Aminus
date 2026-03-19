@@ -6,8 +6,6 @@ import InputLabel from "../components/inputs/InputText";
 import SelectLabel from "../components/inputs/Select";
 import InputDataLabel from "../components/inputs/InputDate";
 import Tabela from "../components/table/Table";
-import Configuracoes from "../components/misc/Configuration";
-import Opcao from "../components/Opcao";
 import PopUp from "../components/PopUp";
 import Toast from "../components/Toast";
 import Content from "../components/Content";
@@ -164,17 +162,6 @@ const Reservations = () => {
           type={toastInfo.type}
         />
       )}
-      <Configuracoes>
-        {opcoes.map((opcao) => (
-          <Opcao
-            key={opcao.id}
-            id={opcao.id}
-            label={opcao.label}
-            checked={opcao.checked}
-            onChange={handleOptionClick}
-          />
-        ))}
-      </Configuracoes>
       <NavBar />
       <div className="main-container">
         <SideBar onSearch={handleSearch}>

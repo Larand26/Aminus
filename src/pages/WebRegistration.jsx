@@ -5,8 +5,6 @@ import SideBar from "../components/SideBar";
 import InputLabel from "../components/inputs/InputText";
 import Tabela from "../components/table/Table";
 import SelectLabel from "../components/inputs/Select";
-import Configuracoes from "../components/misc/Configuration";
-import Opcao from "../components/Opcao";
 import ButtonTypeGender from "../components/buttons/ButtonTypeGender";
 import InputButton from "../components/inputs/InputButton";
 import Toast from "../components/Toast";
@@ -279,17 +277,6 @@ const WebRegistration = () => {
 
   return (
     <>
-      <Configuracoes>
-        {opcoes.map((opcao) => (
-          <Opcao
-            key={opcao.id}
-            id={opcao.id}
-            label={opcao.label}
-            checked={opcao.checked}
-            onChange={handleOptionClick}
-          />
-        ))}
-      </Configuracoes>
       <NavBar />
       {toastInfo && (
         <Toast

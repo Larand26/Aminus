@@ -3,8 +3,6 @@ import { Component } from "react";
 import NavBar from "../components/misc/NavBar.jsx";
 import SideBar from "../components/SideBar.jsx";
 import InputNumeroLabel from "../components/inputs/InputNumber.jsx";
-import Configuracoes from "../components/misc/Configuration.jsx";
-import Opcao from "../components/Opcao.jsx";
 import Toast from "../components/Toast.jsx";
 import Content from "../components/Content.jsx";
 import InputText from "../components/inputs/InputText.jsx";
@@ -116,17 +114,6 @@ class Products extends Component {
 
     return (
       <>
-        <Configuracoes>
-          {opcoes.map((opcao) => (
-            <Opcao
-              key={opcao.id}
-              id={opcao.id}
-              label={opcao.label}
-              checked={opcao.checked}
-              onChange={this.handleOptionClick}
-            />
-          ))}
-        </Configuracoes>
         <NavBar />
         {toastInfo && (
           <Toast
