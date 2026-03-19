@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
-import InputLabel from "../components/InputLabel";
+import InputLabel from "../components/inputs/InputText";
 import SelectLabel from "../components/SelectLabel";
 import Content from "../components/Content";
 import Toast from "../components/Toast";

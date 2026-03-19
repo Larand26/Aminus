@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
-import InputLabel from "../components/InputLabel";
+import InputLabel from "../components/inputs/InputText";
 import Tabela from "../components/table/Table";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";

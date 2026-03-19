@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import InputFile from "../InputFile";
-import InputLabel from "../InputLabel";
+import InputLabel from "../inputs/InputText";
 import SelectLabel from "../SelectLabel";
 
 import pegaUrlIntegracao from "../../utils/fotos/pegaUrlIntegracao";

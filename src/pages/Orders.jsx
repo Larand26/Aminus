@@ -4,7 +4,7 @@ import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
 import Tabela from "../components/table/Table";
 import SelectLabel from "../components/SelectLabel";
-import InputLabel from "../components/InputLabel";
+import InputLabel from "../components/inputs/InputText";
 import InputDataLabel from "../components/inputs/InputDate";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
