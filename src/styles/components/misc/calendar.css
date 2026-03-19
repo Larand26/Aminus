@@ -1,0 +1,114 @@
+.input-date-container .calendar {
+  position: absolute;
+  background-color: var(--cor-primaria);
+  border: solid 2px var(--cor-branco);
+  z-index: 100;
+  left: calc(10%); /* era 300px - 30px para direita */
+  top: calc(0% + 150px); /* era 200px - 50px para cima */
+  border-radius: 4px;
+  padding: 10px;
+  min-width: 250px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.calendar.hidden {
+  transform: scale(0);
+}
+
+.calendar.show {
+  transform: scale(1);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calendar-header button {
+  background: none;
+  border: none;
+  color: var(--cor-branco);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.calendar-header span {
+  color: var(--cor-branco);
+}
+
+.calendar-header span.month {
+  font-weight: bold;
+}
+.calendar-header span.year {
+  font-size: 14px;
+}
+
+.calendar-header-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.calendar-body {
+  width: 100%;
+  border: 1px solid var(--cor-branco);
+  color: var(--cor-branco);
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  justify-items: center;
+  gap: 5px;
+  padding: 5px 0;
+  background-color: var(--cor-primaria);
+  font-weight: bold;
+  border-bottom: 1px solid var(--cor-branco);
+}
+
+.calendar-days {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(7, 1fr);
+  row-gap: 5px;
+  padding: 5px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.button-day {
+  position: relative;
+  z-index: 1;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--cor-branco);
+  transition: 0.3s;
+}
+
+.button-day:hover {
+  background-color: var(--cor-amarelo);
+  cursor: pointer;
+}
+
+.current-month {
+  font-weight: bold;
+}
+
+.other-month {
+  color: var(--cor-branco);
+  opacity: 0.5;
+}
+
+.selected {
+  background-color: var(--cor-amarelo);
+}
