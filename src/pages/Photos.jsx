@@ -4,11 +4,11 @@ import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
 import InputLabel from "../components/inputs/InputText";
 import CheckBox from "../components/inputs/InputCheckBox";
-import Card from "../components/Card";
+import Card from "../components/misc/Card";
 import ActionButtons from "../components/buttons/ActionButtons";
 import PopUp from "../components/PopUp";
 import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
-import Loading from "../components/Loading";
+import Loading from "../components/misc/Loading";
 import Toast from "../components/Toast";
 import Content from "../components/Content";
 

@@ -4,7 +4,7 @@ import Utils from "../../utils/Utils";
 
 // Components
 import CheckBox from "../inputs/InputCheckBox";
-import Loading from "../Loading";
+import Loading from "../misc/Loading";
 
 import "../../styles/components/table/table.css";
 
