@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
-import SelectLabel from "../components/SelectLabel";
+import Select from "../components/inputs/Select";
 import InputLabel from "../components/inputs/InputText";
 import InputDataLabel from "../components/inputs/InputDate";
 import Tabela from "../components/table/Table";
@@ -145,7 +145,7 @@ const Invoices = () => {
             onKeyDown={handleKeyDown}
           />
           {userRoleId != 2 && (
-            <SelectLabel
+            <Select
               label="Sellers"
               options={vendedoresJson}
               onChange={setSeller}
@@ -153,14 +153,14 @@ const Invoices = () => {
               onKeyDown={handleKeyDown}
             />
           )}
-          <SelectLabel
+          <Select
             label="State"
             options={ufsJson}
             onChange={setStateCode}
             value={stateCode}
             onKeyDown={handleKeyDown}
           />
-          <SelectLabel
+          <Select
             label="Carrier"
             options={transportadorasJson}
             onChange={setCarrier}

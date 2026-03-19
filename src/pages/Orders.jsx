@@ -3,7 +3,7 @@ import { useState } from "react";
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
 import Tabela from "../components/table/Table";
-import SelectLabel from "../components/SelectLabel";
+import Select from "../components/inputs/Select";
 import InputLabel from "../components/inputs/InputText";
 import InputDataLabel from "../components/inputs/InputDate";
 import Configuracoes from "../components/Configuracoes";
@@ -273,7 +273,7 @@ const Orders = () => {
             onKeyDown={handleKeyDown}
           />
           {userRoleId != 2 && (
-            <SelectLabel
+            <Select
               options={vendedoresJson}
               label="Seller"
               value={seller}

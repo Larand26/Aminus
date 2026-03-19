@@ -1,0 +1,126 @@
+.select-container {
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.select-container > label {
+  margin-bottom: 5px;
+  color: var(--cor-branco);
+}
+
+.select-container > .select {
+  width: 100%;
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  background-color: var(--cor-fundo);
+  padding: 5px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.select-container > .select.open {
+  border-radius: 10px 10px 0 0;
+  border: 1px solid var(--cor-branco);
+}
+
+.select-container > .select input {
+  width: 90%;
+  font-size: 16px;
+  cursor: pointer;
+  border: transparent;
+  background-color: transparent;
+}
+
+.select-container > .select input:focus {
+  outline: none;
+}
+
+.select-container > .select i {
+  color: var(--cor-primaria);
+  font-size: 18px;
+  margin-left: 10px;
+  transition: 0.2s;
+}
+
+.select-container > .select i.open {
+  transform: rotate(180deg);
+}
+
+.options {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background-color: var(--cor-fundo);
+  border: solid 2px var(--cor-branco);
+  border-top: 0;
+  z-index: 100;
+  border-radius: 0 0 10px 10px;
+  padding: 0 10px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  overflow: hidden;
+  transform: translateY(-6px);
+  transform-origin: top;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    transform 0.3s ease,
+    padding 0.2s ease;
+}
+
+.options.hidden {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  padding-top: 0;
+  padding-bottom: 0;
+  pointer-events: none;
+}
+
+.options.show {
+  max-height: 127px;
+  overflow-y: auto;
+  opacity: 1;
+  transform: translateY(0);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  pointer-events: auto;
+}
+
+.options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.options::-webkit-scrollbar-thumb {
+  background-color: var(--cor-primaria);
+  border-radius: 3px;
+}
+
+.option {
+  padding: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid var(--cor-branco);
+  margin-bottom: 3px;
+}
+
+.option.even {
+  background-color: var(--cor-fundo);
+}
+.option.odd {
+  background-color: var(--cor-branco);
+}
+
+.option:hover {
+  background-color: var(--cor-primaria);
+  color: var(--cor-branco);
+}
+
+.select .select-input.searchable {
+  cursor: text;
+}
