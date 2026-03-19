@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
 import InputLabel from "../components/inputs/InputText";
-import SelectLabel from "../components/SelectLabel";
+import SelectLabel from "../components/inputs/Select";
 import Content from "../components/Content";
 import Toast from "../components/Toast";
 import PopUp from "../components/PopUp";

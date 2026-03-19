@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-import SearchButton from "./SearchButton";
+import SearchButton from "./buttons/SearchButton";
 
 import "../styles/side-bar.css";
 

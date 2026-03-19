@@ -4,7 +4,7 @@ import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/SideBar";
 import InputLabel from "../components/inputs/InputText";
 import Tabela from "../components/table/Table";
-import SelectLabel from "../components/SelectLabel";
+import SelectLabel from "../components/inputs/Select";
 import Configuracoes from "../components/Configuracoes";
 import Opcao from "../components/Opcao";
 import ButtonTypeGender from "../components/buttons/ButtonTypeGender";
@@ -26,7 +26,6 @@ import generos from "../assets/json/generos.json";
 import tipos from "../assets/json/tipos.json";
 
 import "../styles/cadastro-web.css";
-import "../styles/inputs/input-styled.css";
 
 import uknown from "../assets/img/unknown.jpg";
 
