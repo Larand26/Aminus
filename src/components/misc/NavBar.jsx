@@ -1,9 +1,9 @@
 import { Component } from "react";
 
 import ProfileMenu from "../ProfileMenu";
-import PopUp from "../PopUp";
-import ProfilePopupContent from "../PopUps/PopUpMeuPerfil";
 import Configuration from "./Configuration";
+
+import PopUpProfile from "../popups/PopUpProfile";
 
 import "../../styles/components/misc/nav-bar.css";
 
@@ -55,13 +55,10 @@ class NavBar extends Component {
         {settings && settings.length > 0 && (
           <Configuration isOpen={isSettingsOpen} configs={settings} />
         )}
-        <PopUp
-          id="meu-perfil-popup"
-          open={isProfileOpen}
-          setOpen={this.setProfileOpen}
-        >
-          <ProfilePopupContent />
-        </PopUp>
+        <PopUpProfile
+          isOpen={isProfileOpen}
+          onClose={() => this.setProfileOpen(false)}
+        />
         <ProfileMenu
           isOpen={isMenuOpen}
           setMenuOpen={this.setMenuOpen}

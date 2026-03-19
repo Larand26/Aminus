@@ -10,8 +10,6 @@ import Button from "../components/buttons/Button";
 import Toast from "../components/Toast";
 import Content from "../components/misc/Content";
 
-import PopUp from "../components/PopUp";
-
 import searchOrders from "../utils/search/searchPedidos";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 import getOrderItems from "../utils/getItensPedido";
@@ -183,48 +181,6 @@ const Orders = () => {
 
   return (
     <>
-      <PopUp
-        id="popup-pedido"
-        width="1200px"
-        height="600px"
-        title="Order Items"
-        open={isItemsPopupOpen}
-        setOpen={setIsItemsPopupOpen}
-      >
-        {selectedOrder && (
-          <div className="popup-pedido-content">
-            <h1>{selectedOrder.NUM_PEDIDO}</h1>
-            <Tabela
-              dados={orderItems}
-              semDados="No items found"
-              linhaSelecionada={selectedRow}
-              onLinhaSelecionadaChange={setSelectedRow}
-            ></Tabela>
-            <div className="buttons-container">
-              <Button text="Volume" icon="fa fa-box" onClick={handleVolume} />
-              <Button text="Quote" icon="fa fa-truck" onClick={handleQuote} />
-              <Button text="Print" icon="fa fa-print" />
-            </div>
-          </div>
-        )}
-      </PopUp>
-      <PopUp
-        id="popup-cotacao"
-        title="Quote"
-        width="600px"
-        open={isQuotePopupOpen}
-        setOpen={setIsQuotePopupOpen}
-      >
-        <div className="popup-cotacao-content" style={{ paddingTop: "45px" }}>
-          <Tabela
-            dados={quote}
-            semDados="No quotes found"
-            linhaSelecionada={selectedRow}
-            onLinhaSelecionadaChange={setSelectedRow}
-            loading={isQuoteLoading}
-          ></Tabela>
-        </div>
-      </PopUp>
       <NavBar />
       {toastInfo && (
         <Toast

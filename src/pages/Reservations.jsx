@@ -6,7 +6,6 @@ import InputLabel from "../components/inputs/InputText";
 import SelectLabel from "../components/inputs/Select";
 import InputDataLabel from "../components/inputs/InputDate";
 import Tabela from "../components/table/Table";
-import PopUp from "../components/PopUp";
 import Toast from "../components/Toast";
 import Content from "../components/misc/Content";
 
@@ -129,32 +128,6 @@ const Reservations = () => {
 
   return (
     <>
-      <PopUp
-        id="popup-reservas"
-        width="400px"
-        height="250px"
-        onClose={handleClosePopup}
-        open={isDatePopupOpen}
-        setOpen={setIsDatePopupOpen}
-      >
-        <h2>Check reservation date</h2>
-        <div className="content-popup-reservas">
-          <InputDataLabel
-            value={reservationDate}
-            onChange={setReservationDate}
-          />
-          <button className="btn-consulta-reserva" onClick={handleSearchData}>
-            <i className="fa fa-search" />
-          </button>
-        </div>
-        <div>
-          {Array.isArray(reservationDateResponse) &&
-          reservationDateResponse.length > 0
-            ? new Date(reservationDateResponse[0].DATA).toLocaleString("pt-BR")
-            : reservationDateResponse}
-        </div>
-        <div className="footer-popup-reservas"></div>
-      </PopUp>
       {toastInfo && (
         <Toast
           key={toastInfo.key}

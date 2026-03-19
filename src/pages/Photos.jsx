@@ -6,8 +6,6 @@ import InputLabel from "../components/inputs/InputText";
 import CheckBox from "../components/inputs/InputCheckBox";
 import Card from "../components/misc/Card";
 import ActionButtons from "../components/buttons/ActionButtons";
-import PopUp from "../components/PopUp";
-import PopUpEditarFoto from "../components/popups/PopUpEditarFoto";
 import Loading from "../components/misc/Loading";
 import Toast from "../components/Toast";
 import Content from "../components/misc/Content";
@@ -192,24 +190,6 @@ const Photos = () => {
 
   return (
     <>
-      <PopUp
-        id="editar-foto"
-        onClose={() => {
-          setSelectedPhoto(null);
-          setIsPhotosPopupOpen(false);
-        }}
-        width="80%"
-        height="700px"
-        open={isPhotosPopupOpen}
-      >
-        {/* Renders editor only when a photo is selected */}
-        {selectedPhoto && (
-          <PopUpEditarFoto
-            foto={selectedPhoto}
-            onCloseAndSave={handleCloseAndSave}
-          />
-        )}
-      </PopUp>
       <NavBar />
       {toastInfo && (
         <Toast
