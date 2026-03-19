@@ -36,9 +36,16 @@ const Photos = () => {
 
   // Photos
   const [photos, setPhotos] = useState([]);
+  const [allPhotos, setAllPhotos] = useState([]);
 
   // Pop up
   const [isPhotosPopupOpen, setIsPhotosPopupOpen] = useState(false);
+
+  useEffect(() => {
+    if (allPhotos.length > 0) {
+      setPhotos(allPhotos);
+    }
+  }, [allPhotos]);
 
   const handleSearch = async () => {
     setPhotos([]);

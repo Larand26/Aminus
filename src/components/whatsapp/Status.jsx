@@ -1,4 +1,4 @@
-import InputFile from "../InputFile.jsx";
+import InputFile from "../inputs/InputPhoto";
 import InputVideo from "../InputVideo.jsx";
 
 import "../../styles/whatsapp/mensagensWpp.css";

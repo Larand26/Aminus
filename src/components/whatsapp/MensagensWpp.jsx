@@ -1,4 +1,4 @@
-import InputFile from "../InputFile.jsx";
+import InputFile from "../inputs/InputPhoto";
 import Tabela from "../table/Table";
 
 import "../../styles/whatsapp/mensagensWpp.css";
@@ -18,7 +18,7 @@ const MensagensWpp = (props) => {
   return (
     <div className="mensagens-wpp-container">
       <div>
-        <InputFile initialFiles={props.imagens} onChange={props.setImagens} />
+        <InputFile photos={props.imagens} onChange={props.setImagens} />
       </div>
       <div className="mensagens-wpp-content">
         <div>

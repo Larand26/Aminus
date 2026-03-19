@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import InputFile from "../InputFile";
+import InputFile from "../inputs/InputPhoto";
 import InputLabel from "../inputs/InputText";
 import SelectLabel from "../SelectLabel";
 
