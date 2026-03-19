@@ -65,6 +65,11 @@ class Select extends Component {
     this.setState({ isOpen: true });
   };
 
+  handleInputToggleClick = (event) => {
+    event.stopPropagation();
+    this.toggleShowOptions();
+  };
+
   handleIconClick = (event) => {
     event.stopPropagation();
     const { value } = this.props;
@@ -113,7 +118,9 @@ class Select extends Component {
               this.handleSearchChange(event);
               onChange(event.target.value);
             }}
-            onClick={this.handleInputClick}
+            onClick={
+              search ? this.handleInputClick : this.handleInputToggleClick
+            }
           />
 
           <i
