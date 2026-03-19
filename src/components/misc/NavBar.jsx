@@ -3,6 +3,7 @@ import { Component } from "react";
 import ProfileMenu from "../ProfileMenu";
 import PopUp from "../PopUp";
 import ProfilePopupContent from "../PopUps/PopUpMeuPerfil";
+import Configuration from "./Configuration";
 
 import "../../styles/components/misc/nav-bar.css";
 
@@ -13,6 +14,7 @@ class NavBar extends Component {
       isProfileOpen: false,
       isSettingsOpen: false,
       isMenuOpen: false,
+      isSettingsOpen: false,
     };
   }
 
@@ -35,9 +37,9 @@ class NavBar extends Component {
   };
 
   toggleSettings = () => {
-    document
-      .querySelector("#configuracoes")
-      .classList.toggle("open-configuracoes-container");
+    this.setState((prevState) => ({
+      isSettingsOpen: !prevState.isSettingsOpen,
+    }));
   };
 
   navigateHome = () => {
@@ -45,11 +47,14 @@ class NavBar extends Component {
   };
 
   render() {
-    const { isProfileOpen, isMenuOpen } = this.state;
-    const { page } = this.props;
+    const { isProfileOpen, isMenuOpen, isSettingsOpen } = this.state;
+    const { page, settings } = this.props;
 
     return (
       <>
+        {settings && settings.length > 0 && (
+          <Configuration isOpen={isSettingsOpen} configs={settings} />
+        )}
         <PopUp
           id="meu-perfil-popup"
           open={isProfileOpen}
@@ -69,7 +74,7 @@ class NavBar extends Component {
             </button>
           </div>
           <div className="actions">
-            {page !== "home" && (
+            {settings && settings.length > 0 && (
               <button onClick={this.toggleSettings}>
                 <i className="fa fa-cog"></i>
               </button>

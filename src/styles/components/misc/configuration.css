@@ -1,0 +1,38 @@
+.configuration-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100%;
+  background-color: var(--cor-primaria);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  transition: transform 0.3s ease-in-out;
+}
+
+.configuration-container.hidden {
+  transform: translateX(100%);
+}
+
+.configuration {
+  width: 80%;
+  height: 80%;
+  background-color: var(--cor-fundo);
+  border-radius: 20px;
+  padding: 10px;
+  box-sizing: border-box;
+  margin-top: 30px;
+}
+.config-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.config {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}

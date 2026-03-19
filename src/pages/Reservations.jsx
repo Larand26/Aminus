@@ -6,7 +6,7 @@ import InputLabel from "../components/inputs/InputText";
 import SelectLabel from "../components/inputs/Select";
 import InputDataLabel from "../components/inputs/InputDate";
 import Tabela from "../components/table/Table";
-import Configuracoes from "../components/Configuracoes";
+import Configuracoes from "../components/misc/Configuration";
 import Opcao from "../components/Opcao";
 import PopUp from "../components/PopUp";
 import Toast from "../components/Toast";

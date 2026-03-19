@@ -5,7 +5,7 @@ import SideBar from "../components/SideBar";
 import InputLabel from "../components/inputs/InputText";
 import Tabela from "../components/table/Table";
 import SelectLabel from "../components/inputs/Select";
-import Configuracoes from "../components/Configuracoes";
+import Configuracoes from "../components/misc/Configuration";
 import Opcao from "../components/Opcao";
 import ButtonTypeGender from "../components/buttons/ButtonTypeGender";
 import InputButton from "../components/inputs/InputButton";

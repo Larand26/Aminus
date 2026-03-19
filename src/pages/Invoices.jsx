@@ -6,7 +6,7 @@ import Select from "../components/inputs/Select";
 import InputLabel from "../components/inputs/InputText";
 import InputDataLabel from "../components/inputs/InputDate";
 import Tabela from "../components/table/Table";
-import Configuracoes from "../components/Configuracoes";
+import Configuracoes from "../components/misc/Configuration";
 import Opcao from "../components/Opcao";
 import Toast from "../components/Toast";
 import Content from "../components/Content";
@@ -105,17 +105,6 @@ const Invoices = () => {
 
   return (
     <>
-      <Configuracoes>
-        {options.map((option) => (
-          <Opcao
-            key={option.id}
-            id={option.id}
-            label={option.label}
-            checked={option.checked}
-            onChange={handleOptionClick}
-          />
-        ))}
-      </Configuracoes>
       <NavBar />
       {toastInfo && (
         <Toast
