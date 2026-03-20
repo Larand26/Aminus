@@ -137,6 +137,8 @@ class ProductService {
         filterConditions,
       );
 
+      console.log(finalQuery);
+
       const productReservations = await SQLServerDB.query(finalQuery, params);
 
       return {

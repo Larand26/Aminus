@@ -19,6 +19,9 @@ import sellersOptions from "../assets/json/options/sellersOptions";
 // table options
 import tableOptions from "../assets/json/table_options/reservationsOptions";
 
+// scripts
+import ProductUtil from "../utils/Product";
+
 class Reservation extends Component {
   constructor(props) {
     super(props);
@@ -33,12 +36,34 @@ class Reservation extends Component {
     };
   }
 
+  static token = localStorage.getItem("token");
+
+  async getProductReservations() {
+    const filters = {
+      productCode: this.state.productCode || null,
+      manufacturerCode: this.state.manufacturerCode || null,
+      orderCode: this.state.orderNumber || null,
+      clientName: this.state.clientName || null,
+      sellerId: this.state.sellerId || null,
+    };
+
+    console.log(filters);
+    const response = await ProductUtil.getProductReservations({
+      token: this.token,
+      filters,
+    });
+
+    if (response.success) {
+      this.setState({ reservationsData: response.data });
+    }
+  }
+
   render() {
     return (
       <>
         <NavBar />
         <div className="main-container">
-          <SideBar>
+          <SideBar onSearch={() => this.getProductReservations()}>
             <InputText
               label="Código do fabricante"
               value={this.state.manufacturerCode}
