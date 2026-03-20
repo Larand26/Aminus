@@ -4,7 +4,7 @@ import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
 import InputLabel from "../components/inputs/InputText";
 import Tabela from "../components/table/Table";
-import Toast from "../components/Toast";
+import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 
 import searchClients from "../utils/search/searchClientes";

@@ -7,7 +7,7 @@ import Tabela from "../components/table/Table";
 import SelectLabel from "../components/inputs/Select";
 import ButtonTypeGender from "../components/buttons/ButtonTypeGender";
 import InputButton from "../components/inputs/InputButton";
-import Toast from "../components/Toast";
+import Toast from "../components/misc/Toast";
 
 import searchWebRegistration from "../utils/search/searchCadastroWeb";
 import atualizaOpcoes from "../utils/atualizaOpcoes";

@@ -7,7 +7,7 @@ import Select from "../components/inputs/Select";
 import InputLabel from "../components/inputs/InputText";
 import InputDataLabel from "../components/inputs/InputDate";
 import Button from "../components/buttons/Button";
-import Toast from "../components/Toast";
+import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 
 import searchOrders from "../utils/search/searchPedidos";

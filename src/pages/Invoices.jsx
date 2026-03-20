@@ -6,7 +6,7 @@ import Select from "../components/inputs/Select";
 import InputLabel from "../components/inputs/InputText";
 import InputDataLabel from "../components/inputs/InputDate";
 import Tabela from "../components/table/Table";
-import Toast from "../components/Toast";
+import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 
 import searchInvoices from "../utils/search/searchNotas";

@@ -7,7 +7,7 @@ import CheckBox from "../components/inputs/InputCheckBox";
 import Card from "../components/misc/Card";
 import ActionButtons from "../components/buttons/ActionButtons";
 import Loading from "../components/misc/Loading";
-import Toast from "../components/Toast";
+import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 
 import searchPhotos from "../utils/search/searchFotos";

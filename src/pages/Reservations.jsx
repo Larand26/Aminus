@@ -6,7 +6,7 @@ import InputLabel from "../components/inputs/InputText";
 import SelectLabel from "../components/inputs/Select";
 import InputDataLabel from "../components/inputs/InputDate";
 import Tabela from "../components/table/Table";
-import Toast from "../components/Toast";
+import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 
 import vendedoresJson from "../assets/json/vendedores.json";

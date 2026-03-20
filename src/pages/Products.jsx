@@ -3,7 +3,7 @@ import { Component } from "react";
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
 import InputNumeroLabel from "../components/inputs/InputNumber";
-import Toast from "../components/Toast";
+import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 import InputText from "../components/inputs/InputText";
 import Table from "../components/table/Table";

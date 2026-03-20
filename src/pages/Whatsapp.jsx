@@ -5,7 +5,7 @@ import SideBar from "../components/misc/SideBar";
 import InputLabel from "../components/inputs/InputText";
 import SelectLabel from "../components/inputs/Select";
 import Content from "../components/misc/Content";
-import Toast from "../components/Toast";
+import Toast from "../components/misc/Toast";
 import PopUp from "../components/popups/PopUp";
 
 import ClientesWpp from "../components/whatsapp/ClientesWpp";
