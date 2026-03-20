@@ -14,7 +14,6 @@ class NavBar extends Component {
       isProfileOpen: false,
       isSettingsOpen: false,
       isMenuOpen: false,
-      isSettingsOpen: false,
     };
   }
 

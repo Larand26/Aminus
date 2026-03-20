@@ -9,6 +9,8 @@ const BASE_QUERY = readFileSync(
   "utf-8",
 );
 
+const FILTER_PLACEHOLDER = "-- Os filtros serão adicionados aqui pelo Node.js";
+
 const FILTER_MAP = {
   numInvoice: { condition: `NF.[NF_NUMDOCUM] = @numInvoice` },
   cnpj: { condition: `NF.[NF_CGCCPFENTIDADE] = @cnpj` },
@@ -61,15 +63,17 @@ class InvoiceService {
         extraConditions.push(condition);
       }
 
-      const suffix =
+      const filterConditions =
         extraConditions.length > 0
           ? `AND ${extraConditions.join(" AND ")}`
           : "";
 
-      const invoices = await SQLServerDB.query(
-        `${BASE_QUERY} ${suffix}`,
-        params,
+      const finalQuery = BASE_QUERY.replace(
+        FILTER_PLACEHOLDER,
+        filterConditions,
       );
+
+      const invoices = await SQLServerDB.query(finalQuery, params);
 
       return {
         success: true,

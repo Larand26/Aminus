@@ -22,29 +22,65 @@ import carriersOptions from "../assets/json/options/carriersOptions";
 // table options
 import tableOpitions from "../assets/json/table_options/invoicesOptions";
 
+// scripts
+import InvoiceUtil from "../utils/Invoices";
+
 class Invoices extends Component {
   constructor(props) {
     super(props);
     this.state = {
       toastInfo: null,
       invoicesData: [],
-      invoiceId: null,
+      numInvoice: null,
+      cnpj: null,
       sellerId: null,
-      state: null,
-      carrier: null,
+      uf: null,
+      transporter: null,
       issueDate: [null, null],
     };
   }
+  static token = localStorage.getItem("token");
+
+  async getInvoices() {
+    const filters = {
+      numInvoice: this.state.numInvoice || null,
+      cnpj: this.state.cnpj || null,
+      sellerId: this.state.sellerId || null,
+      uf: this.state.uf || null,
+      transporter: this.state.transporter || null,
+      initialDate: this.state.issueDate[0] || null,
+      finalDate: this.state.issueDate[1] || null,
+    };
+
+    console.log(filters);
+
+    const response = await InvoiceUtil.getInvoices({
+      token: this.token,
+      filters,
+    });
+
+    console.log(response);
+
+    if (response.success) {
+      this.setState({ invoicesData: response.data });
+    }
+  }
+
   render() {
     return (
       <>
         <NavBar />
         <div className="main-container">
-          <SideBar>
+          <SideBar onSearch={() => this.getInvoices()}>
             <InputText
               label="Número da Nota"
-              value={this.state.invoiceId}
-              onChange={(value) => this.setState({ invoiceId: value })}
+              value={this.state.numInvoice}
+              onChange={(value) => this.setState({ numInvoice: value })}
+            />
+            <InputText
+              label="CNPJ"
+              value={this.state.cnpj}
+              onChange={(value) => this.setState({ cnpj: value })}
             />
             <InputDate
               label="Data de Emissão"
@@ -59,14 +95,15 @@ class Invoices extends Component {
             />
             <Select
               label="Estado"
-              value={this.state.state}
-              onChange={(value) => this.setState({ state: value })}
+              value={this.state.uf}
+              onChange={(value) => this.setState({ uf: value })}
               options={statesOptions}
+              search
             />
             <Select
               label="Transportadora"
-              value={this.state.carrier}
-              onChange={(value) => this.setState({ carrier: value })}
+              value={this.state.transporter}
+              onChange={(value) => this.setState({ transporter: value })}
               options={carriersOptions}
             />
           </SideBar>
