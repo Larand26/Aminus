@@ -1,186 +1,78 @@
-import { useState } from "react";
+import { Component } from "react";
 
+// Components
+// misc
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
-import InputLabel from "../components/inputs/InputText";
-import SelectLabel from "../components/inputs/Select";
-import InputDataLabel from "../components/inputs/InputDate";
-import Tabela from "../components/table/Table";
-import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 
-import vendedoresJson from "../assets/json/options/statesOptions";
-import opcoesReserva from "../assets/json/table_options/opcoesReserva.json";
+// table
+import Table from "../components/table/Table";
 
-import searchReservations from "../utils/search/searchReservas";
-import atualizaOpcoes from "../utils/atualizaOpcoes";
-import searchDate from "../utils/search/searchData";
+// inputs
+import InputText from "../components/inputs/InputText";
+import Select from "../components/inputs/Select";
 
-import "../styles/reservas.css";
+// options
+import sellersOptions from "../assets/json/options/sellersOptions";
 
-const Reservations = () => {
-  // Input states
-  const [manufacturerCode, setManufacturerCode] = useState("");
-  const [internalCode, setInternalCode] = useState("");
-  const [orderNumber, setOrderNumber] = useState("");
-  const [clientName, setClientName] = useState("");
-  const [seller, setSeller] = useState("");
+// table options
+import tableOptions from "../assets/json/table_options/reservationsOptions";
 
-  // Toast
-  const [toastInfo, setToastInfo] = useState(null);
-
-  // Loading
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Reservations
-  const [reservations, setReservations] = useState([]);
-
-  // Popups
-  const [isDatePopupOpen, setIsDatePopupOpen] = useState(false);
-
-  const handleSearch = async () => {
-    setReservations([]);
-    setIsLoading(true);
-    const filters = {
-      codFabricante: manufacturerCode,
-      codInterno: internalCode,
-      numPedido: orderNumber,
-      nomeCliente: clientName,
-      vendedor: seller,
+class Reservation extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toastInfo: null,
+      reservationsData: [],
+      manufacturerCode: null,
+      internalCode: null,
+      orderNumber: null,
+      clientName: null,
+      sellerId: null,
     };
+  }
 
-    const response = await searchReservations(filters);
-    setIsLoading(false);
-
-    if (response.success) {
-      setReservations(response.data);
-      if (response.data.length === 0) {
-        setToastInfo({
-          key: Date.now(),
-          message: "No reservations found with the selected filters.",
-          type: "aviso",
-        });
-      }
-    } else {
-      setToastInfo({
-        key: Date.now(),
-        message: "Error while searching reservations.",
-        type: "falha",
-      });
-    }
-  };
-
-  // Handles Enter key submit
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
-  };
-
-  // Options
-  const [opcoes, setOpcoes] = useState(() => {
-    const savedOpcoes = localStorage.getItem("opcoesReserva");
-    return atualizaOpcoes(opcoesReserva, savedOpcoes);
-  });
-
-  const handleOptionClick = (e) => {
-    const { id } = e.target;
-    const updatedOptions = opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
+  render() {
+    return (
+      <>
+        <NavBar />
+        <div className="main-container">
+          <SideBar>
+            <InputText
+              label="Código do fabricante"
+              value={this.state.manufacturerCode}
+              onChange={(value) => this.setState({ manufacturerCode: value })}
+            />
+            <InputText
+              label="Código interno"
+              value={this.state.internalCode}
+              onChange={(value) => this.setState({ internalCode: value })}
+            />
+            <InputText
+              label="Número do pedido"
+              value={this.state.orderNumber}
+              onChange={(value) => this.setState({ orderNumber: value })}
+            />
+            <InputText
+              label="Nome do cliente"
+              value={this.state.clientName}
+              onChange={(value) => this.setState({ clientName: value })}
+            />
+            <Select
+              label="Vendedor"
+              value={this.state.sellerId}
+              onChange={(value) => this.setState({ sellerId: value })}
+              options={sellersOptions}
+            />
+          </SideBar>
+          <Content title="Produtos reservados">
+            <Table datas={this.state.reservationsData} options={tableOptions} />
+          </Content>
+        </div>
+      </>
     );
-    setOpcoes(updatedOptions);
-    localStorage.setItem("opcoesReserva", JSON.stringify(updatedOptions));
-  };
+  }
+}
 
-  // PopUp
-  const [selectedOrder, setSelectedOrder] = useState(null);
-
-  const openPopup = (item) => {
-    setSelectedOrder(item);
-    setIsDatePopupOpen(true);
-  };
-
-  const handleClosePopup = () => {
-    setReservationDateResponse("Select a date");
-  };
-
-  // Reservation date
-  const [reservationDate, setReservationDate] = useState([null, null]);
-  const [reservationDateResponse, setReservationDateResponse] =
-    useState("Select a date");
-
-  const handleSearchData = async () => {
-    const filters = {
-      codInterno: selectedOrder.COD_INTERNO || null,
-      numPedido: selectedOrder.NUM_PEDIDO || null,
-      dataPesquisa: reservationDate || null,
-    };
-
-    const results = await searchDate(filters);
-
-    if (results.success) {
-      setReservationDateResponse(results.data);
-      console.log(results.data);
-    } else {
-      setReservationDateResponse("Error while searching data");
-    }
-  };
-
-  return (
-    <>
-      {toastInfo && (
-        <Toast
-          key={toastInfo.key}
-          message={toastInfo.message}
-          type={toastInfo.type}
-        />
-      )}
-      <NavBar />
-      <div className="main-container">
-        <SideBar onSearch={handleSearch}>
-          <InputLabel
-            label="Manufacturer Code"
-            value={manufacturerCode}
-            onChange={setManufacturerCode}
-            onKeyDown={handleKeyDown}
-          />
-          <InputLabel
-            label="Internal Code"
-            value={internalCode}
-            onChange={setInternalCode}
-            onKeyDown={handleKeyDown}
-          />
-          <InputLabel
-            label="Order No."
-            value={orderNumber}
-            onChange={setOrderNumber}
-            onKeyDown={handleKeyDown}
-          />
-          <InputLabel
-            label="Client Name"
-            value={clientName}
-            onChange={setClientName}
-            onKeyDown={handleKeyDown}
-          />
-          <SelectLabel
-            label="Seller"
-            options={vendedoresJson}
-            value={seller}
-            onChange={setSeller}
-            onKeyDown={handleKeyDown}
-          />
-        </SideBar>
-        <Content titulo="Reservations">
-          <Tabela
-            dados={reservations}
-            semDados="No reservations found"
-            hover
-            loading={isLoading}
-            search={opcoes.find((opcao) => opcao.id === "search").checked}
-          ></Tabela>
-        </Content>
-      </div>
-    </>
-  );
-};
-export default Reservations;
+export default Reservation;

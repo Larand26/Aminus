@@ -1,0 +1,22 @@
+[
+  { "key": "COD_INTERNO", "name": "Cod Interno", "checked": true },
+  { "key": "COD_FABRICANTE", "name": "Cod Fabricante", "checked": true },
+  { "key": "NOME_CLIENTE", "name": "Nome Cliente", "checked": true },
+  { "key": "NOME_VENDEDOR", "name": "Nome Vendedor", "checked": true },
+  {
+    "key": "DATA_ALTERACAO",
+    "name": "Data Alteração",
+    "checked": true,
+    "format": "date-time"
+  },
+  {
+    "key": "NUM_PEDIDO",
+    "name": "Num Pedido",
+    "checked": true
+  },
+  {
+    "key": "QUANTIDADE_RESERVADA",
+    "name": "Quantidade Reservada",
+    "checked": true
+  }
+]
