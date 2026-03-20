@@ -12,52 +12,49 @@ const RESERVATION_BASE_QUERY = readFileSync(
   path.resolve(__dirname, "../database/queries/qureyReservationProduct.sql"),
   "utf-8",
 );
-const REGISTRATION_BASE_QUERY = readFileSync(
-  path.resolve(__dirname, "../database/queries/queryRegistrationProduct.sql"),
-  "utf-8",
-);
 const FILTER_PLACEHOLDER = "-- Os filtros serão adicionados aqui pelo Node.js";
 
 const FILTER_MAP = {
-  idProduto: { condition: `P.[ID_CODPRODUTO] = @idProduto` },
-  idFabric: { condition: `P.[PROD_CODFABRIC] = @idFabric` },
-  barcode: { condition: `P.[PROD_CODBARRA] = @barcode` },
-  quantity: {
-    condition: `(P.[PROD_ESTATUAL] - ISNULL(R.QuantidadeReservada, 0)) >= @quantity`,
-  },
-  description: {
-    condition: `P.[PROD_DESCRCOMPLETA] LIKE @description`,
+  manufacturerCode: { condition: `P.[PROD_CODFABRIC] = @manufacturerCode` },
+  productCode: { condition: `P.[ID_CODPRODUTO] = @productCode` },
+  productBarcode: { condition: `P.[PROD_CODBARRA] = @productBarcode` },
+  productDescription: {
+    condition: `P.[PROD_DESCRCOMPLETA] LIKE @productDescription`,
     transform: (v) => `%${v}%`,
+  },
+  productQuantity: {
+    condition: `(P.[PROD_ESTATUAL] - ISNULL(R.QuantidadeReservada, 0)) >= @productQuantity`,
   },
 };
 
 const RESERVATION_FILTER_MAP = {
-  codFabricante: { condition: `P.[PROD_CODFABRIC] = @codFabricante` },
-  codInterno: { condition: `PR.[ID_CODPRODUTO] = @codInterno` },
-  numPedido: { condition: `PR.[ID_NUMPEDORC] = @numPedido` },
-  nomeCliente: {
-    condition: `PO.[PEDOR_RAZAOSOCIAL] LIKE @nomeCliente`,
+  productCode: { condition: `PR.[ID_CODPRODUTO] = @productCode` },
+  manufacturerCode: { condition: `P.[PROD_CODFABRIC] = @manufacturerCode` },
+  orderCode: { condition: `PR.[ID_NUMPEDORC] = @orderCode` },
+  clientName: {
+    condition: `PO.[PEDOR_RAZAOSOCIAL] LIKE @clientName`,
     transform: (v) => `%${v}%`,
   },
-  vendedor: { condition: `PO.[ID_CODVENDEDOR] = @vendedor` },
-};
-
-const REGISTRATION_FILTER_MAP = {
-  codFabricante: { condition: `P.[PROD_CODFABRIC] = @codFabricante` },
-  codInterno: { condition: `P.[ID_CODPRODUTO] = @codInterno` },
+  sellerId: { condition: `PO.[ID_CODVENDEDOR] = @sellerId` },
 };
 
 const hasFilterValue = (value) => {
-  if (value == null) return false;
-  if (typeof value === "string") return value.trim() !== "";
+  if (value == null) {
+    return false;
+  }
+
+  if (typeof value === "string") {
+    return value.trim() !== "";
+  }
+
   return true;
 };
 
 class ProductService {
   /**
-   * Pega os produtos com base nos filtros fornecidos
-   * @param {Object} filters { idProduto, idFabric, barcode, quantity, description }
-   * @returns {Promise<Array|Object>} Array of products or error object
+   * Pega os produtos do banco de dados de acordo com os filtros passados
+   * @param {Object} filters {manufacturerCode, productCode, productBarcode, productDescription, productQuantity}
+   * @return {Promise<{success: boolean, data: Object[]|null, error: string|null}>}
    */
   static async getProducts(filters = {}) {
     try {
@@ -68,24 +65,28 @@ class ProductService {
       for (const [key, { condition, transform }] of Object.entries(
         FILTER_MAP,
       )) {
-        if (safeFilters[key] != null) {
-          params.push({
-            name: key,
-            value: transform ? transform(safeFilters[key]) : safeFilters[key],
-          });
-          extraConditions.push(condition);
+        if (!hasFilterValue(safeFilters[key])) {
+          continue;
         }
+
+        params.push({
+          name: key,
+          value: transform ? transform(safeFilters[key]) : safeFilters[key],
+        });
+        extraConditions.push(condition);
       }
 
-      const suffix =
+      const filterConditions =
         extraConditions.length > 0
           ? `AND ${extraConditions.join(" AND ")}`
           : "";
 
-      const products = await SQLServerDB.query(
-        `${BASE_QUERY} ${suffix}`,
-        params,
+      const finalQuery = BASE_QUERY.replace(
+        FILTER_PLACEHOLDER,
+        filterConditions,
       );
+
+      const products = await SQLServerDB.query(finalQuery, params);
 
       return {
         success: true,
@@ -102,9 +103,9 @@ class ProductService {
   }
 
   /**
-   * Pega as reservas de produto com base nos filtros fornecidos
-   * @param {Object} filters { codFabricante, codInterno, numPedido, nomeCliente, vendedor }
-   * @returns {Promise<Array|Object>} Array of reservations or error object
+   *
+   * @param {Object} filters { productCode Number, manufacturerCode String, orderCode Number, clientName String, sellerId Number }
+   * @return {Promise<{success: boolean, data: Object[]|null, error: string|null}>}
    */
   static async getProductReservations(filters = {}) {
     try {
@@ -115,7 +116,9 @@ class ProductService {
       for (const [key, { condition, transform }] of Object.entries(
         RESERVATION_FILTER_MAP,
       )) {
-        if (!hasFilterValue(safeFilters[key])) continue;
+        if (!hasFilterValue(safeFilters[key])) {
+          continue;
+        }
 
         params.push({
           name: key,
@@ -124,17 +127,21 @@ class ProductService {
         extraConditions.push(condition);
       }
 
-      const suffix =
+      const filterConditions =
         extraConditions.length > 0
           ? `AND ${extraConditions.join(" AND ")}`
           : "";
 
-      const query = RESERVATION_BASE_QUERY.replace(FILTER_PLACEHOLDER, suffix);
-      const reservations = await SQLServerDB.query(query, params);
+      const finalQuery = RESERVATION_BASE_QUERY.replace(
+        FILTER_PLACEHOLDER,
+        filterConditions,
+      );
+
+      const productReservations = await SQLServerDB.query(finalQuery, params);
 
       return {
         success: true,
-        data: reservations,
+        data: productReservations,
       };
     } catch (error) {
       console.log(error);
@@ -142,52 +149,6 @@ class ProductService {
         success: false,
         error: error.message,
         message: "An error occurred while fetching product reservations.",
-      };
-    }
-  }
-
-  /**
-   * Pega os produtos para cadastro web com base nos filtros fornecidos
-   * @param {Object} filters { codFabricante, codInterno }
-   * @returns {Promise<Array|Object>} Array of registration products or error object
-   */
-  static async getProductRegistrations(filters = {}) {
-    try {
-      const safeFilters = filters && typeof filters === "object" ? filters : {};
-      const params = [];
-      const extraConditions = [];
-
-      for (const [key, { condition, transform }] of Object.entries(
-        REGISTRATION_FILTER_MAP,
-      )) {
-        if (!hasFilterValue(safeFilters[key])) continue;
-
-        params.push({
-          name: key,
-          value: transform ? transform(safeFilters[key]) : safeFilters[key],
-        });
-        extraConditions.push(condition);
-      }
-
-      const suffix =
-        extraConditions.length > 0
-          ? `AND ${extraConditions.join(" AND ")}`
-          : "";
-
-      const query = REGISTRATION_BASE_QUERY.replace(FILTER_PLACEHOLDER, suffix);
-
-      const products = await SQLServerDB.query(query, params);
-
-      return {
-        success: true,
-        data: products,
-      };
-    } catch (error) {
-      console.log(error);
-      return {
-        success: false,
-        error: error.message,
-        message: "An error occurred while fetching registration products.",
       };
     }
   }
