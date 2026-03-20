@@ -47,7 +47,6 @@ class Reservation extends Component {
       sellerId: this.state.sellerId || null,
     };
 
-    console.log(filters);
     const response = await ProductUtil.getProductReservations({
       token: this.token,
       filters,
