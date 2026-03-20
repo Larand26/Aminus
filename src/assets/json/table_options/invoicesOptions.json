@@ -1,0 +1,41 @@
+[
+  {
+    "key": "search",
+    "name": "Pesquisa",
+    "checked": true
+  },
+  { "key": "NUM_NOTA", "name": "Num Nota", "checked": true },
+  { "key": "RAZAO_SOCIAL", "name": "Razão Social", "checked": true },
+  { "key": "CNPJ", "name": "CNPJ", "checked": true, "copy": true },
+  {
+    "key": "VALOR_TOTAL",
+    "name": "Valor Total",
+    "format": "currency",
+    "checked": true
+  },
+  { "key": "PESO_BRUTO", "name": "Peso Bruto", "checked": true },
+  { "key": "NOME_VENDEDOR", "name": "Nome Vendedor", "checked": true },
+  {
+    "key": "NOME_TRANSPORTADORA",
+    "name": "Transportadora",
+    "checked": true
+  },
+  {
+    "key": "QUANTIDADE_MERCADORIA",
+    "name": "Quantidade",
+    "checked": true
+  },
+  {
+    "key": "UF",
+    "name": "UF",
+    "checked": true
+  },
+  { "key": "CIDADE", "name": "Cidade", "checked": true },
+  { "key": "CEP", "name": "CEP", "checked": true },
+  {
+    "key": "DATA_EMISSAO",
+    "name": "Data Emissão",
+    "checked": true,
+    "format": "data"
+  }
+]
