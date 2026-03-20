@@ -1,4 +1,4 @@
-import SideBar from "../components/SideBar";
+import SideBar from "../components/misc/SideBar";
 import Content from "../components/misc/Content";
 
 import { InputText } from "primereact/inputtext";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import NavBar from "../components/misc/NavBar";
-import SideBar from "../components/SideBar";
+import SideBar from "../components/misc/SideBar";
 import InputLabel from "../components/inputs/InputText";
 import SelectLabel from "../components/inputs/Select";
 import Content from "../components/misc/Content";

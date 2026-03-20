@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import NavBar from "../components/misc/NavBar";
-import SideBar from "../components/SideBar";
+import SideBar from "../components/misc/SideBar";
 import Tabela from "../components/table/Table";
 import Select from "../components/inputs/Select";
 import InputLabel from "../components/inputs/InputText";

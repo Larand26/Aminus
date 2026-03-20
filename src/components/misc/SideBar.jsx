@@ -1,8 +1,8 @@
 import { Component } from "react";
 
-import SearchButton from "./buttons/SearchButton";
+import SearchButton from "../buttons/SearchButton";
 
-import "../styles/side-bar.css";
+import "../../styles/components/misc/side-bar.css";
 
 class SideBar extends Component {
   render() {

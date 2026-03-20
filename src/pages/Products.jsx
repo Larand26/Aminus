@@ -1,7 +1,7 @@
 import { Component } from "react";
 
 import NavBar from "../components/misc/NavBar";
-import SideBar from "../components/SideBar";
+import SideBar from "../components/misc/SideBar";
 import InputNumeroLabel from "../components/inputs/InputNumber";
 import Toast from "../components/Toast";
 import Content from "../components/misc/Content";
