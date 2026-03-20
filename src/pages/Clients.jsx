@@ -15,6 +15,9 @@ import InputText from "../components/inputs/InputText";
 // table options
 import tableOptions from "../assets/json/table_options/clientsOptions";
 
+// scripts
+import ClientUtil from "../utils/Client";
+
 class Clients extends Component {
   constructor(props) {
     super(props);
@@ -30,12 +33,33 @@ class Clients extends Component {
 
   static token = localStorage.getItem("token");
 
+  async getClients() {
+    const filters = {
+      numClient: this.state.numClient || null,
+      name: this.state.name || null,
+      cnpj: this.state.cnpj || null,
+      celphone: this.state.celphone || null,
+      email: this.state.email || null,
+    };
+
+    const response = await ClientUtil.getClients({
+      token: this.token,
+      filters,
+    });
+
+    console.log(response);
+
+    if (response.success) {
+      this.setState({ clientsData: response.data });
+    }
+  }
+
   render() {
     return (
       <>
         <NavBar />
         <div className="main-container">
-          <SideBar>
+          <SideBar onSearch={() => this.getClients()}>
             <InputText
               label="Número do Cliente"
               value={this.state.numClient}
@@ -63,7 +87,7 @@ class Clients extends Component {
             />
           </SideBar>
           <Content title="Clientes">
-            <Table options={tableOptions} data={this.state.clientsData} />
+            <Table options={tableOptions} datas={this.state.clientsData} />
           </Content>
         </div>
       </>
