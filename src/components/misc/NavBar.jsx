@@ -1,6 +1,6 @@
 import { Component } from "react";
 
-import ProfileMenu from "../ProfileMenu";
+import ProfileMenu from "../menu/ProfileMenu";
 import Configuration from "./Configuration";
 
 import PopUpProfile from "../popups/PopUpProfile";
