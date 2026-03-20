@@ -93,6 +93,8 @@ class Table extends Component {
       noDataMessage = "No data available",
       loading = false,
       search = true,
+      hover = false,
+      onClickRow = () => {},
     } = this.props;
 
     // if (loading) {
@@ -154,7 +156,8 @@ class Table extends Component {
               filteredDatas.map((data, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className={rowIndex % 2 === 0 ? "even-row" : "odd-row"}
+                  className={`${rowIndex % 2 === 0 ? "even-row" : "odd-row"} ${hover ? "hover-row" : ""}`}
+                  onClick={() => onClickRow(data)}
                 >
                   {options.map((option) => (
                     <td key={option.key}>

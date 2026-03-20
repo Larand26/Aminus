@@ -10,10 +10,13 @@ class PopUp extends Component {
     if (onClose) onClose();
   };
   render() {
-    const { isOpen, children } = this.props;
+    const { isOpen, children, width, height } = this.props;
 
     return (
-      <div className={`popup ${isOpen ? "show" : "hidden"}`}>
+      <div
+        className={`popup ${isOpen ? "show" : "hidden"}`}
+        style={{ width, height }}
+      >
         <Button
           onClick={this.closePopup}
           className="button-close"

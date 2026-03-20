@@ -19,6 +19,9 @@ import sellersOptions from "../assets/json/options/sellersOptions";
 // table options
 import tableOptions from "../assets/json/table_options/reservationsOptions";
 
+// Popups
+import PopUpSearchDateReservation from "../components/popups/PopUpSearchDateReservation";
+
 // scripts
 import ProductUtil from "../utils/Product";
 
@@ -33,6 +36,9 @@ class Reservation extends Component {
       orderNumber: null,
       clientName: null,
       sellerId: null,
+
+      isSearchDatePopupOpen: false,
+      selectedItem: null,
     };
   }
 
@@ -61,6 +67,14 @@ class Reservation extends Component {
     return (
       <>
         <NavBar />
+        <PopUpSearchDateReservation
+          isOpen={this.state.isSearchDatePopupOpen}
+          onClose={() => this.setState({ isSearchDatePopupOpen: false })}
+          onSearch={() => {
+            this.setState({ isSearchDatePopupOpen: false });
+          }}
+          data={this.state.selectedItem}
+        />
         <div className="main-container">
           <SideBar onSearch={() => this.getProductReservations()}>
             <InputText
@@ -91,7 +105,15 @@ class Reservation extends Component {
             />
           </SideBar>
           <Content title="Produtos reservados">
-            <Table datas={this.state.reservationsData} options={tableOptions} />
+            <Table
+              datas={this.state.reservationsData}
+              options={tableOptions}
+              hover
+              onClickRow={(data) => {
+                this.setState({ isSearchDatePopupOpen: true });
+                this.setState({ selectedItem: data });
+              }}
+            />
           </Content>
         </div>
       </>

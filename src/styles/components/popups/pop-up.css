@@ -14,7 +14,6 @@
     opacity 0.3s ease;
   padding: 10px;
   box-sizing: border-box;
-  overflow: hidden;
   will-change: transform, opacity;
   backface-visibility: hidden;
 }

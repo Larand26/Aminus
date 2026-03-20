@@ -1,0 +1,33 @@
+.popup-search-date-reservation-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.popup-search-date-reservation-content .input-date-container label {
+  color: #1c1c1c !important;
+}
+
+.popup-search-date-reservation-content .input-date-container .input-date {
+  border: #1c1c1c 1px solid;
+}
+
+.popup-search-date-reservation-content .input-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.popup-search-date-reservation-content .button-search {
+  padding: 10px 20px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: none;
+  background-color: var(--cor-amarelo);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  color: #fff;
+}
