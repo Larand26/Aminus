@@ -9,8 +9,8 @@ import Tabela from "../components/table/Table";
 import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 
-import vendedoresJson from "../assets/json/vendedores.json";
-import opcoesReserva from "../assets/json/opcoes/opcoesReserva.json";
+import vendedoresJson from "../assets/json/options/statesOptions";
+import opcoesReserva from "../assets/json/table_options/opcoesReserva.json";
 
 import searchReservations from "../utils/search/searchReservas";
 import atualizaOpcoes from "../utils/atualizaOpcoes";

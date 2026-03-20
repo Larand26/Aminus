@@ -24,9 +24,9 @@ import enviaStatus from "../utils/whatsapp/enviaStatus";
 import verificaQrCodeConectado from "../utils/whatsapp/verificaQrCodeConectado";
 
 import vendedoresJson from "../assets/json/vendedoresAminus.json";
-import opcoesContatosWhatsapp from "../assets/json/opcoes/opcoesContatosWhatsapp.json";
-import opcoesDashboardWpp from "../assets/json/opcoes/opcoesDashboardWpp.json";
-import opcoesMensagens from "../assets/json/opcoes/opcoesMensagens.json";
+import opcoesContatosWhatsapp from "../assets/json/table_options/opcoesContatosWhatsapp.json";
+import opcoesDashboardWpp from "../assets/json/table_options/opcoesDashboardWpp.json";
+import opcoesMensagens from "../assets/json/table_options/opcoesMensagens.json";
 
 const Whatsapp = () => {
   //token

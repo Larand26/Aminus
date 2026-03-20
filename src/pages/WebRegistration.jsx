@@ -17,9 +17,9 @@ import updateName from "../utils/cadastroweb/atualizaNome";
 import createNewColor from "../utils/cadastroweb/criaCorNova";
 import registerProducts from "../utils/cadastroweb/cadastraProdutos";
 
-import opcoesCadastroWeb from "../assets/json/opcoes/opcoesCadastroWeb.json";
+import opcoesCadastroWeb from "../assets/json/table_options/opcoesCadastroWeb.json";
 import coresTeste from "../assets/json/coresTeste.json";
-import opcoesGrade from "../assets/json/opcoes/opcoesGrade.json";
+import opcoesGrade from "../assets/json/table_options/opcoesGrade.json";
 import generos from "../assets/json/generos.json";
 import tipos from "../assets/json/tipos.json";
 

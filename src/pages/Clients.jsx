@@ -10,7 +10,7 @@ import Content from "../components/misc/Content";
 import searchClients from "../utils/search/searchClientes";
 import atualizaOpcoes from "../utils/atualizaOpcoes";
 
-import opcoesClientes from "../assets/json/opcoes/opcoesClientes.json";
+import opcoesClientes from "../assets/json/table_options/opcoesClientes.json";
 
 const Clients = () => {
   // Input states

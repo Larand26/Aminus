@@ -17,11 +17,11 @@ import calculateQuote from "../utils/fazCotacao";
 import calculateVolume from "../utils/fazCubagem";
 import createPDF from "../utils/createPDF";
 
-import vendedoresJson from "../assets/json/vendedores.json";
+import vendedoresJson from "../assets/json/options/statesOptions";
 
-import opcoesPedidos from "../assets/json/opcoes/opcoesPedidos.json";
-import opcoesItensPedido from "../assets/json/opcoes/opcoesItensPedido.json";
-import opcoesCotacao from "../assets/json/opcoes/opcoesCotacao.json";
+import opcoesPedidos from "../assets/json/table_options/opcoesPedidos.json";
+import opcoesItensPedido from "../assets/json/table_options/opcoesItensPedido.json";
+import opcoesCotacao from "../assets/json/table_options/opcoesCotacao.json";
 
 import "../styles/pedidos.css";
 

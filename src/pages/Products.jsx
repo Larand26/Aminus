@@ -10,7 +10,7 @@ import Table from "../components/table/Table";
 
 import ProductUtil from "../utils/Product.js";
 
-import opcoesProdutos from "../assets/json/opcoes/opcoesProdutos.json";
+import opcoesProdutos from "../assets/json/table_options/productOptions";
 
 import atualizaOpcoes from "../utils/atualizaOpcoes.js";
 
