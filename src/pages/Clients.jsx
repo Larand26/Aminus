@@ -1,146 +1,74 @@
-import { useState } from "react";
+import { Component } from "react";
 
+// Components
+// misc
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
-import InputLabel from "../components/inputs/InputText";
-import Tabela from "../components/table/Table";
-import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 
-import searchClients from "../utils/search/searchClientes";
-import atualizaOpcoes from "../utils/atualizaOpcoes";
+// table
+import Table from "../components/table/Table";
 
-import opcoesClientes from "../assets/json/table_options/opcoesClientes.json";
+// inputs
+import InputText from "../components/inputs/InputText";
 
-const Clients = () => {
-  // Input states
-  const [clientNumber, setClientNumber] = useState("");
-  const [clientName, setClientName] = useState("");
-  const [cnpj, setCnpj] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+// table options
+import tableOptions from "../assets/json/table_options/clientsOptions";
 
-  // Toast
-  const [toastInfo, setToastInfo] = useState(null);
-
-  // Loading
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Clients
-  const [clients, setClients] = useState([]);
-
-  const handleSearch = async () => {
-    setClients([]);
-    setIsLoading(true);
-    const filters = {
-      numCliente: clientNumber,
-      nome: clientName,
-      cnpj: cnpj.replace(/\D/g, ""),
-      celular: phone,
-      email,
+class Clients extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      clientsData: [],
+      numClient: null,
+      name: null,
+      cnpj: null,
+      celphone: null,
+      email: null,
     };
-    const response = await searchClients(filters);
-    setIsLoading(false);
-    // console.log(response);
+  }
 
-    if (response.success) {
-      setClients(response.data);
-      if (response.data.length === 0) {
-        setToastInfo({
-          key: Date.now(),
-          message: "No clients found with the selected filters.",
-          type: "aviso",
-        });
-      }
-    } else {
-      setToastInfo({
-        key: Date.now(),
-        message: "Error while searching clients.",
-        type: "falha",
-      });
-    }
-  };
+  static token = localStorage.getItem("token");
 
-  // Handles Enter key submit
-  const handleKeyDown = (event) => {
-    if (event.key === "Enter") {
-      handleSearch();
-    }
-  };
-
-  // Options
-  const [opcoes, setOpcoes] = useState(() => {
-    const savedOpcoes = localStorage.getItem("opcoesClientes");
-    return atualizaOpcoes(opcoesClientes, savedOpcoes);
-  });
-
-  const handleOptionClick = (e) => {
-    const { id } = e.target;
-    const updatedOptions = opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
+  render() {
+    return (
+      <>
+        <NavBar />
+        <div className="main-container">
+          <SideBar>
+            <InputText
+              label="Número do Cliente"
+              value={this.state.numClient}
+              onChange={(value) => this.setState({ numClient: value })}
+            />
+            <InputText
+              label="Nome"
+              value={this.state.name}
+              onChange={(value) => this.setState({ name: value })}
+            />
+            <InputText
+              label="CNPJ"
+              value={this.state.cnpj}
+              onChange={(value) => this.setState({ cnpj: value })}
+            />
+            <InputText
+              label="Telefone"
+              value={this.state.celphone}
+              onChange={(value) => this.setState({ celphone: value })}
+            />
+            <InputText
+              label="Email"
+              value={this.state.email}
+              onChange={(value) => this.setState({ email: value })}
+            />
+          </SideBar>
+          <Content title="Clientes">
+            <Table options={tableOptions} data={this.state.clientsData} />
+          </Content>
+        </div>
+      </>
     );
-    setOpcoes(updatedOptions);
-    localStorage.setItem("opcoesClientes", JSON.stringify(updatedOptions));
-  };
+  }
+}
 
-  return (
-    <>
-      <NavBar />
-      {toastInfo && (
-        <Toast
-          key={toastInfo.key}
-          message={toastInfo.message}
-          type={toastInfo.type}
-        />
-      )}
-      <div className="main-container">
-        <SideBar onSearch={handleSearch}>
-          <InputLabel
-            label="Client Number"
-            type="text"
-            value={clientNumber}
-            onChange={setClientNumber}
-            onKeyDown={handleKeyDown}
-          />
-          <InputLabel
-            label="Client Name"
-            type="text"
-            value={clientName}
-            onChange={setClientName}
-            onKeyDown={handleKeyDown}
-          />
-          <InputLabel
-            label="CNPJ"
-            type="text"
-            value={cnpj}
-            onChange={setCnpj}
-            onKeyDown={handleKeyDown}
-          />
-          <InputLabel
-            label="Phone"
-            type="text"
-            value={phone}
-            onChange={setPhone}
-            onKeyDown={handleKeyDown}
-          />
-          <InputLabel
-            label="Email"
-            type="email"
-            value={email}
-            onChange={setEmail}
-            onKeyDown={handleKeyDown}
-          />
-        </SideBar>
-        <Content titulo="Clients">
-          <Tabela
-            dados={clients}
-            semDados="No clients found"
-            loading={isLoading}
-            search={opcoes.find((opcao) => opcao.id === "search").checked}
-          ></Tabela>
-        </Content>
-      </div>
-    </>
-  );
-};
 export default Clients;

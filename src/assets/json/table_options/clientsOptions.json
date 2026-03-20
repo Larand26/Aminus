@@ -1,0 +1,41 @@
+[
+  {
+    "key": "ID_CLIENTE",
+    "name": "id",
+    "checked": true
+  },
+  {
+    "key": "NOME_CLIENTE",
+    "name": "Razão Social",
+    "checked": true
+  },
+  {
+    "key": "CNPJ",
+    "name": "CNPJ",
+    "checked": true
+  },
+  {
+    "key": "TELEFONE",
+    "name": "Telefone",
+    "format": "paste",
+    "fields": ["DDD_FAX", "TELEFONE"],
+    "checked": true
+  },
+  {
+    "key": "CELULAR",
+    "name": "Celular",
+    "format": "paste",
+    "fields": ["DDD_CELULAR", "CELULAR"],
+    "checked": true
+  },
+  {
+    "key": "EMAIL",
+    "name": "E-mail",
+    "checked": true
+  },
+  {
+    "key": "STATUS_CLIENTE",
+    "name": "Status",
+    "checked": true
+  }
+]

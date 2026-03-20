@@ -20,7 +20,7 @@ import statesOptions from "../assets/json/options/statesOptions";
 import carriersOptions from "../assets/json/options/carriersOptions";
 
 // table options
-import tableOpitions from "../assets/json/table_options/invoicesOptions";
+import tableOptions from "../assets/json/table_options/invoicesOptions";
 
 // scripts
 import InvoiceUtil from "../utils/Invoices";
@@ -108,7 +108,7 @@ class Invoices extends Component {
             />
           </SideBar>
           <Content title="Notas Fiscais">
-            <Table datas={this.state.invoicesData} options={tableOpitions} />
+            <Table datas={this.state.invoicesData} options={tableOptions} />
           </Content>
         </div>
       </>
