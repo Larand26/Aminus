@@ -69,6 +69,8 @@ class OrderService {
 
       const query = BASE_QUERY.replace(FILTER_PLACEHOLDER, suffix);
 
+      console.log(query);
+
       const orders = await SQLServerDB.query(query, params);
 
       return {
