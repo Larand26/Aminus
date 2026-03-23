@@ -26,6 +26,7 @@ import ordersItemsOptions from "../assets/json/table_options/orderItemsOptions";
 
 // scripts
 import OrderUtil from "../utils/Order";
+import FrenetUtil from "../utils/Frenet";
 
 // styles
 import "../styles/pages/orders.css";
@@ -43,6 +44,7 @@ class Orders extends Component {
       sellerId: null,
       issueDate: [null, null],
 
+      selectedOrder: null,
       selectedOrderData: [],
       selectItemOrder: [],
     };
@@ -80,6 +82,15 @@ class Orders extends Component {
       });
       this.setState({ selectItemOrder: [heaviestItem] });
     }
+  }
+
+  async calculateFreight() {
+    const response = await FrenetUtil.calculateFreight({
+      token: this.token,
+      selectedOrderData: this.state.selectItemOrder,
+      selectItemOrder: this.state.selectItemOrder,
+      selectedOrder: this.state.selectedOrder,
+    });
   }
 
   render() {
@@ -127,6 +138,7 @@ class Orders extends Component {
                 hover
                 onClickRow={(data) => {
                   this.getOrderItems(data);
+                  this.setState({ selectedOrder: data });
                   this.setState({ page: "orderItems" });
                 }}
               />
