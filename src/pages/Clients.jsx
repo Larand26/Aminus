@@ -47,8 +47,6 @@ class Clients extends Component {
       filters,
     });
 
-    console.log(response);
-
     if (response.success) {
       this.setState({ clientsData: response.data });
     }

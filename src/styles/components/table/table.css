@@ -6,7 +6,6 @@
   display: block;
   box-sizing: border-box;
   padding: 8px;
-  height: 100%;
   position: relative;
 }
 
@@ -46,7 +45,7 @@
 .table td {
   font-size: 14px;
   color: var(--cor-texto);
-  padding: 10px;
+  padding: 5px;
 }
 .table thead {
   background-color: var(--cor-primaria);

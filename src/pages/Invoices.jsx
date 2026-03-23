@@ -52,14 +52,10 @@ class Invoices extends Component {
       finalDate: this.state.issueDate[1] || null,
     };
 
-    console.log(filters);
-
     const response = await InvoiceUtil.getInvoices({
       token: this.token,
       filters,
     });
-
-    console.log(response);
 
     if (response.success) {
       this.setState({ invoicesData: response.data });

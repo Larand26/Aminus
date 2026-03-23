@@ -5,6 +5,7 @@ import Utils from "../../utils/Utils";
 // Components
 import CheckBox from "../inputs/InputCheckBox";
 import Loading from "../misc/Loading";
+import InputRadio from "../inputs/InputRadio";
 
 import "../../styles/components/table/table.css";
 
@@ -68,6 +69,18 @@ class Table extends Component {
       case "checkbox":
         return (
           <CheckBox
+            checked={this.props.selectedItems?.includes(data) || false}
+            onChange={() => {
+              this.props.onSelectionChange &&
+                this.props.onSelectionChange(data);
+            }}
+          />
+        );
+
+      case "radio":
+        return (
+          <InputRadio
+            name={option.key}
             checked={this.props.selectedItems?.includes(data) || false}
             onChange={() => {
               this.props.onSelectionChange &&

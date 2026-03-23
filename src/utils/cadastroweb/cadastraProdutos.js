@@ -20,8 +20,6 @@ const cadastraProdutos = async (itensSelecionados, produtos, nome, pai) => {
     };
   });
 
-  console.log(itensParaCadastro);
-
   window.electronApi?.cadastraProdutosWeb(itensParaCadastro);
 
   const response = new Promise((resolve) => {

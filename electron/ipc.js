@@ -48,8 +48,6 @@ ipcMain.handle("get-orders", async (event, args) => {
 });
 
 ipcMain.handle("get-order-items", async (event, args) => {
-  console.log(args);
-
   return await OrderController.getOrderItems(args.orderId);
 });
 

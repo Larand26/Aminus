@@ -1,7 +1,5 @@
 class Utils {
   static formatDateTime(value) {
-    console.log(value);
-
     if (!value) return "";
     const date = new Date(value);
     if (isNaN(date.getTime())) return value;

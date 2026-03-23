@@ -1,4 +1,5 @@
 [
+  { "key": "RADIO", "name": "", "format": "radio", "checked": true },
   { "key": "COD_INTERNO", "name": "Cod Interno", "checked": true },
   { "key": "COD_FABRICANTE", "name": "Cod Fabricante", "checked": true },
   { "key": "DESCRICAO", "name": "Descrição", "checked": true },
@@ -7,7 +8,7 @@
     "key": "PRECO",
     "name": "Preço",
     "checked": true,
-    "format": "dinheiro"
+    "format": "currency"
   },
   {
     "key": "MEDIDAS",

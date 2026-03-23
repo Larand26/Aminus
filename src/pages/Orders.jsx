@@ -14,6 +14,9 @@ import InputText from "../components/inputs/InputText";
 import Select from "../components/inputs/Select";
 import InputDate from "../components/inputs/InputDate";
 
+// buttons
+import Button from "../components/buttons/Button";
+
 // options
 import sellersOptions from "../assets/json/options/sellersOptions";
 
@@ -23,6 +26,9 @@ import ordersItemsOptions from "../assets/json/table_options/orderItemsOptions";
 
 // scripts
 import OrderUtil from "../utils/Order";
+
+// styles
+import "../styles/pages/orders.css";
 
 class Orders extends Component {
   constructor(props) {
@@ -38,6 +44,7 @@ class Orders extends Component {
       issueDate: [null, null],
 
       selectedOrderData: [],
+      selectItemOrder: [],
     };
   }
 
@@ -67,6 +74,11 @@ class Orders extends Component {
     });
     if (response.success) {
       this.setState({ selectedOrderData: response.data });
+      // item mais pesado
+      const heaviestItem = response.data.reduce((prev, current) => {
+        return prev.PESO > current.PESO ? prev : current;
+      });
+      this.setState({ selectItemOrder: [heaviestItem] });
     }
   }
 
@@ -120,10 +132,30 @@ class Orders extends Component {
               />
             )}
             {this.state.page == "orderItems" && (
-              <Table
-                options={ordersItemsOptions}
-                datas={this.state.selectedOrderData}
-              />
+              <>
+                <Table
+                  options={ordersItemsOptions}
+                  datas={this.state.selectedOrderData}
+                  onSelectionChange={(data) => {
+                    this.setState({
+                      selectItemOrder: [data],
+                    });
+                  }}
+                  selectedItems={this.state.selectItemOrder}
+                />
+                <div className="buttons-container">
+                  <Button
+                    text="Cotação"
+                    icon="fa fa-truck"
+                    className="btn-orders"
+                  />
+                  <Button
+                    text="Cubagem"
+                    icon="fa fa-box"
+                    className="btn-orders"
+                  />
+                </div>
+              </>
             )}
           </Content>
         </div>

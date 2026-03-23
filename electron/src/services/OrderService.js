@@ -110,8 +110,6 @@ class OrderService {
         "AND IPO.[ID_NUMPEDORC] = @orderId",
       );
 
-      console.log(query);
-
       const items = await SQLServerDB.query(query, [
         { name: "orderId", value: orderId },
       ]);

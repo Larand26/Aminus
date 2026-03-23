@@ -1,8 +1,6 @@
 class Login {
   static async login(args) {
     try {
-      console.log(args);
-
       return await window.api.login(args);
     } catch (error) {
       return {

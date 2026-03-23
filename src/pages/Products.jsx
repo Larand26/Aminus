@@ -47,7 +47,6 @@ class Products extends Component {
       },
     });
     this.setState({ isLoading: false });
-    console.log(response);
 
     if (response.success) {
       this.setState({ produtos: response.data });

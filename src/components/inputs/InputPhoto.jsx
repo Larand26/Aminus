@@ -2,7 +2,7 @@ import { Component, createRef } from "react";
 
 import "../../styles/components/inputs/input-photo.css";
 
-import Utils from "../../utils/utils";
+import Utils from "../../utils/Utils";
 
 class InputPhoto extends Component {
   constructor(props) {
