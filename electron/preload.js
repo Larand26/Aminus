@@ -6,6 +6,8 @@ contextBridge.exposeInMainWorld("api", {
   getProducts: (args) => ipcRenderer.invoke("get-products", args),
   getProductReservations: (args) =>
     ipcRenderer.invoke("get-product-reservations", args),
+  getDateReservation: (args) =>
+    ipcRenderer.invoke("get-date-reservation", args),
   getProductRegistrations: (args) =>
     ipcRenderer.invoke("get-product-registrations", args),
   getInvoices: (args) => ipcRenderer.invoke("get-invoices", args),

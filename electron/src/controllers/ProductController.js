@@ -27,6 +27,18 @@ class ProductController {
     }
   }
 
+  static async getDateReservation(filters = {}) {
+    try {
+      return await ProductService.getDateReservation(filters);
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching date reservations.",
+      };
+    }
+  }
+
   static async getProductRegistrations(filters = {}) {
     try {
       return await ProductService.getProductRegistrations(filters);

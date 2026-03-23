@@ -39,6 +39,7 @@ class Reservation extends Component {
 
       isSearchDatePopupOpen: false,
       selectedItem: null,
+      responseDateReservation: null,
     };
   }
 
@@ -63,15 +64,45 @@ class Reservation extends Component {
     }
   }
 
+  async getDateReservation() {
+    const { selectedItem } = this.state;
+
+    const filters = {
+      initialDate: selectedItem?.reservationDate[0] || null,
+      finalDate: selectedItem?.reservationDate[1] || null,
+      productCode: selectedItem?.COD_INTERNO || null,
+      orderCode: selectedItem?.NUM_PEDIDO || null,
+    };
+
+    const response = await ProductUtil.getDateReservation({
+      token: this.token,
+      filters,
+    });
+
+    if (response.success && response.data && response.data.length > 0) {
+      this.setState({ responseDateReservation: response.data[0].DATA });
+    }
+  }
+
   render() {
     return (
       <>
         <NavBar />
         <PopUpSearchDateReservation
+          response={this.state.responseDateReservation}
           isOpen={this.state.isSearchDatePopupOpen}
           onClose={() => this.setState({ isSearchDatePopupOpen: false })}
           onSearch={() => {
-            this.setState({ isSearchDatePopupOpen: false });
+            this.getDateReservation();
+          }}
+          dateValue={this.state.selectedItem?.reservationDate || ""}
+          onChangeDate={(value) => {
+            this.setState((prevState) => ({
+              selectedItem: {
+                ...prevState.selectedItem,
+                reservationDate: value,
+              },
+            }));
           }}
           data={this.state.selectedItem}
         />

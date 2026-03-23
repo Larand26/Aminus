@@ -25,6 +25,18 @@ class Product {
     }
   }
 
+  static async getDateReservation(args) {
+    try {
+      return await window.api.getDateReservation(args);
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching date reservations.",
+      };
+    }
+  }
+
   static async getProductRegistrations(args) {
     const { token, filters } = args;
     try {

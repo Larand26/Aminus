@@ -9,7 +9,11 @@ const BASE_QUERY = readFileSync(
   "utf-8",
 );
 const RESERVATION_BASE_QUERY = readFileSync(
-  path.resolve(__dirname, "../database/queries/qureyReservationProduct.sql"),
+  path.resolve(__dirname, "../database/queries/queryReservationProduct.sql"),
+  "utf-8",
+);
+const DATE_RESERVATION_BASE_QUERY = readFileSync(
+  path.resolve(__dirname, "../database/queries/queryDateReservation.sql"),
   "utf-8",
 );
 const FILTER_PLACEHOLDER = "-- Os filtros serão adicionados aqui pelo Node.js";
@@ -36,6 +40,23 @@ const RESERVATION_FILTER_MAP = {
     transform: (v) => `%${v}%`,
   },
   sellerId: { condition: `PO.[ID_CODVENDEDOR] = @sellerId` },
+};
+
+const DATE_RESERVATION_FILTER_MAP = {
+  initialDate: {
+    condition: `CONVERT(date, DATA) >= CONVERT(date, @initialDate)`,
+  },
+  finalDate: {
+    condition: `CONVERT(date, DATA) <= CONVERT(date, @finalDate)`,
+  },
+  orderCode: {
+    condition: `ATIVIDADE LIKE @orderCode`,
+    transform: (v) => `%${v}%`,
+  },
+  productCode: {
+    condition: `ATIVIDADE LIKE @productCode`,
+    transform: (v) => `%${v}%`,
+  },
 };
 
 const hasFilterValue = (value) => {
@@ -149,6 +170,57 @@ class ProductService {
         success: false,
         error: error.message,
         message: "An error occurred while fetching product reservations.",
+      };
+    }
+  }
+
+  /**
+   *
+   * @param {Object} filters { initialDate Date, finalDate Date, productCode Number, orderCode Number }
+   * @returns {Promise<{success: boolean, data: Object[]|null, error: string|null}>}
+   */
+  static async getDateReservation(filters = {}) {
+    try {
+      const safeFilters = filters && typeof filters === "object" ? filters : {};
+      const params = [];
+      const extraConditions = [];
+
+      for (const [key, { condition, transform }] of Object.entries(
+        DATE_RESERVATION_FILTER_MAP,
+      )) {
+        if (!hasFilterValue(safeFilters[key])) {
+          continue;
+        }
+
+        params.push({
+          name: key,
+          value: transform ? transform(safeFilters[key]) : safeFilters[key],
+        });
+        extraConditions.push(condition);
+      }
+
+      const filterConditions =
+        extraConditions.length > 0
+          ? `AND ${extraConditions.join(" AND ")}`
+          : "";
+
+      const finalQuery = DATE_RESERVATION_BASE_QUERY.replace(
+        FILTER_PLACEHOLDER,
+        filterConditions,
+      );
+
+      const dateReservations = await SQLServerDB.query(finalQuery, params);
+
+      return {
+        success: true,
+        data: dateReservations,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching date reservations.",
       };
     }
   }
