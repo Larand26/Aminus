@@ -1,0 +1,20 @@
+[
+  { "key": "COD_INTERNO", "name": "Cod Interno", "checked": true },
+  { "key": "COD_FABRICANTE", "name": "Cod Fabricante", "checked": true },
+  { "key": "DESCRICAO", "name": "Descrição", "checked": true },
+  { "key": "QUANTIDADE", "name": "Quantidade", "checked": true },
+  {
+    "key": "PRECO",
+    "name": "Preço",
+    "checked": true,
+    "format": "dinheiro"
+  },
+  {
+    "key": "MEDIDAS",
+    "name": "Medidas",
+    "format": "paste",
+    "fields": ["ALTURA", "LARGURA", "COMPRIMENTO"],
+    "checked": true
+  },
+  { "key": "PESO_BRUTO", "name": "Peso Bruto", "checked": true }
+]

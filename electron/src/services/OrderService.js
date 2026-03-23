@@ -69,8 +69,6 @@ class OrderService {
 
       const query = BASE_QUERY.replace(FILTER_PLACEHOLDER, suffix);
 
-      console.log(query);
-
       const orders = await SQLServerDB.query(query, params);
 
       return {
@@ -111,6 +109,8 @@ class OrderService {
         FILTER_PLACEHOLDER,
         "AND IPO.[ID_NUMPEDORC] = @orderId",
       );
+
+      console.log(query);
 
       const items = await SQLServerDB.query(query, [
         { name: "orderId", value: orderId },

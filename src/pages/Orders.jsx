@@ -19,6 +19,7 @@ import sellersOptions from "../assets/json/options/sellersOptions";
 
 // table options
 import tableOptions from "../assets/json/table_options/ordersOptions";
+import ordersItemsOptions from "../assets/json/table_options/orderItemsOptions";
 
 // scripts
 import OrderUtil from "../utils/Order";
@@ -27,12 +28,16 @@ class Orders extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      page: "orders",
+
       ordersData: [],
       numOrder: null,
       client: null,
       cnpj: null,
       sellerId: null,
       issueDate: [null, null],
+
+      selectedOrderData: [],
     };
   }
 
@@ -53,6 +58,18 @@ class Orders extends Component {
       this.setState({ ordersData: response.data });
     }
   }
+
+  async getOrderItems(data) {
+    const orderId = data.NUM_PEDIDO || null;
+    const response = await OrderUtil.getOrderItems({
+      token: this.token,
+      orderId,
+    });
+    if (response.success) {
+      this.setState({ selectedOrderData: response.data });
+    }
+  }
+
   render() {
     return (
       <>
@@ -91,7 +108,23 @@ class Orders extends Component {
             />
           </SideBar>
           <Content title="Pedidos">
-            <Table options={tableOptions} datas={this.state.ordersData} />
+            {this.state.page == "orders" && (
+              <Table
+                options={tableOptions}
+                datas={this.state.ordersData}
+                hover
+                onClickRow={(data) => {
+                  this.getOrderItems(data);
+                  this.setState({ page: "orderItems" });
+                }}
+              />
+            )}
+            {this.state.page == "orderItems" && (
+              <Table
+                options={ordersItemsOptions}
+                datas={this.state.selectedOrderData}
+              />
+            )}
           </Content>
         </div>
       </>

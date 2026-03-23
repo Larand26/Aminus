@@ -11,6 +11,19 @@ class Order {
       };
     }
   }
+
+  static async getOrderItems(args) {
+    const { token, orderId } = args;
+    try {
+      return await window.api.getOrderItems({ token, orderId });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching order items.",
+      };
+    }
+  }
 }
 
 export default Order;
