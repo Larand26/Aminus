@@ -1,0 +1,44 @@
+[
+  {
+    "key": "search",
+    "name": "Pesquisa",
+    "checked": true
+  },
+  { "key": "NUM_PEDIDO", "name": "Num Pedido", "checked": true },
+  { "key": "RAZAO_SOCIAL", "name": "Razão Social", "checked": true },
+  { "key": "CNPJ", "name": "CNPJ", "checked": true },
+  {
+    "key": "VALOR_TOTAL",
+    "name": "Valor Total",
+    "format": "currency",
+    "checked": true
+  },
+  { "key": "NOME_VENDEDOR", "name": "Vendedor", "checked": true },
+  { "key": "SITUACAO", "name": "Situação", "checked": true },
+  {
+    "key": "NOME_TRANSPORTADORA",
+    "name": "Transportadora",
+    "checked": true
+  },
+  {
+    "key": "QUANTIDADE",
+    "name": "Quantidade",
+    "checked": true
+  },
+  {
+    "key": "CEP",
+    "name": "CEP",
+    "checked": true
+  },
+  {
+    "key": "PESO_BRUTO",
+    "name": "Peso Bruto",
+    "checked": true
+  },
+  {
+    "key": "DATA_PEDIDO",
+    "name": "Data do Pedido",
+    "checked": true,
+    "format": "date"
+  }
+]
