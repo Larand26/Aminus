@@ -76,7 +76,7 @@ class Orders extends Component {
       this.setState({ selectedOrderData: response.data });
       // item mais pesado
       const heaviestItem = response.data.reduce((prev, current) => {
-        return prev.PESO > current.PESO ? prev : current;
+        return prev.PESO_BRUTO > current.PESO_BRUTO ? prev : current;
       });
       this.setState({ selectItemOrder: [heaviestItem] });
     }
