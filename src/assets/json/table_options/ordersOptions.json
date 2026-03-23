@@ -1,9 +1,4 @@
 [
-  {
-    "key": "search",
-    "name": "Pesquisa",
-    "checked": true
-  },
   { "key": "NUM_PEDIDO", "name": "Num Pedido", "checked": true },
   { "key": "RAZAO_SOCIAL", "name": "Razão Social", "checked": true },
   { "key": "CNPJ", "name": "CNPJ", "checked": true },
