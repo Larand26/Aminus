@@ -10,13 +10,13 @@ class Frenet {
         0,
       );
       const quantity = Math.ceil(
-        selectItemOrder.reduce(
+        selectedOrderData.reduce(
           (total, item) => total + item.QUANTIDADE / 12,
           0,
         ),
       );
       const shipping = {
-        cep: selectedOrderData[0].CEP,
+        cep: selectedOrder.CEP,
         price,
         quantity,
         orderItems: selectedOrderData.map((item) => ({
@@ -27,14 +27,12 @@ class Frenet {
           LARGURA: item.LARGURA,
         })),
         selectedItem: {
-          ALTURA: selectItemOrder.ALTURA,
-          COMPRIMENTO: selectItemOrder.COMPRIMENTO,
-          QUANTIDADE: selectItemOrder.QUANTIDADE,
-          PESO_BRUTO: selectItemOrder.PESO_BRUTO,
-          LARGURA: selectItemOrder.LARGURA,
+          ALTURA: selectItemOrder[0].ALTURA,
+          COMPRIMENTO: selectItemOrder[0].COMPRIMENTO,
+          PESO_BRUTO: selectItemOrder[0].PESO_BRUTO,
+          LARGURA: selectItemOrder[0].LARGURA,
         },
       };
-      console.log({ token, shipping });
 
       return await window.api.calculateFreight({ token, shipping });
     } catch (error) {

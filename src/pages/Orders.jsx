@@ -31,6 +31,9 @@ import FrenetUtil from "../utils/Frenet";
 // styles
 import "../styles/pages/orders.css";
 
+// popups
+import PopUpFreight from "../components/popups/PopUpFreight";
+
 class Orders extends Component {
   constructor(props) {
     super(props);
@@ -47,6 +50,9 @@ class Orders extends Component {
       selectedOrder: null,
       selectedOrderData: [],
       selectItemOrder: [],
+
+      isFreightPopupOpen: false,
+      freightData: null,
     };
   }
 
@@ -85,12 +91,20 @@ class Orders extends Component {
   }
 
   async calculateFreight() {
+    this.setState({ isFreightPopupOpen: true });
+
     const response = await FrenetUtil.calculateFreight({
       token: this.token,
-      selectedOrderData: this.state.selectItemOrder,
+      selectedOrderData: this.state.selectedOrderData,
       selectItemOrder: this.state.selectItemOrder,
       selectedOrder: this.state.selectedOrder,
     });
+
+    if (response.success) {
+      console.log(response.data);
+
+      this.setState({ freightData: response.data });
+    }
   }
 
   render() {
@@ -160,6 +174,7 @@ class Orders extends Component {
                     text="Cotação"
                     icon="fa fa-truck"
                     className="btn-orders"
+                    onClick={() => this.calculateFreight()}
                   />
                   <Button
                     text="Cubagem"
@@ -170,6 +185,14 @@ class Orders extends Component {
               </>
             )}
           </Content>
+          <PopUpFreight
+            isOpen={this.state.isFreightPopupOpen}
+            onClose={() => {
+              this.setState({ isFreightPopupOpen: false });
+              this.setState({ freightData: null });
+            }}
+            data={this.state.freightData}
+          />
         </div>
       </>
     );

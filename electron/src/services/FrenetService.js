@@ -90,7 +90,7 @@ class FrenetService {
       const { shipping } = args;
       const { standardBody, customBody, standardDimensions203045Body } =
         this.#buildRequestBodies(shipping);
-
+      console.log(customBody);
       const [standardResponse, customResponse, response203045] =
         await Promise.all([
           axios.post(this.url, standardBody, { headers: this.headers }),
