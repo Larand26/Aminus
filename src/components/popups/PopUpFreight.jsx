@@ -12,30 +12,61 @@ class PopUpFreight extends Component {
     const ship203045 = data["20-30-45"]?.ShippingSevicesArray || [];
     const shipCustom = data["custom"]?.ShippingSevicesArray || [];
     const shipStandard = data["standard"]?.ShippingSevicesArray || [];
-    console.log(data);
 
-    // { "TRANSPORTADORA": "ServiceDescription", "PRECO": "PresentationalPrice", "PRECO[20-30-45]": "PresentationalPrice", "PRAZO_ENTREGA": "DeliveryTime", "PRAZO_ENTREGA_ORIGINAL": "OriginalDeliveryTime"}
+    // { "TRANSPORTADORA": "ServiceDescription", "PRECO": "ShippingPrice", "PRECO[20-30-45]": "ShippingPrice", "PRAZO_ENTREGA": "DeliveryTime", "PRAZO_ENTREGA_ORIGINAL": "OriginalDeliveryTime"}
     const ajustedData = [];
 
     const customService = ["JAM"];
 
-    for (
-      let i = 0;
-      i < Math.max(ship203045.length, shipCustom.length, shipStandard.length);
-      i++
-    ) {
-      const ship203045Item = ship203045[i] || {};
-      const shipCustomItem = shipCustom[i] || {};
-      const shipStandardItem = shipStandard[i] || {};
+    const getServiceKey = (item) =>
+      item?.ServiceCode || item?.ServiceDescription || null;
+
+    const ship203045Map = new Map(
+      ship203045
+        .map((item) => [getServiceKey(item), item])
+        .filter(([key]) => Boolean(key)),
+    );
+    const shipCustomMap = new Map(
+      shipCustom
+        .map((item) => [getServiceKey(item), item])
+        .filter(([key]) => Boolean(key)),
+    );
+    const shipStandardMap = new Map(
+      shipStandard
+        .map((item) => [getServiceKey(item), item])
+        .filter(([key]) => Boolean(key)),
+    );
+
+    const baseList = shipStandard.length
+      ? shipStandard
+      : ship203045.length
+        ? ship203045
+        : shipCustom;
+
+    for (let i = 0; i < baseList.length; i++) {
+      const baseItem = baseList[i] || {};
+      const serviceKey = getServiceKey(baseItem);
+      const ship203045Item =
+        (serviceKey && ship203045Map.get(serviceKey)) || ship203045[i] || {};
+      const shipCustomItem =
+        (serviceKey && shipCustomMap.get(serviceKey)) || shipCustom[i] || {};
+      const shipStandardItem =
+        (serviceKey && shipStandardMap.get(serviceKey)) ||
+        shipStandard[i] ||
+        {};
 
       ajustedData.push({
-        TRANSPORTADORA: ship203045Item.ServiceDescription || "N/A",
+        TRANSPORTADORA:
+          shipStandardItem.ServiceDescription ||
+          ship203045Item.ServiceDescription ||
+          shipCustomItem.ServiceDescription ||
+          "N/A",
         PRECO:
           shipStandardItem.ServiceCode &&
           customService.includes(shipStandardItem.ServiceCode)
-            ? shipCustomItem.PresentationalPrice || "N/A"
-            : shipStandardItem.PresentationalPrice || "N/A",
-        "PRECO[20-30-45]": ship203045Item.PresentationalPrice || "N/A",
+            ? shipCustomItem.ShippingPrice || "N/A"
+            : shipStandardItem.ShippingPrice || "N/A",
+        "PRECO[20-30-45]": ship203045Item.ShippingPrice || "N/A",
         PRAZO_ENTREGA: ship203045Item.DeliveryTime || "N/A",
         PRAZO_ENTREGA_ORIGINAL: ship203045Item.OriginalDeliveryTime || "N/A",
       });
