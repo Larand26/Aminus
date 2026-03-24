@@ -142,7 +142,24 @@ class Orders extends Component {
               onChange={(e) => this.setState({ sellerId: e.target.value })}
             />
           </SideBar>
-          <Content title="Pedidos">
+          <Content
+            title="Pedidos"
+            pages={
+              this.state.page !== "orders"
+                ? [
+                    {
+                      icon: "fa fa-angle-left",
+                      onClick: () => {
+                        this.setState({ page: "orders" });
+                        this.setState({ selectedOrder: null });
+                        this.setState({ selectedOrderData: [] });
+                        this.setState({ selectItemOrder: [] });
+                      },
+                    },
+                  ]
+                : []
+            }
+          >
             {this.state.page == "orders" && (
               <Table
                 options={tableOptions}

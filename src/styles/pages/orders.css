@@ -1,9 +1,3 @@
-.content-body {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
 .buttons-container {
   display: flex;
   justify-content: center;

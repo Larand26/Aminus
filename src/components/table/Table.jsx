@@ -109,6 +109,7 @@ class Table extends Component {
       hover = false,
       onClickRow = () => {},
     } = this.props;
+    const tableMaxHeight = this.props.maxHeight ?? "100%";
 
     // if (loading) {
     //   return (
@@ -130,7 +131,7 @@ class Table extends Component {
       <div
         className="table-wrapper"
         style={{
-          maxHeight: this.props.maxHeight ?? "500px",
+          maxHeight: tableMaxHeight,
           overflowY: "auto",
         }}
       >
