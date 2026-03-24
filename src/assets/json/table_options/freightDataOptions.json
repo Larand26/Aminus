@@ -1,0 +1,17 @@
+[
+  { "key": "TRANSPORTADORA", "name": "Transportadora", "checked": true },
+  { "key": "PRECO", "name": "Preço", "format": "currency", "checked": true },
+  {
+    "key": "PRECO[20-30-45]",
+    "name": "Preço (20x30x45)",
+    "format": "currency",
+    "checked": true
+  },
+  {
+    "key": "PRAZO_ENTREGA",
+    "name": "Prazo de Entrega",
+    "format": "paste",
+    "fields": ["PRAZO_ENTREGA_ORIGINAL", "PRAZO_ENTREGA"],
+    "checked": true
+  }
+]
