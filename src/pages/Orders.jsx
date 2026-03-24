@@ -101,8 +101,6 @@ class Orders extends Component {
     });
 
     if (response.success) {
-      console.log(response.data);
-
       this.setState({ freightData: response.data });
     }
   }
