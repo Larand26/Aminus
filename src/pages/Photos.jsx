@@ -75,7 +75,20 @@ class Photos extends Component {
           <Content title="Fotos">
             <div className="fotos-container">
               {this.state.productsData.map((product) => (
-                <Card photo={unknown}></Card>
+                <Card
+                  photo={
+                    Utils.bufferToBase64(product.fotos[0].buffer) || unknown
+                  }
+                >
+                  <p className="ref">{product.referencia}</p>
+                  <p className="color-name">{product.nome_cor}</p>
+                  <p className="color-code">{product.codigo_cor}</p>
+                  <ActionButtons
+                    onEdit={() => console.log("Editar", product)}
+                    onDelete={() => console.log("Excluir", product)}
+                    onDownload={() => console.log("Baixar", product)}
+                  />
+                </Card>
               ))}
             </div>
           </Content>

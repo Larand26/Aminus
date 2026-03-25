@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, createRef } from "react";
 
 import "../../styles/components/buttons/action-buttons.css";
 
@@ -19,12 +19,30 @@ class ActionButtons extends Component {
   closeConfirmDelete = () => {
     this.setState({ showConfirmDelete: false });
   };
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+  confirmRef = createRef();
+
+  handleClickOutside = (event) => {
+    if (
+      this.state.showConfirmDelete &&
+      this.confirmRef.current &&
+      !this.confirmRef.current.contains(event.target)
+    ) {
+      this.closeConfirmDelete();
+    }
+  };
+
   render() {
     const {
       onEdit,
       onDelete,
       onDownload,
-      confirmDeleteText = "Tem certeza que deseja excluir este item?",
+      confirmDeleteText = "Deseja excluir este item?",
     } = this.props;
     return (
       <div className="action-buttons">
@@ -44,6 +62,7 @@ class ActionButtons extends Component {
           )}
         </div>
         <div
+          ref={this.confirmRef}
           className={`confirm-delete ${this.state.showConfirmDelete ? "visible" : "hidden"}`}
         >
           <p>{confirmDeleteText}</p>

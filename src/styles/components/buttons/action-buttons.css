@@ -36,7 +36,7 @@
 
 .action-buttons > .confirm-delete {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(-150% + 6px);
   left: 0;
   width: 100%;
   box-sizing: border-box;
@@ -45,6 +45,10 @@
   text-align: center;
   z-index: 20;
   transition: 0.3s ease;
+  background-color: var(--cor-primaria);
+  font-size: 15px;
+  box-shadow: 5pzx 5px 10px rgba(0, 0, 0, 0.2);
+  border: var(--cor-fundo) 1px solid;
 }
 
 .action-buttons > .confirm-delete > .buttons-container button {

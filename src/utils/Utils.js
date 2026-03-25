@@ -46,7 +46,19 @@ class Utils {
 
   static bufferToBase64(buffer) {
     if (!buffer) return "";
-    return `data:image/jpeg;base64,${buffer.toString("base64")}`;
+
+    const uint8Array = new Uint8Array(buffer);
+    let binaryString = "";
+
+    // Em vez de .apply(), usamos um loop para construir a string
+    // Isso evita o erro de "Maximum call stack size exceeded"
+    for (let i = 0; i < uint8Array.length; i++) {
+      binaryString += String.fromCharCode(uint8Array[i]);
+    }
+
+    const base64String = btoa(binaryString);
+
+    return `data:image/jpeg;base64,${base64String}`;
   }
 }
 

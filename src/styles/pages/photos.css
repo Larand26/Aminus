@@ -5,4 +5,28 @@
   justify-content: space-around;
   box-sizing: border-box;
   overflow-y: auto;
+  padding: 30px;
+}
+
+.fotos-container .card .foto-card {
+  background-color: #fff;
+}
+
+.fotos-container .card .ref {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.fotos-container .card .color-name {
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.fotos-container .card .color-code {
+  font-size: 10px;
+}
+
+.fotos-container .card p {
+  color: var(--cor-branco);
+  margin: 5px;
 }
