@@ -49,7 +49,7 @@ class Photos extends Component {
     console.log(response);
 
     if (response.success) {
-      this.setState({ productsData: response });
+      this.setState({ productsData: response.data });
     } else {
       console.log(response.error);
     }
@@ -75,12 +75,7 @@ class Photos extends Component {
           <Content title="Fotos">
             <div className="fotos-container">
               {this.state.productsData.map((product) => (
-                <Card key={product.id} title={product.name}>
-                  <img
-                    src={Utils.bufferToBase64(product.photo) || unknown}
-                    alt={product.name}
-                  />
-                </Card>
+                <Card photo={unknown}></Card>
               ))}
             </div>
           </Content>

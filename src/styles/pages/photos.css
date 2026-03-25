@@ -1,0 +1,8 @@
+.fotos-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
