@@ -1,4 +1,4 @@
-import { ipcMain } from "electron";
+import { ipcMain, shell } from "electron";
 
 // Controllers
 import LoginController from "./src/controllers/LoginController.js";
@@ -69,4 +69,22 @@ ipcMain.handle("create-photo", async (event, args) => {
 
 ipcMain.handle("calculate-freight", async (event, args) => {
   return await FrenetController.calculateFreight(args);
+});
+
+ipcMain.handle("generate-cubage-pdf", async (event, args) => {
+  return await OrderController.generateCubagePDF(args.selectedOrderData);
+});
+
+ipcMain.handle("open-file", async (event, filePath) => {
+  try {
+    const result = await shell.openPath(filePath);
+    if (result) {
+      return { success: false, error: result };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.log(error);
+    return { success: false, error: error.message };
+  }
 });

@@ -24,6 +24,31 @@ class Order {
       };
     }
   }
+
+  static async generateCubagePDF(args) {
+    const { token, selectedOrderData } = args;
+    try {
+      return await window.api.generateCubagePDF({ token, selectedOrderData });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while generating the cubage PDF.",
+      };
+    }
+  }
+
+  static async openFile(filePath) {
+    try {
+      return await window.api.openFile(filePath);
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while opening the file.",
+      };
+    }
+  }
 }
 
 export default Order;

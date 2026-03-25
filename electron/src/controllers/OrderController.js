@@ -26,6 +26,19 @@ class OrderController {
       };
     }
   }
+
+  static async generateCubagePDF(itens) {
+    try {
+      return await OrderService.generateCubagePDF(itens);
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while generating the cubage PDF.",
+      };
+    }
+  }
 }
 
 export default OrderController;

@@ -18,4 +18,6 @@ contextBridge.exposeInMainWorld("api", {
   updatePhoto: (args) => ipcRenderer.invoke("update-photo", args),
   createPhoto: (args) => ipcRenderer.invoke("create-photo", args),
   calculateFreight: (args) => ipcRenderer.invoke("calculate-freight", args),
+  generateCubagePDF: (args) => ipcRenderer.invoke("generate-cubage-pdf", args),
+  openFile: (filePath) => ipcRenderer.invoke("open-file", filePath),
 });

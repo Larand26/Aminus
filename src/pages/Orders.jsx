@@ -105,6 +105,22 @@ class Orders extends Component {
     }
   }
 
+  async generateCubagePDF() {
+    const response = await OrderUtil.generateCubagePDF({
+      token: this.token,
+      selectedOrderData: this.state.selectedOrderData,
+    });
+    console.log(response);
+
+    if (response.success) {
+      console.log("PDF gerado com sucesso:", response.data);
+      // Abrir o arquivo gerado
+      OrderUtil.openFile(response.data.filePath);
+    } else {
+      console.error("Erro ao gerar PDF:", response.error);
+    }
+  }
+
   render() {
     return (
       <>
@@ -195,6 +211,7 @@ class Orders extends Component {
                     text="Cubagem"
                     icon="fa fa-box"
                     className="btn-orders"
+                    onClick={() => this.generateCubagePDF()}
                   />
                 </div>
               </>
