@@ -21,6 +21,7 @@ import unknown from "../assets/img/unknown.jpg";
 
 // scripts
 import PhotoUtil from "../utils/Photo";
+import Utils from "../utils/Utils";
 
 class Photos extends Component {
   constructor(props) {
@@ -46,6 +47,12 @@ class Photos extends Component {
     });
 
     console.log(response);
+
+    if (response.success) {
+      this.setState({ productsData: response });
+    } else {
+      console.log(response.error);
+    }
   };
 
   render() {
@@ -66,7 +73,16 @@ class Photos extends Component {
             />
           </SideBar>
           <Content title="Fotos">
-            <div className="fotos-container"></div>
+            <div className="fotos-container">
+              {this.state.productsData.map((product) => (
+                <Card key={product.id} title={product.name}>
+                  <img
+                    src={Utils.bufferToBase64(product.photo) || unknown}
+                    alt={product.name}
+                  />
+                </Card>
+              ))}
+            </div>
           </Content>
         </div>
       </>

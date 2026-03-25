@@ -9,7 +9,11 @@ class PhotoService {
       if (filters.manufacturer) mongoFilters.referencia = filters.manufacturer;
       if (filters.color) mongoFilters.codigo_cor = filters.color;
 
-      return await MongoDB.find(ProductModel, mongoFilters);
+      const photos = await MongoDB.find(ProductModel, mongoFilters);
+      return {
+        success: true,
+        data: photos,
+      };
     } catch (error) {
       return {
         success: false,
@@ -22,7 +26,11 @@ class PhotoService {
   static async updatePhoto(args) {
     const { id, newData } = args;
     try {
-      return await MongoDB.update(ProductModel, id, newData);
+      const updatedPhoto = await MongoDB.update(ProductModel, id, newData);
+      return {
+        success: true,
+        data: updatedPhoto,
+      };
     } catch (error) {
       return {
         success: false,
@@ -63,7 +71,11 @@ class PhotoService {
         video_url: args.url,
       };
 
-      return await MongoDB.create(ProductModel, newPhoto);
+      const createdPhoto = await MongoDB.create(ProductModel, newPhoto);
+      return {
+        success: true,
+        data: createdPhoto,
+      };
     } catch (error) {
       return {
         success: false,

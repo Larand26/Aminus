@@ -43,6 +43,11 @@ class Utils {
       reader.readAsDataURL(file);
     });
   }
+
+  static bufferToBase64(buffer) {
+    if (!buffer) return "";
+    return `data:image/jpeg;base64,${buffer.toString("base64")}`;
+  }
 }
 
 export default Utils;
