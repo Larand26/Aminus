@@ -24,7 +24,6 @@ import unknown from "../assets/img/unknown.jpg";
 
 // scripts
 import PhotoUtil from "../utils/Photo";
-import Utils from "../utils/Utils";
 
 class Photos extends Component {
   constructor(props) {
@@ -52,13 +51,21 @@ class Photos extends Component {
       filters,
     });
 
-    console.log(response);
-
     if (response.success) {
       this.setState({ productsData: response.data });
     } else {
       console.log(response.error);
     }
+  };
+
+  updatePhoto = async (newProduct, oldProduct) => {
+    const response = await PhotoUtil.updatePhoto({
+      token: this.token,
+      oldProduct,
+      newProduct,
+    });
+
+    console.log(response);
   };
 
   render() {
@@ -81,11 +88,7 @@ class Photos extends Component {
           <Content title="Fotos">
             <div className="fotos-container">
               {this.state.productsData.map((product) => (
-                <Card
-                  photo={
-                    Utils.bufferToBase64(product.fotos[0].buffer) || unknown
-                  }
-                >
+                <Card photo={product.fotos[0] || unknown}>
                   <p className="ref">{product.referencia}</p>
                   <p className="color-name">{product.nome_cor}</p>
                   <p className="color-code">{product.codigo_cor}</p>
@@ -105,7 +108,13 @@ class Photos extends Component {
           </Content>
           <EditPhotoPopup
             isOpen={this.state.isEditPopupOpen}
-            onClose={() => this.setState({ isEditPopupOpen: false })}
+            onClose={(data) => {
+              this.updatePhoto(data, this.state.selectedEditProduct);
+              this.setState({
+                isEditPopupOpen: false,
+                selectedEditProduct: null,
+              });
+            }}
             product={this.state.selectedEditProduct}
           />
         </div>

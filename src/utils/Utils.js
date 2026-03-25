@@ -60,6 +60,24 @@ class Utils {
 
     return `data:image/jpeg;base64,${base64String}`;
   }
+
+  static base64ToBuffer(base64String) {
+    const base64Data = base64String.split(",")[1];
+    const binaryString = atob(base64Data);
+    const buffer = new Uint8Array(binaryString.length);
+    for (let i = 0; i < binaryString.length; i++) {
+      buffer[i] = binaryString.charCodeAt(i);
+    }
+    return buffer;
+  }
+
+  static arePhotoArraysEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) return false;
+    }
+    return true;
+  }
 }
 
 export default Utils;

@@ -7,8 +7,6 @@ import Select from "../inputs/Select";
 import InputPhoto from "../inputs/InputPhoto";
 import TextArea from "../inputs/TextArea";
 
-import Utils from "../../utils/Utils";
-
 import "../../styles/components/popups/popup-edit-photo.css";
 
 const packagingOptions = [
@@ -40,10 +38,7 @@ class PopupEditPhoto extends Component {
         colorName: product.nome_cor || "",
         colorCode: product.codigo_cor || "",
         manufacturer: product.referencia || "",
-        photos:
-          product.fotos && product.fotos.length > 0
-            ? product.fotos.map((foto) => Utils.bufferToBase64(foto.buffer))
-            : [],
+        photos: product.fotos || [],
         packaging: product.embalamento || "",
         videoUrl: product.video_url || "",
         resalePrice: product.preco_revenda || "",
@@ -51,10 +46,30 @@ class PopupEditPhoto extends Component {
     }
   }
 
+  handleClose = () => {
+    if (this.props.onClose) {
+      this.props.onClose({
+        description: this.state.description,
+        colorName: this.state.colorName,
+        colorCode: this.state.colorCode,
+        resalePrice: this.state.resalePrice,
+        manufacturer: this.state.manufacturer,
+        photos: this.state.photos,
+        packaging: this.state.packaging,
+        videoUrl: this.state.videoUrl,
+      });
+    }
+  };
+
   render() {
-    const { isOpen, onClose } = this.props;
+    const { isOpen } = this.props;
     return (
-      <PopUp isOpen={isOpen} onClose={onClose} width="1200px" height="600px">
+      <PopUp
+        isOpen={isOpen}
+        onClose={this.handleClose}
+        width="1200px"
+        height="600px"
+      >
         <div className="popup-edit-photo">
           <div className="photos-container">
             <InputPhoto
