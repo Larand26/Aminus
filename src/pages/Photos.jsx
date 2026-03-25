@@ -9,9 +9,11 @@ import Card from "../components/misc/Card";
 
 // buttons
 import ActionButtons from "../components/buttons/ActionButtons";
+import Button from "../components/buttons/Button";
 
 // inputs
 import InputText from "../components/inputs/InputText";
+import InputCheckBox from "../components/inputs/InputCheckBox";
 
 // popups
 import EditPhotoPopup from "../components/popups/PopupEditPhoto";
@@ -33,6 +35,9 @@ class Photos extends Component {
       manufacturerCode: null,
       colorCode: null,
 
+      filterText: "",
+      filteredProducts: [],
+
       isEditPopupOpen: false,
       selectedEditProduct: null,
     };
@@ -53,6 +58,7 @@ class Photos extends Component {
 
     if (response.success) {
       this.setState({ productsData: response.data });
+      this.setState({ filteredProducts: response.data });
     } else {
       console.log(response.error);
     }
@@ -64,6 +70,25 @@ class Photos extends Component {
       oldProduct,
       newProduct,
     });
+  };
+
+  onFilterChange = (value) => {
+    this.setState({ filterText: value });
+
+    const filtered = this.state.productsData.filter((product) => {
+      const refMatch = product.referencia
+        .toLowerCase()
+        .includes(value.toLowerCase());
+      const colorNameMatch = product.nome_cor
+        .toLowerCase()
+        .includes(value.toLowerCase());
+      const colorCodeMatch = product.codigo_cor
+        .toLowerCase()
+        .includes(value.toLowerCase());
+      return refMatch || colorNameMatch || colorCodeMatch;
+    });
+
+    this.setState({ filteredProducts: filtered });
   };
 
   render() {
@@ -84,8 +109,21 @@ class Photos extends Component {
             />
           </SideBar>
           <Content title="Fotos">
+            <div className="filter-actions">
+              <InputText
+                className="filter-input"
+                value={this.state.filterText}
+                onChange={(value) => this.onFilterChange(value)}
+              />
+              <InputCheckBox />
+              <Button
+                className="download-btn"
+                text="Baixar"
+                icon="fa fa-download"
+              />
+            </div>
             <div className="fotos-container">
-              {this.state.productsData.map((product) => (
+              {this.state.filteredProducts.map((product) => (
                 <Card photo={product.fotos[0] || unknown}>
                   <p className="ref">{product.referencia}</p>
                   <p className="color-name">{product.nome_cor}</p>
