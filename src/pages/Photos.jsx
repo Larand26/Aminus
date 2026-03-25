@@ -64,8 +64,6 @@ class Photos extends Component {
       oldProduct,
       newProduct,
     });
-
-    console.log(response);
   };
 
   render() {
