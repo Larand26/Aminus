@@ -44,12 +44,6 @@ class InputPhoto extends Component {
     this.props.onChange(photos);
   };
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.photos !== this.props.photos) {
-      console.log(this.props.photos);
-    }
-  }
-
   render() {
     const { photos = [], onChange = () => {} } = this.props;
     return (

@@ -13,6 +13,9 @@ import ActionButtons from "../components/buttons/ActionButtons";
 // inputs
 import InputText from "../components/inputs/InputText";
 
+// popups
+import EditPhotoPopup from "../components/popups/PopupEditPhoto";
+
 // styles
 import "../styles/pages/photos.css";
 
@@ -30,6 +33,9 @@ class Photos extends Component {
       productsData: [],
       manufacturerCode: null,
       colorCode: null,
+
+      isEditPopupOpen: false,
+      selectedEditProduct: null,
     };
   }
 
@@ -84,7 +90,12 @@ class Photos extends Component {
                   <p className="color-name">{product.nome_cor}</p>
                   <p className="color-code">{product.codigo_cor}</p>
                   <ActionButtons
-                    onEdit={() => console.log("Editar", product)}
+                    onEdit={() => {
+                      this.setState({
+                        isEditPopupOpen: true,
+                        selectedEditProduct: product,
+                      });
+                    }}
                     onDelete={() => console.log("Excluir", product)}
                     onDownload={() => console.log("Baixar", product)}
                   />
@@ -92,6 +103,11 @@ class Photos extends Component {
               ))}
             </div>
           </Content>
+          <EditPhotoPopup
+            isOpen={this.state.isEditPopupOpen}
+            onClose={() => this.setState({ isEditPopupOpen: false })}
+            product={this.state.selectedEditProduct}
+          />
         </div>
       </>
     );
