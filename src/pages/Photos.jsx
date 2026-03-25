@@ -38,6 +38,8 @@ class Photos extends Component {
       filterText: "",
       filteredProducts: [],
 
+      productsSelectedForDownload: [],
+
       isEditPopupOpen: false,
       selectedEditProduct: null,
     };
@@ -91,6 +93,34 @@ class Photos extends Component {
     this.setState({ filteredProducts: filtered });
   };
 
+  onChangeSelectedForDownload = (product) => {
+    const { productsSelectedForDownload } = this.state;
+    const isSelected = productsSelectedForDownload.includes(product);
+    if (isSelected) {
+      this.setState({
+        productsSelectedForDownload: productsSelectedForDownload.filter(
+          (p) => p !== product,
+        ),
+      });
+    } else {
+      this.setState({
+        productsSelectedForDownload: [...productsSelectedForDownload, product],
+      });
+    }
+  };
+
+  onChangeSelectAllForDownload = () => {
+    const { productsSelectedForDownload, filteredProducts } = this.state;
+    const allSelected = filteredProducts.every((product) =>
+      productsSelectedForDownload.includes(product),
+    );
+    if (allSelected) {
+      this.setState({ productsSelectedForDownload: [] });
+    } else {
+      this.setState({ productsSelectedForDownload: filteredProducts });
+    }
+  };
+
   render() {
     return (
       <>
@@ -115,7 +145,12 @@ class Photos extends Component {
                 value={this.state.filterText}
                 onChange={(value) => this.onFilterChange(value)}
               />
-              <InputCheckBox />
+              <InputCheckBox
+                checked={this.state.filteredProducts.every((product) =>
+                  this.state.productsSelectedForDownload.includes(product),
+                )}
+                onChange={this.onChangeSelectAllForDownload}
+              />
               <Button
                 className="download-btn"
                 text="Baixar"
@@ -124,7 +159,15 @@ class Photos extends Component {
             </div>
             <div className="fotos-container">
               {this.state.filteredProducts.map((product) => (
-                <Card photo={product.fotos[0] || unknown}>
+                <Card
+                  photo={product.fotos[0] || unknown}
+                  onClick={() => this.onChangeSelectedForDownload(product)}
+                  className={
+                    this.state.productsSelectedForDownload.includes(product)
+                      ? "hover-card card-selected"
+                      : "hover-card"
+                  }
+                >
                   <p className="ref">{product.referencia}</p>
                   <p className="color-name">{product.nome_cor}</p>
                   <p className="color-code">{product.codigo_cor}</p>
