@@ -6,8 +6,8 @@ class PhotoService {
     try {
       const mongoFilters = {};
 
-      if (filters.codFabric) mongoFilters.referencia = filters.codFabric;
-      if (filters.codColor) mongoFilters.codigo_cor = filters.codColor;
+      if (filters.manufacturer) mongoFilters.referencia = filters.manufacturer;
+      if (filters.color) mongoFilters.codigo_cor = filters.color;
 
       return await MongoDB.find(ProductModel, mongoFilters);
     } catch (error) {

@@ -19,6 +19,9 @@ import "../styles/pages/photos.css";
 // sem imagem
 import unknown from "../assets/img/unknown.jpg";
 
+// scripts
+import PhotoUtil from "../utils/Photo";
+
 class Photos extends Component {
   constructor(props) {
     super(props);
@@ -29,12 +32,28 @@ class Photos extends Component {
     };
   }
 
+  static token = localStorage.getItem("token");
+
+  getPhotos = async () => {
+    const filters = {
+      manufacturer: this.state.manufacturerCode,
+      color: this.state.colorCode,
+    };
+
+    const response = await PhotoUtil.getPhotos({
+      token: this.token,
+      filters,
+    });
+
+    console.log(response);
+  };
+
   render() {
     return (
       <>
         <NavBar />
         <div className="main-container">
-          <SideBar>
+          <SideBar onSearch={this.getPhotos}>
             <InputText
               label="Código de fabricante"
               value={this.state.manufacturerCode}

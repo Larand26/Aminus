@@ -5,16 +5,16 @@ class MongoDB {
   static pool = mongoose.connect(MongoConfig.uri, MongoConfig.options);
 
   static find(model, filters = {}) {
-    return model.find(filters).exec();
+    return model.find(filters).lean().exec();
   }
 
   static update(model, id, newData) {
-    return model.findByIdAndUpdate(id, newData, { new: true }).exec();
+    return model.findByIdAndUpdate(id, newData, { new: true }).lean().exec();
   }
 
   static create(model, data) {
     const instance = new model(data);
-    return instance.save();
+    return instance.save().then((doc) => doc.toObject());
   }
 }
 
