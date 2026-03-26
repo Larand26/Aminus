@@ -42,6 +42,9 @@
   text-align: center;
   white-space: nowrap;
 }
+.table th .checkbox-container {
+  margin: auto !important;
+}
 .table td {
   font-size: 14px;
   color: var(--cor-texto);

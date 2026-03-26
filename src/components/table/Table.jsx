@@ -36,11 +36,13 @@ class Table extends Component {
         return (
           <CheckBox
             checked={
-              (this.props.selectedItems.length == this.props.datas.length &&
+              (this.props.selectedItems &&
+                this.props.selectedItems.length == this.props.datas.length &&
                 this.props.datas.length > 0) ||
               false
             }
             onChange={() => {
+              this.props.selectedItems &&
               this.props.selectedItems.length == this.props.datas.length &&
               this.props.datas.length > 0
                 ? this.props.onSelectionChange([])
