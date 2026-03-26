@@ -1,0 +1,118 @@
+.infos {
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+
+  max-height: 50%;
+}
+
+.infos > div {
+  width: 33%;
+}
+
+.type-gen-container {
+  display: flex;
+  box-sizing: border-box;
+
+  justify-content: space-around;
+}
+
+.type-gen-container > div {
+  width: 45%;
+  background-color: var(--cor-primaria);
+  border-radius: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.type-gen-container > div::-webkit-scrollbar {
+  width: 0px;
+}
+
+.display-container {
+  box-sizing: border-box;
+}
+
+.display-container > div {
+  width: 100%;
+  height: 100%;
+  background-color: var(--cor-primaria);
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.display-container > div .infos-content {
+  width: 60%;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.display-container > div .infos-content p {
+  color: var(--cor-branco);
+  margin: 5px;
+}
+
+.display-container > div .infos-content p.res {
+  font-size: 14px;
+}
+
+.display-container > div .foto-container {
+  width: 40%;
+}
+
+.display-container > div .foto-content {
+  border-radius: 5px;
+  border: 2px solid var(--cor-fundo);
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.display-container > div .foto-content img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.display-container > div .btn-cadastrar {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: var(--cor-amarelo);
+  color: var(--cor-branco);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.display-container-2 > div {
+  flex-direction: column;
+  gap: 5px;
+}
+
+.display-container-2 > div .input-text-container input {
+  background-color: transparent !important;
+  border: 2px solid var(--cor-fundo) !important;
+  color: var(--cor-branco);
+}
