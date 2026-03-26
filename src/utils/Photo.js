@@ -88,5 +88,27 @@ class Photo {
       };
     }
   }
+
+  static async downloadPhoto(args) {
+    const { token, products } = args;
+    try {
+      const response = await window.api.downloadPhoto({
+        token,
+        products,
+      });
+      if (response.success) {
+        return {
+          success: true,
+          message: "Photos downloaded successfully.",
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while downloading photos.",
+      };
+    }
+  }
 }
 export default Photo;

@@ -121,6 +121,26 @@ class Photos extends Component {
     }
   };
 
+  handleDownload = async (product) => {
+    let response;
+
+    if (product) {
+      response = await PhotoUtil.downloadPhoto({
+        token: this.token,
+        products: [product],
+      });
+      return;
+    }
+
+    if (this.state.productsSelectedForDownload.length > 0)
+      response = await PhotoUtil.downloadPhoto({
+        token: this.token,
+        products: this.state.productsSelectedForDownload,
+      });
+
+    console.log(response || "Sem resposta");
+  };
+
   render() {
     return (
       <>
@@ -155,6 +175,7 @@ class Photos extends Component {
                 className="download-btn"
                 text="Baixar"
                 icon="fa fa-download"
+                onClick={() => this.handleDownload(null)}
               />
             </div>
             <div className="fotos-container">
@@ -179,7 +200,7 @@ class Photos extends Component {
                       });
                     }}
                     onDelete={() => console.log("Excluir", product)}
-                    onDownload={() => console.log("Baixar", product)}
+                    onDownload={() => this.handleDownload(product)}
                   />
                 </Card>
               ))}

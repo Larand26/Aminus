@@ -88,3 +88,7 @@ ipcMain.handle("open-file", async (event, filePath) => {
     return { success: false, error: error.message };
   }
 });
+
+ipcMain.handle("download-photo", async (event, args) => {
+  return await PhotoController.downloadPhoto(args);
+});

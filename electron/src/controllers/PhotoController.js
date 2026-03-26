@@ -28,6 +28,28 @@ class PhotoController {
       };
     }
   }
+
+  static async downloadPhoto(args) {
+    try {
+      const resizedFilesData = await PhotoService.resizePhotos(args.products);
+      if (!resizedFilesData.success) {
+        return {
+          success: false,
+          error: resizedFilesData.error,
+          message: "An error occurred while resizing photos.",
+        };
+      }
+      return await PhotoService.downloadPhoto({
+        products: resizedFilesData.data,
+      });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while downloading the photo.",
+      };
+    }
+  }
 }
 
 export default PhotoController;
