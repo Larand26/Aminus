@@ -42,7 +42,7 @@
   text-align: center;
   white-space: nowrap;
 }
-.table th .checkbox-container {
+.table .checkbox-container {
   margin: auto !important;
 }
 .table td {
