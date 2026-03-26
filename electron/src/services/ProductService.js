@@ -285,6 +285,35 @@ class ProductService {
       };
     }
   }
+
+  /**
+   *
+   *  @param {Object<{colorName: string}>} filters
+   * @returns
+   */
+  static async getColors(filters = {}) {
+    try {
+      const { colorName } = filters;
+      let query, params;
+      if (colorName && colorName.trim() !== "") {
+        query =
+          "SELECT TOP 20 [ID_CHAVE] AS value, [DESCRICAO] AS label FROM [CORES_ECOMERCE] WHERE [DESCRICAO] LIKE @colorName + '%' ORDER BY CASE WHEN [DESCRICAO] = @colorName THEN 0 ELSE 1 END, [DESCRICAO]";
+        params = [{ name: "colorName", value: colorName }];
+      } else {
+        query =
+          "SELECT [ID_CHAVE] AS value, [DESCRICAO] AS label FROM [CORES_ECOMERCE] ORDER BY [DESCRICAO]";
+        params = [];
+      }
+      const result = await SQLServerDB.query(query, params);
+      return { data: result, success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching colors.",
+      };
+    }
+  }
 }
 
 export default ProductService;

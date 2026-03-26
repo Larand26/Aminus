@@ -37,6 +37,8 @@ class WebRegistration extends Component {
       productsData: [],
       manufacturerCode: "",
       productCode: "",
+
+      colors: [],
     };
   }
 
@@ -51,11 +53,9 @@ class WebRegistration extends Component {
       token: WebRegistration.token,
       filters,
     });
-
-    console.log(response);
-
     if (response.success) {
       this.setState({ productsData: response.data });
+      await this.getColors(response.data);
     }
   };
 
@@ -74,6 +74,25 @@ class WebRegistration extends Component {
     });
     this.setState({ productsData: updatedData });
   }
+
+  getColors = async (productsData) => {
+    const response = await ProductUtil.getColors({
+      token: WebRegistration.token,
+      filters: {},
+    });
+    if (response.success) {
+      const colors = response.data.filter((color) => {
+        return productsData.some(
+          (product) => product.COD_COR_ECOMMERCE === color.value,
+        );
+      });
+      console.log(productsData);
+
+      console.log(colors);
+
+      this.setState({ colors });
+    }
+  };
 
   render() {
     return (
@@ -152,6 +171,7 @@ class WebRegistration extends Component {
               datas={this.state.productsData}
               search={false}
               onActiveChange={(data) => this.setActiveClickItemIndex(data)}
+              optionsSelect={this.state.colors}
             />
           </Content>
         </div>

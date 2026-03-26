@@ -51,6 +51,19 @@ class ProductController {
       };
     }
   }
+
+  static async getColors(filters = {}) {
+    try {
+      return await ProductService.getColors(filters);
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching colors.",
+      };
+    }
+  }
 }
 
 export default ProductController;

@@ -21,4 +21,5 @@ contextBridge.exposeInMainWorld("api", {
   generateCubagePDF: (args) => ipcRenderer.invoke("generate-cubage-pdf", args),
   openFile: (filePath) => ipcRenderer.invoke("open-file", filePath),
   downloadPhoto: (args) => ipcRenderer.invoke("download-photo", args),
+  getColors: (args) => ipcRenderer.invoke("get-colors", args),
 });

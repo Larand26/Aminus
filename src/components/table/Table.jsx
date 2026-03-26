@@ -6,6 +6,7 @@ import Utils from "../../utils/Utils";
 import CheckBox from "../inputs/InputCheckBox";
 import Loading from "../misc/Loading";
 import InputRadio from "../inputs/InputRadio";
+import Select from "../inputs/Select";
 
 import "../../styles/components/table/table.css";
 
@@ -58,7 +59,7 @@ class Table extends Component {
     return name || "";
   }
 
-  formatValue(value, format, data, option) {
+  formatValue(value, format, data, option, optionsSelect) {
     // Checkbox de seleção de itens
     if (format === "checkbox" && option.key === "ID") {
       return (
@@ -79,6 +80,20 @@ class Table extends Component {
           onChange={
             this.props.onActiveChange && (() => this.props.onActiveChange(data))
           }
+        />
+      );
+    }
+    // Select customizado
+    if (format === "select") {
+      return (
+        <Select
+          options={optionsSelect || []}
+          value={data[option.key]}
+          onChange={(selectedValue) => {
+            if (this.props.onSelectChange) {
+              this.props.onSelectChange(data, option, selectedValue);
+            }
+          }}
         />
       );
     }
@@ -122,6 +137,7 @@ class Table extends Component {
       search = true,
       hover = false,
       onClickRow = () => {},
+      optionsSelect = [],
     } = this.props;
     const tableMaxHeight = this.props.maxHeight ?? "100%";
 
@@ -194,6 +210,7 @@ class Table extends Component {
                         option.format || "",
                         data,
                         option,
+                        optionsSelect || [],
                       )}
                     </td>
                   ))}

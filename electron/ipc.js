@@ -92,3 +92,7 @@ ipcMain.handle("open-file", async (event, filePath) => {
 ipcMain.handle("download-photo", async (event, args) => {
   return await PhotoController.downloadPhoto(args);
 });
+
+ipcMain.handle("get-colors", async (event, args) => {
+  return await ProductController.getColors(args.filters);
+});

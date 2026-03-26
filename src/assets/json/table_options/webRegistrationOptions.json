@@ -6,10 +6,15 @@
     "format": "checkbox"
   },
   { "key": "COD_INTERNO", "name": "Cod Interno", "checked": true },
-  { "key": "COD_FABRICANTE", "name": "Cod Fabricante", "checked": true },
   { "key": "COD_BARRAS", "name": "Cod Barras", "checked": true },
   { "key": "PAI", "name": "Pai", "checked": true },
   { "key": "PROD_DESCRICAO", "name": "Descrição", "checked": true },
+  {
+    "key": "COD_COR_ECOMMERCE",
+    "name": "Cor",
+    "format": "select",
+    "checked": true
+  },
   {
     "key": "ATIVO_ECOMMERCE",
     "name": "",

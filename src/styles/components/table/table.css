@@ -216,3 +216,7 @@ th {
   background-color: var(--cor-selecionado);
   cursor: pointer;
 }
+
+.table .select-container {
+  min-width: 200px;
+}

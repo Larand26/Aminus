@@ -49,6 +49,18 @@ class Product {
       };
     }
   }
+
+  static async getColors(args) {
+    try {
+      return await window.api.getColors(args);
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching colors.",
+      };
+    }
+  }
 }
 
 export default Product;
