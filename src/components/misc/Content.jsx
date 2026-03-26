@@ -10,9 +10,7 @@ class Content extends Component {
     return (
       <div className="content">
         <div className="title-timer-container">
-          <div className="title">
-            <p>{title ? title : "Título Padrão"}</p>
-          </div>
+          <div className="title">{title && <h1>{title}</h1>}</div>
           {timer && <div className="timer">{timer}</div>}
         </div>
 
