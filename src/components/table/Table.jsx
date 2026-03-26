@@ -30,55 +30,68 @@ class Table extends Component {
   }
 
   formatheader(option) {
-    const { format, name } = option;
-    switch (format) {
-      case "checkbox":
-        return (
-          <CheckBox
-            checked={
-              (this.props.selectedItems &&
-                this.props.selectedItems.length == this.props.datas.length &&
-                this.props.datas.length > 0) ||
-              false
-            }
-            onChange={() => {
-              this.props.selectedItems &&
+    const { format, name, key } = option;
+    // Checkbox de seleção de itens
+    if (format === "checkbox" && key === "ID") {
+      return (
+        <CheckBox
+          checked={
+            (this.props.selectedItems &&
               this.props.selectedItems.length == this.props.datas.length &&
-              this.props.datas.length > 0
-                ? this.props.onSelectionChange([])
-                : this.props.onSelectionChange(this.props.datas);
-            }}
-          />
-        );
-      default:
-        return name || "";
+              this.props.datas.length > 0) ||
+            false
+          }
+          onChange={() => {
+            this.props.selectedItems &&
+            this.props.selectedItems.length == this.props.datas.length &&
+            this.props.datas.length > 0
+              ? this.props.onSelectionChange([])
+              : this.props.onSelectionChange(this.props.datas);
+          }}
+        />
+      );
     }
+    // Checkbox de status (ativo/inativo)
+    if (format === "checkbox" && key === "ATIVO_ECOMMERCE") {
+      return name || "";
+    }
+    return name || "";
   }
 
   formatValue(value, format, data, option) {
+    // Checkbox de seleção de itens
+    if (format === "checkbox" && option.key === "ID") {
+      return (
+        <CheckBox
+          checked={this.props.selectedItems?.includes(data) || false}
+          onChange={() => {
+            this.props.onSelectionChange && this.props.onSelectionChange(data);
+          }}
+        />
+      );
+    }
+    // Checkbox de status (ativo/inativo)
+    if (format === "checkbox" && option.fields) {
+      const everyFieldTrue = option.fields.every((field) => data[field]);
+      return (
+        <CheckBox
+          checked={everyFieldTrue}
+          onChange={
+            this.props.onActiveChange && (() => this.props.onActiveChange(data))
+          }
+        />
+      );
+    }
     switch (format) {
       case "date-time":
         return Utils.formatDateTime(value);
-
-      case "paste":
+      case "paste": {
         const fields = option.fields || [];
         const valuesToPaste = fields.map((field) => data[field]);
         return Utils.formatPasteValues(valuesToPaste);
-
+      }
       case "currency":
         return Utils.formatCurrency(value);
-
-      case "checkbox":
-        return (
-          <CheckBox
-            checked={this.props.selectedItems?.includes(data) || false}
-            onChange={() => {
-              this.props.onSelectionChange &&
-                this.props.onSelectionChange(data);
-            }}
-          />
-        );
-
       case "radio":
         return (
           <InputRadio
@@ -90,7 +103,6 @@ class Table extends Component {
             }}
           />
         );
-
       default:
         if (value instanceof Date) {
           return value.toLocaleString("pt-BR", {

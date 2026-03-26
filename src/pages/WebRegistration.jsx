@@ -59,6 +59,22 @@ class WebRegistration extends Component {
     }
   };
 
+  setActiveClickItemIndex(data) {
+    const { COD_INTERNO } = data;
+    if (!COD_INTERNO) return;
+    const updatedData = this.state.productsData.map((item) => {
+      if (item.COD_INTERNO === COD_INTERNO) {
+        return {
+          ...item,
+          ATIVO_ECOMMERCE: !item.ATIVO_ECOMMERCE,
+          INTEGRACAO_ECOMMERCE: !item.ATIVO_ECOMMERCE,
+        };
+      }
+      return item;
+    });
+    this.setState({ productsData: updatedData });
+  }
+
   render() {
     return (
       <>
@@ -135,6 +151,7 @@ class WebRegistration extends Component {
               options={tableOptions}
               datas={this.state.productsData}
               search={false}
+              onActiveChange={(data) => this.setActiveClickItemIndex(data)}
             />
           </Content>
         </div>
