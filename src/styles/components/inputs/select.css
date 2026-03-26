@@ -124,3 +124,11 @@
 .select .select-input.searchable {
   cursor: text;
 }
+
+.option label {
+  cursor: pointer;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  display: block;
+}
