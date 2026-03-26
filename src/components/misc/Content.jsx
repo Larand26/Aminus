@@ -9,10 +9,12 @@ class Content extends Component {
 
     return (
       <div className="content">
-        <div className="title-timer-container">
-          <div className="title">{title && <p>{title}</p>}</div>
-          {timer && <div className="timer">{timer}</div>}
-        </div>
+        {title || timer ? (
+          <div className="title-timer-container">
+            <div className="title">{title && <p>{title}</p>}</div>
+            {timer && <div className="timer">{timer}</div>}
+          </div>
+        ) : null}
 
         <div style={{ width: "100%" }} className="content-body">
           {pages ? (
