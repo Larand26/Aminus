@@ -16,6 +16,18 @@ const DATE_RESERVATION_BASE_QUERY = readFileSync(
   path.resolve(__dirname, "../database/queries/queryDateReservation.sql"),
   "utf-8",
 );
+const REGISTRATION_BASE_QUERY = readFileSync(
+  path.resolve(__dirname, "../database/queries/queryRegistrationProduct.sql"),
+  "utf-8",
+);
+const REGISTRATION_FILTER_MAP = {
+  manufacturer: {
+    condition: `P.[PROD_CODFABRIC] = @manufacturer`,
+  },
+  productCode: {
+    condition: `P.[ID_CODPRODUTO] = @productCode`,
+  },
+};
 const FILTER_PLACEHOLDER = "-- Os filtros serão adicionados aqui pelo Node.js";
 
 const FILTER_MAP = {
@@ -221,6 +233,55 @@ class ProductService {
         success: false,
         error: error.message,
         message: "An error occurred while fetching date reservations.",
+      };
+    }
+  }
+  /**
+   * Pesquisa produtos de cadastro wev
+   * @param {Object<{manufacturer: string, productCode: string}>} filters
+   * @returns {Promise<{success: boolean, data: Object[]|null, error: string|null}>}
+   */
+  static async getProductRegistrations(filters = {}) {
+    try {
+      const safeFilters = filters && typeof filters === "object" ? filters : {};
+      const params = [];
+      const extraConditions = [];
+
+      for (const [key, { condition, transform }] of Object.entries(
+        REGISTRATION_FILTER_MAP,
+      )) {
+        if (!hasFilterValue(safeFilters[key])) {
+          continue;
+        }
+        params.push({
+          name: key,
+          value: transform ? transform(safeFilters[key]) : safeFilters[key],
+        });
+        extraConditions.push(condition);
+      }
+
+      const filterConditions =
+        extraConditions.length > 0
+          ? `AND ${extraConditions.join(" AND ")}`
+          : "";
+
+      const finalQuery = REGISTRATION_BASE_QUERY.replace(
+        FILTER_PLACEHOLDER,
+        filterConditions,
+      );
+
+      const registrations = await SQLServerDB.query(finalQuery, params);
+
+      return {
+        success: true,
+        data: registrations,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching product registrations.",
       };
     }
   }

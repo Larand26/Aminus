@@ -27,20 +27,44 @@ import "../styles/pages/web-registration.css";
 // sem imagem
 import unknown from "../assets/img/unknown.jpg";
 
+// scripts
+import ProductUtil from "../utils/Product";
+
 class WebRegistration extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      productsData: [],
       manufacturerCode: "",
       productCode: "",
     };
   }
+
+  static token = localStorage.getItem("token") || "";
+
+  getProductRegistrations = async () => {
+    const filters = {
+      manufacturer: this.state.manufacturerCode,
+      productCode: this.state.productCode,
+    };
+    const response = await ProductUtil.getProductRegistrations({
+      token: WebRegistration.token,
+      filters,
+    });
+
+    console.log(response);
+
+    if (response.success) {
+      this.setState({ productsData: response.data });
+    }
+  };
+
   render() {
     return (
       <>
         <NavBar />
         <div className="main-container">
-          <SideBar>
+          <SideBar onSearch={this.getProductRegistrations}>
             <InputText
               label="Código do Fabricante"
               value={this.state.manufacturerCode}
@@ -106,9 +130,12 @@ class WebRegistration extends Component {
                 </div>
               </div>
             </div>
-            <div>
-              <Table options={tableOptions} search={false} />
-            </div>
+
+            <Table
+              options={tableOptions}
+              datas={this.state.productsData}
+              search={false}
+            />
           </Content>
         </div>
       </>
