@@ -75,22 +75,25 @@ class WebRegistration extends Component {
     this.setState({ productsData: updatedData });
   }
 
+  setColorChange(data) {
+    const { COD_INTERNO } = data;
+    if (!COD_INTERNO) return;
+    const updatedData = this.state.productsData.map((item) => {
+      if (item.COD_INTERNO === COD_INTERNO) {
+        item = data;
+      }
+      return item;
+    });
+    this.setState({ productsData: updatedData });
+  }
+
   getColors = async (productsData) => {
     const response = await ProductUtil.getColors({
       token: WebRegistration.token,
       filters: {},
     });
     if (response.success) {
-      const colors = response.data.filter((color) => {
-        return productsData.some(
-          (product) => product.COD_COR_ECOMMERCE === color.value,
-        );
-      });
-      console.log(productsData);
-
-      console.log(colors);
-
-      this.setState({ colors });
+      this.setState({ colors: response.data });
     }
   };
 
@@ -172,6 +175,7 @@ class WebRegistration extends Component {
               search={false}
               onActiveChange={(data) => this.setActiveClickItemIndex(data)}
               optionsSelect={this.state.colors}
+              onChangeSelect={(data) => this.setColorChange(data)}
             />
           </Content>
         </div>

@@ -59,7 +59,15 @@ class Table extends Component {
     return name || "";
   }
 
-  formatValue(value, format, data, option, optionsSelect) {
+  formatValue(
+    value,
+    format,
+    data,
+    option,
+    optionsSelect,
+    onChangeSelect,
+    onSearchTermChangeSelect,
+  ) {
     // Checkbox de seleção de itens
     if (format === "checkbox" && option.key === "ID") {
       return (
@@ -89,11 +97,9 @@ class Table extends Component {
         <Select
           options={optionsSelect || []}
           value={data[option.key]}
-          onChange={(selectedValue) => {
-            if (this.props.onSelectChange) {
-              this.props.onSelectChange(data, option, selectedValue);
-            }
-          }}
+          onChange={(value) => onChangeSelect({ ...data, [option.key]: value })}
+          search
+          limit={20}
         />
       );
     }
@@ -138,6 +144,8 @@ class Table extends Component {
       hover = false,
       onClickRow = () => {},
       optionsSelect = [],
+      onChangeSelect = () => {},
+      onSearchTermChangeSelect = () => {},
     } = this.props;
     const tableMaxHeight = this.props.maxHeight ?? "100%";
 
@@ -211,6 +219,8 @@ class Table extends Component {
                         data,
                         option,
                         optionsSelect || [],
+                        onChangeSelect,
+                        onSearchTermChangeSelect,
                       )}
                     </td>
                   ))}

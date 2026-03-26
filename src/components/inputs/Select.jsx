@@ -89,16 +89,18 @@ class Select extends Component {
       onChange = () => {},
       label,
       search = false,
+      limit = 50,
     } = this.props;
     const { isOpen, searchTerm } = this.state;
     const selectedOption = options.find((option) => option.value === value);
     const inputLabel = selectedOption ? selectedOption.label : "";
     const normalizedTerm = searchTerm.trim().toLowerCase();
-    const filteredOptions = search
+    let filteredOptions = search
       ? options.filter((option) =>
-          option.label.toLowerCase().includes(normalizedTerm),
+          option.label.toLowerCase().startsWith(normalizedTerm),
         )
       : options;
+    filteredOptions = filteredOptions.slice(0, limit);
     const inputValue = search && isOpen ? searchTerm : inputLabel;
 
     return (
