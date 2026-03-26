@@ -18,7 +18,8 @@ import Button from "../components/buttons/Button";
 import Table from "../components/table/Table";
 
 // table-options
-import tableOptions from "../assets/json/table_options/sizesOptions";
+import sizesOptions from "../assets/json/table_options/sizesOptions";
+import tableOptions from "../assets/json/table_options/webRegistrationOptions";
 
 // styles
 import "../styles/pages/web-registration.css";
@@ -101,9 +102,12 @@ class WebRegistration extends Component {
                 <div>
                   <InputText />
                   <InputButton icon="fa fa-plus" />
-                  <Table options={tableOptions} search={false} />
+                  <Table options={sizesOptions} search={false} />
                 </div>
               </div>
+            </div>
+            <div>
+              <Table options={tableOptions} search={false} />
             </div>
           </Content>
         </div>
