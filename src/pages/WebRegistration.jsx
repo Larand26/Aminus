@@ -110,6 +110,7 @@ class WebRegistration extends Component {
   };
 
   formatSelectedProductData(data) {
+    this.setState({ selectedRow: data });
     this.getPhotos(data);
     const formattedData = Formatter.formatProductData(data);
     const {
@@ -328,6 +329,10 @@ class WebRegistration extends Component {
               optionsSelect={this.state.colors}
               onChangeSelect={(data) => this.setColorChange(data)}
               onClickRow={(data) => this.formatSelectedProductData(data)}
+              rowSelected={{
+                value: this.state.selectedRow?.COD_INTERNO,
+                key: "COD_INTERNO",
+              }}
               hover
             />
           </Content>

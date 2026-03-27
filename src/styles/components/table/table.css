@@ -81,11 +81,6 @@
   font-weight: bold;
 }
 
-.table tr.linha-selecionada td {
-  background-color: #658884 !important;
-  color: var(--cor-branco) !important;
-}
-
 .loading-table {
   position: absolute;
   inset: 0;
@@ -219,4 +214,9 @@ th {
 
 .table .select-container {
   min-width: 250px;
+}
+
+.row-selected {
+  background-color: var(--cor-selecionado) !important;
+  color: var(--cor-branco) !important;
 }

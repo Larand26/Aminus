@@ -208,7 +208,7 @@ class Table extends Component {
               filteredDatas.map((data, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className={`${rowIndex % 2 === 0 ? "even-row" : "odd-row"} ${hover ? "hover-row" : ""}`}
+                  className={`${rowIndex % 2 === 0 ? "even-row" : "odd-row"} ${hover ? "hover-row" : ""} ${this.props.rowSelected?.value === data[this.props.rowSelected?.key] ? "row-selected" : ""}`}
                   onClick={() => onClickRow(data)}
                 >
                   {options.map((option) => (
