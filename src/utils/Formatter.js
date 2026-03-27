@@ -1,3 +1,5 @@
+import Utils from "./Utils";
+
 class Formatter {
   static wordsToRemove = [
     "CHINELO",
@@ -37,6 +39,15 @@ class Formatter {
     SANDÁLIA: "SANDALIA",
     BABUCH: "BABUCHE",
   };
+
+  static extractColor(description) {
+    if (!description) return null;
+    // pega texto entre } e (
+    const colorMatch = description.match(/}\s*([^()]+)\s*\(/);
+    if (colorMatch && colorMatch[1]) {
+      return colorMatch[1].trim();
+    }
+  }
 
   static formatProductData(data) {
     const {
@@ -91,6 +102,12 @@ class Formatter {
       slipperSizeRange.push({ NUMERO: size, QUANTIDADE: quantity });
     }
 
+    // Extrai a cor da descrição do produto
+    const newColor = this.extractColor(PROD_DESCRICAO);
+
+    // Copia a cor
+    Utils.copyToClipboard(newColor || "");
+
     return {
       gender: genderResponse,
       type: typeResponse,
@@ -98,6 +115,7 @@ class Formatter {
       slipperSizeRange,
       descriptionProduct: descriptionResponse,
       manufacturer: COD_FABRICANTE,
+      newColor: newColor,
     };
   }
 }

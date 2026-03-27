@@ -121,6 +121,7 @@ class WebRegistration extends Component {
       slipperSizeRange,
       descriptionProduct,
       manufacturer,
+      newColor,
     } = formattedData;
 
     this.setState({
@@ -130,6 +131,7 @@ class WebRegistration extends Component {
       promo,
       descriptionProduct,
       manufacturer,
+      newColor,
     });
   }
 

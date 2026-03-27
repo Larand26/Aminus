@@ -78,6 +78,20 @@ class Utils {
     }
     return true;
   }
+
+  static copyToClipboard(text) {
+    if (navigator && navigator.clipboard) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      const textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+      return Promise.resolve();
+    }
+  }
 }
 
 export default Utils;
