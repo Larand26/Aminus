@@ -314,6 +314,44 @@ class ProductService {
       };
     }
   }
+
+  /**
+   *
+   *  @param {Object<{colorName: string}>} filters
+   * @returns
+   */
+  static async createColor(args) {
+    try {
+      const { colorName } = args;
+      if (!colorName || colorName.trim() === "") {
+        return {
+          success: false,
+          message: "Nome da cor é obrigatório.",
+        };
+      }
+
+      // Verifica se já existe uma cor com a mesma descrição
+      const checkQuery =
+        "SELECT COUNT(*) AS total FROM [CORES_ECOMERCE] WHERE [DESCRICAO] = @colorName";
+      const checkParams = [{ name: "colorName", value: colorName }];
+      const checkResult = await SQLServerDB.query(checkQuery, checkParams);
+
+      if (checkResult && checkResult[0] && checkResult[0].total > 0) {
+        return { success: false, message: "Cor já existe" };
+      }
+
+      const insertQuery =
+        "INSERT INTO [CORES_ECOMERCE] (DESCRICAO) VALUES (@colorName)";
+      await SQLServerDB.query(insertQuery, checkParams);
+      return { success: true };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while creating color.",
+      };
+    }
+  }
 }
 
 export default ProductService;

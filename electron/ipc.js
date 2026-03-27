@@ -96,3 +96,7 @@ ipcMain.handle("download-photo", async (event, args) => {
 ipcMain.handle("get-colors", async (event, args) => {
   return await ProductController.getColors(args.filters);
 });
+
+ipcMain.handle("create-color", async (event, args) => {
+  return await ProductController.createColor(args);
+});

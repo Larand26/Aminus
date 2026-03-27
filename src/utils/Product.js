@@ -61,6 +61,18 @@ class Product {
       };
     }
   }
+
+  static async createColor(args) {
+    try {
+      return await window.api.createColor(args);
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while creating color.",
+      };
+    }
+  }
 }
 
 export default Product;

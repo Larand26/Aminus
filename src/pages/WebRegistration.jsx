@@ -112,6 +112,16 @@ class WebRegistration extends Component {
     }
   };
 
+  createColor = async () => {
+    const response = await ProductUtil.createColor({
+      token: WebRegistration.token,
+      colorName: this.state.newColor,
+    });
+    if (response.success) {
+      this.getColors();
+    }
+  };
+
   formatSelectedProductData(data) {
     this.setState({ selectedRow: data });
     this.getPhotos(data);

@@ -64,6 +64,19 @@ class ProductController {
       };
     }
   }
+
+  static async createColor(args) {
+    try {
+      return await ProductService.createColor(args);
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while creating color.",
+      };
+    }
+  }
 }
 
 export default ProductController;
