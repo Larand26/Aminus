@@ -263,6 +263,7 @@ class WebRegistration extends Component {
                     icon="icon-sapato"
                     key={"SAPATO"}
                     className={`${this.state.type === "SAPATO" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "SAPATO" })}
                   />
                 </div>
               </div>
@@ -273,10 +274,9 @@ class WebRegistration extends Component {
                     <p
                       className={`res ${!this.state.descriptionProduct ? "placeholder" : ""}`}
                     >
-                      {this.state.type && this.state.type + " "}
-                      {this.state.gender && this.state.gender + " "}
-                      {this.state.descriptionProduct ||
-                        "Selecione um produto para ver as informações"}
+                      {this.state.descriptionProduct
+                        ? `${this.state.type} ${this.state.gender} ${this.state.descriptionProduct}`
+                        : "Selecione um produto para ver as informações"}
                     </p>
                     <hr />
                     <p className="title-infos">Pai</p>
