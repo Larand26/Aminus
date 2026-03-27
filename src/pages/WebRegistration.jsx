@@ -29,6 +29,7 @@ import unknown from "../assets/img/unknown.jpg";
 
 // scripts
 import ProductUtil from "../utils/Product";
+import Formatter from "../utils/Formatter";
 
 class WebRegistration extends Component {
   constructor(props) {
@@ -39,6 +40,15 @@ class WebRegistration extends Component {
       productCode: "",
 
       colors: [],
+
+      selectedRow: null,
+      gender: null,
+      promo: false,
+      type: null,
+      slipperSizeRange: [],
+      newColor: "",
+      descriptionProduct: "",
+      manufacturer: "",
     };
   }
 
@@ -97,6 +107,28 @@ class WebRegistration extends Component {
     }
   };
 
+  formatSelectedProductData(data) {
+    const formattedData = Formatter.formatProductData(data);
+    const {
+      gender,
+      type,
+      promo,
+      slipperSizeRange,
+      descriptionProduct,
+      manufacturer,
+    } = formattedData;
+    console.log(formattedData);
+
+    this.setState({
+      slipperSizeRange,
+      gender,
+      type,
+      promo,
+      descriptionProduct,
+      manufacturer,
+    });
+  }
+
   render() {
     return (
       <>
@@ -118,35 +150,122 @@ class WebRegistration extends Component {
             <div className="infos">
               <div className="type-gen-container">
                 <div>
-                  <ButtonTypeGender icon="icon-male" />
-                  <ButtonTypeGender icon="icon-female" />
-                  <ButtonTypeGender icon="icon-child" />
-                  <ButtonTypeGender icon="icon-baby" />
-                  <ButtonTypeGender icon="icon-unisex" />
-                  <ButtonTypeGender icon="fa fa-promo" />
+                  <ButtonTypeGender
+                    icon="icon-male"
+                    key={"MASCULINO"}
+                    className={`${this.state.gender === "MASCULINO" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ gender: "MASCULINO" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-female"
+                    key={"FEMININO"}
+                    className={`${this.state.gender === "FEMININO" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ gender: "FEMININO" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-child"
+                    key={"INFANTIL"}
+                    className={`${this.state.gender === "INFANTIL" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ gender: "INFANTIL" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-baby"
+                    key={"BABY"}
+                    className={`${this.state.gender === "BABY" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ gender: "BABY" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-unisex"
+                    key={"UNISEX"}
+                    className={`${this.state.gender === "UNISEX" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ gender: "UNISEX" })}
+                  />
+                  <ButtonTypeGender
+                    icon="fa fa-promo"
+                    key={"PROMO"}
+                    className={`${this.state.promo ? "selected promotion" : ""}`}
+                    onClick={(data) =>
+                      this.setState({ promo: !this.state.promo })
+                    }
+                  />
                 </div>
                 <div>
-                  <ButtonTypeGender icon="icon-chinelo" />
-                  <ButtonTypeGender icon="icon-slide" />
-                  <ButtonTypeGender icon="icon-sandalia" />
-                  <ButtonTypeGender icon="icon-tamanco" />
-                  <ButtonTypeGender icon="icon-rasteira" />
-                  <ButtonTypeGender icon="icon-bota" />
-                  <ButtonTypeGender icon="icon-babuche" />
-                  <ButtonTypeGender icon="icon-sapatilha" />
-                  <ButtonTypeGender icon="icon-sapato" />
+                  <ButtonTypeGender
+                    icon="icon-chinelo"
+                    key={"CHINELO"}
+                    className={`${this.state.type === "CHINELO" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "CHINELO" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-slide"
+                    key={"SLIDE"}
+                    className={`${this.state.type === "SLIDE" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "SLIDE" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-sandalia"
+                    key={"SANDALIA"}
+                    className={`${this.state.type === "SANDALIA" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "SANDALIA" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-tamanco"
+                    key={"TAMANCO"}
+                    className={`${this.state.type === "TAMANCO" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "TAMANCO" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-rasteira"
+                    key={"RASTEIRA"}
+                    className={`${this.state.type === "RASTEIRA" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "RASTEIRA" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-bota"
+                    key={"BOTA"}
+                    className={`${this.state.type === "BOTA" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "BOTA" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-babuche"
+                    key={"BABUACHE"}
+                    className={`${this.state.type === "BABUACHE" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "BABUACHE" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-sapatilha"
+                    key={"SAPATILHA"}
+                    className={`${this.state.type === "SAPATILHA" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "SAPATILHA" })}
+                  />
+                  <ButtonTypeGender
+                    icon="icon-sapato"
+                    key={"SAPATO"}
+                    className={`${this.state.type === "SAPATO" ? "selected" : ""}`}
+                  />
                 </div>
               </div>
               <div className="display-container">
                 <div>
                   <div className="infos-content">
                     <p className="title-infos">Nome</p>
-                    <p className="res">
-                      CHINELO FEMININO INPANEMA CLÁSSICA - 06466
+                    <p
+                      className={`res ${!this.state.descriptionProduct ? "placeholder" : ""}`}
+                    >
+                      {this.state.type && this.state.type + " "}
+                      {this.state.gender && this.state.gender + " "}
+                      {this.state.descriptionProduct ||
+                        "Selecione um produto para ver as informações"}
                     </p>
                     <hr />
                     <p className="title-infos">Pai</p>
-                    <p className="res">06466-GREN-PAI</p>
+                    <p
+                      className={`res ${!this.state.descriptionProduct ? "placeholder" : ""}`}
+                    >
+                      {this.state.descriptionProduct
+                        ? `${this.state.manufacturer || ""}-${!this.state.promo ? "GREN" : "PROMO"}-PAI`
+                        : "Selecione um produto para ver as informações"}
+                    </p>
                     <Button
                       text="Cadastrar"
                       className="btn-cadastrar"
@@ -162,13 +281,25 @@ class WebRegistration extends Component {
               </div>
               <div className="display-container display-container-2">
                 <div>
-                  <InputText />
-                  <InputButton icon="fa fa-plus" />
-                  <Table options={sizesOptions} search={false} />
+                  <InputText
+                    value={this.state.descriptionProduct}
+                    onChange={(value) =>
+                      this.setState({ descriptionProduct: value })
+                    }
+                  />
+                  <InputButton
+                    icon="fa fa-plus"
+                    value={this.state.newColor}
+                    onChange={(value) => this.setState({ newColor: value })}
+                  />
+                  <Table
+                    options={sizesOptions}
+                    datas={this.state.slipperSizeRange}
+                    search={false}
+                  />
                 </div>
               </div>
             </div>
-
             <Table
               options={tableOptions}
               datas={this.state.productsData}
@@ -176,6 +307,8 @@ class WebRegistration extends Component {
               onActiveChange={(data) => this.setActiveClickItemIndex(data)}
               optionsSelect={this.state.colors}
               onChangeSelect={(data) => this.setColorChange(data)}
+              onClickRow={(data) => this.formatSelectedProductData(data)}
+              hover
             />
           </Content>
         </div>

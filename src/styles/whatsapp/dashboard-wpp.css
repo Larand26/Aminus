@@ -48,7 +48,7 @@
   width: 100%;
 }
 
-.placeholder {
+.dashboard-wpp-card-value .placeholder {
   background: #e3e7ea;
   border-radius: 6px;
   min-height: 32px;

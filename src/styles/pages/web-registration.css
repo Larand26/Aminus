@@ -67,6 +67,10 @@
   font-size: 14px;
 }
 
+.display-container > div .infos-content p.res.placeholder {
+  color: #ffffff81;
+}
+
 .display-container > div .foto-container {
   width: 40%;
 }
