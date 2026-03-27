@@ -51,6 +51,8 @@ class WebRegistration extends Component {
       descriptionProduct: "",
       manufacturer: "",
       photos: [],
+
+      selectedItems: [],
     };
   }
 
@@ -147,6 +149,18 @@ class WebRegistration extends Component {
     if (response.success) {
       console.log(response.data);
       this.setState({ photos: response.data[0].fotos });
+    }
+  };
+
+  handleSelectionChange = (items) => {
+    if (Array.isArray(items)) {
+      this.setState({ selectedItems: items });
+    } else {
+      this.setState((prevState) => ({
+        selectedItems: prevState.selectedItems.includes(items)
+          ? prevState.selectedItems.filter((item) => item !== items)
+          : [...prevState.selectedItems, items],
+      }));
     }
   };
 
@@ -337,6 +351,8 @@ class WebRegistration extends Component {
                 key: "COD_INTERNO",
               }}
               hover
+              selectedItems={this.state.selectedItems}
+              onSelectionChange={this.handleSelectionChange}
             />
           </Content>
         </div>
