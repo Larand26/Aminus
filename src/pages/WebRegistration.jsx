@@ -68,6 +68,7 @@ class WebRegistration extends Component {
     if (response.success) {
       this.setState({ productsData: response.data });
       await this.getColors(response.data);
+      this.formatSelectedProductData(response.data[0]);
     }
   };
 
