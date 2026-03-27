@@ -30,6 +30,7 @@ import unknown from "../assets/img/unknown.jpg";
 // scripts
 import ProductUtil from "../utils/Product";
 import Formatter from "../utils/Formatter";
+import PhotoUtil from "../utils/Photo";
 
 class WebRegistration extends Component {
   constructor(props) {
@@ -49,6 +50,7 @@ class WebRegistration extends Component {
       newColor: "",
       descriptionProduct: "",
       manufacturer: "",
+      photos: [],
     };
   }
 
@@ -108,6 +110,7 @@ class WebRegistration extends Component {
   };
 
   formatSelectedProductData(data) {
+    this.getPhotos(data);
     const formattedData = Formatter.formatProductData(data);
     const {
       gender,
@@ -117,7 +120,6 @@ class WebRegistration extends Component {
       descriptionProduct,
       manufacturer,
     } = formattedData;
-    console.log(formattedData);
 
     this.setState({
       slipperSizeRange,
@@ -128,6 +130,21 @@ class WebRegistration extends Component {
       manufacturer,
     });
   }
+
+  getPhotos = async (data) => {
+    const filters = {
+      manufacturer: data.COD_FABRICANTE,
+      color: data.COD_COR,
+    };
+    const response = await PhotoUtil.getPhotos({
+      token: WebRegistration.token,
+      filters,
+    });
+    if (response.success) {
+      console.log(response.data);
+      this.setState({ photos: response.data[0].fotos });
+    }
+  };
 
   render() {
     return (
@@ -198,9 +215,9 @@ class WebRegistration extends Component {
                   />
                   <ButtonTypeGender
                     icon="icon-slide"
-                    key={"SLIDE"}
-                    className={`${this.state.type === "SLIDE" ? "selected" : ""}`}
-                    onClick={(data) => this.setState({ type: "SLIDE" })}
+                    key={"CHINELO SLIDE"}
+                    className={`${this.state.type === "CHINELO SLIDE" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "CHINELO SLIDE" })}
                   />
                   <ButtonTypeGender
                     icon="icon-sandalia"
@@ -274,7 +291,10 @@ class WebRegistration extends Component {
                   </div>
                   <div className="foto-container">
                     <div className="foto-content">
-                      <img src={unknown} alt="Imagem não disponível" />
+                      <img
+                        src={this.state.photos[0] || unknown}
+                        alt="Imagem não disponível"
+                      />
                     </div>
                   </div>
                 </div>

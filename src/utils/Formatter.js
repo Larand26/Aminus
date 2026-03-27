@@ -32,7 +32,7 @@ class Formatter {
 
   static wordsToSubstitute = {
     "CHINELO DEDO": "CHINELO",
-    "CHINELO SLIDE/GÁSPEA": "SLIDE",
+    "CHINELO SLIDE/GÁSPEA": "CHINELO SLIDE",
     RASTEIRINHAS: "RASTEIRA",
     SANDÁLIA: "SANDALIA",
     BABUCH: "BABUCHE",
