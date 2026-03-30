@@ -17,7 +17,8 @@ import ButtonTypeGender from "../components/buttons/ButtonTypeGender";
 import Button from "../components/buttons/Button";
 
 // tabela
-import Table from "../components/table/Table2";
+import TableColumn from "../components/table/TableColumn";
+import Table from "../components/table/Table";
 import Column from "../components/table/Column";
 
 // table-options
@@ -380,7 +381,7 @@ class WebRegistration extends Component {
                 </div>
               </div>
             </div>
-            <Table data={this.state.productsData}>
+            <TableColumn data={this.state.productsData}>
               <Column
                 id={"ID"}
                 type={"checkbox"}
@@ -455,7 +456,7 @@ class WebRegistration extends Component {
                   />
                 )}
               />
-            </Table>
+            </TableColumn>
           </Content>
         </div>
       </>
