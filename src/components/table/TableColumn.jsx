@@ -21,6 +21,7 @@ class Table extends Component {
   }
   render() {
     const { data = [], children = [] } = this.props;
+    const { onclickRow = () => {} } = this.props;
     const columns = React.Children.toArray(children);
 
     return (
@@ -40,7 +41,8 @@ class Table extends Component {
             {data.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
-                className={rowIndex % 2 === 0 ? "odd-row" : "even-row"}
+                className={`${rowIndex % 2 === 0 ? "odd-row" : "even-row"} ${onclickRow !== (() => {}) ? "hover-row" : ""}`}
+                onClick={() => onclickRow(row)}
               >
                 {columns.map((col) => (
                   <td key={col.props.id}>

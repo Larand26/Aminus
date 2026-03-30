@@ -381,7 +381,10 @@ class WebRegistration extends Component {
                 </div>
               </div>
             </div>
-            <TableColumn data={this.state.productsData}>
+            <TableColumn
+              data={this.state.productsData}
+              onclickRow={(row) => this.formatSelectedProductData(row)}
+            >
               <Column
                 id={"ID"}
                 type={"checkbox"}
