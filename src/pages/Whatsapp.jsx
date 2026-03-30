@@ -17,10 +17,22 @@ import Table from "../components/table/Table";
 // options
 import sellersOptions from "../assets/json/options/selerAminusOptions";
 
+import MessagesPage from "../components/whatsapp/MessagesPage";
+
+const pageOptions = [
+  {
+    name: "Mensagens",
+    icon: "fa-brands fa-whatsapp",
+    onClick: () => {},
+  },
+];
+
 class Whatsapp extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      page: "messages",
+
       toastInfo: null,
     };
   }
@@ -41,7 +53,9 @@ class Whatsapp extends Component {
             <InputText label="Nome do Contato" />
             <Select label="Vendedor" options={sellersOptions} />
           </SideBar>
-          <Content title="Whatsapp"></Content>
+          <Content title="Whatsapp" pages={pageOptions}>
+            {this.state.page === "messages" && <MessagesPage />}
+          </Content>
         </div>
       </>
     );

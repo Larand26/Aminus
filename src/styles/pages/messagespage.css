@@ -1,0 +1,29 @@
+.messagespage-container {
+  padding: 10px;
+}
+
+.messagespage-main-container {
+  display: flex;
+  height: 100%;
+  padding: 10px 0;
+  gap: 10px;
+}
+.messagespage-main-container > div {
+  flex: 1;
+}
+
+.messagespage-table-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.messagespage-table-actions .btn-send {
+  width: 50%;
+  background-color: var(--cor-amarelo);
+  border: none;
+  color: var(--cor-branco);
+  padding: 10px;
+  border-radius: 50px;
+}

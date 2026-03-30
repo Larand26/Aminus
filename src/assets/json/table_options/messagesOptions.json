@@ -1,0 +1,9 @@
+[
+  {
+    "key": "search",
+    "name": "Pesquisa",
+    "checked": false
+  },
+  { "key": "CONTATO_ID", "name": "ID", "checked": false },
+  { "key": "CONTATO_NOME", "name": "Nome", "checked": true, "editavel": true }
+]
