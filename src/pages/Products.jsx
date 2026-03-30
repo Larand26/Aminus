@@ -33,17 +33,16 @@ class Products extends Component {
       ),
     };
   }
-
   handleSearch = async () => {
     this.setState({ produtos: [], isLoading: true });
     const response = await ProductUtil.getProducts({
       token: "token",
       filters: {
-        idFabric: this.state.codFabricante,
-        idProduto: this.state.codInterno,
-        barcode: this.state.codBarras,
-        description: this.state.nome,
-        quantity: this.state.quantidade,
+        manufacturerCode: this.state.codFabricante,
+        productCode: this.state.codInterno,
+        productBarcode: this.state.codBarras,
+        productDescription: this.state.nome,
+        productQuantity: this.state.quantidade,
       },
     });
     this.setState({ isLoading: false });
