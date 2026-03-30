@@ -5,6 +5,7 @@ import { Component } from "react";
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
 import Content from "../components/misc/Content";
+import Toast from "../components/misc/Toast";
 
 // inputs
 import InputText from "../components/inputs/InputText";
@@ -59,6 +60,8 @@ class WebRegistration extends Component {
       selectedItems: [],
 
       loading: false,
+
+      toastInfo: null,
     };
   }
 
@@ -75,12 +78,33 @@ class WebRegistration extends Component {
       token: WebRegistration.token,
       filters,
     });
-    if (response.success) {
-      this.setState({ productsData: response.data });
-      await this.getColors(response.data);
-      this.formatSelectedProductData(response.data[0]);
-    }
     this.setState({ loading: false });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao buscar os produtos. Tente novamente.",
+          type: "erro",
+        },
+      });
+      return;
+    }
+
+    if (response.success && response.data.length === 0) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Nenhum produto encontrado com os filtros selecionados.",
+          type: "aviso",
+        },
+      });
+      return;
+    }
+
+    this.setState({ productsData: response.data });
+    await this.getColors(response.data);
+    this.formatSelectedProductData(response.data[0]);
   };
 
   onKeyPressGetProductRegistrations = (e) => {
@@ -141,9 +165,30 @@ class WebRegistration extends Component {
       token: WebRegistration.token,
       filters: {},
     });
-    if (response.success) {
-      this.setState({ colors: response.data });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao buscar as cores. Tente novamente.",
+          type: "erro",
+        },
+      });
+      return;
     }
+
+    if (response.success && response.data.length === 0) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Nenhuma cor encontrada com os filtros selecionados.",
+          type: "aviso",
+        },
+      });
+      return;
+    }
+
+    this.setState({ colors: response.data });
   };
 
   createColor = async () => {
@@ -151,8 +196,27 @@ class WebRegistration extends Component {
       token: WebRegistration.token,
       colorName: this.state.newColor,
     });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao criar a cor. Tente novamente.",
+          type: "erro",
+        },
+      });
+      return;
+    }
+
     if (response.success) {
       this.getColors();
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Cor criada com sucesso.",
+          type: "sucesso",
+        },
+      });
     }
   };
 
@@ -190,9 +254,30 @@ class WebRegistration extends Component {
       token: WebRegistration.token,
       filters,
     });
-    if (response.success) {
-      this.setState({ photos: response.data[0].fotos });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao buscar as fotos. Tente novamente.",
+          type: "erro",
+        },
+      });
+      return;
     }
+
+    if (response.success && response.data.length === 0) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Nenhuma foto encontrada com os filtros selecionados.",
+          type: "aviso",
+        },
+      });
+      return;
+    }
+
+    this.setState({ photos: response.data[0].fotos });
   };
 
   handleSelectionChange = (value, codInterno) => {
@@ -228,12 +313,37 @@ class WebRegistration extends Component {
       parentProduct: `${this.state.manufacturer}-${!this.state.promo ? "GREN" : "PROMO"}-PAI`,
       description: descriptionProduct,
     });
-    console.log(response);
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao cadastrar os produtos. Tente novamente.",
+          type: "erro",
+        },
+      });
+      return;
+    } else {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Produtos cadastrados com sucesso.",
+          type: "sucesso",
+        },
+      });
+    }
   };
 
   render() {
     return (
       <>
+        {this.state.toastInfo && (
+          <Toast
+            key={this.state.toastInfo.key}
+            message={this.state.toastInfo.message}
+            type={this.state.toastInfo.type}
+          />
+        )}
         <NavBar />
         <div className="main-container">
           <SideBar onSearch={this.getProductRegistrations}>

@@ -1,6 +1,8 @@
 import { Component } from "react";
 import { Navigate } from "react-router-dom";
 
+import Toast from "../components/misc/Toast";
+
 import logo from "../assets/img/png/imagologo.png";
 
 import "../styles/page_styles/login.css";
@@ -12,6 +14,8 @@ class Login extends Component {
     username: "",
     password: "",
     redirectToHome: false,
+
+    toastInfo: null,
   };
 
   componentDidMount() {
@@ -27,7 +31,13 @@ class Login extends Component {
       localStorage.setItem("user", JSON.stringify(result.user));
       this.setState({ redirectToHome: true });
     } else {
-      alert("Login failed: " + result.message);
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Login failed: " + result.message,
+          type: "erro",
+        },
+      });
     }
   }
 
@@ -51,6 +61,14 @@ class Login extends Component {
 
     return (
       <div className="login-page">
+        {this.state.toastInfo && (
+          <Toast
+            key={this.state.toastInfo.key}
+            message={this.state.toastInfo.message}
+            type={this.state.toastInfo.type}
+          />
+        )}
+
         <div className="form">
           <div className="logo-container">
             <img src={logo} alt="" />

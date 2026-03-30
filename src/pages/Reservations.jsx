@@ -5,6 +5,7 @@ import { Component } from "react";
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
 import Content from "../components/misc/Content";
+import Toast from "../components/misc/Toast";
 
 // table
 import Table from "../components/table/Table";
@@ -42,6 +43,8 @@ class Reservation extends Component {
       responseDateReservation: null,
 
       loading: false,
+
+      toastInfo: null,
     };
   }
 
@@ -61,9 +64,30 @@ class Reservation extends Component {
       filters,
     });
 
-    if (response.success) {
-      this.setState({ reservationsData: response.data });
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao buscar as notas fiscais. Tente novamente.",
+          type: "erro",
+        },
+      });
+      return;
     }
+
+    if (response.success && response.data.length === 0) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message:
+            "Nenhuma nota fiscal encontrada com os filtros selecionados.",
+          type: "aviso",
+        },
+      });
+      return;
+    }
+
+    this.setState({ reservationsData: response.data });
   }
 
   onKeyPressGetProductReservations = (e) => {
@@ -95,6 +119,13 @@ class Reservation extends Component {
   render() {
     return (
       <>
+        {this.state.toastInfo && (
+          <Toast
+            key={this.state.toastInfo.key}
+            message={this.state.toastInfo.message}
+            type={this.state.toastInfo.type}
+          />
+        )}
         <NavBar />
         <PopUpSearchDateReservation
           response={this.state.responseDateReservation}

@@ -6,6 +6,7 @@ import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
 import Content from "../components/misc/Content";
 import Card from "../components/misc/Card";
+import Toast from "../components/misc/Toast";
 
 // buttons
 import ActionButtons from "../components/buttons/ActionButtons";
@@ -42,6 +43,8 @@ class Photos extends Component {
 
       isEditPopupOpen: false,
       selectedEditProduct: null,
+
+      toastInfo: null,
     };
   }
 
@@ -58,12 +61,30 @@ class Photos extends Component {
       filters,
     });
 
-    if (response.success) {
-      this.setState({ productsData: response.data });
-      this.setState({ filteredProducts: response.data });
-    } else {
-      console.log(response.error);
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao buscar as fotos. Tente novamente.",
+          type: "erro",
+        },
+      });
+      return;
     }
+
+    if (response.success && response.data.length === 0) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Nenhuma foto encontrada com os filtros selecionados.",
+          type: "aviso",
+        },
+      });
+      return;
+    }
+
+    this.setState({ productsData: response.data });
+    this.setState({ filteredProducts: response.data });
   };
 
   onKeyPressGetPhotos = (e) => {
@@ -150,6 +171,13 @@ class Photos extends Component {
   render() {
     return (
       <>
+        {this.state.toastInfo && (
+          <Toast
+            key={this.state.toastInfo.key}
+            message={this.state.toastInfo.message}
+            type={this.state.toastInfo.type}
+          />
+        )}
         <NavBar />
         <div className="main-container">
           <SideBar onSearch={this.getPhotos}>

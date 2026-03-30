@@ -5,6 +5,7 @@ import { Component } from "react";
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
 import Content from "../components/misc/Content";
+import Toast from "../components/misc/Toast";
 
 // table
 import Table from "../components/table/Table";
@@ -53,6 +54,8 @@ class Orders extends Component {
 
       isFreightPopupOpen: false,
       freightData: null,
+
+      toastInfo: null,
     };
   }
 
@@ -70,10 +73,31 @@ class Orders extends Component {
 
     this.setState({ loading: true });
     const response = await OrderUtil.getOrders({ token: this.token, filters });
-    if (response.success) {
-      this.setState({ ordersData: response.data });
-    }
     this.setState({ loading: false });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao buscar os pedidos. Tente novamente.",
+          type: "erro",
+        },
+      });
+      return;
+    }
+
+    if (response.success && response.data.length === 0) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Nenhuma pedido encontrada com os filtros selecionados.",
+          type: "aviso",
+        },
+      });
+      return;
+    }
+
+    this.setState({ ordersData: response.data });
   }
 
   onKeyPressGetOrders = (e) => {
@@ -132,6 +156,13 @@ class Orders extends Component {
   render() {
     return (
       <>
+        {this.state.toastInfo && (
+          <Toast
+            key={this.state.toastInfo.key}
+            message={this.state.toastInfo.message}
+            type={this.state.toastInfo.type}
+          />
+        )}
         <NavBar />
         <div className="main-container">
           <SideBar onSearch={() => this.getOrders()}>
