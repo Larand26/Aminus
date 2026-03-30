@@ -352,6 +352,61 @@ class ProductService {
       };
     }
   }
+
+  /**
+   * Registra novos produtos
+   * @param {Array<Object{description: string, productParent: string, colorId: number, isActive: boolean, isIntegrated: boolean}>} products
+   * @returns {Promise<{success: boolean, data: Object[]|null, error: string|null}>}
+   */
+  static async registerProducts(products = []) {
+    try {
+      if (!Array.isArray(products) || products.length === 0) {
+        return {
+          success: false,
+          message: "Nenhum produto para registrar.",
+        };
+      }
+
+      const queryEcommerce = `
+        UPDATE [PRODUTOS_ECOMERCE]
+        SET 
+          [DESCRICAO] = @description,
+          [SKU_PRODUTO_PAI] = @productParent,
+          [ID_CORES_ECOMERCE] = @colorId
+        WHERE [ID_CODPRODUTO] = @productId;
+      `;
+
+      const queryActiveEcommerce = `
+        UPDATE [PRODUTOS_EMPRESASFILIAIS]
+        SET 
+          [PRO_ATIVO_ECOMMERCE] = @isActive,
+          [PRO_INTEGRACAO_ECOMMERCE] = @isIntegrated
+        WHERE [ID_CODPRODUTO] = @productId;
+      `;
+
+      for (const prod of products) {
+        if (!prod.productId) {
+          continue;
+        }
+        const params = [
+          { name: "description", value: prod.description },
+          { name: "productParent", value: prod.productParent },
+          { name: "colorId", value: prod.colorId },
+          { name: "isActive", value: prod.isActive ? 1 : 0 },
+          { name: "isIntegrated", value: prod.isIntegrated ? 1 : 0 },
+          { name: "productId", value: prod.productId },
+        ];
+        await SQLServerDB.query(queryEcommerce, params);
+        await SQLServerDB.query(queryActiveEcommerce, params);
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while registering products.",
+      };
+    }
+  }
 }
 
 export default ProductService;

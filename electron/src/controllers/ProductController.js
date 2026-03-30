@@ -77,6 +77,19 @@ class ProductController {
       };
     }
   }
+
+  static async registerProducts(products) {
+    try {
+      return await ProductService.registerProducts(products);
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while registering products.",
+      };
+    }
+  }
 }
 
 export default ProductController;

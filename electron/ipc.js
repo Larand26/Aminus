@@ -100,3 +100,7 @@ ipcMain.handle("get-colors", async (event, args) => {
 ipcMain.handle("create-color", async (event, args) => {
   return await ProductController.createColor(args);
 });
+
+ipcMain.handle("register-products", async (event, args) => {
+  return await ProductController.registerProducts(args.products);
+});

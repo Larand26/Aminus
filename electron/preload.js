@@ -23,4 +23,5 @@ contextBridge.exposeInMainWorld("api", {
   downloadPhoto: (args) => ipcRenderer.invoke("download-photo", args),
   getColors: (args) => ipcRenderer.invoke("get-colors", args),
   createColor: (args) => ipcRenderer.invoke("create-color", args),
+  registerProducts: (args) => ipcRenderer.invoke("register-products", args),
 });

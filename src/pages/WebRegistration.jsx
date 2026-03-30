@@ -67,6 +67,7 @@ class WebRegistration extends Component {
       manufacturer: this.state.manufacturerCode,
       productCode: this.state.productCode,
     };
+    this.setState({ selectedItems: [] });
     const response = await ProductUtil.getProductRegistrations({
       token: WebRegistration.token,
       filters,
@@ -180,7 +181,6 @@ class WebRegistration extends Component {
       filters,
     });
     if (response.success) {
-      console.log(response.data);
       this.setState({ photos: response.data[0].fotos });
     }
   };
@@ -205,6 +205,20 @@ class WebRegistration extends Component {
         }));
       }
     }
+  };
+
+  handleRegistration = async () => {
+    const { selectedItems, productsData, descriptionProduct } = this.state;
+    const productsToRegister = productsData.filter((item) =>
+      selectedItems.includes(item.COD_INTERNO),
+    );
+    const response = await ProductUtil.registerProducts({
+      token: WebRegistration.token,
+      products: productsToRegister,
+      parentProduct: `${this.state.manufacturer}-${!this.state.promo ? "GREN" : "PROMO"}-PAI`,
+      description: descriptionProduct,
+    });
+    console.log(response);
   };
 
   render() {
@@ -348,6 +362,7 @@ class WebRegistration extends Component {
                       text="Cadastrar"
                       className="btn-cadastrar"
                       icon="fa fa-plus"
+                      onClick={this.handleRegistration}
                     />
                   </div>
                   <div className="foto-container">
