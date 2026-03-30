@@ -184,15 +184,25 @@ class WebRegistration extends Component {
     }
   };
 
-  handleSelectionChange = (items) => {
-    if (Array.isArray(items)) {
-      this.setState({ selectedItems: items });
+  handleSelectionChange = (value, codInterno) => {
+    if (Array.isArray(codInterno)) {
+      if (value) {
+        this.setState({ selectedItems: codInterno });
+      } else {
+        this.setState({ selectedItems: [] });
+      }
     } else {
-      this.setState((prevState) => ({
-        selectedItems: prevState.selectedItems.includes(items)
-          ? prevState.selectedItems.filter((item) => item !== items)
-          : [...prevState.selectedItems, items],
-      }));
+      if (this.state.selectedItems.includes(codInterno)) {
+        this.setState((prevState) => ({
+          selectedItems: prevState.selectedItems.filter(
+            (item) => item !== codInterno,
+          ),
+        }));
+      } else {
+        this.setState((prevState) => ({
+          selectedItems: [...prevState.selectedItems, codInterno],
+        }));
+      }
     }
   };
 
@@ -371,12 +381,35 @@ class WebRegistration extends Component {
               </div>
             </div>
             <Table data={this.state.productsData}>
-              <Column id={"COD_INTERNO"} label={"Código Interno"}></Column>
               <Column
-                id={"COD_FABRICANTE"}
-                label={"Código do Fabricante"}
-              ></Column>
-              <Column id={"PROD_DESCRICAO"} label={"Descrição"}></Column>
+                id={"ID"}
+                type={"checkbox"}
+                onChangeAll={(value) => {
+                  this.handleSelectionChange(
+                    value,
+                    this.state.productsData.map((item) => item.COD_INTERNO),
+                  );
+                }}
+                allChecked={this.state.productsData.every((item) =>
+                  this.state.selectedItems.includes(item.COD_INTERNO),
+                )}
+                body={(rowData) => (
+                  <InputCheckBox
+                    checked={this.state.selectedItems.includes(
+                      rowData.COD_INTERNO,
+                    )}
+                    onChange={() =>
+                      this.handleSelectionChange(
+                        this.state.selectedItems.includes(rowData.COD_INTERNO),
+                        rowData.COD_INTERNO,
+                      )
+                    }
+                  />
+                )}
+              />
+              <Column id={"COD_INTERNO"} label={"Código Interno"} />
+              <Column id={"COD_FABRICANTE"} label={"Código do Fabricante"} />
+              <Column id={"PROD_DESCRICAO"} label={"Descrição"} />
               <Column
                 label={"Cor"}
                 body={(rowData) => (
@@ -389,7 +422,7 @@ class WebRegistration extends Component {
                     }}
                   />
                 )}
-              ></Column>
+              />
               <Column
                 // id
                 id={"ATIVO_ECOMMERCE"}
@@ -421,7 +454,7 @@ class WebRegistration extends Component {
                     }
                   />
                 )}
-              ></Column>
+              />
             </Table>
           </Content>
         </div>
