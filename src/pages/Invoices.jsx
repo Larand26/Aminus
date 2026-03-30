@@ -37,6 +37,7 @@ class Invoices extends Component {
       uf: null,
       transporter: null,
       issueDate: [null, null],
+      loading: false,
     };
   }
   static token = localStorage.getItem("token");
@@ -52,14 +53,15 @@ class Invoices extends Component {
       finalDate: this.state.issueDate[1] || null,
     };
 
+    this.setState({ loading: true });
     const response = await InvoiceUtil.getInvoices({
       token: this.token,
       filters,
     });
-
     if (response.success) {
       this.setState({ invoicesData: response.data });
     }
+    this.setState({ loading: false });
   }
 
   onKeyPressGetInvoices = (e) => {
@@ -112,7 +114,11 @@ class Invoices extends Component {
             />
           </SideBar>
           <Content title="Notas Fiscais">
-            <Table datas={this.state.invoicesData} options={tableOptions} />
+            <Table
+              datas={this.state.invoicesData}
+              options={tableOptions}
+              loading={this.state.loading}
+            />
           </Content>
         </div>
       </>

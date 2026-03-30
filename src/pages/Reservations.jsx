@@ -40,6 +40,8 @@ class Reservation extends Component {
       isSearchDatePopupOpen: false,
       selectedItem: null,
       responseDateReservation: null,
+
+      loading: false,
     };
   }
 
@@ -154,6 +156,7 @@ class Reservation extends Component {
                 this.setState({ isSearchDatePopupOpen: true });
                 this.setState({ selectedItem: data });
               }}
+              loading={this.state.loading}
             />
           </Content>
         </div>

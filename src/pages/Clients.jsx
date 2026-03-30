@@ -28,6 +28,8 @@ class Clients extends Component {
       cnpj: null,
       celphone: null,
       email: null,
+
+      loading: false,
     };
   }
 
@@ -42,6 +44,8 @@ class Clients extends Component {
       email: this.state.email || null,
     };
 
+    this.setState({ loading: true });
+
     const response = await ClientUtil.getClients({
       token: this.token,
       filters,
@@ -50,6 +54,7 @@ class Clients extends Component {
     if (response.success) {
       this.setState({ clientsData: response.data });
     }
+    this.setState({ loading: false });
   }
 
   onKeyPressGetClients = (e) => {
@@ -96,7 +101,12 @@ class Clients extends Component {
             />
           </SideBar>
           <Content title="Clientes">
-            <Table options={tableOptions} datas={this.state.clientsData} />
+            {this.state.loading && <Loading />}
+            <Table
+              options={tableOptions}
+              datas={this.state.clientsData}
+              loading={this.state.loading}
+            />
           </Content>
         </div>
       </>

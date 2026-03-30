@@ -7,6 +7,7 @@ import Toast from "../components/misc/Toast";
 import Content from "../components/misc/Content";
 import InputText from "../components/inputs/InputText";
 import Table from "../components/table/Table";
+import Loading from "../components/misc/Loading.jsx";
 
 import ProductUtil from "../utils/Product.js";
 

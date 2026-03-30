@@ -68,10 +68,12 @@ class Orders extends Component {
       sellerId: this.state.sellerId,
     };
 
+    this.setState({ loading: true });
     const response = await OrderUtil.getOrders({ token: this.token, filters });
     if (response.success) {
       this.setState({ ordersData: response.data });
     }
+    this.setState({ loading: false });
   }
 
   onKeyPressGetOrders = (e) => {
@@ -195,6 +197,7 @@ class Orders extends Component {
                   this.setState({ selectedOrder: data });
                   this.setState({ page: "orderItems" });
                 }}
+                loading={this.state.loading}
               />
             )}
             {this.state.page == "orderItems" && (

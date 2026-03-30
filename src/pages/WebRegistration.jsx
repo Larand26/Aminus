@@ -57,6 +57,8 @@ class WebRegistration extends Component {
       photos: [],
 
       selectedItems: [],
+
+      loading: false,
     };
   }
 
@@ -68,6 +70,7 @@ class WebRegistration extends Component {
       productCode: this.state.productCode,
     };
     this.setState({ selectedItems: [] });
+    this.setState({ loading: true });
     const response = await ProductUtil.getProductRegistrations({
       token: WebRegistration.token,
       filters,
@@ -77,6 +80,7 @@ class WebRegistration extends Component {
       await this.getColors(response.data);
       this.formatSelectedProductData(response.data[0]);
     }
+    this.setState({ loading: false });
   };
 
   onKeyPressGetProductRegistrations = (e) => {
