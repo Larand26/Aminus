@@ -9,13 +9,15 @@ import Content from "../components/misc/Content";
 // inputs
 import InputText from "../components/inputs/InputText";
 import InputButton from "../components/inputs/InputButton";
+import InputCheckBox from "../components/inputs/InputCheckBox";
 
 // buttons
 import ButtonTypeGender from "../components/buttons/ButtonTypeGender";
 import Button from "../components/buttons/Button";
 
 // tabela
-import Table from "../components/table/Table";
+import Table from "../components/table/Table2";
+import Column from "../components/table/Column";
 
 // table-options
 import sizesOptions from "../assets/json/table_options/sizesOptions";
@@ -74,20 +76,22 @@ class WebRegistration extends Component {
     }
   };
 
-  setActiveClickItemIndex(data) {
-    const { COD_INTERNO } = data;
-    if (!COD_INTERNO) return;
-    const updatedData = this.state.productsData.map((item) => {
-      if (item.COD_INTERNO === COD_INTERNO) {
-        return {
-          ...item,
-          ATIVO_ECOMMERCE: !item.ATIVO_ECOMMERCE,
-          INTEGRACAO_ECOMMERCE: !item.ATIVO_ECOMMERCE,
-        };
-      }
-      return item;
-    });
-    this.setState({ productsData: updatedData });
+  setActiveClickItemIndex(value) {
+    if (value) {
+      const updatedData = this.state.productsData.map((item) => ({
+        ...item,
+        ATIVO_ECOMMERCE: true,
+        INTEGRACAO_ECOMMERCE: true,
+      }));
+      this.setState({ productsData: updatedData });
+    } else {
+      const updatedData = this.state.productsData.map((item) => ({
+        ...item,
+        ATIVO_ECOMMERCE: false,
+        INTEGRACAO_ECOMMERCE: false,
+      }));
+      this.setState({ productsData: updatedData });
+    }
   }
 
   setColorChange(data) {
@@ -197,7 +201,7 @@ class WebRegistration extends Component {
                 <div>
                   <ButtonTypeGender
                     icon="icon-male"
-                    key={"MASCULINO"}
+                    key={"MASCULINOa"}
                     className={`${this.state.gender === "MASCULINO" ? "selected" : ""}`}
                     onClick={(data) => this.setState({ gender: "MASCULINO" })}
                   />
@@ -348,22 +352,35 @@ class WebRegistration extends Component {
                 </div>
               </div>
             </div>
-            <Table
-              options={tableOptions}
-              datas={this.state.productsData}
-              search={false}
-              onActiveChange={(data) => this.setActiveClickItemIndex(data)}
-              optionsSelect={this.state.colors}
-              onChangeSelect={(data) => this.setColorChange(data)}
-              onClickRow={(data) => this.formatSelectedProductData(data)}
-              rowSelected={{
-                value: this.state.selectedRow?.COD_INTERNO,
-                key: "COD_INTERNO",
-              }}
-              hover
-              selectedItems={this.state.selectedItems}
-              onSelectionChange={this.handleSelectionChange}
-            />
+            <Table data={this.state.productsData}>
+              <Column id={"COD_INTERNO"} label={"Código Interno"}></Column>
+              <Column
+                id={"COD_FABRICANTE"}
+                label={"Código do Fabricante"}
+              ></Column>
+              <Column id={"PROD_DESCRICAO"} label={"Descrição"}></Column>
+              <Column
+                // id
+                id={"ATIVO_ECOMMERCE"}
+                type={"checkbox"}
+                // status da checkbox
+                onChangeAll={(value) => {
+                  this.setActiveClickItemIndex(value);
+                }}
+                allChecked={this.state.productsData.every(
+                  (item) => item.ATIVO_ECOMMERCE && item.INTEGRACAO_ECOMMERCE,
+                )}
+                // corpo da checkbox
+                body={(rowData) => (
+                  <InputCheckBox
+                    checked={
+                      rowData.ATIVO_ECOMMERCE && rowData.INTEGRACAO_ECOMMERCE
+                    }
+                    onChange={() => this.setActiveClickItemIndex(rowData)}
+                  />
+                )}
+              ></Column>
+            </Table>
           </Content>
         </div>
       </>
