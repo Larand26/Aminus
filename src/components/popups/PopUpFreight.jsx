@@ -55,25 +55,29 @@ class PopUpFreight extends Component {
         shipStandard[i] ||
         {};
 
+      const transportadora =
+        shipStandardItem.ServiceDescription ||
+        ship203045Item.ServiceDescription ||
+        shipCustomItem.ServiceDescription ||
+        "";
+
+      if (!transportadora) continue; // Não adiciona linha se não houver transportadora
+
       ajustedData.push({
-        TRANSPORTADORA:
-          shipStandardItem.ServiceDescription ||
-          ship203045Item.ServiceDescription ||
-          shipCustomItem.ServiceDescription ||
-          "N/A",
+        TRANSPORTADORA: transportadora,
         PRECO:
           shipStandardItem.ServiceCode &&
           customService.includes(shipStandardItem.ServiceCode)
-            ? shipCustomItem.ShippingPrice || "N/A"
-            : shipStandardItem.ShippingPrice || "N/A",
-        "PRECO[20-30-45]": ship203045Item.ShippingPrice || "N/A",
-        PRAZO_ENTREGA: ship203045Item.DeliveryTime || "N/A",
-        PRAZO_ENTREGA_ORIGINAL: ship203045Item.OriginalDeliveryTime || "N/A",
+            ? shipCustomItem.ShippingPrice || ""
+            : shipStandardItem.ShippingPrice || "",
+        "PRECO[20-30-45]": ship203045Item.ShippingPrice || "",
+        PRAZO_ENTREGA: ship203045Item.DeliveryTime || "",
+        PRAZO_ENTREGA_ORIGINAL: ship203045Item.OriginalDeliveryTime || "",
       });
     }
 
     const parsePrice = (price) => {
-      if (!price || price === "N/A") return Number.POSITIVE_INFINITY;
+      if (!price) return Number.POSITIVE_INFINITY;
       const numeric = Number(
         String(price)
           .replace(/[^\d,.-]/g, "")
@@ -85,7 +89,7 @@ class PopUpFreight extends Component {
 
     ajustedData.sort((a, b) => parsePrice(a.PRECO) - parsePrice(b.PRECO));
 
-    return ajustedData;
+    return ajustedData.filter((item) => item.PRECO !== "" && item.PRECO !== 0);
   }
 
   render() {
