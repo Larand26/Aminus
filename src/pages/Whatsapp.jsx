@@ -1,442 +1,51 @@
-import { useEffect, useState } from "react";
+import { Component } from "react";
 
+// Components
+// misc
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
-import InputLabel from "../components/inputs/InputText";
-import SelectLabel from "../components/inputs/Select";
 import Content from "../components/misc/Content";
 import Toast from "../components/misc/Toast";
-import PopUp from "../components/popups/PopUp";
 
-import ClientesWpp from "../components/whatsapp/ClientesWpp";
-import Dashboard from "../components/whatsapp/DashboardWpp";
-import MensagensWpp from "../components/whatsapp/MensagensWpp";
-import Status from "../components/whatsapp/Status";
+// inputs
+import InputText from "../components/inputs/InputText";
+import Select from "../components/inputs/Select";
 
-import enviaMensagem from "../utils/whatsapp/enviaMensagem";
-import searchContatos from "../utils/search/searchContatos";
-import adicionaContato from "../utils/whatsapp/adicionaContato";
-import onEnviaMensagemProgresso from "../utils/whatsapp/progresso";
-import pegaInfosDashboardWpp from "../utils/whatsapp/pegaInfosDashboardWpp";
-import editaContato from "../utils/whatsapp/editaContato";
-import geraQrcode from "../utils/whatsapp/geraQrcode";
-import enviaStatus from "../utils/whatsapp/enviaStatus";
-import verificaQrCodeConectado from "../utils/whatsapp/verificaQrCodeConectado";
+// table
+import Table from "../components/table/Table";
 
-import vendedoresJson from "../assets/json/vendedoresAminus.json";
-import opcoesContatosWhatsapp from "../assets/json/table_options/opcoesContatosWhatsapp.json";
-import opcoesDashboardWpp from "../assets/json/table_options/opcoesDashboardWpp.json";
-import opcoesMensagens from "../assets/json/table_options/opcoesMensagens.json";
+// options
+import sellersOptions from "../assets/json/options/selerAminusOptions";
 
-const Whatsapp = () => {
-  //token
-  const token = localStorage.getItem("token");
-
-  // Função do usuário
-  const idFuncao = localStorage.getItem("ID_FUNCAO_USUARIO");
-
-  // Loading
-  const [loading, setLoading] = useState(false);
-
-  // Toast
-  const [toastInfo, setToastInfo] = useState(null);
-
-  // Estados dos inputs
-  const [numero, setNumero] = useState("");
-  const [cliente, setCliente] = useState("");
-  const [vendedor, setVendedor] = useState("");
-
-  // Dados
-  const [contatos, setContatos] = useState([]);
-
-  // PopUp
-  const [popUpQrCodeOpen, setPopUpQrCodeOpen] = useState(false);
-
-  // QR Code
-  const [qrcodeSrc, setQrcodeSrc] = useState("");
-  const [qrCodeConectado, setQrCodeConectado] = useState(false);
-
-  const verificarConexaoQrCode = async () => {
-    const result = await verificaQrCodeConectado(token);
-    console.log("pesquisou");
-
-    if (!result?.success) {
-      setQrCodeConectado(false);
-    } else {
-      setQrCodeConectado(result.data?.status || false);
-    }
-  };
-
-  useEffect(() => {
-    verificarConexaoQrCode();
-  }, [qrCodeConectado]);
-
-  // Páginas para o Content
-  const pages = [
-    {
-      key: "clientes",
-      icon: "fa fa-phone",
-      onClick: () => setPaginaAtiva("clientes"),
-    },
-    {
-      key: "status",
-      icon: "fa-solid fa-comment-medical",
-      onClick: () => setPaginaAtiva("status"),
-    },
-    {
-      key: "dashboard",
-      icon: "fa-solid fa-chart-bar",
-      onClick: () => {
-        setPaginaAtiva("dashboard");
-        handlePegaInfosDashboardWpp();
-      },
-    },
-    {
-      key: "mensagens",
-      icon: "fa-brands fa-whatsapp",
-      onClick: () => setPaginaAtiva("mensagens"),
-    },
-    {
-      key: "qrcode",
-      icon: "fa-solid fa-qrcode",
-      className: !qrCodeConectado ? "connected-blink" : "connected-true",
-      onClick: async () => {
-        setPopUpQrCodeOpen(true);
-        const qrCodeResult = await geraQrcode(token);
-        if (!qrCodeResult?.success) {
-          setToastInfo({
-            key: Date.now(),
-            message: qrCodeResult?.error || "Erro ao gerar QR Code.",
-            type: "falha",
-          });
-          return;
-        }
-        console.log(qrCodeResult);
-
-        const qrcodeData = qrCodeResult.data.qrcode;
-        setQrcodeSrc(
-          qrcodeData.startsWith("data:image/")
-            ? qrcodeData
-            : `data:image/png;base64,${qrcodeData}`,
-        );
-      },
-    },
-  ];
-
-  // Págia ativa
-  const [paginaAtiva, setPaginaAtiva] = useState("clientes");
-
-  // Pesquisa
-  const handleSearch = async () => {
-    setContatos([]);
-    setLoading(true);
-    const filtros = {
-      numero,
-      nome: cliente,
-      vendedorId: vendedor,
-      token,
+class Whatsapp extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      toastInfo: null,
     };
-    const resultados = await searchContatos(filtros);
-    setLoading(false);
-    if (!resultados?.success) {
-      setToastInfo({
-        key: Date.now(),
-        message: "Erro ao buscar contatos.",
-        type: "falha",
-      });
-      return;
-    }
-    if (resultados.data.length === 0) {
-      setToastInfo({
-        key: Date.now(),
-        message: "Nenhum contato encontrado.",
-        type: "aviso",
-      });
-      return;
-    }
-    setContatos(resultados.data);
-  };
-
-  // Estados de mensagens
-  const [mensagemEnviar, setMensagemEnviar] = useState("");
-  const [timerSegundos, setTimerSegundos] = useState(300); // Começa em 5 minutos (300 segundos)
-  const [imagens, setImagens] = useState([]);
-
-  // Números selecionados para enviar mensagens
-  const [contatosSelecionados, setContatosSelecionados] = useState([]);
-
-  // Timer regressivo de 5 minutos
-  useEffect(() => {
-    const ultimaMensagemWpp = localStorage.getItem("ultimaMensagemWpp");
-    let timerInterval = null;
-
-    const atualizarTimer = () => {
-      if (!ultimaMensagemWpp) {
-        setTimerSegundos(300);
-        return;
-      }
-      const ultimaMensagemDate = new Date(ultimaMensagemWpp);
-      const agora = new Date();
-      const diferencaSegundos = Math.floor((agora - ultimaMensagemDate) / 1000);
-      const restante = 300 - diferencaSegundos;
-      setTimerSegundos(restante > 0 ? restante : 0);
-    };
-
-    atualizarTimer(); // Atualiza imediatamente ao montar
-
-    timerInterval = setInterval(() => {
-      atualizarTimer();
-    }, 1000);
-
-    return () => {
-      if (timerInterval) clearInterval(timerInterval);
-    };
-  }, [localStorage.getItem("ultimaMensagemWpp")]);
-
-  // Envia a mensagem
-  const handleEnviarMensagem = async () => {
-    if (imagens.length === 0 && mensagemEnviar.trim() === "") return;
-    setEnviando(true);
-    setProgresso({ progresso: 0, total: 0 });
-
-    const args = {
-      token,
-      mensagem: mensagemEnviar,
-      imagens,
-      contatos: contatosSelecionados,
-    };
-    const result = await enviaMensagem(args);
-    setEnviando(false);
-    console.log(result);
-    if (!result?.success) {
-      setToastInfo({
-        key: Date.now(),
-        message: result?.error || "Erro ao enviar mensagens.",
-        type: "falha",
-      });
-      setProgresso({ progresso: 1, total: 1 });
-    } else {
-      localStorage.setItem("ultimaMensagemWpp", new Date().toISOString());
-      setToastInfo({
-        key: Date.now(),
-        message: "Mensagens enviadas com sucesso!",
-        type: "sucesso",
-      });
-    }
-  };
-
-  // Estados para Status
-  const [textoStatus, setTextoStatus] = useState("");
-  const [imagensStatus, setImagensStatus] = useState([]);
-  const [videosStatus, setVideosStatus] = useState([]);
-
-  const handleEnviarStatus = async () => {
-    const args = {
-      token,
-      texto: textoStatus,
-      imagens: imagensStatus,
-      videos: videosStatus,
-    };
-    const result = await enviaStatus(args);
-    console.log(result);
-  };
-
-  // Adiciona um cliente novo
-  const [novoCliente, setNovoCliente] = useState({});
-  const handleAdicionarCliente = async () => {
-    setLoading(true);
-    const args = {
-      ...novoCliente,
-      token,
-    };
-    const adicionaResult = await adicionaContato(args);
-    setLoading(false);
-    if (!adicionaResult?.success) {
-      setToastInfo({
-        key: Date.now(),
-        message: adicionaResult?.error || "Erro ao adicionar cliente.",
-        type: "falha",
-      });
-      return;
-    }
-    setToastInfo({
-      key: Date.now(),
-      message: "Cliente adicionado com sucesso!",
-      type: "sucesso",
-    });
-
-    setNovoCliente({});
-    handleSearch();
-  };
-
-  // Progresso
-  const [progresso, setProgresso] = useState({ progresso: 1, total: 1 });
-  const [enviando, setEnviando] = useState(false);
-
-  // Para exibir o timer no formato mm:ss
-  const formatTimer = (segundos) => {
-    const min = String(Math.floor(segundos / 60)).padStart(2, "0");
-    const sec = String(segundos % 60).padStart(2, "0");
-    return `${min}:${sec}`;
-  };
-
-  // Dashboard WPP - Pega infos
-  const [infosDashboardWpp, setInfosDashboardWpp] = useState([]);
-  const [contatosDashboardWpp, setContatosDashboardWpp] = useState(0);
-  const [sessoesDashboardWpp, setSessoesDashboardWpp] = useState([]);
-
-  const handlePegaInfosDashboardWpp = async () => {
-    const args = { token };
-    const infosResult = await pegaInfosDashboardWpp(args);
-    console.log(infosResult);
-    if (!infosResult?.success) {
-      setToastInfo({
-        key: Date.now(),
-        message: infosResult?.error || "Erro ao carregar dashboard WPP.",
-        type: "falha",
-      });
-      return;
-    }
-    setInfosDashboardWpp(infosResult.data);
-    setContatosDashboardWpp(infosResult.contatos || 0);
-    setSessoesDashboardWpp(infosResult.sessoes || []);
-  };
-
-  // Handle Edit Cliente
-  const handleEditCliente = async (cliente) => {
-    // Lógica para editar o cliente com o ID fornecido
-    console.log("Editar cliente com ID:", cliente);
-    // Transforma dados em inputs editáveis ou abre um modal de edição
-    const response = await editaContato({ ...cliente, token });
-
-    if (!response?.success) {
-      setToastInfo({
-        key: Date.now(),
-        message: response?.error || "Erro ao editar cliente.",
-        type: "falha",
-      });
-      return;
-    }
-    setToastInfo({
-      key: Date.now(),
-      message: "Cliente editado com sucesso!",
-      type: "sucesso",
-    });
-    handleSearch();
-  };
-
-  return (
-    <>
-      {toastInfo && (
-        <Toast
-          key={toastInfo.key}
-          message={toastInfo.message}
-          type={toastInfo.type}
-        />
-      )}
-
-      <PopUp
-        id="popup-qrcode"
-        width="400px"
-        height="400px"
-        title="QR Code"
-        open={popUpQrCodeOpen}
-        setOpen={(open) => {
-          setPopUpQrCodeOpen(open);
-          verificarConexaoQrCode();
-        }}
-      >
-        <h1>QR Code</h1>
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {qrcodeSrc ? (
-            <img src={qrcodeSrc} alt="QR Code WhatsApp" />
-          ) : (
-            <p>Carregando QR Code...</p>
-          )}
+  }
+  render() {
+    return (
+      <>
+        {this.state.toastInfo && (
+          <Toast
+            key={this.state.toastInfo.key}
+            message={this.state.toastInfo.message}
+            type={this.state.toastInfo.type}
+          />
+        )}
+        <NavBar />
+        <div className="main-container">
+          <SideBar>
+            <InputText label="Telefone" />
+            <InputText label="Nome do Contato" />
+            <Select label="Vendedor" options={sellersOptions} />
+          </SideBar>
+          <Content title="Whatsapp"></Content>
         </div>
-      </PopUp>
+      </>
+    );
+  }
+}
 
-      <NavBar />
-      <div className="main-container">
-        <SideBar onSearch={handleSearch}>
-          <InputLabel label="Número" value={numero} onChange={setNumero} />
-          <InputLabel label="Cliente" value={cliente} onChange={setCliente} />
-          {idFuncao != 2 && (
-            <SelectLabel
-              label="Vendedor"
-              options={vendedoresJson}
-              value={vendedor}
-              onChange={setVendedor}
-            />
-          )}
-        </SideBar>
-        <Content
-          titulo="WhatsApp"
-          pages={pages}
-          timer={
-            <>
-              {formatTimer(timerSegundos)}
-              <i className="fa fa-clock"></i>
-            </>
-          }
-        >
-          {paginaAtiva === "clientes" && (
-            <ClientesWpp
-              dados={contatos}
-              opcoes={opcoesContatosWhatsapp}
-              onClick={handleAdicionarCliente}
-              novoCliente={novoCliente}
-              setNovoCliente={setNovoCliente}
-              loading={loading}
-              onEdit={handleEditCliente}
-            />
-          )}
-          {paginaAtiva === "dashboard" && (
-            <Dashboard
-              opcoes={opcoesDashboardWpp}
-              dados={infosDashboardWpp}
-              sessoes={sessoesDashboardWpp}
-              contatos={contatosDashboardWpp}
-            />
-          )}
-          {paginaAtiva === "mensagens" && (
-            <MensagensWpp
-              timer={formatTimer(timerSegundos)}
-              mensagemEnviar={mensagemEnviar}
-              imagens={imagens}
-              setImagens={setImagens}
-              setMensagemEnviar={setMensagemEnviar}
-              onEnviar={() => handleEnviarMensagem()}
-              progresso={progresso}
-              enviando={enviando}
-              qrCodeConectado={qrCodeConectado}
-              dados={contatos}
-              opcoes={opcoesMensagens}
-              onSelectionChange={setContatosSelecionados}
-            />
-          )}
-          {paginaAtiva === "status" && (
-            <Status
-              textoStatus={textoStatus}
-              setTextoStatus={setTextoStatus}
-              imagensStatus={imagensStatus}
-              setImagensStatus={setImagensStatus}
-              onEnviar={() => handleEnviarStatus()}
-              videosStatus={videosStatus}
-              setVideosStatus={setVideosStatus}
-            />
-          )}
-        </Content>
-      </div>
-    </>
-  );
-};
 export default Whatsapp;
