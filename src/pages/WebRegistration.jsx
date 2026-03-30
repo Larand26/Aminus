@@ -97,13 +97,15 @@ class WebRegistration extends Component {
 
   setColorChange(value, rowData) {
     const { COD_INTERNO } = rowData;
-    const updatedData = this.state.productsData.map((item) => {
-      if (item.COD_INTERNO === COD_INTERNO) {
-        return { ...item, COD_COR_ECOMMERCE: value };
-      }
-      return item;
+    this.setState((prevState) => {
+      const index = prevState.productsData.findIndex(
+        (item) => item.COD_INTERNO === COD_INTERNO,
+      );
+      if (index === -1) return null;
+      const updatedData = [...prevState.productsData];
+      updatedData[index] = { ...updatedData[index], COD_COR_ECOMMERCE: value };
+      return { productsData: updatedData };
     });
-    this.setState({ productsData: updatedData });
   }
 
   getColors = async (productsData) => {
