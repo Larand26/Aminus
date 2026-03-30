@@ -77,21 +77,37 @@ class WebRegistration extends Component {
     }
   };
 
-  setActiveClickItemIndex(value) {
-    if (value) {
-      const updatedData = this.state.productsData.map((item) => ({
-        ...item,
-        ATIVO_ECOMMERCE: true,
-        INTEGRACAO_ECOMMERCE: true,
-      }));
-      this.setState({ productsData: updatedData });
+  setActiveClickItemIndex(value, codInterno) {
+    if (Array.isArray(codInterno)) {
+      // Usa Set para busca O(1) em arrays grandes
+      const codSet = new Set(codInterno);
+      this.setState((prevState) => {
+        const updatedData = prevState.productsData.map((item) => {
+          if (codSet.has(item.COD_INTERNO)) {
+            return {
+              ...item,
+              ATIVO_ECOMMERCE: value,
+              INTEGRACAO_ECOMMERCE: value,
+            };
+          }
+          return item;
+        });
+        return { productsData: updatedData };
+      });
     } else {
-      const updatedData = this.state.productsData.map((item) => ({
-        ...item,
-        ATIVO_ECOMMERCE: false,
-        INTEGRACAO_ECOMMERCE: false,
-      }));
-      this.setState({ productsData: updatedData });
+      this.setState((prevState) => {
+        const index = prevState.productsData.findIndex(
+          (item) => item.COD_INTERNO === codInterno,
+        );
+        if (index === -1) return null;
+        const updatedData = [...prevState.productsData];
+        updatedData[index] = {
+          ...updatedData[index],
+          ATIVO_ECOMMERCE: value,
+          INTEGRACAO_ECOMMERCE: value,
+        };
+        return { productsData: updatedData };
+      });
     }
   }
 
@@ -380,7 +396,10 @@ class WebRegistration extends Component {
                 type={"checkbox"}
                 // status da checkbox
                 onChangeAll={(value) => {
-                  this.setActiveClickItemIndex(value);
+                  this.setActiveClickItemIndex(
+                    value,
+                    this.state.productsData.map((item) => item.COD_INTERNO),
+                  );
                 }}
                 allChecked={this.state.productsData.every(
                   (item) => item.ATIVO_ECOMMERCE && item.INTEGRACAO_ECOMMERCE,
@@ -391,7 +410,15 @@ class WebRegistration extends Component {
                     checked={
                       rowData.ATIVO_ECOMMERCE && rowData.INTEGRACAO_ECOMMERCE
                     }
-                    onChange={() => this.setActiveClickItemIndex(rowData)}
+                    onChange={() =>
+                      this.setActiveClickItemIndex(
+                        !(
+                          rowData.ATIVO_ECOMMERCE &&
+                          rowData.INTEGRACAO_ECOMMERCE
+                        ),
+                        rowData.COD_INTERNO,
+                      )
+                    }
                   />
                 )}
               ></Column>
