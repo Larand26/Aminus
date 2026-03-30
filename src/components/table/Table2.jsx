@@ -38,7 +38,10 @@ class Table extends Component {
           </thead>
           <tbody>
             {data.map((row, rowIndex) => (
-              <tr key={rowIndex}>
+              <tr
+                key={rowIndex}
+                className={rowIndex % 2 === 0 ? "odd-row" : "even-row"}
+              >
                 {columns.map((col) => (
                   <td key={col.props.id}>
                     {col.props.body ? col.props.body(row) : row[col.props.id]}
