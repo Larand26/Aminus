@@ -24,7 +24,10 @@ class Table extends Component {
     const columns = React.Children.toArray(children);
 
     return (
-      <div className="table-wrapper">
+      <div
+        className="table-wrapper"
+        style={{ maxHeight: this.props.maxHeight || "600px" }}
+      >
         <table className="table">
           <thead>
             <tr>

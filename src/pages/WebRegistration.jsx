@@ -10,6 +10,7 @@ import Content from "../components/misc/Content";
 import InputText from "../components/inputs/InputText";
 import InputButton from "../components/inputs/InputButton";
 import InputCheckBox from "../components/inputs/InputCheckBox";
+import InputSelect from "../components/inputs/Select";
 
 // buttons
 import ButtonTypeGender from "../components/buttons/ButtonTypeGender";
@@ -94,12 +95,11 @@ class WebRegistration extends Component {
     }
   }
 
-  setColorChange(data) {
-    const { COD_INTERNO } = data;
-    if (!COD_INTERNO) return;
+  setColorChange(value, rowData) {
+    const { COD_INTERNO } = rowData;
     const updatedData = this.state.productsData.map((item) => {
       if (item.COD_INTERNO === COD_INTERNO) {
-        item = data;
+        return { ...item, COD_COR_ECOMMERCE: value };
       }
       return item;
     });
@@ -359,6 +359,19 @@ class WebRegistration extends Component {
                 label={"Código do Fabricante"}
               ></Column>
               <Column id={"PROD_DESCRICAO"} label={"Descrição"}></Column>
+              <Column
+                label={"Cor"}
+                body={(rowData) => (
+                  <InputSelect
+                    search
+                    options={this.state.colors}
+                    value={rowData.COD_COR_ECOMMERCE}
+                    onChange={(value) => {
+                      this.setColorChange(value, rowData);
+                    }}
+                  />
+                )}
+              ></Column>
               <Column
                 // id
                 id={"ATIVO_ECOMMERCE"}
