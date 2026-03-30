@@ -74,6 +74,12 @@ class Orders extends Component {
     }
   }
 
+  onKeyPressGetOrders = (e) => {
+    if (e.key === "Enter") {
+      this.getOrders();
+    }
+  };
+
   async getOrderItems(data) {
     const orderId = data.NUM_PEDIDO || null;
     const response = await OrderUtil.getOrderItems({
@@ -132,6 +138,7 @@ class Orders extends Component {
               name="orderId"
               value={this.state.numOrder}
               onChange={(e) => this.setState({ numOrder: e.target.value })}
+              onKeyPress={this.onKeyPressGetOrders}
             />
             <InputDate
               label="Data de Emissão"
@@ -143,12 +150,14 @@ class Orders extends Component {
               name="companyName"
               value={this.state.client}
               onChange={(e) => this.setState({ client: e.target.value })}
+              onKeyPress={this.onKeyPressGetOrders}
             />
             <InputText
               label="CNPJ"
               name="cnpj"
               value={this.state.cnpj}
               onChange={(e) => this.setState({ cnpj: e.target.value })}
+              onKeyPress={this.onKeyPressGetOrders}
             />
             <Select
               label="Vendedor"

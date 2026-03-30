@@ -10,6 +10,7 @@ class InputText extends Component {
       onChange = () => {},
       className = "",
       placeholder = "",
+      onKeyPress = () => {},
     } = this.props;
     return (
       <div className={`input-text-container ${className || ""}`}>
@@ -19,6 +20,7 @@ class InputText extends Component {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
+          onKeyPress={onKeyPress}
         />
       </div>
     );

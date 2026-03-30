@@ -64,6 +64,12 @@ class Reservation extends Component {
     }
   }
 
+  onKeyPressGetProductReservations = (e) => {
+    if (e.key === "Enter") {
+      this.getProductReservations();
+    }
+  };
+
   async getDateReservation() {
     const { selectedItem } = this.state;
 
@@ -112,21 +118,25 @@ class Reservation extends Component {
               label="Código do fabricante"
               value={this.state.manufacturerCode}
               onChange={(value) => this.setState({ manufacturerCode: value })}
+              onKeyPress={this.onKeyPressGetProductReservations}
             />
             <InputText
               label="Código interno"
               value={this.state.internalCode}
               onChange={(value) => this.setState({ internalCode: value })}
+              onKeyPress={this.onKeyPressGetProductReservations}
             />
             <InputText
               label="Número do pedido"
               value={this.state.orderNumber}
               onChange={(value) => this.setState({ orderNumber: value })}
+              onKeyPress={this.onKeyPressGetProductReservations}
             />
             <InputText
               label="Nome do cliente"
               value={this.state.clientName}
               onChange={(value) => this.setState({ clientName: value })}
+              onKeyPress={this.onKeyPressGetProductReservations}
             />
             <Select
               label="Vendedor"

@@ -66,6 +66,12 @@ class Photos extends Component {
     }
   };
 
+  onKeyPressGetPhotos = (e) => {
+    if (e.key === "Enter") {
+      this.getPhotos();
+    }
+  };
+
   updatePhoto = async (newProduct, oldProduct) => {
     const response = await PhotoUtil.updatePhoto({
       token: this.token,
@@ -151,11 +157,13 @@ class Photos extends Component {
               label="Código de fabricante"
               value={this.state.manufacturerCode}
               onChange={(value) => this.setState({ manufacturerCode: value })}
+              onKeyPress={this.onKeyPressGetPhotos}
             />
             <InputText
               label="Código da cor"
               value={this.state.colorCode}
               onChange={(value) => this.setState({ colorCode: value })}
+              onKeyPress={this.onKeyPressGetPhotos}
             />
           </SideBar>
           <Content title="Fotos">

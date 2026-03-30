@@ -52,6 +52,12 @@ class Clients extends Component {
     }
   }
 
+  onKeyPressGetClients = (e) => {
+    if (e.key === "Enter") {
+      this.getClients();
+    }
+  };
+
   render() {
     return (
       <>
@@ -62,26 +68,31 @@ class Clients extends Component {
               label="Número do Cliente"
               value={this.state.numClient}
               onChange={(value) => this.setState({ numClient: value })}
+              onKeyPress={this.onKeyPressGetClients}
             />
             <InputText
               label="Nome"
               value={this.state.name}
               onChange={(value) => this.setState({ name: value })}
+              onKeyPress={this.onKeyPressGetClients}
             />
             <InputText
               label="CNPJ"
               value={this.state.cnpj}
               onChange={(value) => this.setState({ cnpj: value })}
+              onKeyPress={this.onKeyPressGetClients}
             />
             <InputText
               label="Telefone"
               value={this.state.celphone}
               onChange={(value) => this.setState({ celphone: value })}
+              onKeyPress={this.onKeyPressGetClients}
             />
             <InputText
               label="Email"
               value={this.state.email}
               onChange={(value) => this.setState({ email: value })}
+              onKeyPress={this.onKeyPressGetClients}
             />
           </SideBar>
           <Content title="Clientes">

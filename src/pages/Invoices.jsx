@@ -62,6 +62,12 @@ class Invoices extends Component {
     }
   }
 
+  onKeyPressGetInvoices = (e) => {
+    if (e.key === "Enter") {
+      this.getInvoices();
+    }
+  };
+
   render() {
     return (
       <>
@@ -72,11 +78,13 @@ class Invoices extends Component {
               label="Número da Nota"
               value={this.state.numInvoice}
               onChange={(value) => this.setState({ numInvoice: value })}
+              onKeyPress={this.onKeyPressGetInvoices}
             />
             <InputText
               label="CNPJ"
               value={this.state.cnpj}
               onChange={(value) => this.setState({ cnpj: value })}
+              onKeyPress={this.onKeyPressGetInvoices}
             />
             <InputDate
               label="Data de Emissão"

@@ -79,6 +79,12 @@ class WebRegistration extends Component {
     }
   };
 
+  onKeyPressGetProductRegistrations = (e) => {
+    if (e.key === "Enter") {
+      this.getProductRegistrations();
+    }
+  };
+
   setActiveClickItemIndex(value, codInterno) {
     if (Array.isArray(codInterno)) {
       // Usa Set para busca O(1) em arrays grandes
@@ -231,11 +237,13 @@ class WebRegistration extends Component {
               label="Código do Fabricante"
               value={this.state.manufacturerCode}
               onChange={(value) => this.setState({ manufacturerCode: value })}
+              onKeyPress={this.onKeyPressGetProductRegistrations}
             />
             <InputText
               label="Código do Produto"
               value={this.state.productCode}
               onChange={(value) => this.setState({ productCode: value })}
+              onKeyPress={this.onKeyPressGetProductRegistrations}
             />
           </SideBar>
           <Content>
