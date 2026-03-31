@@ -11,9 +11,6 @@ import Toast from "../components/misc/Toast";
 import InputText from "../components/inputs/InputText";
 import Select from "../components/inputs/Select";
 
-// table
-import Table from "../components/table/Table";
-
 // options
 import sellersOptions from "../assets/json/options/selerAminusOptions";
 
@@ -33,9 +30,28 @@ class Whatsapp extends Component {
     this.state = {
       page: "messages",
 
+      photos: [],
+      message: "",
+      contactsData: [],
+      contactsSelected: [],
+
       toastInfo: null,
     };
   }
+
+  // Altera itens selecionados na tabela
+  handleSelectionChange = (items) => {
+    if (Array.isArray(items)) {
+      this.setState({ selectedItems: items });
+    } else {
+      this.setState((prevState) => ({
+        selectedItems: prevState.selectedItems.includes(items)
+          ? prevState.selectedItems.filter((item) => item !== items)
+          : [...prevState.selectedItems, items],
+      }));
+    }
+  };
+
   render() {
     return (
       <>
@@ -54,7 +70,17 @@ class Whatsapp extends Component {
             <Select label="Vendedor" options={sellersOptions} />
           </SideBar>
           <Content title="Whatsapp" pages={pageOptions}>
-            {this.state.page === "messages" && <MessagesPage />}
+            {this.state.page === "messages" && (
+              <MessagesPage
+                photos={this.state.photos}
+                onChangePhotos={(photos) => this.setState({ photos })}
+                message={this.state.message}
+                onChangeMessage={(message) => this.setState({ message })}
+                contactsData={this.state.contactsData}
+                contactsSelected={this.state.contactsSelected}
+                onSelectionChange={this.handleSelectionChange}
+              />
+            )}
           </Content>
         </div>
       </>
