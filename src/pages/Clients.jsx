@@ -5,6 +5,7 @@ import { Component } from "react";
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
 import Content from "../components/misc/Content";
+import Loading from "../components/misc/Loading";
 
 // table
 import Table from "../components/table/Table";
