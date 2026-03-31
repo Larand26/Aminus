@@ -32,6 +32,8 @@ class Photos extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      token: localStorage.getItem("token") || null,
+
       productsData: [],
       manufacturerCode: null,
       colorCode: null,
@@ -48,8 +50,6 @@ class Photos extends Component {
     };
   }
 
-  static token = localStorage.getItem("token");
-
   getPhotos = async () => {
     const filters = {
       manufacturer: this.state.manufacturerCode,
@@ -57,7 +57,7 @@ class Photos extends Component {
     };
 
     const response = await PhotoUtil.getPhotos({
-      token: this.token,
+      token: this.state.token,
       filters,
     });
 
@@ -95,7 +95,7 @@ class Photos extends Component {
 
   updatePhoto = async (newProduct, oldProduct) => {
     const response = await PhotoUtil.updatePhoto({
-      token: this.token,
+      token: this.state.token,
       oldProduct,
       newProduct,
     });
@@ -153,7 +153,7 @@ class Photos extends Component {
 
     if (product) {
       response = await PhotoUtil.downloadPhoto({
-        token: this.token,
+        token: this.state.token,
         products: [product],
       });
       return;

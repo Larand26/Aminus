@@ -30,7 +30,8 @@ class Invoices extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toastInfo: null,
+      token: localStorage.getItem("token") || null,
+
       invoicesData: [],
       numInvoice: null,
       cnpj: null,
@@ -43,7 +44,6 @@ class Invoices extends Component {
       toastInfo: null,
     };
   }
-  static token = localStorage.getItem("token");
 
   async getInvoices() {
     const filters = {
@@ -58,7 +58,7 @@ class Invoices extends Component {
 
     this.setState({ loading: true });
     const response = await InvoiceUtil.getInvoices({
-      token: this.token,
+      token: this.state.token,
       filters,
     });
 

@@ -27,54 +27,86 @@ ipcMain.handle("validate-token", async (event, token) => {
 });
 
 ipcMain.handle("get-products", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await ProductController.getProducts(args.filters);
 });
 
 ipcMain.handle("get-product-reservations", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
+  if (decodedToken.role === 2) args.filters.sellerName = decodedToken.username;
   return await ProductController.getProductReservations(args.filters);
 });
 
 ipcMain.handle("get-date-reservation", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken || decodedToken.role !== 1)
+    return { success: false, error: "Invalid token" };
   return await ProductController.getDateReservation(args.filters);
 });
 
 ipcMain.handle("get-product-registrations", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await ProductController.getProductRegistrations(args.filters);
 });
 
 ipcMain.handle("get-invoices", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
+  if (decodedToken.role === 2) args.filters.sellerName = decodedToken.username;
   return await InvoiceController.getInvoices(args.filters);
 });
 
 ipcMain.handle("get-orders", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
+  if (decodedToken.role === 2) args.filters.sellerName = decodedToken.username;
   return await OrderController.getOrders(args.filters);
 });
 
 ipcMain.handle("get-order-items", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await OrderController.getOrderItems(args.orderId);
 });
 
 ipcMain.handle("get-clients", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await ClientController.getClients(args.filters);
 });
 
 ipcMain.handle("get-photos", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await PhotoController.getPhotosProduct(args.filters);
 });
 
 ipcMain.handle("update-photo", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken || decodedToken.role !== 1)
+    return { success: false, error: "Invalid token" };
   return await PhotoController.updatePhoto(args);
 });
 
 ipcMain.handle("create-photo", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken || decodedToken.role !== 1)
+    return { success: false, error: "Invalid token" };
   return await PhotoController.createPhoto(args);
 });
 
 ipcMain.handle("calculate-freight", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await FrenetController.calculateFreight(args);
 });
 
 ipcMain.handle("generate-cubage-pdf", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await OrderController.generateCubagePDF(args.selectedOrderData);
 });
 
@@ -93,17 +125,25 @@ ipcMain.handle("open-file", async (event, filePath) => {
 });
 
 ipcMain.handle("download-photo", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await PhotoController.downloadPhoto(args);
 });
 
 ipcMain.handle("get-colors", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await ProductController.getColors(args.filters);
 });
 
 ipcMain.handle("create-color", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await ProductController.createColor(args);
 });
 
 ipcMain.handle("register-products", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
   return await ProductController.registerProducts(args.products);
 });

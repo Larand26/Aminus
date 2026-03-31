@@ -13,8 +13,6 @@ import ProductUtil from "../utils/Product.js";
 
 import opcoesProdutos from "../assets/json/table_options/productOptions";
 
-import atualizaOpcoes from "../utils/atualizaOpcoes.js";
-
 class Products extends Component {
   constructor(props) {
     super(props);

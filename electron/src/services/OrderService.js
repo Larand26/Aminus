@@ -32,6 +32,9 @@ const FILTER_MAP = {
   sellerId: { condition: `PO.[ID_CODVENDEDOR] = @sellerId` },
   transportadora: { condition: `PO.[ID_TRANSPORTADORA] = @transportadora` },
   status: { condition: `PO.[PEDOR_SITUACAO] = @status` },
+  sellerName: {
+    condition: `V.[VEND_NOME] = @sellerName`,
+  },
 };
 
 const hasFilterValue = (value) => {
@@ -43,7 +46,7 @@ const hasFilterValue = (value) => {
 class OrderService {
   /**
    * Pega os pedidos com base nos filtros fornecidos
-   * @param {Object} filters { numOrder String, cnpj String, client String, initialDate Date, finalDate Date, sellerId Number, status String }
+   * @param {Object} filters { numOrder String, cnpj String, client String, initialDate Date, finalDate Date, sellerId Number, status String, selerName String }
    * @returns {Promise<Array|Object>} Array of orders or error object
    */
   static async getOrders(filters = {}) {

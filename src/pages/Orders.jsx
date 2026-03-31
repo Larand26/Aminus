@@ -41,6 +41,8 @@ class Orders extends Component {
     this.state = {
       page: "orders",
 
+      token: localStorage.getItem("token") || null,
+
       ordersData: [],
       numOrder: null,
       client: null,
@@ -59,8 +61,6 @@ class Orders extends Component {
     };
   }
 
-  static token = localStorage.getItem("token");
-
   async getOrders() {
     const filters = {
       numOrder: this.state.numOrder,
@@ -72,7 +72,10 @@ class Orders extends Component {
     };
 
     this.setState({ loading: true });
-    const response = await OrderUtil.getOrders({ token: this.token, filters });
+    const response = await OrderUtil.getOrders({
+      token: this.state.token,
+      filters,
+    });
     this.setState({ loading: false });
 
     if (!response.success) {
@@ -109,7 +112,7 @@ class Orders extends Component {
   async getOrderItems(data) {
     const orderId = data.NUM_PEDIDO || null;
     const response = await OrderUtil.getOrderItems({
-      token: this.token,
+      token: this.state.token,
       orderId,
     });
     if (response.success) {
@@ -126,7 +129,7 @@ class Orders extends Component {
     this.setState({ isFreightPopupOpen: true });
 
     const response = await FrenetUtil.calculateFreight({
-      token: this.token,
+      token: this.state.token,
       selectedOrderData: this.state.selectedOrderData,
       selectItemOrder: this.state.selectItemOrder,
       selectedOrder: this.state.selectedOrder,
@@ -139,7 +142,7 @@ class Orders extends Component {
 
   async generateCubagePDF() {
     const response = await OrderUtil.generateCubagePDF({
-      token: this.token,
+      token: this.state.token,
       selectedOrderData: this.state.selectedOrderData,
     });
     console.log(response);

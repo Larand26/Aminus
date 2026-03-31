@@ -1,4 +1,4 @@
-import JwtService from "../services/JwtService";
+import JwtService from "../services/JwtService.js";
 
 class MiddlewaresToken {
   static async verifyToken(token) {

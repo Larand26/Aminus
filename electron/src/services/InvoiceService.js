@@ -23,6 +23,9 @@ const FILTER_MAP = {
   sellerId: { condition: `NF.[ID_CODVENDEDOR] = @sellerId` },
   uf: { condition: `NF.[NF_UNIDFEDENTD] = @uf` },
   transporter: { condition: `NF.[ID_CODTRANSP] = @transporter` },
+  sellerName: {
+    condition: `V.[VEND_NOME] = @sellerName`,
+  },
 };
 
 const hasFilterValue = (value) => {
@@ -40,7 +43,7 @@ const hasFilterValue = (value) => {
 class InvoiceService {
   /**
    * Pega as notas fiscais com base nos filtros fornecidos
-   * @param {Object} filters { numInvoice String, cnpj String, initialDate Date, finalDate Date, sellerId Number, uf String, transporter Number }
+   * @param {Object} filters { numInvoice String, cnpj String, initialDate Date, finalDate Date, sellerId Number, uf String, transporter Number, sellerName String }
    * @returns {Promise<Array|Object>} Array of invoices or error object
    */
   static async getInvoices(filters = {}) {
