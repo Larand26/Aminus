@@ -31,6 +31,7 @@ class Invoices extends Component {
     super(props);
     this.state = {
       token: localStorage.getItem("token") || null,
+      user: JSON.parse(localStorage.getItem("user")) || null,
 
       invoicesData: [],
       numInvoice: null,
@@ -126,12 +127,14 @@ class Invoices extends Component {
               value={this.state.issueDate}
               onChange={(value) => this.setState({ issueDate: value })}
             />
-            <Select
-              label="Vendedor"
-              value={this.state.sellerId}
-              onChange={(value) => this.setState({ sellerId: value })}
-              options={sellersOptions}
-            />
+            {this.state.user?.roleId !== 2 && (
+              <Select
+                label="Vendedor"
+                value={this.state.sellerId}
+                onChange={(value) => this.setState({ sellerId: value })}
+                options={sellersOptions}
+              />
+            )}
             <Select
               label="Estado"
               value={this.state.uf}

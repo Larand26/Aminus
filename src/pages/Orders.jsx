@@ -42,6 +42,7 @@ class Orders extends Component {
       page: "orders",
 
       token: localStorage.getItem("token") || null,
+      user: JSON.parse(localStorage.getItem("user")) || null,
 
       ordersData: [],
       numOrder: null,
@@ -195,13 +196,15 @@ class Orders extends Component {
               onChange={(e) => this.setState({ cnpj: e.target.value })}
               onKeyPress={this.onKeyPressGetOrders}
             />
-            <Select
-              label="Vendedor"
-              name="seller"
-              options={sellersOptions}
-              value={this.state.sellerId}
-              onChange={(e) => this.setState({ sellerId: e.target.value })}
-            />
+            {this.state.user?.roleId !== 2 && (
+              <Select
+                label="Vendedor"
+                name="seller"
+                options={sellersOptions}
+                value={this.state.sellerId}
+                onChange={(e) => this.setState({ sellerId: e.target.value })}
+              />
+            )}
           </SideBar>
           <Content
             title="Pedidos"
