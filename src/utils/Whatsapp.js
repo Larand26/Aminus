@@ -2,8 +2,6 @@ class Whatsapp {
   static async getContacts(args) {
     const { token, filters } = args;
     try {
-      console.log(filters);
-
       return await window.api.getContacts({ token, filters });
     } catch (error) {
       return {
