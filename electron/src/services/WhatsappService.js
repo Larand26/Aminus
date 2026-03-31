@@ -20,20 +20,21 @@ class WhatsappService {
     try {
       // Detectar tipo de DB
       const params = [];
-      const queryConditions = Object.entries(filters)
-        .filter(([_, value]) => !!value)
-        .map(([key, value]) => {
-          const filter = filtersToQuery[key];
-          const paramValue = filter.transform ? filter.transform(value) : value;
-          if (isMySQL) {
-            params.push(paramValue);
-          }
-          return filter.condition;
-        })
-        .join(" AND ");
+      const conditions = [];
+      const queryConditions = Object.keys(filters);
+      for (const key of queryConditions) {
+        if (filters[key]) {
+          const filterConfig = filtersToQuery[key];
+          conditions.push(filterConfig.condition);
+          params.push(
+            filterConfig.transform
+              ? filterConfig.transform(filters[key])
+              : filters[key],
+          );
+        }
+      }
 
-      const query = `SELECT * FROM CONTATOS LEFT JOIN USUARIOS ON CONTATOS.VENDEDOR_ID = USUARIOS.ID_USUARIO${queryConditions ? ` WHERE ${queryConditions}` : ""}`;
-      console.log(query);
+      const query = `SELECT * FROM CONTATOS LEFT JOIN USUARIOS ON CONTATOS.VENDEDOR_ID = USUARIOS.ID_USUARIO${conditions.length > 0 ? ` WHERE 1=1 AND ${conditions.join(" AND ")}` : ""}`;
 
       const results = await MySQLDB.query(query, params);
       return {
