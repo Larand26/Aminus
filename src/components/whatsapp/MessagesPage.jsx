@@ -49,6 +49,7 @@ class MessagePage extends Component {
               datas={contactsData}
               onSelectionChange={onSelectionChange}
               selectedItems={contactsSelected}
+              maxHeight={"300px"}
             />
             <Button text="Enviar" className="btn-send" />
           </div>

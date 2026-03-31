@@ -8,6 +8,7 @@ import OrderController from "./src/controllers/OrderController.js";
 import ClientController from "./src/controllers/ClientController.js";
 import PhotoController from "./src/controllers/PhotoController.js";
 import FrenetController from "./src/controllers/FrenetController.js";
+import WhatsappController from "./src/controllers/WhatsappController.js";
 
 // Middlewares
 import MiddlewaresToken from "./src/middlewares/MiddlewaresToken.js";
@@ -146,4 +147,10 @@ ipcMain.handle("register-products", async (event, args) => {
   const decodedToken = await MiddlewaresToken.decodeToken(args.token);
   if (!decodedToken) return { success: false, error: "Invalid token" };
   return await ProductController.registerProducts(args.products);
+});
+
+ipcMain.handle("get-contacts", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
+  return await WhatsappController.getContacts(args.filters);
 });

@@ -24,4 +24,5 @@ contextBridge.exposeInMainWorld("api", {
   getColors: (args) => ipcRenderer.invoke("get-colors", args),
   createColor: (args) => ipcRenderer.invoke("create-color", args),
   registerProducts: (args) => ipcRenderer.invoke("register-products", args),
+  getContacts: (args) => ipcRenderer.invoke("get-contacts", args),
 });

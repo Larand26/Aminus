@@ -14,6 +14,10 @@ import Select from "../components/inputs/Select";
 // options
 import sellersOptions from "../assets/json/options/selerAminusOptions";
 
+// scripts
+import WhatsappUtil from "../utils/Whatsapp.js";
+
+// pages
 import MessagesPage from "../components/whatsapp/MessagesPage";
 
 const pageOptions = [
@@ -30,6 +34,14 @@ class Whatsapp extends Component {
     this.state = {
       page: "messages",
 
+      token: localStorage.getItem("token") || null,
+      user: JSON.parse(localStorage.getItem("user")) || null,
+
+      cellphoneNumber: "",
+      name: "",
+      sellerId: "",
+      sellerName: "",
+
       photos: [],
       message: "",
       contactsData: [],
@@ -38,6 +50,34 @@ class Whatsapp extends Component {
       toastInfo: null,
     };
   }
+
+  handleGetContacts = async () => {
+    const filters = {
+      cellphoneNumber: this.state.cellphoneNumber,
+      name: this.state.name,
+      sellerId: this.state.sellerId,
+      sellerName: this.state.sellerName,
+    };
+    const response = await WhatsappUtil.getContacts({
+      token: this.state.token,
+      filters: filters,
+    });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: response.error || "Erro ao buscar contatos.",
+          type: "erro",
+        },
+      });
+      return;
+    }
+
+    if (response.success && response.data) {
+      this.setState({ contactsData: response.data });
+    }
+  };
 
   // Altera itens selecionados na tabela
   handleSelectionChange = (items) => {
@@ -64,10 +104,23 @@ class Whatsapp extends Component {
         )}
         <NavBar />
         <div className="main-container">
-          <SideBar>
-            <InputText label="Telefone" />
-            <InputText label="Nome do Contato" />
-            <Select label="Vendedor" options={sellersOptions} />
+          <SideBar onSearch={this.handleGetContacts}>
+            <InputText
+              label="Telefone"
+              value={this.state.cellphoneNumber}
+              onChange={(value) => this.setState({ cellphoneNumber: value })}
+            />
+            <InputText
+              label="Nome do Contato"
+              value={this.state.name}
+              onChange={(value) => this.setState({ name: value })}
+            />
+            <Select
+              label="Vendedor"
+              options={sellersOptions}
+              value={this.state.sellerId}
+              onChange={(value) => this.setState({ sellerId: value })}
+            />
           </SideBar>
           <Content title="Whatsapp" pages={pageOptions}>
             {this.state.page === "messages" && (
