@@ -19,20 +19,13 @@ import WhatsappUtil from "../utils/Whatsapp.js";
 
 // pages
 import MessagesPage from "../components/whatsapp/MessagesPage";
-
-const pageOptions = [
-  {
-    name: "Mensagens",
-    icon: "fa-brands fa-whatsapp",
-    onClick: () => {},
-  },
-];
+import ContactsPage from "../components/whatsapp/ContactsPage";
 
 class Whatsapp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: "messages",
+      page: "contacts",
 
       token: localStorage.getItem("token") || null,
       user: JSON.parse(localStorage.getItem("user")) || null,
@@ -50,6 +43,23 @@ class Whatsapp extends Component {
       toastInfo: null,
     };
   }
+
+  pageOptions = [
+    {
+      name: "Mensagens",
+      icon: "fa-brands fa-whatsapp",
+      onClick: () => {
+        this.setState({ page: "messages" });
+      },
+    },
+    {
+      name: "Contatos",
+      icon: "fa fa-phone-flip",
+      onClick: () => {
+        this.setState({ page: "contacts" });
+      },
+    },
+  ];
 
   handleGetContacts = async () => {
     const filters = {
@@ -122,7 +132,7 @@ class Whatsapp extends Component {
               onChange={(value) => this.setState({ sellerId: value })}
             />
           </SideBar>
-          <Content title="Whatsapp" pages={pageOptions}>
+          <Content title="Whatsapp" pages={this.pageOptions}>
             {this.state.page === "messages" && (
               <MessagesPage
                 photos={this.state.photos}
@@ -133,6 +143,9 @@ class Whatsapp extends Component {
                 contactsSelected={this.state.contactsSelected}
                 onSelectionChange={(data) => this.handleSelectionChange(data)}
               />
+            )}
+            {this.state.page === "contacts" && (
+              <ContactsPage contactsData={this.state.contactsData} />
             )}
           </Content>
         </div>
