@@ -9,13 +9,16 @@ import ClientController from "./src/controllers/ClientController.js";
 import PhotoController from "./src/controllers/PhotoController.js";
 import FrenetController from "./src/controllers/FrenetController.js";
 
+// Middlewares
+import MiddlewaresToken from "./src/middlewares/MiddlewaresToken.js";
+
 ipcMain.handle("login", async (event, args) => {
   return await LoginController.login(args);
 });
 
 ipcMain.handle("validate-token", async (event, token) => {
   try {
-    const isValid = await LoginController.validateToken(token);
+    const isValid = await MiddlewaresToken.verifyToken(token);
     return isValid;
   } catch (error) {
     console.log(error);
