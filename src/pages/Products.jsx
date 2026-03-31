@@ -26,10 +26,6 @@ class Products extends Component {
       isLoading: false,
       produtos: [],
       selectedItems: [],
-      opcoes: atualizaOpcoes(
-        opcoesProdutos,
-        localStorage.getItem("opcoesProdutos"),
-      ),
     };
   }
   handleSearch = async () => {
@@ -72,15 +68,6 @@ class Products extends Component {
     if (event.key === "Enter") {
       this.handleSearch();
     }
-  };
-
-  handleOptionClick = (e) => {
-    const { id } = e.target;
-    const updatedOptions = this.state.opcoes.map((opcao) =>
-      opcao.id === id ? { ...opcao, checked: !opcao.checked } : opcao,
-    );
-    this.setState({ opcoes: updatedOptions });
-    localStorage.setItem("opcoesProdutos", JSON.stringify(updatedOptions));
   };
 
   handleSelectionChange = (items) => {
@@ -155,7 +142,7 @@ class Products extends Component {
           </SideBar>
           <Content titulo="Produtos">
             <Table
-              options={opcoes.filter((opcao) => opcao.checked)}
+              options={opcoes}
               datas={produtos}
               loading={isLoading}
               selectedItems={selectedItems}

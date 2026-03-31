@@ -82,12 +82,12 @@ class Whatsapp extends Component {
   // Altera itens selecionados na tabela
   handleSelectionChange = (items) => {
     if (Array.isArray(items)) {
-      this.setState({ selectedItems: items });
+      this.setState({ contactsSelected: items });
     } else {
       this.setState((prevState) => ({
-        selectedItems: prevState.selectedItems.includes(items)
-          ? prevState.selectedItems.filter((item) => item !== items)
-          : [...prevState.selectedItems, items],
+        contactsSelected: prevState.contactsSelected.includes(items)
+          ? prevState.contactsSelected.filter((item) => item !== items)
+          : [...prevState.contactsSelected, items],
       }));
     }
   };
@@ -131,7 +131,7 @@ class Whatsapp extends Component {
                 onChangeMessage={(message) => this.setState({ message })}
                 contactsData={this.state.contactsData}
                 contactsSelected={this.state.contactsSelected}
-                onSelectionChange={this.handleSelectionChange}
+                onSelectionChange={(data) => this.handleSelectionChange(data)}
               />
             )}
           </Content>

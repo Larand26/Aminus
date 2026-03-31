@@ -14,7 +14,7 @@ import Button from "../buttons/Button";
 import Table from "../table/Table";
 
 // options
-import tableOptions from "../../assets/json/table_options/messagesOptions";
+import tableOptions from "../../assets/json/table_options/messagesOptions.json";
 
 // styles
 import "../../styles/pages/messagespage.css";
@@ -47,7 +47,7 @@ class MessagePage extends Component {
             <Table
               options={tableOptions}
               datas={contactsData}
-              onSelectionChange={onSelectionChange}
+              onSelectionChange={(data) => onSelectionChange(data)}
               selectedItems={contactsSelected}
               maxHeight={"250px"}
             />
