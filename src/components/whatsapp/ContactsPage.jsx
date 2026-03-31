@@ -14,14 +14,15 @@ import TableColumn from "../table/TableColumn";
 import Column from "../table/Column";
 
 class ContactsPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isEditing: { status: false, id: null },
+      newValue: { id: null, name: "", number: "", cnpj: "" },
+    };
+  }
   render() {
-    const {
-      contactsData,
-      isEditing = false,
-      newValue, // {name, number, cnpj}
-      onEdit,
-      onDelete,
-    } = this.props;
+    const { contactsData, onDelete, onSave } = this.props;
     return (
       <>
         <div className=""></div>
@@ -32,10 +33,15 @@ class ContactsPage extends Component {
               id={"CONTATO_NOME"}
               label={"Nome"}
               body={(rowData) =>
-                isEditing ? (
+                this.state.isEditing &&
+                this.state.isEditing.id === rowData.CONTATO_ID ? (
                   <InputText
-                    value={rowData.CONTATO_NOME}
-                    onChange={(value) => {}}
+                    value={this.state.newValue.name}
+                    onChange={(value) => {
+                      this.setState({
+                        newValue: { ...this.state.newValue, name: value },
+                      });
+                    }}
                   />
                 ) : (
                   rowData.CONTATO_NOME
@@ -46,10 +52,15 @@ class ContactsPage extends Component {
               id={"CONTATO_NUMERO"}
               label={"Número"}
               body={(rowData) =>
-                isEditing ? (
+                this.state.isEditing &&
+                this.state.isEditing.id === rowData.CONTATO_ID ? (
                   <InputText
-                    value={rowData.CONTATO_NUMERO}
-                    onChange={(value) => {}}
+                    value={this.state.newValue.number}
+                    onChange={(value) => {
+                      this.setState({
+                        newValue: { ...this.state.newValue, number: value },
+                      });
+                    }}
                   />
                 ) : (
                   rowData.CONTATO_NUMERO
@@ -60,10 +71,15 @@ class ContactsPage extends Component {
               id={"CONTATO_CNPJ"}
               label={"CNPJ"}
               body={(rowData) =>
-                isEditing ? (
+                this.state.isEditing &&
+                this.state.isEditing.id === rowData.CONTATO_ID ? (
                   <InputText
-                    value={rowData.CONTATO_CNPJ}
-                    onChange={(value) => {}}
+                    value={this.state.newValue.cnpj}
+                    onChange={(value) => {
+                      this.setState({
+                        newValue: { ...this.state.newValue, cnpj: value },
+                      });
+                    }}
                   />
                 ) : (
                   rowData.CONTATO_CNPJ
@@ -76,8 +92,23 @@ class ContactsPage extends Component {
               body={(rowData) => {
                 return (
                   <ActionButtons
-                    onEdit={() => onEdit(rowData)}
+                    onEdit={() => {
+                      this.setState({
+                        isEditing: { status: true, id: rowData.CONTATO_ID },
+                        newValue: {
+                          id: rowData.CONTATO_ID,
+                          name: rowData.CONTATO_NOME,
+                          number: rowData.CONTATO_NUMERO,
+                          cnpj: rowData.CONTATO_CNPJ,
+                        },
+                      });
+                    }}
+                    isEditing={this.state.isEditing?.status || false}
                     onDelete={() => onDelete(rowData)}
+                    onSave={() => {
+                      this.setState({ isEditing: { status: false, id: null } });
+                      onSave(this.state.newValue);
+                    }}
                   />
                 );
               }}

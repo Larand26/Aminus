@@ -89,6 +89,11 @@ class Whatsapp extends Component {
     }
   };
 
+  // Salva alterações de contato editado
+  handleSaveContact = async (contactData) => {
+    console.log(contactData);
+  };
+
   // Altera itens selecionados na tabela
   handleSelectionChange = (items) => {
     if (Array.isArray(items)) {
@@ -145,7 +150,10 @@ class Whatsapp extends Component {
               />
             )}
             {this.state.page === "contacts" && (
-              <ContactsPage contactsData={this.state.contactsData} />
+              <ContactsPage
+                contactsData={this.state.contactsData}
+                onSave={(contactData) => this.handleSaveContact(contactData)}
+              />
             )}
           </Content>
         </div>

@@ -42,13 +42,18 @@ class ActionButtons extends Component {
       onEdit,
       onDelete,
       onDownload,
+      onSave,
+      isEditing,
       confirmDeleteText = "Deseja excluir este item?",
     } = this.props;
     return (
       <div className="action-buttons">
         <div className="buttons-container">
           {onEdit && (
-            <Button onClick={onEdit} icon="fa-solid fa-pen-to-square" />
+            <Button
+              onClick={isEditing ? onSave : onEdit}
+              icon={`${isEditing ? "fa-solid fa-floppy-disk" : "fa-solid fa-pen-to-square"}`}
+            />
           )}
           {onDownload && (
             <Button onClick={onDownload} icon="fa-solid fa-download" />
