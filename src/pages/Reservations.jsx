@@ -30,7 +30,6 @@ class Reservation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      toastInfo: null,
       reservationsData: [],
       manufacturerCode: null,
       internalCode: null,
