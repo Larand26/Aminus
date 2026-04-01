@@ -169,3 +169,9 @@ ipcMain.handle("delete-contact", async (event, args) => {
   if (!decodedToken) return { success: false, error: "Invalid token" };
   return await WhatsappController.deleteContact(args.contactId, decodedToken);
 });
+
+ipcMain.handle("add-contact", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
+  return await WhatsappController.addContact(args.contactData, decodedToken);
+});

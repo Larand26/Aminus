@@ -9,7 +9,7 @@ class JwtService {
   static async generateToken(user) {
     return jwt.sign(
       {
-        id: user.ID,
+        id: user.ID_USUARIO,
         username: user.NOME,
         role: user.ID_FUNCAO_USUARIO,
       },

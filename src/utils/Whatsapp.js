@@ -37,6 +37,19 @@ class Whatsapp {
       };
     }
   }
+
+  static async addContact(args) {
+    const { token, contactData } = args;
+    try {
+      return await window.api.addContact({ token, contactData });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while adding the contact.",
+      };
+    }
+  }
 }
 
 export default Whatsapp;

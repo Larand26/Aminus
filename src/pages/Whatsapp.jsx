@@ -140,6 +140,36 @@ class Whatsapp extends Component {
     this.handleGetContacts();
   };
 
+  // Cria um novo contato com os dados preenchidos nos inputs
+  handleAddContact = async (contactData) => {
+    const response = await WhatsappUtil.addContact({
+      token: this.state.token,
+      contactData,
+    });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: response.error || "Erro ao adicionar contato.",
+          type: "falha",
+        },
+      });
+      return;
+    }
+
+    this.setState({
+      toastInfo: {
+        key: Date.now(),
+        message: "Contato adicionado com sucesso.",
+        type: "sucesso",
+      },
+    });
+
+    // Recarregar contatos para mostrar novo contato na tabela
+    this.handleGetContacts();
+  };
+
   // Altera itens selecionados na tabela
   handleSelectionChange = (items) => {
     if (Array.isArray(items)) {
@@ -203,6 +233,7 @@ class Whatsapp extends Component {
                 }
                 loading={this.state.loadingGetContacts}
                 onDelete={(contactId) => this.handleDeleteContact(contactId)}
+                onAdd={(contactData) => this.handleAddContact(contactData)}
               />
             )}
           </Content>

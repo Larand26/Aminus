@@ -27,7 +27,7 @@ class ContactsPage extends Component {
     };
   }
   render() {
-    const { contactsData, onDelete, onSave, loading } = this.props;
+    const { contactsData, onDelete, onSave, loading, onAdd } = this.props;
     return (
       <>
         <div className="add-contact-container">
@@ -61,14 +61,15 @@ class ContactsPage extends Component {
           <Button
             text="Adicionar"
             onClick={() => {
-              // Handle add contact logic here
+              onAdd(this.state.newContact);
+              this.setState({ newContact: { name: "", number: "", cnpj: "" } });
             }}
           />
         </div>
         <div>
           <TableColumn
             data={contactsData}
-            maxHeight={"400px"}
+            maxHeight={"350px"}
             loading={loading}
           >
             <Column id={"CONTATO_ID"} label={"ID"} />

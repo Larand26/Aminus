@@ -105,6 +105,45 @@ class WhatsappController {
       };
     }
   }
+
+  static async addContact(contactData, decodedToken) {
+    try {
+      const { name, number, cnpj } = contactData;
+      if (!name || !number || !cnpj) {
+        return {
+          success: false,
+          error: "Invalid contact data.",
+        };
+      }
+
+      // Verificar se o número já existe para evitar duplicidade
+      const existingContacts = await WhatsappController.getContacts({
+        CONTATO_NUMERO: number,
+      });
+
+      if (existingContacts.success && existingContacts.data.length > 0) {
+        return {
+          success: false,
+          error: "A contact with this number already exists.",
+        };
+      }
+      console.log(decodedToken);
+
+      // Criar novo contato no banco de dados
+      return await WhatsappService.addContact({
+        name,
+        number,
+        cnpj,
+        sellerId: decodedToken.id,
+      });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while adding the contact.",
+      };
+    }
+  }
 }
 
 export default WhatsappController;

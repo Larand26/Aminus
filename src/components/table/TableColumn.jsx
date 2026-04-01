@@ -5,7 +5,7 @@ import Loading from "../misc/Loading";
 
 import "../../styles/components/table/table.css";
 
-class Table extends Component {
+class TableColumn extends Component {
   formatHeader(props) {
     const { label, type } = props;
     if (type === "checkbox") {
@@ -40,7 +40,16 @@ class Table extends Component {
             </tr>
           </thead>
           <tbody>
-            {loading ? <Loading /> : null}
+            {loading ? (
+              <tr>
+                <td
+                  className="table-loading"
+                  colSpan={Math.max(columns.length, 1)}
+                >
+                  <Loading />
+                </td>
+              </tr>
+            ) : null}
             {data.map((row, rowIndex) => (
               <tr
                 key={rowIndex}
@@ -61,4 +70,4 @@ class Table extends Component {
   }
 }
 
-export default Table;
+export default TableColumn;

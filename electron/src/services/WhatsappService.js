@@ -112,6 +112,26 @@ class WhatsappService {
       };
     }
   }
+
+  static async addContact(contactData) {
+    const { name, number, cnpj, sellerId } = contactData;
+    try {
+      const query = `INSERT INTO CONTATOS (CONTATO_NOME, CONTATO_NUMERO, CONTATO_CNPJ, VENDEDOR_ID, CONTATO_RECEBER_MENSAGENS) VALUES (?, ?, ?, ?, ?)`;
+      const params = [name.toUpperCase(), number, cnpj, sellerId, 1];
+
+      await MySQLDB.query(query, params);
+      return {
+        success: true,
+        message: "Contact added successfully.",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while adding the contact.",
+      };
+    }
+  }
 }
 
 export default WhatsappService;
