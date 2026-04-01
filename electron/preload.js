@@ -26,4 +26,5 @@ contextBridge.exposeInMainWorld("api", {
   registerProducts: (args) => ipcRenderer.invoke("register-products", args),
   getContacts: (args) => ipcRenderer.invoke("get-contacts", args),
   saveEditedContact: (args) => ipcRenderer.invoke("save-edited-contact", args),
+  deleteContact: (args) => ipcRenderer.invoke("delete-contact", args),
 });

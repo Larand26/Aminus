@@ -1,6 +1,24 @@
 import WhatsappService from "../services/WhatsappService.js";
 
 class WhatsappController {
+  static async verifyContactOwnership(contactId, decodedToken) {
+    const contactResult = await WhatsappController.getContacts({
+      id: contactId,
+    });
+
+    if (
+      !contactResult.success ||
+      !contactResult.data ||
+      contactResult.data.length === 0
+    ) {
+      return false;
+    }
+
+    const contact = contactResult.data[0];
+
+    return contact.VENDEDOR_ID === decodedToken.id || decodedToken.role === 1;
+  }
+
   static async getContacts(filters) {
     try {
       return await WhatsappService.getContacts(filters);
@@ -24,23 +42,8 @@ class WhatsappController {
         };
       }
 
-      const contactResult = await WhatsappController.getContacts({ id });
-
-      if (
-        !contactResult.success ||
-        !contactResult.data ||
-        contactResult.data.length === 0
-      ) {
-        return {
-          success: false,
-          error: "Contact not found.",
-        };
-      }
-
-      const contact = contactResult.data[0];
-
-      // Verificar se o contato pertence ao vendedor do token
-      if (contact.VENDEDOR_ID !== decodedToken.id && decodedToken.role !== 1) {
+      const isOwner = await this.verifyContactOwnership(id, decodedToken);
+      if (!isOwner) {
         return {
           success: false,
           error: "You do not have permission to edit this contact.",
@@ -68,6 +71,34 @@ class WhatsappController {
         success: false,
         error: error.message,
         message: "An error occurred while saving the contact.",
+      };
+    }
+  }
+
+  static async deleteContact(contactId, decodedToken) {
+    try {
+      if (!contactId) {
+        return {
+          success: false,
+          error: "Invalid contact ID.",
+        };
+      }
+
+      const isOwner = await this.verifyContactOwnership(
+        contactId,
+        decodedToken,
+      );
+      if (!isOwner) {
+        return {
+          success: false,
+          error: "You do not have permission to delete this contact.",
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while deleting the contact.",
       };
     }
   }

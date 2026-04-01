@@ -126,6 +126,20 @@ class Whatsapp extends Component {
     this.handleGetContacts();
   };
 
+  // Exclui contato selecionado
+  handleDeleteContact = async (contactData) => {
+    // Implementar lógica de exclusão de contato aqui
+    const response = await WhatsappUtil.deleteContact({
+      token: this.state.token,
+      contactId: contactData.CONTATO_ID,
+    });
+
+    console.log(response);
+
+    // Após exclusão, recarregar contatos para atualizar tabela
+    this.handleGetContacts();
+  };
+
   // Altera itens selecionados na tabela
   handleSelectionChange = (items) => {
     if (Array.isArray(items)) {
@@ -188,6 +202,7 @@ class Whatsapp extends Component {
                   this.handleSaveEditedContact(contactData)
                 }
                 loading={this.state.loadingGetContacts}
+                onDelete={(contactId) => this.handleDeleteContact(contactId)}
               />
             )}
           </Content>

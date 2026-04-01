@@ -24,6 +24,19 @@ class Whatsapp {
       };
     }
   }
+
+  static async deleteContact(args) {
+    const { token, contactId } = args;
+    try {
+      return await window.api.deleteContact({ token, contactId });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while deleting the contact.",
+      };
+    }
+  }
 }
 
 export default Whatsapp;

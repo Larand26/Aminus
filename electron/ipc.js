@@ -163,3 +163,9 @@ ipcMain.handle("save-edited-contact", async (event, args) => {
     decodedToken,
   );
 });
+
+ipcMain.handle("delete-contact", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
+  return await WhatsappController.deleteContact(args.contactId, decodedToken);
+});
