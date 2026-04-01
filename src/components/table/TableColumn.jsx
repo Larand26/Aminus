@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 import CheckBox from "../inputs/InputCheckBox";
+import Loading from "../misc/Loading";
 
 import "../../styles/components/table/table.css";
 
@@ -23,6 +24,7 @@ class Table extends Component {
     const { data = [], children = [] } = this.props;
     const { onclickRow } = this.props;
     const columns = React.Children.toArray(children);
+    const { loading } = this.props;
 
     return (
       <div
@@ -38,6 +40,7 @@ class Table extends Component {
             </tr>
           </thead>
           <tbody>
+            {loading ? <Loading /> : null}
             {data.map((row, rowIndex) => (
               <tr
                 key={rowIndex}

@@ -1,6 +1,7 @@
 import MySQLDB from "../database/MySQLDB.js";
 
 const filtersToQuery = {
+  id: { condition: `CONTATOS.CONTATO_ID = ?` },
   cellphoneNumber: { condition: `CONTATOS.CONTATO_NUMERO = ?` },
   name: {
     condition: `CONTATOS.CONTATO_NOME LIKE ?`,
@@ -13,7 +14,7 @@ const filtersToQuery = {
 class WhatsappService {
   /**
    * Pega os contatos do banco de dados, filtrando por número de celular, nome do contato, id do vendedor ou nome do vendedor.
-   * @param {Object<{cellphoneNumber: string, name: string, sellerId: string, sellerName: string}>} filters
+   * @param {Object<{id: string, cellphoneNumber: string, name: string, sellerId: string, sellerName: string}>} filters
    * @returns
    */
   static async getContacts(filters) {
@@ -35,6 +36,8 @@ class WhatsappService {
       }
 
       const query = `SELECT * FROM CONTATOS LEFT JOIN USUARIOS ON CONTATOS.VENDEDOR_ID = USUARIOS.ID_USUARIO${conditions.length > 0 ? ` WHERE 1=1 AND ${conditions.join(" AND ")}` : ""}`;
+
+      console.log(query, params);
 
       const results = await MySQLDB.query(query, params);
       return {

@@ -154,3 +154,12 @@ ipcMain.handle("get-contacts", async (event, args) => {
   if (!decodedToken) return { success: false, error: "Invalid token" };
   return await WhatsappController.getContacts(args.filters);
 });
+
+ipcMain.handle("save-edited-contact", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
+  return await WhatsappController.saveEditedContact(
+    args.contactData,
+    decodedToken,
+  );
+});

@@ -11,6 +11,19 @@ class Whatsapp {
       };
     }
   }
+
+  static async saveEditedContact(args) {
+    const { token, contactData } = args;
+    try {
+      return await window.api.saveEditedContact({ token, contactData });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while saving the contact.",
+      };
+    }
+  }
 }
 
 export default Whatsapp;

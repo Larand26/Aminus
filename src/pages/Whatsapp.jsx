@@ -27,6 +27,8 @@ class Whatsapp extends Component {
     this.state = {
       page: "contacts",
 
+      loadingGetContacts: false,
+
       token: localStorage.getItem("token") || null,
       user: JSON.parse(localStorage.getItem("user")) || null,
 
@@ -68,10 +70,15 @@ class Whatsapp extends Component {
       sellerId: this.state.sellerId,
       sellerName: this.state.sellerName,
     };
+
+    this.setState({ loadingGetContacts: true });
+
     const response = await WhatsappUtil.getContacts({
       token: this.state.token,
       filters: filters,
     });
+
+    this.setState({ loadingGetContacts: false });
 
     if (!response.success) {
       this.setState({
@@ -90,8 +97,11 @@ class Whatsapp extends Component {
   };
 
   // Salva alterações de contato editado
-  handleSaveContact = async (contactData) => {
-    console.log(contactData);
+  handleSaveEditedContact = async (contactData) => {
+    const response = await WhatsappUtil.saveEditedContact({
+      token: this.state.token,
+      contactData,
+    });
   };
 
   // Altera itens selecionados na tabela
@@ -152,7 +162,10 @@ class Whatsapp extends Component {
             {this.state.page === "contacts" && (
               <ContactsPage
                 contactsData={this.state.contactsData}
-                onSave={(contactData) => this.handleSaveContact(contactData)}
+                onSave={(contactData) =>
+                  this.handleSaveEditedContact(contactData)
+                }
+                loading={this.state.loadingGetContacts}
               />
             )}
           </Content>

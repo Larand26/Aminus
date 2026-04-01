@@ -22,12 +22,16 @@ class ContactsPage extends Component {
     };
   }
   render() {
-    const { contactsData, onDelete, onSave } = this.props;
+    const { contactsData, onDelete, onSave, loading } = this.props;
     return (
       <>
         <div className=""></div>
         <div>
-          <TableColumn data={contactsData} maxHeight={"400px"}>
+          <TableColumn
+            data={contactsData}
+            maxHeight={"400px"}
+            loading={loading}
+          >
             <Column id={"CONTATO_ID"} label={"ID"} />
             <Column
               id={"CONTATO_NOME"}
