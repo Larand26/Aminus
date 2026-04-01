@@ -94,6 +94,9 @@ class WhatsappController {
           error: "You do not have permission to delete this contact.",
         };
       }
+
+      // Excluir contato do banco de dados
+      return await WhatsappService.deleteContact(contactId);
     } catch (error) {
       return {
         success: false,

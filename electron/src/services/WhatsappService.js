@@ -86,6 +86,32 @@ class WhatsappService {
       };
     }
   }
+
+  static async deleteContact(contactId) {
+    try {
+      if (!contactId) {
+        return {
+          success: false,
+          error: "Contact ID is required.",
+        };
+      }
+
+      const query = `DELETE FROM CONTATOS WHERE CONTATO_ID = ?`;
+      const params = [contactId];
+
+      await MySQLDB.query(query, params);
+      return {
+        success: true,
+        message: "Contact deleted successfully.",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while deleting the contact.",
+      };
+    }
+  }
 }
 
 export default WhatsappService;
