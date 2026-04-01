@@ -15,7 +15,15 @@ class WhatsappController {
 
   static async saveEditedContact(contactData, decodedToken) {
     try {
-      const { id } = contactData;
+      const { id, name, number, cnpj } = contactData;
+
+      if (!name || !number || !cnpj) {
+        return {
+          success: false,
+          error: "Invalid contact data.",
+        };
+      }
+
       const contactResult = await WhatsappController.getContacts({ id });
 
       if (
@@ -37,6 +45,20 @@ class WhatsappController {
           success: false,
           error: "You do not have permission to edit this contact.",
         };
+      }
+
+      // Verifica se o número tem algo diferente do número atual
+      if (
+        contact.CONTATO_NUMERO == number &&
+        contact.CONTATO_NOME === name &&
+        contact.CONTATO_CNPJ === cnpj
+      ) {
+        if (numberExists) {
+          return {
+            success: true,
+            error: "Contact data is identical to the existing one.",
+          };
+        }
       }
 
       // Atualizar contato no banco de dados
