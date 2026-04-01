@@ -1,0 +1,29 @@
+.add-contact-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: var(--cor-primaria);
+  border-radius: 5px;
+  margin-top: 10px;
+  align-items: end;
+}
+
+.add-contact-container input {
+  flex: 1;
+  padding: 3px 5px;
+  color: #fff;
+  background-color: transparent;
+  border: 2px solid var(--cor-branco);
+  box-sizing: border-box;
+}
+
+.add-contact-container .custom-button {
+  padding: 10px 15px;
+  background-color: var(--cor-amarelo);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+}

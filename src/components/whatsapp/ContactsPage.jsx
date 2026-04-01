@@ -7,11 +7,15 @@ import { Component } from "react";
 import InputText from "../inputs/InputText";
 
 // buttons
+import Button from "../buttons/Button";
 import ActionButtons from "../buttons/ActionButtons";
 
 // table
 import TableColumn from "../table/TableColumn";
 import Column from "../table/Column";
+
+// styles
+import "../../styles/pages/contactspage.css";
 
 class ContactsPage extends Component {
   constructor(props) {
@@ -19,13 +23,48 @@ class ContactsPage extends Component {
     this.state = {
       isEditing: { status: false, id: null },
       newValue: { id: null, name: "", number: "", cnpj: "" },
+      newContact: { name: "", number: "", cnpj: "" },
     };
   }
   render() {
     const { contactsData, onDelete, onSave, loading } = this.props;
     return (
       <>
-        <div className=""></div>
+        <div className="add-contact-container">
+          <InputText
+            label="Nome"
+            value={this.state.newContact.name}
+            onChange={(value) => {
+              this.setState({
+                newContact: { ...this.state.newContact, name: value },
+              });
+            }}
+          />
+          <InputText
+            label="Número"
+            value={this.state.newContact.number}
+            onChange={(value) => {
+              this.setState({
+                newContact: { ...this.state.newContact, number: value },
+              });
+            }}
+          />
+          <InputText
+            label="CNPJ"
+            value={this.state.newContact.cnpj}
+            onChange={(value) => {
+              this.setState({
+                newContact: { ...this.state.newContact, cnpj: value },
+              });
+            }}
+          />
+          <Button
+            text="Adicionar"
+            onClick={() => {
+              // Handle add contact logic here
+            }}
+          />
+        </div>
         <div>
           <TableColumn
             data={contactsData}
