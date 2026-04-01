@@ -37,8 +37,6 @@ class WhatsappService {
 
       const query = `SELECT * FROM CONTATOS LEFT JOIN USUARIOS ON CONTATOS.VENDEDOR_ID = USUARIOS.ID_USUARIO${conditions.length > 0 ? ` WHERE 1=1 AND ${conditions.join(" AND ")}` : ""}`;
 
-      console.log(query, params);
-
       const results = await MySQLDB.query(query, params);
       return {
         success: true,
@@ -49,6 +47,42 @@ class WhatsappService {
         success: false,
         error: error.message,
         message: "An error occurred while fetching contacts.",
+      };
+    }
+  }
+
+  static async saveEditedContact(contactData) {
+    const { id, name, number, cnpj } = contactData;
+    try {
+      if (!id) {
+        return {
+          success: false,
+          error: "Contact ID is required.",
+        };
+      }
+
+      console.log(contactData);
+
+      if (!name || !number || !cnpj) {
+        return {
+          success: false,
+          error: "Name, cellphone number and CNPJ are required.",
+        };
+      }
+
+      const query = `UPDATE CONTATOS SET CONTATO_NOME = ?, CONTATO_NUMERO = ?, CONTATO_CNPJ = ? WHERE CONTATO_ID = ?`;
+      const params = [name.toUpperCase(), number, cnpj, id];
+
+      await MySQLDB.query(query, params);
+      return {
+        success: true,
+        message: "Contact updated successfully.",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while saving the contact.",
       };
     }
   }

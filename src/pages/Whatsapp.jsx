@@ -102,6 +102,28 @@ class Whatsapp extends Component {
       token: this.state.token,
       contactData,
     });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: response.error || "Erro ao salvar contato.",
+          type: "falha",
+        },
+      });
+      return;
+    }
+
+    this.setState({
+      toastInfo: {
+        key: Date.now(),
+        message: "Contato salvo com sucesso.",
+        type: "sucesso",
+      },
+    });
+
+    // Recarregar contatos para atualizar dados na tabela
+    this.handleGetContacts();
   };
 
   // Altera itens selecionados na tabela
