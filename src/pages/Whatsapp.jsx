@@ -25,7 +25,7 @@ class Whatsapp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: "contacts",
+      page: "messages",
 
       loadingGetContacts: false,
 
