@@ -20,12 +20,13 @@ import WhatsappUtil from "../utils/Whatsapp.js";
 // pages
 import MessagesPage from "../components/whatsapp/MessagesPage";
 import ContactsPage from "../components/whatsapp/ContactsPage";
+import ConfigurationPage from "../components/whatsapp/ConfigurationPage";
 
 class Whatsapp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: "messages",
+      page: "configurations",
 
       loadingGetContacts: false,
 
@@ -59,6 +60,13 @@ class Whatsapp extends Component {
       icon: "fa fa-phone-flip",
       onClick: () => {
         this.setState({ page: "contacts" });
+      },
+    },
+    {
+      name: "Configurações",
+      icon: "fa-solid fa-gear",
+      onClick: () => {
+        this.setState({ page: "configurations" });
       },
     },
   ];
@@ -236,6 +244,7 @@ class Whatsapp extends Component {
                 onAdd={(contactData) => this.handleAddContact(contactData)}
               />
             )}
+            {this.state.page === "configurations" && <ConfigurationPage />}
           </Content>
         </div>
       </>
