@@ -1,5 +1,9 @@
 import MySQLDB from "../database/MySQLDB.js";
 
+import WppConnectConfig from "../config/WppConnectConfig.js";
+
+import axios from "axios";
+
 const filtersToQuery = {
   id: { condition: `CONTATOS.CONTATO_ID = ?` },
   cellphoneNumber: { condition: `CONTATOS.CONTATO_NUMERO = ?` },
@@ -129,6 +133,95 @@ class WhatsappService {
         success: false,
         error: error.message,
         message: "An error occurred while adding the contact.",
+      };
+    }
+  }
+
+  static async getSession(userId) {
+    try {
+      const query = `SELECT * FROM KEYS_WHATSAPP WHERE VENDEDOR_ID = ?`;
+      const params = [userId];
+      const results = await MySQLDB.query(query, params);
+      if (results.length > 0) {
+        return results[0];
+      } else {
+        throw new Error("User not found.");
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching the session key.",
+      };
+    }
+  }
+
+  static async getSessionStatus(session) {
+    try {
+      const response = await axios.get(
+        `${WppConnectConfig.apiUrl}/${session.SESSION}/status-session`,
+        { headers: WppConnectConfig.buildHeaders(session.KEY_VALUE) },
+      );
+
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while fetching the session status.",
+      };
+    }
+  }
+
+  static async checkWhatsappConnection(session) {
+    try {
+      const response = await axios.get(
+        `${WppConnectConfig.apiUrl}/${session.SESSION}/check-connection-session`,
+        {
+          headers: WppConnectConfig.buildHeaders(session.KEY_VALUE),
+          timeout: 10000,
+        },
+      );
+
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while checking the WhatsApp connection.",
+      };
+    }
+  }
+
+  static async startSession(session) {
+    try {
+      console.log("Iniciando sessão...");
+
+      const response = await axios.post(
+        `${WppConnectConfig.apiUrl}/${session.SESSION}/start-session`,
+        {
+          webhook: "",
+          waitQrCode: true,
+        },
+        { headers: WppConnectConfig.buildHeaders(session.KEY_VALUE) },
+      );
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (error) {
+      console.log("Error starting session:", error);
+
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while starting the session.",
       };
     }
   }

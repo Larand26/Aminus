@@ -4,11 +4,14 @@ import { Component } from "react";
 // buttons
 import Button from "../buttons/Button";
 
-//styles
+// styles
 import "../../styles/pages/configurationpage.css";
 
 class ConfigurationPage extends Component {
   render() {
+    const { session } = this.props;
+    const { sessionActions } = this.props;
+    const { qrCode } = this.props;
     return (
       <>
         <div className="wpp-config-container">
@@ -19,11 +22,11 @@ class ConfigurationPage extends Component {
               <div className="responses">
                 <div className="response">
                   <p className="off">Aberto</p>
-                  <span>{"Não"}</span>
+                  <span>{session?.isOpen ? "Sim" : "Não"}</span>
                 </div>
                 <div className="response">
                   <p className="off">Conectado</p>
-                  <span>{"Não"}</span>
+                  <span>{session?.isConnected ? "Sim" : "Não"}</span>
                 </div>
               </div>
 
@@ -55,12 +58,21 @@ class ConfigurationPage extends Component {
             <p className="off">Pareamento</p>
             <h2>Qr Code</h2>
             <div>
-              <div className="qr-code">
-                <i className="fa-solid fa-mobile-screen-button"></i>
-                <p>Aguardando QR Code</p>
-                <p className="off">
-                  Gere o QR para o usuário escanear e finalizar o login.
-                </p>
+              <div
+                className="qr-code"
+                style={!qrCode ? { padding: "20px" } : null}
+              >
+                {qrCode ? (
+                  <img src={qrCode} alt="QR Code para pareamento" />
+                ) : (
+                  <>
+                    <i className="fa-solid fa-mobile-screen-button"></i>
+                    <p>Aguardando QR Code</p>
+                    <p className="off">
+                      Gere o QR para o usuário escanear e finalizar o login.
+                    </p>
+                  </>
+                )}
               </div>
               <div className="buttons-container">
                 <Button
@@ -68,21 +80,21 @@ class ConfigurationPage extends Component {
                   className="btn-init-session"
                   text="Iniciar Sessão"
                   icon="fa-solid fa-power-off"
-                  onClick={() => {}}
+                  onClick={() => sessionActions.startSession()}
                 />
                 <Button
                   label="Gerar QR Code"
                   className="btn-generate-qr"
                   icon="fa-solid fa-qrcode"
                   text="Gerar QR Code"
-                  onClick={() => {}}
+                  onClick={() => sessionActions.generateQRCode()}
                 />
                 <Button
                   label="Deslogar"
                   className="btn-logout"
                   text="Deslogar"
                   icon="fa-solid fa-right-from-bracket"
-                  onClick={() => {}}
+                  onClick={() => sessionActions.logout()}
                 />
               </div>
             </div>

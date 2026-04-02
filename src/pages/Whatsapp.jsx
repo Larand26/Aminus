@@ -43,6 +43,9 @@ class Whatsapp extends Component {
       contactsData: [],
       contactsSelected: [],
 
+      session: { isOpen: false, isConnected: false },
+      qrCode: null,
+
       toastInfo: null,
     };
   }
@@ -191,6 +194,37 @@ class Whatsapp extends Component {
     }
   };
 
+  // Inicia a sessão do Whatsapp
+  handleStartSession = async () => {
+    const response = await WhatsappUtil.startSession({
+      token: this.state.token,
+    });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: response.error || "Erro ao iniciar sessão.",
+          type: "falha",
+        },
+      });
+      return;
+    }
+
+    this.setState({
+      toastInfo: {
+        key: Date.now(),
+        message: "Sessão iniciada com sucesso.",
+        type: "sucesso",
+      },
+      session: {
+        isOpen: response?.data?.isOpen || false,
+        isConnected: response?.data?.isConnected || false,
+      },
+      qrCode: response?.data?.qrcode || null,
+    });
+  };
+
   render() {
     return (
       <>
@@ -244,7 +278,13 @@ class Whatsapp extends Component {
                 onAdd={(contactData) => this.handleAddContact(contactData)}
               />
             )}
-            {this.state.page === "configurations" && <ConfigurationPage />}
+            {this.state.page === "configurations" && (
+              <ConfigurationPage
+                session={this.state.session}
+                qrCode={this.state.qrCode}
+                sessionActions={{ startSession: this.handleStartSession }}
+              />
+            )}
           </Content>
         </div>
       </>

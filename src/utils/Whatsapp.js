@@ -50,6 +50,19 @@ class Whatsapp {
       };
     }
   }
+
+  static async startSession(args) {
+    const { token } = args;
+    try {
+      return await window.api.startSession({ token });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while starting the session.",
+      };
+    }
+  }
 }
 
 export default Whatsapp;

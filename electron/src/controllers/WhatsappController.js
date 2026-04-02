@@ -144,6 +144,56 @@ class WhatsappController {
       };
     }
   }
+
+  static async startSession(decodedToken) {
+    try {
+      // Pega a sessão da Sessão
+      const session = await WhatsappService.getSession(decodedToken.id);
+
+      const [sessionStatusResult, sessionConnectionResult] = await Promise.all([
+        // Verifica Status da Sessão
+        WhatsappService.getSessionStatus(session),
+        // Verifica a Conexão com o Whatsapp
+        WhatsappService.checkWhatsappConnection(session),
+      ]);
+
+      if (
+        sessionStatusResult?.data?.status === "CONNECTED" &&
+        sessionConnectionResult?.data?.message === "Connected"
+      ) {
+        return {
+          success: true,
+          message: "Session is already connected.",
+        };
+      }
+
+      // Retorna QR Code se necessário
+      const startSessionResult = await WhatsappService.startSession(session);
+
+      if (!startSessionResult.success) {
+        return {
+          success: false,
+          error: startSessionResult.error,
+          message: "Failed to start session.",
+        };
+      }
+
+      return {
+        success: true,
+        data: {
+          ...startSessionResult.data,
+          isOpen: sessionStatusResult?.data?.status === "CONNECTED",
+          isConnected: sessionConnectionResult?.data?.message === "Connected",
+        },
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while starting the session.",
+      };
+    }
+  }
 }
 
 export default WhatsappController;
