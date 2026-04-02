@@ -1,5 +1,9 @@
 import { Component } from "react";
 
+// Components
+// buttons
+import Button from "../buttons/Button";
+
 //styles
 import "../../styles/pages/configurationpage.css";
 
@@ -47,7 +51,42 @@ class ConfigurationPage extends Component {
               </div>
             </div>
           </section>
-          <section></section>
+          <section>
+            <p className="off">Pareamento</p>
+            <h2>Qr Code</h2>
+            <div>
+              <div className="qr-code">
+                <i className="fa-solid fa-mobile-screen-button"></i>
+                <p>Aguardando QR Code</p>
+                <p className="off">
+                  Gere o QR para o usuário escanear e finalizar o login.
+                </p>
+              </div>
+              <div className="buttons-container">
+                <Button
+                  label="Iniciar Sessão"
+                  className="btn-init-session"
+                  text="Iniciar Sessão"
+                  icon="fa-solid fa-power-off"
+                  onClick={() => {}}
+                />
+                <Button
+                  label="Gerar QR Code"
+                  className="btn-generate-qr"
+                  icon="fa-solid fa-qrcode"
+                  text="Gerar QR Code"
+                  onClick={() => {}}
+                />
+                <Button
+                  label="Deslogar"
+                  className="btn-logout"
+                  text="Deslogar"
+                  icon="fa-solid fa-right-from-bracket"
+                  onClick={() => {}}
+                />
+              </div>
+            </div>
+          </section>
         </div>
       </>
     );

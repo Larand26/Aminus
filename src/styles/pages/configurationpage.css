@@ -63,3 +63,56 @@
   padding: 10px;
   border-radius: 20px;
 }
+
+.wpp-config-container .qr-code {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 1px dashed #d1d4d3;
+  border-radius: 20px;
+  max-width: calc(80% - 200px);
+  min-width: 220px;
+  margin: auto;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .wpp-config-container .qr-code {
+    max-width: calc(100% - 20px);
+    min-width: 0;
+  }
+}
+
+.wpp-config-container .qr-code i {
+  font-size: 50px;
+  color: var(--cor-amarelo);
+  margin-bottom: 10px;
+}
+
+.wpp-config-container section .custom-button {
+  padding: 10px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 30%;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+}
+
+.custom-button.btn-init-session {
+  background-color: var(--cor-primaria);
+}
+.custom-button.btn-generate-qr {
+  background-color: var(--cor-amarelo);
+}
+.custom-button.btn-logout {
+  background-color: var(--cor-falha);
+}
