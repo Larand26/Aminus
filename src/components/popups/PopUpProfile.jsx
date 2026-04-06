@@ -45,7 +45,7 @@ class PopUpProfile extends Component {
                 <div className="order order-pending">
                   <p>
                     <span className="order-icon">
-                      <i class="fa-solid fa-exclamation"></i>
+                      <i className="fa-solid fa-exclamation"></i>
                     </span>
                     Pendente: {infos?.totalOrdersPending ?? 0}
                   </p>
@@ -53,7 +53,7 @@ class PopUpProfile extends Component {
                 <div className="order order-completed">
                   <p>
                     <span className="order-icon">
-                      <i class="fa-solid fa-check"></i>
+                      <i className="fa-solid fa-check"></i>
                     </span>
                     Completo: {infos?.totalOrdersSold ?? 0}
                   </p>
@@ -61,7 +61,7 @@ class PopUpProfile extends Component {
                 <div className="order order-cancelled">
                   <p>
                     <span className="order-icon">
-                      <i class="fa-solid fa-times"></i>
+                      <i className="fa-solid fa-times"></i>
                     </span>
                     Cancelado: {infos?.totalOrdersCancelled ?? 0}
                   </p>
