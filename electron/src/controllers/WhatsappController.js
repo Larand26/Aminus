@@ -164,6 +164,10 @@ class WhatsappController {
         return {
           success: true,
           message: "Session is already connected.",
+          data: {
+            isOpen: true,
+            isConnected: true,
+          },
         };
       }
 
