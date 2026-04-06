@@ -225,6 +225,26 @@ class WhatsappService {
       };
     }
   }
+
+  static async closeSession(session) {
+    try {
+      const response = await axios.post(
+        `${WppConnectConfig.apiUrl}/${session.SESSION}/close-session`,
+        {},
+        { headers: WppConnectConfig.buildHeaders(session.KEY_VALUE) },
+      );
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while closing the session.",
+      };
+    }
+  }
 }
 
 export default WhatsappService;

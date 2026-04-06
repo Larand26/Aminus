@@ -225,6 +225,33 @@ class Whatsapp extends Component {
     });
   };
 
+  handleCloseSession = async () => {
+    const response = await WhatsappUtil.closeSession({
+      token: this.state.token,
+    });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: response.error || "Erro ao fechar sessão.",
+          type: "falha",
+        },
+      });
+      return;
+    }
+
+    this.setState({
+      toastInfo: {
+        key: Date.now(),
+        message: "Sessão fechada com sucesso.",
+        type: "sucesso",
+      },
+      session: { isOpen: false, isConnected: false },
+      qrCode: null,
+    });
+  };
+
   render() {
     return (
       <>
@@ -282,7 +309,11 @@ class Whatsapp extends Component {
               <ConfigurationPage
                 session={this.state.session}
                 qrCode={this.state.qrCode}
-                sessionActions={{ startSession: this.handleStartSession }}
+                sessionActions={{
+                  startSession: this.handleStartSession,
+                  generateQRCode: this.handleStartSession,
+                  logout: this.handleCloseSession,
+                }}
               />
             )}
           </Content>

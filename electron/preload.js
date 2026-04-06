@@ -29,4 +29,5 @@ contextBridge.exposeInMainWorld("api", {
   deleteContact: (args) => ipcRenderer.invoke("delete-contact", args),
   addContact: (args) => ipcRenderer.invoke("add-contact", args),
   startSession: (args) => ipcRenderer.invoke("start-session", args),
+  closeSession: (args) => ipcRenderer.invoke("close-session", args),
 });

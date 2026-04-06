@@ -63,6 +63,19 @@ class Whatsapp {
       };
     }
   }
+
+  static async closeSession(args) {
+    const { token } = args;
+    try {
+      return await window.api.closeSession({ token });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while generating the QR code.",
+      };
+    }
+  }
 }
 
 export default Whatsapp;

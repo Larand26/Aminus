@@ -198,6 +198,38 @@ class WhatsappController {
       };
     }
   }
+
+  static async closeSession(decodedToken) {
+    try {
+      // Pega a sessão da Sessão
+      const session = await WhatsappService.getSession(decodedToken.id);
+      // Fecha a sessão
+      const closeSessionResult = await WhatsappService.closeSession(session);
+
+      if (!closeSessionResult.success) {
+        return {
+          success: false,
+          error: closeSessionResult.error,
+          message: "Failed to close session.",
+        };
+      }
+
+      return {
+        success: true,
+        data: {
+          isOpen: false,
+          isConnected: false,
+        },
+        message: "Session closed successfully.",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while closing the session.",
+      };
+    }
+  }
 }
 
 export default WhatsappController;

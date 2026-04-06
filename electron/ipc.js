@@ -181,3 +181,9 @@ ipcMain.handle("start-session", async (event, args) => {
   if (!decodedToken) return { success: false, error: "Invalid token" };
   return await WhatsappController.startSession(decodedToken);
 });
+
+ipcMain.handle("close-session", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
+  return await WhatsappController.closeSession(decodedToken);
+});
