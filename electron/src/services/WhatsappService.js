@@ -200,29 +200,58 @@ class WhatsappService {
   }
 
   static async startSession(session) {
+    const url = `${WppConnectConfig.apiUrl}/${session.SESSION}/start-session`;
+    const data = {
+      webhook: "",
+      waitQrCode: true,
+    };
+    const config = {
+      headers: WppConnectConfig.buildHeaders(session.KEY_VALUE),
+      timeout: 10000,
+    };
+
+    const callStartSession = () => axios.post(url, data, config);
+
     try {
       console.log("Iniciando sessão...");
 
-      const response = await axios.post(
-        `${WppConnectConfig.apiUrl}/${session.SESSION}/start-session`,
-        {
-          webhook: "",
-          waitQrCode: true,
-        },
-        { headers: WppConnectConfig.buildHeaders(session.KEY_VALUE) },
-      );
+      const response = await callStartSession();
       return {
         success: true,
         data: response.data,
       };
     } catch (error) {
-      console.log("Error starting session:", error);
+      const isTimeout =
+        error.code === "ECONNABORTED" ||
+        String(error.message).toLowerCase().includes("timeout");
 
-      return {
-        success: false,
-        error: error.message,
-        message: "An error occurred while starting the session.",
-      };
+      if (!isTimeout) {
+        console.log("Error starting session:", error);
+
+        return {
+          success: false,
+          error: error.message,
+          message: "An error occurred while starting the session.",
+        };
+      }
+
+      try {
+        console.log("Timeout no startSession, tentando novamente...");
+        const response = await callStartSession();
+
+        return {
+          success: true,
+          data: response.data,
+        };
+      } catch (retryError) {
+        console.log("Error starting session after retry:", retryError);
+
+        return {
+          success: false,
+          error: retryError.message,
+          message: "An error occurred while starting the session.",
+        };
+      }
     }
   }
 
