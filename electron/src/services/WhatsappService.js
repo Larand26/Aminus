@@ -433,15 +433,17 @@ class WhatsappService {
 
   static async checkLastMessageTime(session) {
     try {
-      const today = await Utils.getCurrentDateFromServer();
-      const lastMessageTime = session.ULTIMA_MENSAGEM;
+      const today = new Date();
+      // dimimuindo 3horas para ajustar ao horário de Brasília, pois o servidor de tempo retorna no horário UTC
+      const lastMessageTime = new Date(session.ULTIMA_MENSAGEM);
 
       if (lastMessageTime) {
-        const diffInMinutes = Utils.getDifferenceInMinutes(
+        const difInSeconds = Utils.getDifferenceInSeconds(
           today,
-          new Date(lastMessageTime),
+          lastMessageTime,
         );
-        return diffInMinutes;
+
+        return 5 * 60 - difInSeconds; // Subtrai 5 minutos (300 segundos) do tempo restante para garantir que o timer seja reiniciado um pouco antes do bloqueio ocorrer
       }
     } catch (error) {
       console.log(error);

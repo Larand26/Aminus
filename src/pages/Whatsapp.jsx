@@ -28,7 +28,7 @@ class Whatsapp extends Component {
     this.state = {
       page: "messages",
 
-      timer: 5 * 60, // 5 minutos em segundos
+      timer: 0, // 5 minutos em segundos
 
       loadingGetContacts: false,
 
@@ -249,15 +249,23 @@ class Whatsapp extends Component {
     if (!response.success) {
       return;
     }
+    console.log(response?.data?.timeRemaining);
 
     this.setState({
       session: {
         isOpen: response?.data?.isOpen || false,
         isConnected: response?.data?.isConnected || false,
       },
-      timer: response?.data?.timeRemaining * 60 || 5 * 60, // Converter minutos para segundos
+      timer:
+        response?.data?.timeRemaining < 5 * 60
+          ? response?.data?.timeRemaining || 5 * 60
+          : 0,
     });
-    this.startTimer(response?.data?.timeRemaining * 60 || 5 * 60);
+    this.startTimer(
+      response?.data?.timeRemaining < 5 * 60
+        ? response?.data?.timeRemaining || 5 * 60
+        : 0,
+    );
   };
 
   // Encerra a sessão do Whatsapp
@@ -312,7 +320,26 @@ class Whatsapp extends Component {
       photos: this.state.photos,
     });
 
-    console.log(response);
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: response.error || "Erro ao enviar mensagens.",
+          type: "falha",
+        },
+      });
+      return;
+    }
+
+    this.setState({
+      toastInfo: {
+        key: Date.now(),
+        message: "Mensagens enviadas com sucesso.",
+        type: "sucesso",
+      },
+    });
+
+    this.startTimer(5 * 60); // Reinicia o timer para 5 minutos após o envio das mensagens
   };
 
   render() {

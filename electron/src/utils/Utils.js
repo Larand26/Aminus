@@ -16,9 +16,9 @@ class Utils {
     }
   }
 
-  static getDifferenceInMinutes(date1, date2) {
-    const diffInMs = Math.abs(date1 - date2);
-    return Math.floor(diffInMs / (1000 * 60));
+  static getDifferenceInSeconds(date1, date2) {
+    const diffInMs = date1 - date2;
+    return Math.floor(diffInMs / 1000);
   }
 }
 

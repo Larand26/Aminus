@@ -14,7 +14,7 @@ class Content extends Component {
           <div className="title-timer-container">
             <div className="title">{title && <p>{title}</p>}</div>
             <div className="timer-container">
-              {timer && <Timer timeRemaining={timer} />}
+              {timer != null && <Timer timeRemaining={timer} />}
             </div>
           </div>
         ) : null}
