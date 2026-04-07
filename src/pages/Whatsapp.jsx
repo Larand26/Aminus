@@ -261,6 +261,8 @@ class Whatsapp extends Component {
       message: this.state.message,
       photos: this.state.photos,
     });
+
+    console.log(response);
   };
 
   render() {

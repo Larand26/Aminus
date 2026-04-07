@@ -292,6 +292,106 @@ class WhatsappService {
       };
     }
   }
+
+  static async sendPhotos({ contacts, photos, session }) {
+    try {
+      const responseData = [];
+      for (const contact of contacts) {
+        for (const photo of photos) {
+          const body = {
+            phone: contact.CONTATO_NUMERO,
+            isGroup: false,
+            isNewsletter: false,
+            isLid: false,
+            message: "",
+            fileName: "foto.jpg",
+            caption: "",
+            base64: photo,
+          };
+
+          try {
+            await axios.post(
+              `${WppConnectConfig.apiUrl}/${session.SESSION}/send-image`,
+              body,
+              {
+                headers: WppConnectConfig.buildHeaders(session.KEY_VALUE),
+              },
+            );
+
+            responseData.push({
+              contact: contact.CONTATO_NUMERO,
+              success: true,
+            });
+            await new Promise((resolve) => setTimeout(resolve, 500));
+          } catch (error) {
+            responseData.push({
+              contact: contact.CONTATO_NUMERO,
+              success: false,
+              error: error.message,
+            });
+            // Continua para o próximo contato mesmo se houver erro
+            continue;
+          }
+        }
+      }
+      return {
+        success: true,
+        data: responseData,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while sending messages.",
+      };
+    }
+  }
+
+  static async sendMessage({ contacts, message, session }) {
+    try {
+      const responseData = [];
+      for (const contact of contacts) {
+        const body = {
+          phone: contact.CONTATO_NUMERO,
+          isGroup: false,
+          isNewsletter: false,
+          isLid: false,
+          message: message,
+        };
+
+        try {
+          await axios.post(
+            `${WppConnectConfig.apiUrl}/${session.SESSION}/send-message`,
+            body,
+            {
+              headers: WppConnectConfig.buildHeaders(session.KEY_VALUE),
+            },
+          );
+          responseData.push({
+            contact: contact.CONTATO_NUMERO,
+            success: true,
+          });
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        } catch (error) {
+          responseData.push({
+            contact: contact.CONTATO_NUMERO,
+            success: false,
+            error: error.message,
+          });
+        }
+      }
+      return {
+        success: true,
+        data: responseData,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while sending messages.",
+      };
+    }
+  }
 }
 
 export default WhatsappService;

@@ -264,13 +264,32 @@ class WhatsappController {
 
       if (
         sessionStatusResult?.data?.status !== "CONNECTED" ||
-        sessionConnectionResult?.data?.status
+        !sessionConnectionResult?.data?.status
       ) {
         return {
           success: false,
           error: "Session is not connected.",
           message: "Please connect the session before sending messages.",
         };
+      }
+
+      // Envia as fotos
+      if (photos && photos.length > 0) {
+        const sendPhotosResult = await WhatsappService.sendPhotos({
+          session,
+          contacts: contactsResult.data,
+          photos,
+        });
+        console.log(sendPhotosResult);
+      }
+
+      if (message) {
+        const sendMessageResult = await WhatsappService.sendMessage({
+          session,
+          contacts: contactsResult.data,
+          message,
+        });
+        console.log(sendMessageResult);
       }
     } catch (error) {
       return {
