@@ -94,6 +94,19 @@ class Whatsapp {
       };
     }
   }
+
+  static async checkSession(args) {
+    const { token } = args;
+    try {
+      return await window.api.checkSession({ token });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while checking the session.",
+      };
+    }
+  }
 }
 
 export default Whatsapp;

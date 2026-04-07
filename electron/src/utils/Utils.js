@@ -1,3 +1,5 @@
+import axios from "axios";
+
 class Utils {
   static setRamdomTime(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -10,7 +12,6 @@ class Utils {
       );
       return new Date(response.data.datetime);
     } catch (error) {
-      console.error("Erro ao buscar data do servidor:", error);
       return new Date(); // fallback
     }
   }

@@ -198,3 +198,9 @@ ipcMain.handle("send-messages", async (event, args) => {
     decodedToken,
   );
 });
+
+ipcMain.handle("check-session", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken) return { success: false, error: "Invalid token" };
+  return await WhatsappController.checkSession(decodedToken);
+});

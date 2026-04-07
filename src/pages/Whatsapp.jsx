@@ -77,7 +77,7 @@ class Whatsapp extends Component {
   ];
 
   componentDidMount() {
-    this.startTimer(5 * 60);
+    this.handleCheckSession();
   }
 
   componentWillUnmount() {
@@ -233,6 +233,31 @@ class Whatsapp extends Component {
       },
       qrCode: response?.data?.qrcode || null,
     });
+  };
+
+  handleCheckSession = async () => {
+    if (!this.state.token) {
+      return;
+    }
+
+    const response = await WhatsappUtil.checkSession({
+      token: this.state.token,
+    });
+
+    console.log(response);
+
+    if (!response.success) {
+      return;
+    }
+
+    this.setState({
+      session: {
+        isOpen: response?.data?.isOpen || false,
+        isConnected: response?.data?.isConnected || false,
+      },
+      timer: response?.data?.timeRemaining * 60 || 5 * 60, // Converter minutos para segundos
+    });
+    this.startTimer(response?.data?.timeRemaining * 60 || 5 * 60);
   };
 
   // Encerra a sessão do Whatsapp

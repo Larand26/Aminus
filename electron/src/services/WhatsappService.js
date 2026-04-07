@@ -436,18 +436,17 @@ class WhatsappService {
       const today = await Utils.getCurrentDateFromServer();
       const lastMessageTime = session.ULTIMA_MENSAGEM;
 
-      // se a diferença for menor que 5 minutos, retornar false para evitar spam
       if (lastMessageTime) {
         const diffInMinutes = Utils.getDifferenceInMinutes(
           today,
           new Date(lastMessageTime),
         );
-        return diffInMinutes >= 5;
+        return diffInMinutes;
       }
     } catch (error) {
       console.log(error);
 
-      return false;
+      return null;
     }
   }
 
@@ -460,7 +459,8 @@ class WhatsappService {
         };
       }
       const query = `UPDATE KEYS_WHATSAPP SET ULTIMA_MENSAGEM = ? WHERE VENDEDOR_ID = ?`;
-      const params = [Utils.getCurrentDateFromServer(), userId];
+      const params = [await Utils.getCurrentDateFromServer(), userId];
+
       await MySQLDB.query(query, params);
       return {
         success: true,
