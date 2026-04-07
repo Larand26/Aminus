@@ -450,6 +450,30 @@ class WhatsappService {
       return false;
     }
   }
+
+  static async updateLastMessageTime(userId) {
+    try {
+      if (!userId) {
+        return {
+          success: false,
+          error: "User ID is required.",
+        };
+      }
+      const query = `UPDATE KEYS_WHATSAPP SET ULTIMA_MENSAGEM = ? WHERE VENDEDOR_ID = ?`;
+      const params = [Utils.getCurrentDateFromServer(), userId];
+      await MySQLDB.query(query, params);
+      return {
+        success: true,
+        message: "Last message time updated successfully.",
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while updating the last message time.",
+      };
+    }
+  }
 }
 
 export default WhatsappService;

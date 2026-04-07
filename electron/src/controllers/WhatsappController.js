@@ -316,6 +316,14 @@ class WhatsappController {
           message: "Failed to send messages.",
         };
       }
+
+      // Atualiza a data da última mensagem enviada para evitar spam
+      await WhatsappService.updateLastMessageTime(decodedToken.id);
+
+      return {
+        success: true,
+        message: "Messages sent successfully.",
+      };
     } catch (error) {
       return {
         success: false,
