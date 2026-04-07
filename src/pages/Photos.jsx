@@ -277,6 +277,7 @@ class Photos extends Component {
             )}
             {this.state.page == "addPhotos" && (
               <AddPhotos
+                handleAddNewPhotos={this.handleAddNewPhotos}
                 newPhotos={this.state.newPhotos}
                 onChangePhoto={(index, value) =>
                   this.onChangeNewPhotoItem(index, "photo", value)
@@ -292,6 +293,14 @@ class Photos extends Component {
                     newPhotos: {
                       ...this.state.newPhotos,
                       newManufacturerCode: value,
+                    },
+                  })
+                }
+                onChangeResalePrice={(value) =>
+                  this.setState({
+                    newPhotos: {
+                      ...this.state.newPhotos,
+                      newResalePrice: value,
                     },
                   })
                 }

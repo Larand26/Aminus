@@ -29,8 +29,10 @@ class AddPhotos extends Component {
       onChangeColor,
       onChangeColorCode,
       onChangeManufacturerCode,
+      onChangeResalePrice,
       onChangePackaging,
       onChangeDescription,
+      handleAddNewPhotos,
     } = this.props;
     // newPhotos = { newManufacturerCode: "", newPackaging: "", newDescription: "", newPhotos: [{ photo: [Base64], color: "", colorCode: "" }] }
     const photoItems =
@@ -72,6 +74,11 @@ class AddPhotos extends Component {
               value={newPhotos?.newManufacturerCode || ""}
               onChange={onChangeManufacturerCode}
             />
+            <InputText
+              label="Preço de revenda"
+              value={newPhotos?.newResalePrice || ""}
+              onChange={onChangeResalePrice}
+            />
             <Select
               label="Embalagem"
               options={packagingOptions}
@@ -86,6 +93,7 @@ class AddPhotos extends Component {
             <Button
               text="Adicionar Fotos"
               className="add-photos-submit-button"
+              onClick={handleAddNewPhotos}
             />
           </div>
         </div>
