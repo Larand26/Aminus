@@ -44,6 +44,8 @@ class Photos extends Component {
       selectedEditProduct: null,
 
       toastInfo: null,
+
+      newPhotos: {},
     };
   }
 
@@ -229,7 +231,32 @@ class Photos extends Component {
                 onDelete={(product) => console.log("Excluir", product)}
               />
             )}
-            {this.state.page == "addPhotos" && <AddPhotos />}
+            {this.state.page == "addPhotos" && (
+              <AddPhotos
+                newPhotos={this.state.newPhotos}
+                onChangeManufacturerCode={(value) =>
+                  this.setState({
+                    newPhotos: {
+                      ...this.state.newPhotos,
+                      newManufacturerCode: value,
+                    },
+                  })
+                }
+                onChangePackaging={(value) =>
+                  this.setState({
+                    newPhotos: { ...this.state.newPhotos, newPackaging: value },
+                  })
+                }
+                onChangeDescription={(value) =>
+                  this.setState({
+                    newPhotos: {
+                      ...this.state.newPhotos,
+                      newDescription: value,
+                    },
+                  })
+                }
+              />
+            )}
           </Content>
           <EditPhotoPopup
             isOpen={this.state.isEditPopupOpen}

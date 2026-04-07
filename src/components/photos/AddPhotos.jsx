@@ -23,6 +23,13 @@ import "../../styles/pages/addPhotos.css";
 
 class AddPhotos extends Component {
   render() {
+    const {
+      newPhotos,
+      onChangeManufacturerCode,
+      onChangePackaging,
+      onChangeDescription,
+    } = this.props;
+    // newPhotos = { newManufacturerCode: "", newPackaging: "", newDescription: "", newPhotos: [{ photo: [Base64], color: "", colorCode: "" }] }
     return (
       <>
         <div className="add-photos">
@@ -38,9 +45,22 @@ class AddPhotos extends Component {
           </div>
           {/* Aqui vai ficar a parte de referencia, descrição e embalagem */}
           <div className="add-photos-details-section">
-            <InputText label="Referência" />
-            <Select label="Embalagem" options={packagingOptions} />
-            <TextArea label="Descrição" />
+            <InputText
+              label="Referência"
+              value={newPhotos?.newManufacturerCode || ""}
+              onChange={onChangeManufacturerCode}
+            />
+            <Select
+              label="Embalagem"
+              options={packagingOptions}
+              value={newPhotos?.newPackaging || ""}
+              onChange={onChangePackaging}
+            />
+            <TextArea
+              label="Descrição"
+              value={newPhotos?.newDescription || ""}
+              onChange={onChangeDescription}
+            />
             <Button
               text="Adicionar Fotos"
               className="add-photos-submit-button"
