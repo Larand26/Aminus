@@ -7,9 +7,6 @@ import SideBar from "../components/misc/SideBar";
 import Content from "../components/misc/Content";
 import Toast from "../components/misc/Toast";
 
-// buttons
-import Galery from "../components/photos/Galery";
-
 // inputs
 import InputText from "../components/inputs/InputText";
 
@@ -18,6 +15,10 @@ import EditPhotoPopup from "../components/popups/PopupEditPhoto";
 
 // styles
 import "../styles/pages/photos.css";
+
+// pages
+import Galery from "../components/photos/Galery";
+import AddPhotos from "../components/photos/AddPhotos";
 
 // scripts
 import PhotoUtil from "../utils/Photo";
@@ -228,6 +229,7 @@ class Photos extends Component {
                 onDelete={(product) => console.log("Excluir", product)}
               />
             )}
+            {this.state.page == "addPhotos" && <AddPhotos />}
           </Content>
           <EditPhotoPopup
             isOpen={this.state.isEditPopupOpen}

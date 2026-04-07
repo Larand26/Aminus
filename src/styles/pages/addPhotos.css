@@ -1,0 +1,66 @@
+.add-photos {
+  display: flex;
+  box-sizing: border-box;
+  gap: 10px;
+}
+
+.add-photos-media-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 68vh;
+  padding-right: 6px;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #6b7280 #e5e7eb;
+}
+
+/* Chrome, Edge e Safari */
+.add-photos-media-section::-webkit-scrollbar {
+  width: 10px;
+}
+
+.add-photos-media-section::-webkit-scrollbar-track {
+  background: linear-gradient(180deg, #f3f4f6 0%, #e5e7eb 100%);
+  border-radius: 999px;
+}
+
+.add-photos-media-section::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #9ca3af 0%, #6b7280 100%);
+  border-radius: 999px;
+  border: 2px solid #e5e7eb;
+}
+
+.add-photos-media-section::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #6b7280 0%, #4b5563 100%);
+}
+
+.add-photos-media-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.add-photos .input-text-container > label,
+.add-photos .select-container > label {
+  color: #1c1c1c !important;
+}
+
+.add-photos-details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 68vh;
+}
+
+.add-photos-submit-button {
+  border: none;
+  padding: 10px;
+  background-color: var(--cor-amarelo);
+  color: var(--cor-branco);
+  border-radius: 20px;
+}
