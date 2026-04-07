@@ -240,10 +240,38 @@ class WhatsappController {
       const contactIds = contacts.map((c) => c.CONTATO_ID);
       const contactsResult = await WhatsappController.getContacts({
         id: contactIds,
-        sellerId: decodedToken.id,
+        sellerId: decodedToken.id != 1 ? decodedToken.id : null, // Se for admin, pode enviar para os contatos de todos os vendedores
       });
 
-      console.log(contactsResult);
+      if (
+        !contactsResult.success ||
+        !contactsResult.data ||
+        contactsResult.data.length === 0
+      ) {
+        return {
+          success: false,
+          error: contactsResult.error,
+          message: "Failed to fetch contacts.",
+        };
+      }
+
+      const [sessionStatusResult, sessionConnectionResult] = await Promise.all([
+        // Verifica Status da Sessão
+        WhatsappService.getSessionStatus(session),
+        // Verifica a Conexão com o Whatsapp
+        WhatsappService.checkWhatsappConnection(session),
+      ]);
+
+      if (
+        sessionStatusResult?.data?.status !== "CONNECTED" ||
+        sessionConnectionResult?.data?.status
+      ) {
+        return {
+          success: false,
+          error: "Session is not connected.",
+          message: "Please connect the session before sending messages.",
+        };
+      }
     } catch (error) {
       return {
         success: false,
