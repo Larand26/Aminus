@@ -26,7 +26,7 @@ class Whatsapp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: "configurations",
+      page: "messages",
 
       loadingGetContacts: false,
 
@@ -225,6 +225,7 @@ class Whatsapp extends Component {
     });
   };
 
+  // Encerra a sessão do Whatsapp
   handleCloseSession = async () => {
     const response = await WhatsappUtil.closeSession({
       token: this.state.token,
@@ -249,6 +250,16 @@ class Whatsapp extends Component {
       },
       session: { isOpen: false, isConnected: false },
       qrCode: null,
+    });
+  };
+
+  // Envia mensagens para os contatos selecionados
+  handleSendMessages = async () => {
+    const response = await WhatsappUtil.sendMessages({
+      token: this.state.token,
+      contacts: this.state.contactsSelected,
+      message: this.state.message,
+      photos: this.state.photos,
     });
   };
 
@@ -292,6 +303,7 @@ class Whatsapp extends Component {
                 contactsData={this.state.contactsData}
                 contactsSelected={this.state.contactsSelected}
                 onSelectionChange={(data) => this.handleSelectionChange(data)}
+                onSendMessages={this.handleSendMessages}
               />
             )}
             {this.state.page === "contacts" && (

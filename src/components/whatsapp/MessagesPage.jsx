@@ -29,6 +29,7 @@ class MessagePage extends Component {
       contactsData = [],
       contactsSelected = [],
       onSelectionChange = () => {},
+      onSendMessages = () => {},
     } = this.props;
     return (
       <div className="messagespage-container">
@@ -51,7 +52,11 @@ class MessagePage extends Component {
               selectedItems={contactsSelected}
               maxHeight={"250px"}
             />
-            <Button text="Enviar" className="btn-send" />
+            <Button
+              text="Enviar"
+              className="btn-send"
+              onClick={() => onSendMessages()}
+            />
           </div>
         </div>
       </div>

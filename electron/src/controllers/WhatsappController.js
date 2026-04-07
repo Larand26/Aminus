@@ -230,6 +230,22 @@ class WhatsappController {
       };
     }
   }
+
+  static async sendMessages(contacts, message, photos, decodedToken) {
+    try {
+      // Pega a sessão da Sessão
+      const session = await WhatsappService.getSession(decodedToken.id);
+
+      // Pega os contatos do banco de dados para garantir que pertencem ao vendedor
+      console.log(contacts);
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while sending messages.",
+      };
+    }
+  }
 }
 
 export default WhatsappController;

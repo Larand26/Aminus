@@ -76,6 +76,24 @@ class Whatsapp {
       };
     }
   }
+
+  static async sendMessages(args) {
+    const { token, contacts, message, photos } = args;
+    try {
+      return await window.api.sendMessages({
+        token,
+        contacts,
+        message,
+        photos,
+      });
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while sending messages.",
+      };
+    }
+  }
 }
 
 export default Whatsapp;
