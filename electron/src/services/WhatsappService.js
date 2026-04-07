@@ -5,7 +5,11 @@ import WppConnectConfig from "../config/WppConnectConfig.js";
 import axios from "axios";
 
 const filtersToQuery = {
-  id: { condition: `CONTATOS.CONTATO_ID = ?` },
+  id: {
+    condition: `CONTATOS.CONTATO_ID`,
+    operator: "IN",
+    transform: (value) => (Array.isArray(value) ? value : [value]),
+  },
   cellphoneNumber: { condition: `CONTATOS.CONTATO_NUMERO = ?` },
   name: {
     condition: `CONTATOS.CONTATO_NOME LIKE ?`,
@@ -15,10 +19,18 @@ const filtersToQuery = {
   sellerName: { condition: `USUARIOS.NOME LIKE ?` },
 };
 
+const hasFilterValue = (value) => {
+  if (Array.isArray(value)) {
+    return value.length > 0;
+  }
+
+  return value !== null && value !== undefined && value !== "";
+};
+
 class WhatsappService {
   /**
    * Pega os contatos do banco de dados, filtrando por número de celular, nome do contato, id do vendedor ou nome do vendedor.
-   * @param {Object<{id: string, cellphoneNumber: string, name: string, sellerId: string, sellerName: string}>} filters
+   * @param {Object<{id: Array<Number>, cellphoneNumber: string, name: string, sellerId: string, sellerName: string}>} filters
    * @returns
    */
   static async getContacts(filters) {
@@ -28,14 +40,20 @@ class WhatsappService {
       const conditions = [];
       const queryConditions = Object.keys(filters);
       for (const key of queryConditions) {
-        if (filters[key]) {
+        if (hasFilterValue(filters[key])) {
           const filterConfig = filtersToQuery[key];
+          const filterValue = filterConfig.transform
+            ? filterConfig.transform(filters[key])
+            : filters[key];
+          if (filterConfig.operator === "IN") {
+            conditions.push(
+              `${filterConfig.condition} IN (${filterValue.map(() => "?").join(", ")})`,
+            );
+            params.push(...filterValue);
+            continue;
+          }
           conditions.push(filterConfig.condition);
-          params.push(
-            filterConfig.transform
-              ? filterConfig.transform(filters[key])
-              : filters[key],
-          );
+          params.push(filterValue);
         }
       }
 

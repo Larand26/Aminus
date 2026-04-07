@@ -237,7 +237,13 @@ class WhatsappController {
       const session = await WhatsappService.getSession(decodedToken.id);
 
       // Pega os contatos do banco de dados para garantir que pertencem ao vendedor
-      console.log(contacts);
+      const contactIds = contacts.map((c) => c.CONTATO_ID);
+      const contactsResult = await WhatsappController.getContacts({
+        id: contactIds,
+        sellerId: decodedToken.id,
+      });
+
+      console.log(contactsResult);
     } catch (error) {
       return {
         success: false,
