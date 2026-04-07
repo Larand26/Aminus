@@ -1,5 +1,6 @@
 import ButtonContent from "../buttons/ButtonContent.jsx";
 import { Component } from "react";
+import Timer from "./Timer.jsx";
 
 import "../../styles/components/misc/content.css";
 
@@ -12,7 +13,9 @@ class Content extends Component {
         {title || timer ? (
           <div className="title-timer-container">
             <div className="title">{title && <p>{title}</p>}</div>
-            {timer && <div className="timer">{timer}</div>}
+            <div className="timer-container">
+              {timer && <Timer timeRemaining={timer} />}
+            </div>
           </div>
         ) : null}
 

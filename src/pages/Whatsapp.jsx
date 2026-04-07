@@ -28,6 +28,8 @@ class Whatsapp extends Component {
     this.state = {
       page: "messages",
 
+      timer: 5 * 60, // 5 minutos em segundos
+
       loadingGetContacts: false,
 
       token: localStorage.getItem("token") || null,
@@ -73,6 +75,14 @@ class Whatsapp extends Component {
       },
     },
   ];
+
+  componentDidMount() {
+    this.startTimer(5 * 60);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerInterval);
+  }
 
   handleGetContacts = async () => {
     const filters = {
@@ -253,6 +263,21 @@ class Whatsapp extends Component {
     });
   };
 
+  // Reduz o timer em 1 segundo a cada segundo
+  startTimer = (duration) => {
+    clearInterval(this.timerInterval);
+    this.setState({ timer: duration });
+    this.timerInterval = setInterval(() => {
+      this.setState((prevState) => {
+        if (prevState.timer > 0) {
+          return { timer: prevState.timer - 1 };
+        }
+        clearInterval(this.timerInterval);
+        return { timer: 0 };
+      });
+    }, 1000);
+  };
+
   // Envia mensagens para os contatos selecionados
   handleSendMessages = async () => {
     const response = await WhatsappUtil.sendMessages({
@@ -295,7 +320,11 @@ class Whatsapp extends Component {
               onChange={(value) => this.setState({ sellerId: value })}
             />
           </SideBar>
-          <Content title="Whatsapp" pages={this.pageOptions}>
+          <Content
+            title="Whatsapp"
+            pages={this.pageOptions}
+            timer={this.state.timer}
+          >
             {this.state.page === "messages" && (
               <MessagesPage
                 photos={this.state.photos}
