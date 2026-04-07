@@ -430,6 +430,26 @@ class WhatsappService {
       };
     }
   }
+
+  static async checkLastMessageTime(session) {
+    try {
+      const today = await Utils.getCurrentDateFromServer();
+      const lastMessageTime = session.ULTIMA_MENSAGEM;
+
+      // se a diferença for menor que 5 minutos, retornar false para evitar spam
+      if (lastMessageTime) {
+        const diffInMinutes = Utils.getDifferenceInMinutes(
+          today,
+          new Date(lastMessageTime),
+        );
+        return diffInMinutes >= 5;
+      }
+    } catch (error) {
+      console.log(error);
+
+      return false;
+    }
+  }
 }
 
 export default WhatsappService;

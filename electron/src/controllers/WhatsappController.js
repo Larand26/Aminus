@@ -274,6 +274,19 @@ class WhatsappController {
         };
       }
 
+      // Verifica se a ultima mensagem foi enviada há mais de 5 minutos para evitar spam
+      const checkLastMessageTime =
+        await WhatsappService.checkLastMessageTime(session);
+
+      if (!checkLastMessageTime) {
+        return {
+          success: false,
+          error:
+            "Too many messages sent. Please wait a few minutes before sending more.",
+          message: "Please wait a few minutes before sending more messages.",
+        };
+      }
+
       let sendPhotosResult = { success: true };
       let sendMessageResult = { success: true };
 
