@@ -25,23 +25,45 @@ class AddPhotos extends Component {
   render() {
     const {
       newPhotos,
+      onChangePhoto,
+      onChangeColor,
+      onChangeColorCode,
       onChangeManufacturerCode,
       onChangePackaging,
       onChangeDescription,
     } = this.props;
     // newPhotos = { newManufacturerCode: "", newPackaging: "", newDescription: "", newPhotos: [{ photo: [Base64], color: "", colorCode: "" }] }
+    const photoItems =
+      newPhotos?.newPhotos?.length > 0
+        ? newPhotos.newPhotos
+        : [{ photo: [], color: "", colorCode: "" }];
+
     return (
       <>
         <div className="add-photos">
           {/* Aqui vai ficar a parte das fotos e cores */}
           <div className="add-photos-media-section">
-            <div className="add-photos-media-item">
-              <InputPhoto label="Foto 1" />
-              <div className="add-photos-color-fields">
-                <InputText label="Cor" />
-                <InputText label="Código de cor" />
+            {photoItems.map((photoItem, index) => (
+              <div className="add-photos-media-item" key={index}>
+                <InputPhoto
+                  label={`Foto ${index + 1}`}
+                  photos={photoItem?.photo || []}
+                  onChange={(value) => onChangePhoto(index, value)}
+                />
+                <div className="add-photos-color-fields">
+                  <InputText
+                    label="Cor"
+                    value={photoItem?.color || ""}
+                    onChange={(value) => onChangeColor(index, value)}
+                  />
+                  <InputText
+                    label="Código de cor"
+                    value={photoItem?.colorCode || ""}
+                    onChange={(value) => onChangeColorCode(index, value)}
+                  />
+                </div>
               </div>
-            </div>
+            ))}
           </div>
           {/* Aqui vai ficar a parte de referencia, descrição e embalagem */}
           <div className="add-photos-details-section">

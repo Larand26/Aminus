@@ -45,7 +45,9 @@ class Photos extends Component {
 
       toastInfo: null,
 
-      newPhotos: {},
+      newPhotos: {
+        newPhotos: [{ photo: [], color: "", colorCode: "" }],
+      },
     };
   }
 
@@ -184,6 +186,43 @@ class Photos extends Component {
     console.log(response || "Sem resposta");
   };
 
+  createEmptyPhotoItem = () => ({ photo: [], color: "", colorCode: "" });
+
+  isPhotoItemComplete = (photoItem) => {
+    return (
+      Array.isArray(photoItem?.photo) &&
+      photoItem.photo.length > 0 &&
+      photoItem?.color?.trim() &&
+      photoItem?.colorCode?.trim()
+    );
+  };
+
+  onChangeNewPhotoItem = (index, field, value) => {
+    this.setState((prevState) => {
+      const currentPhotos = prevState.newPhotos?.newPhotos?.length
+        ? prevState.newPhotos.newPhotos
+        : [this.createEmptyPhotoItem()];
+
+      const updatedPhotos = [...currentPhotos];
+      updatedPhotos[index] = {
+        ...updatedPhotos[index],
+        [field]: value,
+      };
+
+      const isLastItem = index === updatedPhotos.length - 1;
+      if (isLastItem && this.isPhotoItemComplete(updatedPhotos[index])) {
+        updatedPhotos.push(this.createEmptyPhotoItem());
+      }
+
+      return {
+        newPhotos: {
+          ...prevState.newPhotos,
+          newPhotos: updatedPhotos,
+        },
+      };
+    });
+  };
+
   render() {
     return (
       <>
@@ -234,6 +273,15 @@ class Photos extends Component {
             {this.state.page == "addPhotos" && (
               <AddPhotos
                 newPhotos={this.state.newPhotos}
+                onChangePhoto={(index, value) =>
+                  this.onChangeNewPhotoItem(index, "photo", value)
+                }
+                onChangeColor={(index, value) =>
+                  this.onChangeNewPhotoItem(index, "color", value)
+                }
+                onChangeColorCode={(index, value) =>
+                  this.onChangeNewPhotoItem(index, "colorCode", value)
+                }
                 onChangeManufacturerCode={(value) =>
                   this.setState({
                     newPhotos: {
