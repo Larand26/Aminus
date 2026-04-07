@@ -297,6 +297,7 @@ class WhatsappService {
   static async sendPhotos({ contacts, photos, session }) {
     try {
       const responseData = [];
+      let errors = 0;
       for (const contact of contacts) {
         for (const photo of photos) {
           const body = {
@@ -327,11 +328,26 @@ class WhatsappService {
               setTimeout(resolve, Utils.setRamdomTime(800, 2500)),
             );
           } catch (error) {
+            // Se ocorrerem 3 erros consecutivos, verificar se a sessão ainda está ativa antes de continuar a enviar mensagens para os próximos contatos
+            if (errors >= 3) {
+              const connectionStatus =
+                await WhatsappService.checkWhatsappConnection(session);
+              if (!connectionStatus?.data?.status) {
+                return {
+                  success: false,
+                  error: "WhatsApp session is not connected.",
+                  message:
+                    "The WhatsApp session appears to be disconnected. Please check the connection and try again.",
+                };
+              }
+              errors = 0; // Resetar contador de erros após verificar a conexão
+            }
             responseData.push({
               contact: contact.CONTATO_NUMERO,
               success: false,
               error: error.message,
             });
+            errors++;
             // Continua para o próximo contato mesmo se houver erro
             continue;
           }
@@ -353,6 +369,7 @@ class WhatsappService {
   static async sendMessage({ contacts, message, session }) {
     try {
       const responseData = [];
+      let errors = 0;
       for (const contact of contacts) {
         const body = {
           phone: contact.CONTATO_NUMERO,
@@ -378,11 +395,27 @@ class WhatsappService {
             setTimeout(resolve, Utils.setRamdomTime(800, 2500)),
           );
         } catch (error) {
+          // Se ocorrerem 3 erros consecutivos, verificar se a sessão ainda está ativa antes de continuar a enviar mensagens para os próximos contatos
+          if (errors >= 3) {
+            const connectionStatus =
+              await WhatsappService.checkWhatsappConnection(session);
+            if (!connectionStatus?.data?.status) {
+              return {
+                success: false,
+                error: "WhatsApp session is not connected.",
+                message:
+                  "The WhatsApp session appears to be disconnected. Please check the connection and try again.",
+              };
+            }
+            errors = 0; // Resetar contador de erros após verificar a conexão
+          }
           responseData.push({
             contact: contact.CONTATO_NUMERO,
             success: false,
             error: error.message,
           });
+          errors++;
+          continue;
         }
       }
       return {

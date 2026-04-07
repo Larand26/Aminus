@@ -273,9 +273,12 @@ class WhatsappController {
         };
       }
 
+      let sendPhotosResult = { success: true };
+      let sendMessageResult = { success: true };
+
       // Envia as fotos
       if (photos && photos.length > 0) {
-        const sendPhotosResult = await WhatsappService.sendPhotos({
+        sendPhotosResult = await WhatsappService.sendPhotos({
           session,
           contacts: contactsResult.data,
           photos,
@@ -284,12 +287,28 @@ class WhatsappController {
       }
 
       if (message) {
-        const sendMessageResult = await WhatsappService.sendMessage({
+        sendMessageResult = await WhatsappService.sendMessage({
           session,
           contacts: contactsResult.data,
           message,
         });
         console.log(sendMessageResult);
+      }
+
+      if (!sendPhotosResult.success) {
+        return {
+          success: false,
+          error: sendPhotosResult.error,
+          message: "Failed to send photos.",
+        };
+      }
+
+      if (!sendMessageResult.success) {
+        return {
+          success: false,
+          error: sendMessageResult.error,
+          message: "Failed to send message.",
+        };
       }
     } catch (error) {
       return {
