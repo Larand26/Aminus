@@ -17,7 +17,7 @@ class InputText extends Component {
         {label && <label>{label}</label>}
         <input
           type="text"
-          value={value}
+          value={value ?? ""}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           onKeyPress={onKeyPress}

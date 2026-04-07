@@ -63,6 +63,7 @@ class PopupEditPhoto extends Component {
 
   render() {
     const { isOpen } = this.props;
+    const videoSrc = this.state.videoUrl?.trim() || undefined;
     return (
       <PopUp
         isOpen={isOpen}
@@ -121,7 +122,7 @@ class PopupEditPhoto extends Component {
                 />
               </div>
               <div className="video-container">
-                <video src={this.state.videoUrl} controls></video>
+                <video src={videoSrc} controls></video>
               </div>
             </div>
           </div>

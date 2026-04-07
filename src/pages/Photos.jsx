@@ -32,8 +32,8 @@ class Photos extends Component {
       token: localStorage.getItem("token") || null,
 
       productsData: [],
-      manufacturerCode: null,
-      colorCode: null,
+      manufacturerCode: "",
+      colorCode: "",
 
       filterText: "",
       filteredProducts: [],
@@ -221,6 +221,11 @@ class Photos extends Component {
         },
       };
     });
+  };
+
+  handleAddNewPhotos = async () => {
+    const { newPhotos } = this.state;
+    console.log(newPhotos);
   };
 
   render() {
