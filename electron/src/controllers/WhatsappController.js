@@ -255,6 +255,7 @@ class WhatsappController {
         };
       }
 
+      // verifica conexão da sessão antes de enviar mensagens
       const [sessionStatusResult, sessionConnectionResult] = await Promise.all([
         // Verifica Status da Sessão
         WhatsappService.getSessionStatus(session),
@@ -283,31 +284,23 @@ class WhatsappController {
           contacts: contactsResult.data,
           photos,
         });
-        console.log(sendPhotosResult);
       }
 
+      // Envia a mensagem
       if (message) {
         sendMessageResult = await WhatsappService.sendMessage({
           session,
           contacts: contactsResult.data,
           message,
         });
-        console.log(sendMessageResult);
       }
 
-      if (!sendPhotosResult.success) {
+      // Verifica se houve erro ao enviar fotos ou mensagem
+      if (!sendPhotosResult.success || !sendMessageResult.success) {
         return {
           success: false,
-          error: sendPhotosResult.error,
-          message: "Failed to send photos.",
-        };
-      }
-
-      if (!sendMessageResult.success) {
-        return {
-          success: false,
-          error: sendMessageResult.error,
-          message: "Failed to send message.",
+          error: sendPhotosResult.error || sendMessageResult.error,
+          message: "Failed to send messages.",
         };
       }
     } catch (error) {
