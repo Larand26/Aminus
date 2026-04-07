@@ -5,25 +5,19 @@ import { Component } from "react";
 import NavBar from "../components/misc/NavBar";
 import SideBar from "../components/misc/SideBar";
 import Content from "../components/misc/Content";
-import Card from "../components/misc/Card";
 import Toast from "../components/misc/Toast";
 
 // buttons
-import ActionButtons from "../components/buttons/ActionButtons";
-import Button from "../components/buttons/Button";
+import Galery from "../components/photos/Galery";
 
 // inputs
 import InputText from "../components/inputs/InputText";
-import InputCheckBox from "../components/inputs/InputCheckBox";
 
 // popups
 import EditPhotoPopup from "../components/popups/PopupEditPhoto";
 
 // styles
 import "../styles/pages/photos.css";
-
-// sem imagem
-import unknown from "../assets/img/unknown.jpg";
 
 // scripts
 import PhotoUtil from "../utils/Photo";
@@ -32,6 +26,8 @@ class Photos extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      page: "addPhotos",
+
       token: localStorage.getItem("token") || null,
 
       productsData: [],
@@ -49,6 +45,23 @@ class Photos extends Component {
       toastInfo: null,
     };
   }
+
+  pageOptions = [
+    {
+      name: "Mensagens",
+      icon: "fa fa-camera",
+      onClick: () => {
+        this.setState({ page: "photos" });
+      },
+    },
+    {
+      name: "Contatos",
+      icon: "fa fa-plus",
+      onClick: () => {
+        this.setState({ page: "addPhotos" });
+      },
+    },
+  ];
 
   getPhotos = async () => {
     const filters = {
@@ -194,53 +207,27 @@ class Photos extends Component {
               onKeyPress={this.onKeyPressGetPhotos}
             />
           </SideBar>
-          <Content title="Fotos">
-            <div className="filter-actions">
-              <InputText
-                className="filter-input"
-                value={this.state.filterText}
-                onChange={(value) => this.onFilterChange(value)}
+          <Content title="Fotos" pages={this.pageOptions}>
+            {this.state.page == "photos" && (
+              <Galery
+                filterText={this.state.filterText}
+                filteredProducts={this.state.filteredProducts}
+                productsSelectedForDownload={
+                  this.state.productsSelectedForDownload
+                }
+                onFilterChange={this.onFilterChange}
+                onChangeSelectAllForDownload={this.onChangeSelectAllForDownload}
+                onChangeSelectedForDownload={this.onChangeSelectedForDownload}
+                onDownload={this.handleDownload}
+                onEdit={(product) => {
+                  this.setState({
+                    isEditPopupOpen: true,
+                    selectedEditProduct: product,
+                  });
+                }}
+                onDelete={(product) => console.log("Excluir", product)}
               />
-              <InputCheckBox
-                checked={this.state.filteredProducts.every((product) =>
-                  this.state.productsSelectedForDownload.includes(product),
-                )}
-                onChange={this.onChangeSelectAllForDownload}
-              />
-              <Button
-                className="download-btn"
-                text="Baixar"
-                icon="fa fa-download"
-                onClick={() => this.handleDownload(null)}
-              />
-            </div>
-            <div className="fotos-container">
-              {this.state.filteredProducts.map((product) => (
-                <Card
-                  photo={product.fotos[0] || unknown}
-                  onClick={() => this.onChangeSelectedForDownload(product)}
-                  className={
-                    this.state.productsSelectedForDownload.includes(product)
-                      ? "hover-card card-selected"
-                      : "hover-card"
-                  }
-                >
-                  <p className="ref">{product.referencia}</p>
-                  <p className="color-name">{product.nome_cor}</p>
-                  <p className="color-code">{product.codigo_cor}</p>
-                  <ActionButtons
-                    onEdit={() => {
-                      this.setState({
-                        isEditPopupOpen: true,
-                        selectedEditProduct: product,
-                      });
-                    }}
-                    onDelete={() => console.log("Excluir", product)}
-                    onDownload={() => this.handleDownload(product)}
-                  />
-                </Card>
-              ))}
-            </div>
+            )}
           </Content>
           <EditPhotoPopup
             isOpen={this.state.isEditPopupOpen}
