@@ -1,6 +1,7 @@
 import MySQLDB from "../database/MySQLDB.js";
 
 import WppConnectConfig from "../config/WppConnectConfig.js";
+import Utils from "../utils/Utils.js";
 
 import axios from "axios";
 
@@ -322,7 +323,9 @@ class WhatsappService {
               contact: contact.CONTATO_NUMERO,
               success: true,
             });
-            await new Promise((resolve) => setTimeout(resolve, 500));
+            await new Promise((resolve) =>
+              setTimeout(resolve, Utils.setRamdomTime(800, 2500)),
+            );
           } catch (error) {
             responseData.push({
               contact: contact.CONTATO_NUMERO,
@@ -371,7 +374,9 @@ class WhatsappService {
             contact: contact.CONTATO_NUMERO,
             success: true,
           });
-          await new Promise((resolve) => setTimeout(resolve, 500));
+          await new Promise((resolve) =>
+            setTimeout(resolve, Utils.setRamdomTime(800, 2500)),
+          );
         } catch (error) {
           responseData.push({
             contact: contact.CONTATO_NUMERO,
