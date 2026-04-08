@@ -132,5 +132,27 @@ class Photo {
       };
     }
   }
+
+  static async createPhoto(args) {
+    const { token, newPhotos } = args;
+    try {
+      const response = await window.api.createPhoto({
+        token,
+        newPhotos,
+      });
+      if (response.success) {
+        return {
+          success: true,
+          message: "Photos created successfully.",
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while creating the photos.",
+      };
+    }
+  }
 }
 export default Photo;

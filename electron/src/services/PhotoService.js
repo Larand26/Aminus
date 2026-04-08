@@ -98,7 +98,10 @@ class PhotoService {
         // Verificar se já existe um produto com a mesma referência, código de cor e/ou nome de cor
         const existingProduct = await MongoDB.findOne(ProductModel, {
           referencia: newManufacturerCode,
-          $or: [{ codigo_cor: photoData.color }, { nome_cor: photoData.color }],
+          $or: [
+            { codigo_cor: photoData.colorCode.toUpperCase() },
+            { nome_cor: photoData.color.toUpperCase() },
+          ],
         });
 
         if (existingProduct) {
@@ -110,14 +113,19 @@ class PhotoService {
           continue; // Pular para a próxima foto
         }
 
+        // Verifica se o tem outros produtos com a mesma referência para reutilizar essas informações
+        const similarProduct = await MongoDB.findOne(ProductModel, {
+          referencia: newManufacturerCode,
+        });
+
         // Criar o novo produto com as fotos
         const newProduct = {
           referencia: newManufacturerCode,
-          embalagem: newPackaging,
-          preco_venda: newResalePrice,
-          descricao: newDescription,
-          codigo_cor: photoData.colorCode,
-          nome_cor: photoData.color,
+          embalamento: similarProduct.embalamento || newPackaging,
+          preco_revenda: similarProduct.preco_revenda || newResalePrice,
+          descricao_produto: similarProduct.descricao_produto || newDescription,
+          codigo_cor: photoData.colorCode.toUpperCase(),
+          nome_cor: photoData.color.toUpperCase(),
           fotos: photoData.photo.map((photo) =>
             PhotoService.normalizePhotoBuffer(photo),
           ),
@@ -134,6 +142,8 @@ class PhotoService {
         data: responses,
       };
     } catch (error) {
+      console.log(error);
+
       return {
         success: false,
         error: error.message,

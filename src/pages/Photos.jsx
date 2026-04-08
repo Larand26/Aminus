@@ -68,9 +68,9 @@ class Photos extends Component {
     },
   ];
 
-  getPhotos = async () => {
+  getPhotos = async (manufacturerCode) => {
     const filters = {
-      manufacturer: this.state.manufacturerCode,
+      manufacturer: manufacturerCode || this.state.manufacturerCode,
       color: this.state.colorCode,
     };
 
@@ -225,15 +225,55 @@ class Photos extends Component {
 
   handleAddNewPhotos = async () => {
     const { newPhotos } = this.state;
-    console.log(newPhotos);
+    const photosToAdd = newPhotos.newPhotos.filter((photoItem) =>
+      this.isPhotoItemComplete(photoItem),
+    );
+    newPhotos.newPhotos = photosToAdd;
+    const response = await PhotoUtil.createPhoto({
+      token: this.state.token,
+      newPhotos,
+    });
+
+    if (response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Fotos criadas com sucesso.",
+          type: "sucesso",
+        },
+        newPhotos: {
+          newPhotos: [this.createEmptyPhotoItem()],
+        },
+      });
+      this.getPhotos(newPhotos.newManufacturerCode);
+    } else {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao criar as fotos. Tente novamente.",
+          type: "erro",
+        },
+      });
+    }
   };
 
-  handleDeletePhoto = async (photoId) => {
+  handleDeletePhoto = async (product) => {
     const response = await PhotoUtil.deletePhoto({
       token: this.state.token,
-      photoId,
+      photoId: product._id,
     });
-    console.log(response);
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao deletar a foto. Tente novamente.",
+          type: "erro",
+        },
+      });
+      this.getPhotos(product.referencia);
+      return;
+    }
   };
 
   render() {
@@ -280,7 +320,7 @@ class Photos extends Component {
                     selectedEditProduct: product,
                   });
                 }}
-                onDelete={(product) => this.handleDeletePhoto(product._id)}
+                onDelete={(product) => this.handleDeletePhoto(product)}
               />
             )}
             {this.state.page == "addPhotos" && (
