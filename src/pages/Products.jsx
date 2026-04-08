@@ -11,7 +11,7 @@ import Loading from "../components/misc/Loading.jsx";
 
 import ProductUtil from "../utils/Product.js";
 
-import opcoesProdutos from "../assets/json/table_options/productOptions";
+import opcoesProdutos from "../assets/json/table_options/productOptions.json";
 
 class Products extends Component {
   constructor(props) {
@@ -26,7 +26,6 @@ class Products extends Component {
       toastInfo: null,
       isLoading: false,
       produtos: [],
-      selectedItems: [],
     };
   }
   handleSearch = async () => {
@@ -68,18 +67,6 @@ class Products extends Component {
   handleKeyDown = (event) => {
     if (event.key === "Enter") {
       this.handleSearch();
-    }
-  };
-
-  handleSelectionChange = (items) => {
-    if (Array.isArray(items)) {
-      this.setState({ selectedItems: items });
-    } else {
-      this.setState((prevState) => ({
-        selectedItems: prevState.selectedItems.includes(items)
-          ? prevState.selectedItems.filter((item) => item !== items)
-          : [...prevState.selectedItems, items],
-      }));
     }
   };
 
@@ -143,11 +130,9 @@ class Products extends Component {
           </SideBar>
           <Content titulo="Produtos">
             <Table
-              options={opcoes}
+              options={opcoesProdutos}
               datas={produtos}
               loading={isLoading}
-              selectedItems={selectedItems}
-              onSelectionChange={this.handleSelectionChange}
             ></Table>
           </Content>
         </div>
