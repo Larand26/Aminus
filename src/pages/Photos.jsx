@@ -69,6 +69,8 @@ class Photos extends Component {
   ];
 
   getPhotos = async (manufacturerCode) => {
+    console.log(manufacturerCode);
+
     const filters = {
       manufacturer: manufacturerCode || this.state.manufacturerCode,
       color: this.state.colorCode,
@@ -288,7 +290,7 @@ class Photos extends Component {
         )}
         <NavBar />
         <div className="main-container">
-          <SideBar onSearch={this.getPhotos}>
+          <SideBar onSearch={() => this.getPhotos()}>
             <InputText
               label="Código de fabricante"
               value={this.state.manufacturerCode}
