@@ -17,9 +17,14 @@ class PhotoController {
     }
   }
 
-  static async createPhoto(args) {
+  /**
+   * Cria novas fotos para os produtos. O argumento `args` deve conter um array `newPhotos` com as informações das fotos a serem criadas.
+   * @param {Object<{newManufacturerCode: string, newPackaging: string, newDescription: string, newPhotos: { photo: Array<Buffer>, color: string, colorCode: string }  }>} newPhotos
+   * @returns
+   */
+  static async createPhoto(newPhotos) {
     try {
-      return await PhotoService.createPhoto(args);
+      return await PhotoService.createPhoto(newPhotos);
     } catch (error) {
       return {
         success: false,

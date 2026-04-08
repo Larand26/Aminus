@@ -43,41 +43,63 @@ class PhotoService {
     }
   }
 
-  static async createPhoto(args) {
+  /**
+   * Cria novas fotos para os produtos. O argumento `args` deve conter um array `newPhotos` com as informações das fotos a serem criadas.
+   * @param {Object<{newManufacturerCode: string, newPackaging: string, newDescription: string, newPhotos: { photo: Array<Base64URLString>, color: string, colorCode: string }  }>} newPhotos
+   * @returns
+   */
+  static async createPhoto(newPhotos) {
+    const {
+      newManufacturerCode,
+      newPackaging,
+      newResalePrice,
+      newDescription,
+      newPhotos: photosToCreate,
+    } = newPhotos;
+
     try {
-      const existingPhoto = await MongoDB.find(ProductModel, {
-        referencia: args.referencia,
-      });
-      if (
-        existingPhoto.length > 0 &&
-        existingPhoto.some(
-          (photo) =>
-            photo.codigo_cor === args.codColor ||
-            photo.nome_cor === args.nameColor,
-        )
-      ) {
-        return {
-          success: false,
-          error: "Photo already exists.",
-          message: "A photo with the same reference and color already exists.",
+      const responses = [];
+      for (const photoData of photosToCreate) {
+        // Verificar se já existe um produto com a mesma referência, código de cor e/ou nome de cor
+        const existingProduct = await MongoDB.findOne(ProductModel, {
+          referencia: newManufacturerCode,
+          $or: [{ codigo_cor: photoData.color }, { nome_cor: photoData.color }],
+        });
+
+        if (existingProduct) {
+          responses.push({
+            success: false,
+            error: "Product with the same reference and color already exists.",
+            data: existingProduct,
+          });
+          continue; // Pular para a próxima foto
+        }
+
+        // Criar o novo produto com as fotos
+        const newProduct = {
+          referencia: newManufacturerCode,
+          embalagem: newPackaging,
+          preco_venda: newResalePrice,
+          descricao: newDescription,
+          codigo_cor: photoData.colorCode,
+          nome_cor: photoData.color,
+          fotos: photoData.photo.map((base64) => ({
+            buffer: Buffer.from(
+              base64.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
+              "base64",
+            ),
+          })),
         };
+        const createdProduct = await MongoDB.create(ProductModel, newProduct);
+        responses.push({
+          success: true,
+          data: createdProduct,
+        });
       }
 
-      const newPhoto = {
-        referencia: args.referencia,
-        codigo_cor: args.codColor,
-        nome_cor: args.nameColor,
-        descricao_produto: existingPhoto[0].descricao_produto,
-        preco_revenda: existingPhoto[0].preco_revenda,
-        embalamento: existingPhoto[0].embalamento,
-        fotos: args.photos,
-        video_url: args.url,
-      };
-
-      const createdPhoto = await MongoDB.create(ProductModel, newPhoto);
       return {
         success: true,
-        data: createdPhoto,
+        data: responses,
       };
     } catch (error) {
       return {

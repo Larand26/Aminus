@@ -87,16 +87,16 @@ ipcMain.handle("get-photos", async (event, args) => {
 
 ipcMain.handle("update-photo", async (event, args) => {
   const decodedToken = await MiddlewaresToken.decodeToken(args.token);
-  if (!decodedToken || decodedToken.role !== 1)
+  if (!decodedToken || ![1, 3].includes(decodedToken.role))
     return { success: false, error: "Invalid token" };
   return await PhotoController.updatePhoto(args);
 });
 
 ipcMain.handle("create-photo", async (event, args) => {
   const decodedToken = await MiddlewaresToken.decodeToken(args.token);
-  if (!decodedToken || decodedToken.role !== 1)
+  if (!decodedToken || ![1, 3].includes(decodedToken.role))
     return { success: false, error: "Invalid token" };
-  return await PhotoController.createPhoto(args);
+  return await PhotoController.createPhoto(args.newPhotos);
 });
 
 ipcMain.handle("calculate-freight", async (event, args) => {
