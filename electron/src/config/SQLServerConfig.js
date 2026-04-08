@@ -1,12 +1,6 @@
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
+import loadEnv from "./loadEnv.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// sobe de electron/src/config -> raiz do projeto
-dotenv.config({ path: path.resolve(__dirname, "../../../.env") });
+loadEnv();
 
 class SQLServerConfig {
   constructor() {
