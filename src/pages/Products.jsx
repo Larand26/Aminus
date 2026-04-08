@@ -17,6 +17,7 @@ class Products extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      token: localStorage.getItem("token"),
       codFabricante: null,
       codInterno: null,
       codBarras: null,
@@ -31,7 +32,7 @@ class Products extends Component {
   handleSearch = async () => {
     this.setState({ produtos: [], isLoading: true });
     const response = await ProductUtil.getProducts({
-      token: "token",
+      token: this.state.token,
       filters: {
         manufacturerCode: this.state.codFabricante,
         productCode: this.state.codInterno,

@@ -84,7 +84,7 @@ class Photos extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao buscar as fotos. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
       return;

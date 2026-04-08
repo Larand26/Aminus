@@ -23,6 +23,8 @@ class Clients extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      token: localStorage.getItem("token"),
+
       clientsData: [],
       numClient: null,
       name: null,
@@ -33,8 +35,6 @@ class Clients extends Component {
       loading: false,
     };
   }
-
-  static token = localStorage.getItem("token");
 
   async getClients() {
     const filters = {
@@ -48,7 +48,7 @@ class Clients extends Component {
     this.setState({ loading: true });
 
     const response = await ClientUtil.getClients({
-      token: this.token,
+      token: this.state.token,
       filters,
     });
 
