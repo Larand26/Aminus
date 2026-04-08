@@ -30,6 +30,8 @@ class Reservation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      token: localStorage.getItem("token") || null,
+
       reservationsData: [],
       manufacturerCode: null,
       internalCode: null,
@@ -47,8 +49,6 @@ class Reservation extends Component {
     };
   }
 
-  static token = localStorage.getItem("token");
-
   async getProductReservations() {
     const filters = {
       productCode: this.state.productCode || null,
@@ -59,7 +59,7 @@ class Reservation extends Component {
     };
 
     const response = await ProductUtil.getProductReservations({
-      token: this.token,
+      token: this.state.token,
       filters,
     });
 
@@ -106,7 +106,7 @@ class Reservation extends Component {
     };
 
     const response = await ProductUtil.getDateReservation({
-      token: this.token,
+      token: this.state.token,
       filters,
     });
 

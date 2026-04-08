@@ -181,7 +181,7 @@ class Photos extends Component {
 
     if (this.state.productsSelectedForDownload.length > 0)
       response = await PhotoUtil.downloadPhoto({
-        token: this.token,
+        token: this.state.token,
         products: this.state.productsSelectedForDownload,
       });
 
