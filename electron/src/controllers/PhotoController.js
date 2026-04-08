@@ -55,6 +55,18 @@ class PhotoController {
       };
     }
   }
+
+  static async deletePhoto(photoId) {
+    try {
+      return await PhotoService.deletePhoto(photoId);
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while deleting the photo.",
+      };
+    }
+  }
 }
 
 export default PhotoController;

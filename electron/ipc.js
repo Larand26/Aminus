@@ -99,6 +99,13 @@ ipcMain.handle("create-photo", async (event, args) => {
   return await PhotoController.createPhoto(args.newPhotos);
 });
 
+ipcMain.handle("delete-photo", async (event, args) => {
+  const decodedToken = await MiddlewaresToken.decodeToken(args.token);
+  if (!decodedToken || ![1, 3].includes(decodedToken.role))
+    return { success: false, error: "Invalid token" };
+  return await PhotoController.deletePhoto(args.photoId);
+});
+
 ipcMain.handle("calculate-freight", async (event, args) => {
   const decodedToken = await MiddlewaresToken.decodeToken(args.token);
   if (!decodedToken) return { success: false, error: "Invalid token" };

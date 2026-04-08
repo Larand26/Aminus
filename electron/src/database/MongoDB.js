@@ -4,7 +4,7 @@ import MongoConfig from "../config/MongoConfig.js";
 class MongoDB {
   static pool = mongoose.connect(MongoConfig.uri, MongoConfig.options);
 
-  formatId(id) {
+  static formatId(id) {
     if (id && typeof id === "object" && id.buffer) {
       return new mongoose.Types.ObjectId(Buffer.from(id.buffer));
     }
@@ -15,9 +15,13 @@ class MongoDB {
     return model.find(filters).lean().exec();
   }
 
+  static findOne(model, filters = {}) {
+    return model.findOne(filters).lean().exec();
+  }
+
   static update(model, id, newData) {
     return model
-      .findByIdAndUpdate(this.formatId(id), newData, { new: true })
+      .findByIdAndUpdate(MongoDB.formatId(id), newData, { new: true })
       .lean()
       .exec();
   }
@@ -25,6 +29,10 @@ class MongoDB {
   static create(model, data) {
     const instance = new model(data);
     return instance.save().then((doc) => doc.toObject());
+  }
+
+  static delete(model, id) {
+    return model.findByIdAndDelete(MongoDB.formatId(id)).lean().exec();
   }
 }
 

@@ -228,6 +228,14 @@ class Photos extends Component {
     console.log(newPhotos);
   };
 
+  handleDeletePhoto = async (photoId) => {
+    const response = await PhotoUtil.deletePhoto({
+      token: this.state.token,
+      photoId,
+    });
+    console.log(response);
+  };
+
   render() {
     return (
       <>
@@ -272,7 +280,7 @@ class Photos extends Component {
                     selectedEditProduct: product,
                   });
                 }}
-                onDelete={(product) => console.log("Excluir", product)}
+                onDelete={(product) => this.handleDeletePhoto(product._id)}
               />
             )}
             {this.state.page == "addPhotos" && (

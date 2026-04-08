@@ -1,10 +1,29 @@
 import MongoDB from "../database/MongoDB.js";
 import ProductModel from "../models/ProductModel.js";
+import Utils from "../utils/Utils.js";
 import { dialog, app } from "electron";
 import fs from "fs";
 import path from "path";
 
 class PhotoService {
+  static normalizePhotoBuffer(photo) {
+    if (Buffer.isBuffer(photo)) {
+      return photo;
+    }
+
+    if (photo && typeof photo === "object" && photo.buffer) {
+      return Buffer.isBuffer(photo.buffer)
+        ? photo.buffer
+        : Buffer.from(photo.buffer);
+    }
+
+    if (typeof photo === "string") {
+      return Utils.base64ToBuffer(photo);
+    }
+
+    return photo;
+  }
+
   static async getPhotosProduct(filters = {}) {
     try {
       const mongoFilters = {};
@@ -26,15 +45,31 @@ class PhotoService {
     }
   }
 
+  /**
+   *
+   * @param {Object<{id:Buffer, newData:Object<{fotos: Array<Base64URLString>}>}>} args
+   * @returns
+   */
   static async updatePhoto(args) {
     const { id, newData } = args;
+    const { codigo_cor, fotos, nome_cor } = newData;
     try {
+      if (fotos) {
+        newData.fotos = fotos.map((photo) =>
+          PhotoService.normalizePhotoBuffer(photo),
+        );
+      }
+      if (codigo_cor) newData.codigo_cor = codigo_cor.toUpperCase();
+      if (nome_cor) newData.nome_cor = nome_cor.toUpperCase();
+
       const updatedPhoto = await MongoDB.update(ProductModel, id, newData);
       return {
         success: true,
         data: updatedPhoto,
       };
     } catch (error) {
+      console.log(error);
+
       return {
         success: false,
         error: error.message,
@@ -83,12 +118,9 @@ class PhotoService {
           descricao: newDescription,
           codigo_cor: photoData.colorCode,
           nome_cor: photoData.color,
-          fotos: photoData.photo.map((base64) => ({
-            buffer: Buffer.from(
-              base64.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
-              "base64",
-            ),
-          })),
+          fotos: photoData.photo.map((photo) =>
+            PhotoService.normalizePhotoBuffer(photo),
+          ),
         };
         const createdProduct = await MongoDB.create(ProductModel, newProduct);
         responses.push({
@@ -227,6 +259,26 @@ class PhotoService {
         success: false,
         error: error.message,
         message: "Ocorreu um erro ao baixar as fotos.",
+      };
+    }
+  }
+
+  static async deletePhoto(photoId) {
+    try {
+      console.log(photoId);
+
+      await MongoDB.delete(ProductModel, photoId);
+      return {
+        success: true,
+        message: "Photo deleted successfully.",
+      };
+    } catch (error) {
+      console.log(error);
+
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while deleting the photo.",
       };
     }
   }

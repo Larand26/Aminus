@@ -65,7 +65,7 @@ class Photo {
         referencia: newProduct.manufacturer,
         embalamento: newProduct.packaging,
         video_url: newProduct.videoUrl,
-        fotos: newProduct.photos.map((photo) => Utils.base64ToBuffer(photo)),
+        fotos: newProduct.photos.map((photo) => photo),
       };
 
       const response = await window.api.updatePhoto({
@@ -107,6 +107,28 @@ class Photo {
         success: false,
         error: error.message,
         message: "An error occurred while downloading photos.",
+      };
+    }
+  }
+
+  static async deletePhoto(args) {
+    const { token, photoId } = args;
+    try {
+      const response = await window.api.deletePhoto({
+        token,
+        photoId,
+      });
+      if (response.success) {
+        return {
+          success: true,
+          message: "Photo deleted successfully.",
+        };
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while deleting the photo.",
       };
     }
   }

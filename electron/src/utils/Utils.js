@@ -20,6 +20,14 @@ class Utils {
     const diffInMs = date1 - date2;
     return Math.floor(diffInMs / 1000);
   }
+
+  static base64ToBuffer(base64) {
+    const base64Data = base64.replace(
+      /^data:image\/(png|jpeg|jpg);base64,/,
+      "",
+    );
+    return Buffer.from(base64Data, "base64");
+  }
 }
 
 export default Utils;
