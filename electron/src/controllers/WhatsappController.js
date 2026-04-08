@@ -277,20 +277,14 @@ class WhatsappController {
       // Verifica se a ultima mensagem foi enviada há mais de 5 minutos para evitar spam
       const timeRemaining = await WhatsappService.checkLastMessageTime(session);
 
-      if (timeRemaining > 0 && decodedToken.rodeId !== 1) {
-        return {
-          success: false,
-          error: "Please wait before sending more messages.",
-          message: "Please wait before sending more messages.",
-        };
-      }
-
-      if (!checkLastMessageTime) {
+      if (timeRemaining > 0 && decodedToken.role !== 1) {
         return {
           success: false,
           error:
-            "Too many messages sent. Please wait a few minutes before sending more.",
-          message: "Please wait a few minutes before sending more messages.",
+            "Please wait " +
+            timeRemaining +
+            " seconds before sending more messages.",
+          message: "Please wait before sending more messages.",
         };
       }
 

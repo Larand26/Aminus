@@ -44,6 +44,7 @@ class Whatsapp extends Component {
       message: "",
       contactsData: [],
       contactsSelected: [],
+      sending: false,
 
       session: { isOpen: false, isConnected: false },
       qrCode: null,
@@ -155,8 +156,24 @@ class Whatsapp extends Component {
       contactId: contactData.CONTATO_ID,
     });
 
-    console.log(response);
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: response.error || "Erro ao excluir contato.",
+          type: "falha",
+        },
+      });
+      return;
+    }
 
+    this.setState({
+      toastInfo: {
+        key: Date.now(),
+        message: "Contato excluído com sucesso.",
+        type: "sucesso",
+      },
+    });
     // Após exclusão, recarregar contatos para atualizar tabela
     this.handleGetContacts();
   };
@@ -313,12 +330,23 @@ class Whatsapp extends Component {
 
   // Envia mensagens para os contatos selecionados
   handleSendMessages = async () => {
+    this.setState({ sending: true });
+
     const response = await WhatsappUtil.sendMessages({
       token: this.state.token,
       contacts: this.state.contactsSelected,
       message: this.state.message,
       photos: this.state.photos,
     });
+
+    this.setState({
+      sending: false,
+      message: "",
+      photos: [],
+      contactsSelected: [],
+    });
+
+    console.log(response);
 
     if (!response.success) {
       this.setState({
@@ -387,6 +415,7 @@ class Whatsapp extends Component {
                 contactsSelected={this.state.contactsSelected}
                 onSelectionChange={(data) => this.handleSelectionChange(data)}
                 onSendMessages={this.handleSendMessages}
+                sending={this.state.sending}
               />
             )}
             {this.state.page === "contacts" && (

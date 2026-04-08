@@ -30,6 +30,7 @@ class MessagePage extends Component {
       contactsSelected = [],
       onSelectionChange = () => {},
       onSendMessages = () => {},
+      sending = false,
     } = this.props;
     return (
       <div className="messagespage-container">
@@ -56,6 +57,7 @@ class MessagePage extends Component {
               text="Enviar"
               className="btn-send"
               onClick={() => onSendMessages()}
+              disabled={sending}
             />
           </div>
         </div>

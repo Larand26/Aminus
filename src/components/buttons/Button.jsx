@@ -9,9 +9,14 @@ class Button extends Component {
       icon,
       className = "",
       children,
+      disabled = false,
     } = this.props;
     return (
-      <button onClick={onClick} className={`custom-button ${className}`}>
+      <button
+        onClick={onClick}
+        className={`custom-button ${className}`}
+        disabled={disabled}
+      >
         {text && <span>{text}</span>}
         {icon && <i className={icon}></i>}
         {children && children}
