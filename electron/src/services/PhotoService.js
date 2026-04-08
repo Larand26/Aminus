@@ -121,9 +121,10 @@ class PhotoService {
         // Criar o novo produto com as fotos
         const newProduct = {
           referencia: newManufacturerCode,
-          embalamento: similarProduct.embalamento || newPackaging,
-          preco_revenda: similarProduct.preco_revenda || newResalePrice,
-          descricao_produto: similarProduct.descricao_produto || newDescription,
+          embalamento: similarProduct?.embalamento || newPackaging,
+          preco_revenda: similarProduct?.preco_revenda || newResalePrice,
+          descricao_produto:
+            similarProduct?.descricao_produto || newDescription,
           codigo_cor: photoData.colorCode.toUpperCase(),
           nome_cor: photoData.color.toUpperCase(),
           fotos: photoData.photo.map((photo) =>

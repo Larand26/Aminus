@@ -45,6 +45,8 @@ class WebRegistration extends Component {
       manufacturerCode: "",
       productCode: "",
 
+      token: localStorage.getItem("token") || null,
+
       colors: [],
 
       selectedRow: null,
@@ -65,8 +67,6 @@ class WebRegistration extends Component {
     };
   }
 
-  static token = localStorage.getItem("token") || "";
-
   getProductRegistrations = async () => {
     const filters = {
       manufacturer: this.state.manufacturerCode,
@@ -75,7 +75,7 @@ class WebRegistration extends Component {
     this.setState({ selectedItems: [] });
     this.setState({ loading: true });
     const response = await ProductUtil.getProductRegistrations({
-      token: WebRegistration.token,
+      token: this.state.token,
       filters,
     });
     this.setState({ loading: false });
@@ -85,7 +85,7 @@ class WebRegistration extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao buscar os produtos. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
       return;
@@ -162,7 +162,7 @@ class WebRegistration extends Component {
 
   getColors = async (productsData) => {
     const response = await ProductUtil.getColors({
-      token: WebRegistration.token,
+      token: this.state.token,
       filters: {},
     });
 
@@ -171,7 +171,7 @@ class WebRegistration extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao buscar as cores. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
       return;
@@ -193,7 +193,7 @@ class WebRegistration extends Component {
 
   createColor = async () => {
     const response = await ProductUtil.createColor({
-      token: WebRegistration.token,
+      token: this.state.token,
       colorName: this.state.newColor,
     });
 
@@ -202,7 +202,7 @@ class WebRegistration extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao criar a cor. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
       return;
@@ -251,7 +251,7 @@ class WebRegistration extends Component {
       color: data.COD_COR,
     };
     const response = await PhotoUtil.getPhotos({
-      token: WebRegistration.token,
+      token: this.state.token,
       filters,
     });
 
@@ -260,7 +260,7 @@ class WebRegistration extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao buscar as fotos. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
       return;
@@ -308,7 +308,7 @@ class WebRegistration extends Component {
       selectedItems.includes(item.COD_INTERNO),
     );
     const response = await ProductUtil.registerProducts({
-      token: WebRegistration.token,
+      token: this.state.token,
       products: productsToRegister,
       parentProduct: `${this.state.manufacturer}-${!this.state.promo ? "GREN" : "PROMO"}-PAI`,
       description: descriptionProduct,
@@ -319,19 +319,19 @@ class WebRegistration extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao cadastrar os produtos. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
       return;
-    } else {
-      this.setState({
-        toastInfo: {
-          key: Date.now(),
-          message: "Produtos cadastrados com sucesso.",
-          type: "sucesso",
-        },
-      });
     }
+
+    this.setState({
+      toastInfo: {
+        key: Date.now(),
+        message: "Produtos cadastrados com sucesso.",
+        type: "sucesso",
+      },
+    });
   };
 
   render() {
