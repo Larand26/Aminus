@@ -265,16 +265,12 @@ class PhotoService {
 
   static async deletePhoto(photoId) {
     try {
-      console.log(photoId);
-
       await MongoDB.delete(ProductModel, photoId);
       return {
         success: true,
         message: "Photo deleted successfully.",
       };
     } catch (error) {
-      console.log(error);
-
       return {
         success: false,
         error: error.message,
