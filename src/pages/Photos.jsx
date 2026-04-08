@@ -27,7 +27,7 @@ class Photos extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: "addPhotos",
+      page: "photos",
 
       token: localStorage.getItem("token") || null,
 
