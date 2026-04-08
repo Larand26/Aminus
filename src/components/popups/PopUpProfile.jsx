@@ -8,6 +8,12 @@ import defaltImg from "../../assets/img/png/logo_png.png";
 import "../../styles/components/popups/popup-profile.css";
 
 class PopUpProfile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: JSON.parse(localStorage.getItem("user")),
+    };
+  }
   render() {
     const { isOpen, onClose, infos } = this.props;
     return (
@@ -25,8 +31,8 @@ class PopUpProfile extends Component {
             </div>
           </div>
           <div className="profile-info">
-            <p className="name">JOAO VITOR</p>
-            <p className="function">VENDEDOR</p>
+            <p className="name">{this.state.user?.username}</p>
+            <p className="function">{this.state.user?.role}</p>
             <div className="order-infos-container">
               <div className="total-container">
                 <div className="pending-container stat-box">
