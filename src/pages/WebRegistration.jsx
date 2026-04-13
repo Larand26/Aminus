@@ -311,7 +311,7 @@ class WebRegistration extends Component {
       token: this.state.token,
       products: productsToRegister,
       parentProduct: `${this.state.manufacturer}-${!this.state.promo ? "GREN" : "PROMO"}-PAI`,
-      description: descriptionProduct,
+      description: `${this.state.type} ${this.state.gender} ${this.state.descriptionProduct} - ${this.state.manufacturer || ""}`,
     });
 
     if (!response.success) {
@@ -468,7 +468,7 @@ class WebRegistration extends Component {
                       className={`res ${!this.state.descriptionProduct ? "placeholder" : ""}`}
                     >
                       {this.state.descriptionProduct
-                        ? `${this.state.type} ${this.state.gender} ${this.state.descriptionProduct}`
+                        ? `${this.state.type} ${this.state.gender} ${this.state.descriptionProduct} - ${this.state.manufacturer || ""}`
                         : "Selecione um produto para ver as informações"}
                     </p>
                     <hr />
