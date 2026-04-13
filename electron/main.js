@@ -7,6 +7,27 @@ import ElectronConfig from "./src/config/ElectronConfig.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const devServerUrl = "http://localhost:5173";
+
+const attachRendererDiagnostics = (win) => {
+  win.webContents.on("did-fail-load", (_event, code, description, url) => {
+    console.error("[renderer] did-fail-load", { code, description, url });
+  });
+
+  win.webContents.on("render-process-gone", (_event, details) => {
+    console.error("[renderer] render-process-gone", details);
+  });
+
+  win.webContents.on("console-message", (_event, details) => {
+    const levels = ["log", "warn", "error"];
+    const logLevel = levels[details.level] ?? "log";
+    console[logLevel]("[renderer:console]", {
+      message: details.message,
+      line: details.line,
+      sourceId: details.sourceId,
+    });
+  });
+};
 
 const attachContextMenu = (win) => {
   win.webContents.on("context-menu", (_event, params) => {
@@ -51,11 +72,20 @@ const createWindow = () => {
 
   win.maximize();
   attachContextMenu(win);
+  attachRendererDiagnostics(win);
 
-  if (ElectronConfig.isDev || !app.isPackaged) {
-    win.loadURL("http://localhost:5173");
+  if (!app.isPackaged) {
+    win.loadURL(devServerUrl).catch((error) => {
+      console.warn(
+        "[main] Falha ao carregar servidor dev, usando dist/index.html",
+        {
+          message: error.message,
+        },
+      );
+      win.loadFile(path.join(__dirname, "../dist/index.html"));
+    });
   } else {
-    win.loadFile(path.join(__dirname, "../build/index.html"));
+    win.loadFile(path.join(__dirname, "../dist/index.html"));
   }
 };
 
