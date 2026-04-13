@@ -19,8 +19,14 @@ class WhatsappController {
     return contact.VENDEDOR_ID === decodedToken.id || decodedToken.role === 1;
   }
 
-  static async getContacts(filters) {
+  static async getContacts(filters, decodedToken) {
     try {
+      if (decodedToken.role !== 1) {
+        filters = {
+          ...filters,
+          sellerId: decodedToken.id,
+        };
+      }
       return await WhatsappService.getContacts(filters);
     } catch (error) {
       return {

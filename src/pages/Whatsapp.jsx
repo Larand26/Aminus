@@ -393,12 +393,14 @@ class Whatsapp extends Component {
               value={this.state.name}
               onChange={(value) => this.setState({ name: value })}
             />
-            <Select
-              label="Vendedor"
-              options={sellersOptions}
-              value={this.state.sellerId}
-              onChange={(value) => this.setState({ sellerId: value })}
-            />
+            {this.state.user.roleId !== 2 && (
+              <Select
+                label="Vendedor"
+                options={sellersOptions}
+                value={this.state.sellerId}
+                onChange={(value) => this.setState({ sellerId: value })}
+              />
+            )}
           </SideBar>
           <Content
             title="Whatsapp"

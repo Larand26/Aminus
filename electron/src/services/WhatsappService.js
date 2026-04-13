@@ -32,6 +32,7 @@ class WhatsappService {
   /**
    * Pega os contatos do banco de dados, filtrando por número de celular, nome do contato, id do vendedor ou nome do vendedor.
    * @param {Object<{id: Array<Number>, cellphoneNumber: string, name: string, sellerId: string, sellerName: string}>} filters
+   * @param {Object} decodedToken
    * @returns
    */
   static async getContacts(filters) {
