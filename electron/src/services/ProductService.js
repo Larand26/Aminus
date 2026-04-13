@@ -399,6 +399,8 @@ class ProductService {
         await SQLServerDB.query(queryEcommerce, params);
         await SQLServerDB.query(queryActiveEcommerce, params);
       }
+
+      return { success: true, message: "Produtos registrados com sucesso." };
     } catch (error) {
       return {
         success: false,
