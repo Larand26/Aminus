@@ -262,6 +262,7 @@ class WebRegistration extends Component {
           message: "Erro ao buscar as fotos. Tente novamente.",
           type: "falha",
         },
+        photos: [],
       });
       return;
     }
@@ -273,6 +274,7 @@ class WebRegistration extends Component {
           message: "Nenhuma foto encontrada com os filtros selecionados.",
           type: "aviso",
         },
+        photos: [],
       });
       return;
     }
