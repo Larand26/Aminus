@@ -2,7 +2,7 @@
   position: absolute;
   background-color: var(--cor-primaria);
   border: solid 2px var(--cor-branco);
-  z-index: 100;
+  z-index: 1000;
   left: calc(10%); /* era 300px - 30px para direita */
   top: calc(0% + 150px); /* era 200px - 50px para cima */
   border-radius: 4px;
