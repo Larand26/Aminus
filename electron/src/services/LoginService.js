@@ -7,12 +7,12 @@ class LoginService {
    * @returns {Promise<{ success: boolean, error?: string, message: string }>}
    */
   static async login(params) {
-    const { username, password } = params;
+    const { username = "", password = "" } = params;
 
     // Example login logic - replace with actual database query
     const user = await MySQLDB.query(
       "SELECT * FROM USUARIOS LEFT JOIN TIPO_USUARIO ON USUARIOS.ID_FUNCAO_USUARIO = TIPO_USUARIO.ID_TIPO_USUARIO WHERE NOME = ?",
-      [username],
+      [username.toUpperCase()],
     );
 
     if (!user || user.length === 0) {
@@ -24,7 +24,7 @@ class LoginService {
     }
 
     // Example password verification - replace with actual password hashing
-    if (user[0].SENHA !== password) {
+    if (user[0].SENHA !== password.toUpperCase()) {
       return {
         success: false,
         error: "Invalid username or password.",
