@@ -1,13 +1,36 @@
-import { app, BrowserWindow, Menu } from "electron";
+import { app, BrowserWindow, dialog, Menu, autoUpdater } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import "./ipc.js";
+
+import { updateElectronApp } from "update-electron-app";
 
 import ElectronConfig from "./src/config/ElectronConfig.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const devServerUrl = "http://localhost:5173";
+
+if (!ElectronConfig.isDev) {
+  updateElectronApp({
+    updateInterval: "1 hour",
+    notifyUser: false,
+  });
+
+  autoUpdater.on("update-downloaded", (event, releaseNotes, releaseName) => {
+    const dialogOpts = {
+      type: "info",
+      buttons: ["Reiniciar", "Depois"],
+      title: "Nova atualização do Aminus",
+      message: process.platform === "win32" ? releaseNotes : releaseName,
+      detail: "Uma versão nova foi encontrada. Reinicie o aplicativo.",
+    };
+
+    dialog.showMessageBox(dialogOpts).then((returnValue) => {
+      if (returnValue.response === 0) autoUpdater.quitAndInstall();
+    });
+  });
+}
 
 const attachRendererDiagnostics = (win) => {
   win.webContents.on("did-fail-load", (_event, code, description, url) => {
