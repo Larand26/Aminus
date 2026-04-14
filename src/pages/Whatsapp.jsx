@@ -261,28 +261,28 @@ class Whatsapp extends Component {
       token: this.state.token,
     });
 
-    console.log(response);
-
     if (!response.success) {
       return;
     }
-    console.log(response?.data?.timeRemaining);
+
+    const timeRemaining = Number(response?.data?.timeRemaining);
+    const normalizedTimeRemaining = Number.isFinite(timeRemaining)
+      ? Math.max(0, timeRemaining)
+      : 0;
+    const timer =
+      normalizedTimeRemaining > 0 && normalizedTimeRemaining < 5 * 60
+        ? normalizedTimeRemaining
+        : 0;
 
     this.setState({
       session: {
         isOpen: response?.data?.isOpen || false,
         isConnected: response?.data?.isConnected || false,
       },
-      timer:
-        response?.data?.timeRemaining < 5 * 60
-          ? response?.data?.timeRemaining || 5 * 60
-          : 0,
+      timer,
     });
-    this.startTimer(
-      response?.data?.timeRemaining < 5 * 60
-        ? response?.data?.timeRemaining || 5 * 60
-        : 0,
-    );
+
+    this.startTimer(timer);
   };
 
   // Encerra a sessão do Whatsapp
@@ -316,7 +316,15 @@ class Whatsapp extends Component {
   // Reduz o timer em 1 segundo a cada segundo
   startTimer = (duration) => {
     clearInterval(this.timerInterval);
-    this.setState({ timer: duration });
+
+    const normalizedDuration = Math.max(0, Number(duration) || 0);
+
+    if (normalizedDuration === 0) {
+      this.setState({ timer: 0 });
+      return;
+    }
+
+    this.setState({ timer: normalizedDuration });
     this.timerInterval = setInterval(() => {
       this.setState((prevState) => {
         if (prevState.timer > 0) {
