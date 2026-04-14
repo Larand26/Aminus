@@ -84,7 +84,7 @@ class Orders extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao buscar os pedidos. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
       return;
@@ -174,7 +174,7 @@ class Orders extends Component {
               label="Num Pedido"
               name="orderId"
               value={this.state.numOrder}
-              onChange={(e) => this.setState({ numOrder: e.target.value })}
+              onChange={(value) => this.setState({ numOrder: value })}
               onKeyPress={this.onKeyPressGetOrders}
             />
             <InputDate
@@ -186,14 +186,14 @@ class Orders extends Component {
               label="Razão Social"
               name="companyName"
               value={this.state.client}
-              onChange={(e) => this.setState({ client: e.target.value })}
+              onChange={(value) => this.setState({ client: value })}
               onKeyPress={this.onKeyPressGetOrders}
             />
             <InputText
               label="CNPJ"
               name="cnpj"
               value={this.state.cnpj}
-              onChange={(e) => this.setState({ cnpj: e.target.value })}
+              onChange={(value) => this.setState({ cnpj: value })}
               onKeyPress={this.onKeyPressGetOrders}
             />
             {this.state.user?.roleId !== 2 && (
@@ -202,7 +202,7 @@ class Orders extends Component {
                 name="seller"
                 options={sellersOptions}
                 value={this.state.sellerId}
-                onChange={(e) => this.setState({ sellerId: e.target.value })}
+                onChange={(value) => this.setState({ sellerId: value })}
               />
             )}
           </SideBar>

@@ -253,7 +253,7 @@ class Photos extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao criar as fotos. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
     }
@@ -270,7 +270,7 @@ class Photos extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao deletar a foto. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
       this.getPhotos(product.referencia);

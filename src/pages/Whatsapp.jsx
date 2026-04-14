@@ -107,7 +107,7 @@ class Whatsapp extends Component {
         toastInfo: {
           key: Date.now(),
           message: response.error || "Erro ao buscar contatos.",
-          type: "erro",
+          type: "falha",
         },
       });
       return;

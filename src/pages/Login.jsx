@@ -35,7 +35,7 @@ class Login extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Login failed: " + result.message,
-          type: "erro",
+          type: "falha",
         },
       });
     }

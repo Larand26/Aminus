@@ -68,7 +68,7 @@ class Reservation extends Component {
         toastInfo: {
           key: Date.now(),
           message: "Erro ao buscar as notas fiscais. Tente novamente.",
-          type: "erro",
+          type: "falha",
         },
       });
       return;
