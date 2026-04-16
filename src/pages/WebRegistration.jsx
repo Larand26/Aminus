@@ -511,6 +511,7 @@ class WebRegistration extends Component {
                     icon="fa fa-plus"
                     value={this.state.newColor}
                     onChange={(value) => this.setState({ newColor: value })}
+                    onClick={this.createColor}
                   />
                   <Table
                     options={sizesOptions}
