@@ -48,7 +48,7 @@ class Galery extends Component {
           {filteredProducts.map((product) => (
             <Card
               key={`${product.referencia}-${product.codigo_cor}`}
-              photo={product.fotos[0] || unknown}
+              photos={product.fotos.length > 0 ? product.fotos : [unknown]}
               onClick={() => onChangeSelectedForDownload(product)}
               className={
                 productsSelectedForDownload.includes(product)
