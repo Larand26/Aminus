@@ -119,6 +119,27 @@ class Photos extends Component {
       oldProduct,
       newProduct,
     });
+
+    if (!response.success) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: "Erro ao atualizar a foto. Tente novamente.",
+          type: "falha",
+        },
+      });
+      this.getPhotos(oldProduct.referencia);
+      return;
+    }
+
+    this.setState({
+      toastInfo: {
+        key: Date.now(),
+        message: "Foto atualizada com sucesso.",
+        type: "sucesso",
+      },
+    });
+    this.getPhotos(newProduct.referencia);
   };
 
   onFilterChange = (value) => {
