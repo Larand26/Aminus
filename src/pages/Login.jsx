@@ -45,7 +45,7 @@ class Login extends Component {
     const token = localStorage.getItem("token");
     if (token) {
       const isValid = await LoginUtil.validateToken(token);
-      if (isValid) {
+      if (isValid?.valid) {
         this.setState({ redirectToHome: true });
       } else {
         localStorage.removeItem("token");

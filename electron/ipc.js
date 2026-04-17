@@ -22,8 +22,7 @@ ipcMain.handle("validate-token", async (event, token) => {
     const isValid = await MiddlewaresToken.verifyToken(token);
     return isValid;
   } catch (error) {
-    console.log(error);
-    return false;
+    return { valid: false, error: "Erro ao validar token" };
   }
 });
 
