@@ -378,6 +378,18 @@ class Whatsapp extends Component {
     this.startTimer(5 * 60); // Reinicia o timer para 5 minutos após o envio das mensagens
   };
 
+  componentDidMount() {
+    this.unsubscribeProgress = WhatsappUtil.onProgressUpdate((payload) => {
+      console.log("whatsapp-progress", payload);
+    });
+    this.handleCheckSession();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timerInterval);
+    if (this.unsubscribeProgress) this.unsubscribeProgress();
+  }
+
   render() {
     return (
       <>

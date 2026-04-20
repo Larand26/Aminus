@@ -295,7 +295,7 @@ class WhatsappService {
     }
   }
 
-  static async sendPhotos({ contacts, photos, session }) {
+  static async sendPhotos({ contacts, photos, session, onPhotoSent }) {
     try {
       const responseData = [];
       let errors = 0;
@@ -328,6 +328,9 @@ class WhatsappService {
             await new Promise((resolve) =>
               setTimeout(resolve, Utils.setRamdomTime(800, 2500)),
             );
+            if (onPhotoSent) {
+              onPhotoSent();
+            }
           } catch (error) {
             // Se ocorrerem 3 erros consecutivos, verificar se a sessão ainda está ativa antes de continuar a enviar mensagens para os próximos contatos
             if (errors >= 3) {
@@ -367,7 +370,7 @@ class WhatsappService {
     }
   }
 
-  static async sendMessage({ contacts, message, session }) {
+  static async sendMessage({ contacts, message, session, onMessageSent }) {
     try {
       const responseData = [];
       let errors = 0;
@@ -395,6 +398,9 @@ class WhatsappService {
           await new Promise((resolve) =>
             setTimeout(resolve, Utils.setRamdomTime(800, 2500)),
           );
+          if (onMessageSent) {
+            onMessageSent();
+          }
         } catch (error) {
           // Se ocorrerem 3 erros consecutivos, verificar se a sessão ainda está ativa antes de continuar a enviar mensagens para os próximos contatos
           if (errors >= 3) {

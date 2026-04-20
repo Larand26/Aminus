@@ -107,6 +107,12 @@ class Whatsapp {
       };
     }
   }
+
+  static onProgressUpdate(callback) {
+    window.api.onProgressUpdate((data) => {
+      callback(data);
+    });
+  }
 }
 
 export default Whatsapp;

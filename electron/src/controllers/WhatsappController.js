@@ -237,7 +237,13 @@ class WhatsappController {
     }
   }
 
-  static async sendMessages(contacts, message, photos, decodedToken) {
+  static async sendMessages(
+    contacts,
+    message,
+    photos,
+    decodedToken,
+    onProgressUpdate,
+  ) {
     try {
       // Pega a sessão da Sessão
       const session = await WhatsappService.getSession(decodedToken.id);
@@ -308,12 +314,33 @@ class WhatsappController {
         };
       }
 
+      let totalMessagesToBeSent = 0;
+      let messagesSent = 0;
+      if (message) {
+        totalMessagesToBeSent += contactsResult.data.length;
+      }
+      if (photos && photos.length > 0) {
+        totalMessagesToBeSent += contactsResult.data.length * photos.length;
+      }
+
+      const progress = {
+        total: totalMessagesToBeSent,
+        sent: messagesSent,
+      };
+
       // Envia as fotos
       if (photos && photos.length > 0) {
         sendPhotosResult = await WhatsappService.sendPhotos({
           session,
           contacts: contactsResult.data,
           photos,
+          onPhotoSent: () => {
+            progress.sent += 1;
+            onProgressUpdate({
+              type: "photo",
+              progress: { ...progress },
+            });
+          },
         });
       }
 
@@ -323,6 +350,13 @@ class WhatsappController {
           session,
           contacts: contactsResult.data,
           message,
+          onMessageSent: () => {
+            progress.sent += 1;
+            onProgressUpdate({
+              type: "message",
+              progress: { ...progress },
+            });
+          },
         });
       }
 
@@ -332,6 +366,7 @@ class WhatsappController {
           success: false,
           error: sendPhotosResult.error || sendMessageResult.error,
           message: "Failed to send messages.",
+          progress,
         };
       }
 
@@ -341,6 +376,7 @@ class WhatsappController {
       return {
         success: true,
         message: "Messages sent successfully.",
+        progress,
       };
     } catch (error) {
       return {
