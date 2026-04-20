@@ -79,10 +79,6 @@ class Whatsapp extends Component {
     },
   ];
 
-  componentDidMount() {
-    this.handleCheckSession();
-  }
-
   componentWillUnmount() {
     clearInterval(this.timerInterval);
   }
