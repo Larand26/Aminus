@@ -202,9 +202,9 @@ ipcMain.handle("send-messages", async (event, args) => {
     args.message,
     args.photos,
     decodedToken,
-    (onProgressUpdate = (progress) => {
-      event.sender.send("send-messages-progress", progress);
-    }),
+    (progress) => {
+      event.sender.send("progressUpdate", progress);
+    },
   );
 });
 

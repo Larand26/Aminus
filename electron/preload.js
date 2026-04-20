@@ -33,9 +33,13 @@ contextBridge.exposeInMainWorld("api", {
   closeSession: (args) => ipcRenderer.invoke("close-session", args),
   sendMessages: (args) => ipcRenderer.invoke("send-messages", args),
   onProgressUpdate: (callback) => {
-    ipcRenderer.on("progressUpdate", (event, data) => {
+    const listener = (_event, data) => {
       callback(data);
-    });
+    };
+    ipcRenderer.on("progressUpdate", listener);
+    return () => {
+      ipcRenderer.removeListener("progressUpdate", listener);
+    };
   },
   checkSession: (args) => ipcRenderer.invoke("check-session", args),
 });

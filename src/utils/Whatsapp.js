@@ -109,7 +109,7 @@ class Whatsapp {
   }
 
   static onProgressUpdate(callback) {
-    window.api.onProgressUpdate((data) => {
+    return window.api.onProgressUpdate((data) => {
       callback(data);
     });
   }
