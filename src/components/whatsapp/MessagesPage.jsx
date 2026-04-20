@@ -16,6 +16,9 @@ import Table from "../table/Table";
 // options
 import tableOptions from "../../assets/json/table_options/messagesOptions.json";
 
+// misc
+import ProgressBar from "../misc/ProgressBar";
+
 // styles
 import "../../styles/pages/messagespage.css";
 
@@ -31,6 +34,7 @@ class MessagePage extends Component {
       onSelectionChange = () => {},
       onSendMessages = () => {},
       sending = false,
+      progress = { total: 0, current: 0 },
     } = this.props;
     return (
       <div className="messagespage-container">
@@ -53,6 +57,7 @@ class MessagePage extends Component {
               selectedItems={contactsSelected}
               maxHeight={"250px"}
             />
+            <ProgressBar total={progress.total} current={progress.current} />
             <Button
               text="Enviar"
               className="btn-send"

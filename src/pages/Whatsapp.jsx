@@ -50,6 +50,8 @@ class Whatsapp extends Component {
       qrCode: null,
 
       toastInfo: null,
+
+      progress: { total: 0, current: 0 },
     };
   }
 
@@ -373,6 +375,7 @@ class Whatsapp extends Component {
         message: "Mensagens enviadas com sucesso.",
         type: "sucesso",
       },
+      progress: { total: 0, current: 0 },
     });
 
     this.startTimer(5 * 60); // Reinicia o timer para 5 minutos após o envio das mensagens
@@ -380,7 +383,9 @@ class Whatsapp extends Component {
 
   componentDidMount() {
     this.unsubscribeProgress = WhatsappUtil.onProgressUpdate((payload) => {
-      console.log("whatsapp-progress", payload);
+      const total = payload?.progress?.total || 0;
+      const current = payload?.progress?.sent || 0;
+      this.setState({ progress: { total, current } });
     });
     this.handleCheckSession();
   }
@@ -438,6 +443,7 @@ class Whatsapp extends Component {
                 onSelectionChange={(data) => this.handleSelectionChange(data)}
                 onSendMessages={this.handleSendMessages}
                 sending={this.state.sending}
+                progress={this.state.progress}
               />
             )}
             {this.state.page === "contacts" && (
