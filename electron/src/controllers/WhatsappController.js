@@ -244,10 +244,13 @@ class WhatsappController {
 
       // Pega os contatos do banco de dados para garantir que pertencem ao vendedor
       const contactIds = contacts.map((c) => c.CONTATO_ID);
-      const contactsResult = await WhatsappController.getContacts({
-        id: contactIds,
-        sellerId: decodedToken.id != 1 ? decodedToken.id : null, // Se for admin, pode enviar para os contatos de todos os vendedores
-      });
+      const contactsResult = await WhatsappController.getContacts(
+        {
+          id: contactIds,
+          sellerId: decodedToken.id != 1 ? decodedToken.id : null, // Se for admin, pode enviar para os contatos de todos os vendedores
+        },
+        decodedToken,
+      );
 
       if (
         !contactsResult.success ||
