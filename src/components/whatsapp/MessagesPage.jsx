@@ -57,13 +57,16 @@ class MessagePage extends Component {
               selectedItems={contactsSelected}
               maxHeight={"250px"}
             />
-            <ProgressBar total={progress.total} current={progress.current} />
-            <Button
-              text="Enviar"
-              className="btn-send"
-              onClick={() => onSendMessages()}
-              disabled={sending}
-            />
+            {(sending && (
+              <ProgressBar total={progress.total} current={progress.current} />
+            )) || (
+              <Button
+                text="Enviar"
+                className="btn-send"
+                onClick={() => onSendMessages()}
+                disabled={sending}
+              />
+            )}
           </div>
         </div>
       </div>
