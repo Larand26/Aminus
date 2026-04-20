@@ -12,4 +12,20 @@
   border: var(--cor-primaria) 2px solid;
   border-radius: 50px;
   box-sizing: border-box;
+  overflow: hidden;
+  background-color: #e4ebe8;
+}
+
+.bar-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 50px;
+  background-color: #f7d39d;
+  background-image: repeating-linear-gradient(
+    -58deg,
+    #eab060 0 10px,
+    #f0bf79 10px 16px,
+    #f7d39d 16px 30px
+  );
+  transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
