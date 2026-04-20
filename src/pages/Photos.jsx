@@ -212,12 +212,7 @@ class Photos extends Component {
   createEmptyPhotoItem = () => ({ photo: [], color: "", colorCode: "" });
 
   isPhotoItemComplete = (photoItem) => {
-    return (
-      Array.isArray(photoItem?.photo) &&
-      photoItem.photo.length > 0 &&
-      photoItem?.color?.trim() &&
-      photoItem?.colorCode?.trim()
-    );
+    return Array.isArray(photoItem?.photo) && photoItem.photo.length > 0;
   };
 
   onChangeNewPhotoItem = (index, field, value) => {
