@@ -300,6 +300,14 @@ class WhatsappController {
       let sendPhotosResult = { success: true };
       let sendMessageResult = { success: true };
 
+      if (!message && (!photos || photos.length === 0)) {
+        return {
+          success: false,
+          error: "No message or photos to send.",
+          message: "Please provide a message or photos to send.",
+        };
+      }
+
       // Envia as fotos
       if (photos && photos.length > 0) {
         sendPhotosResult = await WhatsappService.sendPhotos({
