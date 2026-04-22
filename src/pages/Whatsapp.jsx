@@ -79,10 +79,6 @@ class Whatsapp extends Component {
     },
   ];
 
-  componentWillUnmount() {
-    clearInterval(this.timerInterval);
-  }
-
   handleGetContacts = async () => {
     const filters = {
       cellphoneNumber: this.state.cellphoneNumber,
