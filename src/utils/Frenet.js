@@ -5,7 +5,7 @@ class Frenet {
       /**
        *  { token, shipping: { cep, price, orderItems: [{ ALTURA, COMPRIMENTO, QUANTIDADE, PESO_BRUTO, LARGURA }], selectedItem: { ALTURA, COMPRIMENTO, QUANTIDADE, PESO_BRUTO, LARGURA } } }
        */
-      const price = selectItemOrder.reduce(
+      const price = selectedOrderData.reduce(
         (total, item) => total + item.PRECO * item.QUANTIDADE,
         0,
       );
