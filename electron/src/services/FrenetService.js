@@ -47,6 +47,26 @@ class FrenetService {
     }));
   }
 
+  static #buildBraspressShippingItem(orderItems) {
+    return [
+      {
+        Height: 20, // Altura cm
+        Length: 45, // Comprimento cm
+        Quantity: 1, // Quantidade
+        Weight:
+          orderItems.reduce((total, item) => {
+            const quantity = Math.ceil(Number(item.QUANTIDADE) / 12) || 1;
+            const weight = parseFloat(
+              (Number(item.PESO_BRUTO) * 12).toFixed(2),
+            );
+
+            return total + (weight === 0 ? 5 : weight) * quantity;
+          }, 0) || 20, // Peso kg
+        Width: 30, // Largura cm
+      },
+    ];
+  }
+
   static #buildRequestBodies(shipping) {
     return {
       standardBody: {
@@ -77,6 +97,15 @@ class FrenetService {
           shipping.orderItems,
         ),
       },
+      braspressBody: {
+        SellerCEP: "03050010", // CEP loja
+        RecipientCEP: shipping.cep, // CEP cliente
+        ShipmentInvoiceValue: shipping.price || 100,
+        ShippingServiceCode: "BRAS_R", // Código específico para Braspress
+        ShippingItemArray: this.#buildBraspressShippingItem(
+          shipping.orderItems,
+        ),
+      },
     };
   }
 
@@ -88,24 +117,38 @@ class FrenetService {
   static async calculateFreight(args) {
     try {
       const { shipping } = args;
-      const { standardBody, customBody, standardDimensions203045Body } =
-        this.#buildRequestBodies(shipping);
-      const [standardResponse, customResponse, response203045] =
-        await Promise.all([
-          axios.post(this.url, standardBody, { headers: this.headers }),
-          axios.post(this.url, customBody, {
-            headers: this.headers,
-          }),
-          axios.post(this.url, standardDimensions203045Body, {
-            headers: this.headers,
-          }),
-        ]);
+      const {
+        standardBody,
+        customBody,
+        standardDimensions203045Body,
+        braspressBody,
+      } = this.#buildRequestBodies(shipping);
+
+      const [
+        standardResponse,
+        customResponse,
+        response203045,
+        braspressResponse,
+      ] = await Promise.all([
+        axios.post(this.url, standardBody, { headers: this.headers }),
+        axios.post(this.url, customBody, {
+          headers: this.headers,
+        }),
+        axios.post(this.url, standardDimensions203045Body, {
+          headers: this.headers,
+        }),
+        axios.post(this.url, braspressBody, {
+          headers: this.headers,
+        }),
+      ]);
+
       return {
         success: true,
         data: {
           standard: standardResponse.data,
           custom: customResponse.data,
           "20-30-45": response203045.data,
+          braspress: braspressResponse.data,
         },
       };
     } catch (error) {

@@ -12,11 +12,24 @@ class PopUpFreight extends Component {
     const ship203045 = data["20-30-45"]?.ShippingSevicesArray || [];
     const shipCustom = data["custom"]?.ShippingSevicesArray || [];
     const shipStandard = data["standard"]?.ShippingSevicesArray || [];
+    const shipBraspress = data["braspress"]?.ShippingSevicesArray || [];
 
     // { "TRANSPORTADORA": "ServiceDescription", "PRECO": "ShippingPrice", "PRECO[20-30-45]": "ShippingPrice", "PRAZO_ENTREGA": "DeliveryTime", "PRAZO_ENTREGA_ORIGINAL": "OriginalDeliveryTime"}
     const ajustedData = [];
 
     const customService = ["JAM"];
+
+    if (ship203045.some((item) => item.ServiceCode === "BRAS_R")) {
+      if (shipBraspress.length > 0) {
+        // Acha a posição do item de Braspress em ship203045
+        const braspressIndex = ship203045.findIndex(
+          (item) => item.ServiceCode === "BRAS_R",
+        );
+        if (braspressIndex !== -1) {
+          ship203045[braspressIndex] = shipBraspress[0];
+        }
+      }
+    }
 
     const getServiceKey = (item) =>
       item?.ServiceCode || item?.ServiceDescription || null;
