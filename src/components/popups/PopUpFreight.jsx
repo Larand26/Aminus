@@ -4,110 +4,14 @@ import PopUp from "./PopUp";
 import Table from "../table/Table";
 import Loading from "../misc/Loading";
 
-import tableOptions from "../../assets/json/table_options/freightDataOptions";
+import tableOptions from "../../assets/json/table_options/freightDataOptions.json";
+
+import FrenetUtils from "../../utils/Frenet";
 
 class PopUpFreight extends Component {
-  ajustFreightData(data) {
-    if (!data) return null;
-    const ship203045 = data["20-30-45"]?.ShippingSevicesArray || [];
-    const shipCustom = data["custom"]?.ShippingSevicesArray || [];
-    const shipStandard = data["standard"]?.ShippingSevicesArray || [];
-    const shipBraspress = data["braspress"]?.ShippingSevicesArray || [];
-
-    // { "TRANSPORTADORA": "ServiceDescription", "PRECO": "ShippingPrice", "PRECO[20-30-45]": "ShippingPrice", "PRAZO_ENTREGA": "DeliveryTime", "PRAZO_ENTREGA_ORIGINAL": "OriginalDeliveryTime"}
-    const ajustedData = [];
-
-    const customService = ["JAM"];
-
-    if (ship203045.some((item) => item.ServiceCode === "BRAS_R")) {
-      if (shipBraspress.length > 0) {
-        // Acha a posição do item de Braspress em ship203045
-        const braspressIndex = ship203045.findIndex(
-          (item) => item.ServiceCode === "BRAS_R",
-        );
-        if (braspressIndex !== -1) {
-          ship203045[braspressIndex] = shipBraspress[0];
-        }
-      }
-    }
-
-    const getServiceKey = (item) =>
-      item?.ServiceCode || item?.ServiceDescription || null;
-
-    const ship203045Map = new Map(
-      ship203045
-        .map((item) => [getServiceKey(item), item])
-        .filter(([key]) => Boolean(key)),
-    );
-    const shipCustomMap = new Map(
-      shipCustom
-        .map((item) => [getServiceKey(item), item])
-        .filter(([key]) => Boolean(key)),
-    );
-    const shipStandardMap = new Map(
-      shipStandard
-        .map((item) => [getServiceKey(item), item])
-        .filter(([key]) => Boolean(key)),
-    );
-
-    const baseList = shipStandard.length
-      ? shipStandard
-      : ship203045.length
-        ? ship203045
-        : shipCustom;
-
-    for (let i = 0; i < baseList.length; i++) {
-      const baseItem = baseList[i] || {};
-      const serviceKey = getServiceKey(baseItem);
-      const ship203045Item =
-        (serviceKey && ship203045Map.get(serviceKey)) || ship203045[i] || {};
-      const shipCustomItem =
-        (serviceKey && shipCustomMap.get(serviceKey)) || shipCustom[i] || {};
-      const shipStandardItem =
-        (serviceKey && shipStandardMap.get(serviceKey)) ||
-        shipStandard[i] ||
-        {};
-
-      const transportadora =
-        shipStandardItem.ServiceDescription ||
-        ship203045Item.ServiceDescription ||
-        shipCustomItem.ServiceDescription ||
-        "";
-
-      if (!transportadora) continue; // Não adiciona linha se não houver transportadora
-
-      ajustedData.push({
-        TRANSPORTADORA: transportadora,
-        PRECO:
-          shipStandardItem.ServiceCode &&
-          customService.includes(shipStandardItem.ServiceCode)
-            ? shipCustomItem.ShippingPrice || ""
-            : shipStandardItem.ShippingPrice || "",
-        "PRECO[20-30-45]": ship203045Item.ShippingPrice || "",
-        PRAZO_ENTREGA: ship203045Item.DeliveryTime || "",
-        PRAZO_ENTREGA_ORIGINAL: ship203045Item.OriginalDeliveryTime || "",
-      });
-    }
-
-    const parsePrice = (price) => {
-      if (!price) return Number.POSITIVE_INFINITY;
-      const numeric = Number(
-        String(price)
-          .replace(/[^\d,.-]/g, "")
-          .replace(/\.(?=\d{3}(\D|$))/g, "")
-          .replace(",", "."),
-      );
-      return Number.isNaN(numeric) ? Number.POSITIVE_INFINITY : numeric;
-    };
-
-    ajustedData.sort((a, b) => parsePrice(a.PRECO) - parsePrice(b.PRECO));
-
-    return ajustedData.filter((item) => item.PRECO !== "" && item.PRECO !== 0);
-  }
-
   render() {
     const { isOpen, onClose, data } = this.props;
-    const adjustedData = this.ajustFreightData(data);
+    const adjustedData = FrenetUtils.ajustFreightData(data);
     return (
       <PopUp isOpen={isOpen} onClose={onClose}>
         <h2>Frete Calculado</h2>

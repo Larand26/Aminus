@@ -1,17 +1,24 @@
 [
-  { "key": "TRANSPORTADORA", "name": "Transportadora", "checked": true },
-  { "key": "PRECO", "name": "Preço", "format": "currency", "checked": true },
+  { "key": "SHIP", "name": "Transportadora", "checked": true },
   {
-    "key": "PRECO[20-30-45]",
-    "name": "Preço (20x30x45)",
-    "format": "currency",
+    "key": "PRICE",
+    "name": "Preço",
+    "format": "promo-currency",
+    "fields": ["ORIGINAL_PRICE", "PRICE"],
     "checked": true
   },
   {
-    "key": "PRAZO_ENTREGA",
+    "key": "PRICE[20-30-45]",
+    "name": "Preço (20x30x45)",
+    "format": "promo-currency",
+    "fields": ["ORIGINAL_PRICE[20-30-45]", "PRICE[20-30-45]"],
+    "checked": true
+  },
+  {
+    "key": "DELIVERY_TIME",
     "name": "Prazo de Entrega",
     "format": "paste",
-    "fields": ["PRAZO_ENTREGA_ORIGINAL", "PRAZO_ENTREGA"],
+    "fields": ["ORIGINAL_DELIVERY_TIME", "DELIVERY_TIME"],
     "checked": true
   }
 ]

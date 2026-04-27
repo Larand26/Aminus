@@ -124,6 +124,20 @@ class Table extends Component {
             }}
           />
         );
+      case "promo-currency":
+        const fields = option.fields || [];
+        const values = fields.map((field) => data[field]);
+        return (
+          <div className="promo-currency">
+            <span className="original-price">
+              {Utils.formatCurrency(values[0])}
+            </span>
+            <span className="promo-price">
+              {Utils.formatCurrency(values[1])}
+            </span>
+          </div>
+        );
+
       default:
         if (value instanceof Date) {
           return value.toLocaleString("pt-BR", {
