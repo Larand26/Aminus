@@ -1,7 +1,7 @@
 {
   "name": "aminus",
   "private": true,
-  "version": "3.2.0",
+  "version": "3.2.1",
   "main": "electron/main.js",
   "type": "module",
   "description": "Um sistema capaz de alterar e ver um banco de dados",
