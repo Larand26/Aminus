@@ -3,6 +3,7 @@ import Utils from "./Utils";
 class Formatter {
   static wordsToRemove = [
     "CHINELO",
+    "DE DEDO",
     "FEMININO",
     "MASCULINO",
     "INFANTIL",
