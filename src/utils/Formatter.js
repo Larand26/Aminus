@@ -30,6 +30,7 @@ class Formatter {
     "AD",
     "ADULTO",
     "DEDO",
+    "BABUCH",
   ];
 
   static wordsToSubstitute = {

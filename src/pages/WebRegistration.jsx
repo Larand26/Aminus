@@ -368,7 +368,7 @@ class WebRegistration extends Component {
                 <div>
                   <ButtonTypeGender
                     icon="icon-male"
-                    key={"MASCULINOa"}
+                    key={"MASCULINO"}
                     className={`${this.state.gender === "MASCULINO" ? "selected" : ""}`}
                     onClick={(data) => this.setState({ gender: "MASCULINO" })}
                   />
@@ -444,9 +444,9 @@ class WebRegistration extends Component {
                   />
                   <ButtonTypeGender
                     icon="icon-babuche"
-                    key={"BABUACHE"}
-                    className={`${this.state.type === "BABUACHE" ? "selected" : ""}`}
-                    onClick={(data) => this.setState({ type: "BABUACHE" })}
+                    key={"BABUCHE"}
+                    className={`${this.state.type === "BABUCHE" ? "selected" : ""}`}
+                    onClick={(data) => this.setState({ type: "BABUCHE" })}
                   />
                   <ButtonTypeGender
                     icon="icon-sapatilha"
