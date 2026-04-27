@@ -2,6 +2,7 @@ import MySQLDB from "../database/MySQLDB.js";
 
 import WppConnectConfig from "../config/WppConnectConfig.js";
 import Utils from "../utils/Utils.js";
+import Logger from "../utils/Logger.js";
 
 import axios from "axios";
 
@@ -297,10 +298,33 @@ class WhatsappService {
 
   static async sendPhotos({ contacts, photos, session, onPhotoSent }) {
     try {
+      Logger.info("Iniciando envio de fotos", "sendPhotos");
+      Logger.info(`Total de contatos: ${contacts.length}`, "sendPhotos");
+      Logger.info(`Total de fotos: ${photos.length}`, "sendPhotos");
+      Logger.info(`Sessão: ${session.SESSION}`, "sendPhotos");
+
       const responseData = [];
       let errors = 0;
-      for (const contact of contacts) {
-        for (const photo of photos) {
+      let successCount = 0;
+
+      for (
+        let contactIndex = 0;
+        contactIndex < contacts.length;
+        contactIndex++
+      ) {
+        const contact = contacts[contactIndex];
+        Logger.info(
+          `Contato ${contactIndex + 1}/${contacts.length}: ${contact.CONTATO_NUMERO}`,
+          "sendPhotos",
+        );
+
+        for (let photoIndex = 0; photoIndex < photos.length; photoIndex++) {
+          const photo = photos[photoIndex];
+          Logger.info(
+            `Enviando foto ${photoIndex + 1}/${photos.length}...`,
+            "sendPhotos",
+          );
+
           const body = {
             phone: contact.CONTATO_NUMERO,
             isGroup: false,
@@ -321,22 +345,55 @@ class WhatsappService {
               },
             );
 
+            Logger.success(
+              `Foto enviada para ${contact.CONTATO_NUMERO}`,
+              "sendPhotos",
+            );
             responseData.push({
               contact: contact.CONTATO_NUMERO,
               success: true,
             });
-            await new Promise((resolve) =>
-              setTimeout(resolve, Utils.setRamdomTime(800, 2500)),
-            );
+            successCount++;
+            errors = 0;
+
+            const delay = Utils.setRamdomTime(800, 2500);
+            Logger.info(`Aguardando ${delay}ms...`, "sendPhotos");
+            await new Promise((resolve) => setTimeout(resolve, delay));
             if (onPhotoSent) {
               onPhotoSent();
             }
           } catch (error) {
-            // Se ocorrerem 3 erros consecutivos, verificar se a sessão ainda está ativa antes de continuar a enviar mensagens para os próximos contatos
+            errors++;
+            Logger.error(
+              `Erro ao enviar foto para ${contact.CONTATO_NUMERO} (erro #${errors})`,
+              "sendPhotos",
+              error.message,
+            );
+            if (error.response?.status) {
+              Logger.debug(
+                `Status HTTP: ${error.response.status}`,
+                error.response?.data || {},
+                "sendPhotos",
+              );
+            }
+
             if (errors >= 3) {
+              Logger.warn(
+                `${errors} erros consecutivos. Verificando conexão...`,
+                "sendPhotos",
+              );
               const connectionStatus =
                 await WhatsappService.checkWhatsappConnection(session);
+              Logger.info(
+                `Conexão: ${connectionStatus?.data?.status || false}`,
+                "sendPhotos",
+              );
+
               if (!connectionStatus?.data?.status) {
+                Logger.error(
+                  `Sessão desconectada! Interrompendo envio.`,
+                  "sendPhotos",
+                );
                 return {
                   success: false,
                   error: "WhatsApp session is not connected.",
@@ -344,24 +401,29 @@ class WhatsappService {
                     "The WhatsApp session appears to be disconnected. Please check the connection and try again.",
                 };
               }
-              errors = 0; // Resetar contador de erros após verificar a conexão
+              Logger.success(`Conexão OK. Continuando...`, "sendPhotos");
+              errors = 0;
             }
             responseData.push({
               contact: contact.CONTATO_NUMERO,
               success: false,
               error: error.message,
             });
-            errors++;
-            // Continua para o próximo contato mesmo se houver erro
             continue;
           }
         }
       }
+
+      Logger.success(
+        `Envio concluído! Sucessos: ${successCount}/${contacts.length * photos.length}`,
+        "sendPhotos",
+      );
       return {
         success: true,
         data: responseData,
       };
     } catch (error) {
+      Logger.error(`Erro fatal no envio`, "sendPhotos", error.message);
       return {
         success: false,
         error: error.message,
@@ -372,9 +434,25 @@ class WhatsappService {
 
   static async sendMessage({ contacts, message, session, onMessageSent }) {
     try {
+      Logger.info("Iniciando envio de mensagens", "sendMessage");
+      Logger.info(`Total de contatos: ${contacts.length}`, "sendMessage");
+      Logger.info(
+        `Mensagem: ${message.substring(0, 100)}${message.length > 100 ? "..." : ""}`,
+        "sendMessage",
+      );
+      Logger.info(`Sessão: ${session.SESSION}`, "sendMessage");
+
       const responseData = [];
       let errors = 0;
-      for (const contact of contacts) {
+      let successCount = 0;
+
+      for (let index = 0; index < contacts.length; index++) {
+        const contact = contacts[index];
+        Logger.info(
+          `Contato ${index + 1}/${contacts.length}: ${contact.CONTATO_NUMERO}`,
+          "sendMessage",
+        );
+
         const body = {
           phone: contact.CONTATO_NUMERO,
           isGroup: false,
@@ -384,6 +462,7 @@ class WhatsappService {
         };
 
         try {
+          Logger.info(`Enviando mensagem...`, "sendMessage");
           await axios.post(
             `${WppConnectConfig.apiUrl}/${session.SESSION}/send-message`,
             body,
@@ -391,22 +470,55 @@ class WhatsappService {
               headers: WppConnectConfig.buildHeaders(session.KEY_VALUE),
             },
           );
+          Logger.success(
+            `Mensagem enviada para ${contact.CONTATO_NUMERO}`,
+            "sendMessage",
+          );
           responseData.push({
             contact: contact.CONTATO_NUMERO,
             success: true,
           });
-          await new Promise((resolve) =>
-            setTimeout(resolve, Utils.setRamdomTime(800, 2500)),
-          );
+          successCount++;
+          errors = 0;
+
+          const delay = Utils.setRamdomTime(800, 2500);
+          Logger.info(`Aguardando ${delay}ms...`, "sendMessage");
+          await new Promise((resolve) => setTimeout(resolve, delay));
           if (onMessageSent) {
             onMessageSent();
           }
         } catch (error) {
-          // Se ocorrerem 3 erros consecutivos, verificar se a sessão ainda está ativa antes de continuar a enviar mensagens para os próximos contatos
+          errors++;
+          Logger.error(
+            `Erro ao enviar para ${contact.CONTATO_NUMERO} (erro #${errors})`,
+            "sendMessage",
+            error.message,
+          );
+          if (error.response?.status) {
+            Logger.debug(
+              `Status HTTP: ${error.response.status}`,
+              error.response?.data || {},
+              "sendMessage",
+            );
+          }
+
           if (errors >= 3) {
+            Logger.warn(
+              `${errors} erros consecutivos. Verificando conexão...`,
+              "sendMessage",
+            );
             const connectionStatus =
               await WhatsappService.checkWhatsappConnection(session);
+            Logger.info(
+              `Conexão: ${connectionStatus?.data?.status || false}`,
+              "sendMessage",
+            );
+
             if (!connectionStatus?.data?.status) {
+              Logger.error(
+                `Sessão desconectada! Interrompendo envio.`,
+                "sendMessage",
+              );
               return {
                 success: false,
                 error: "WhatsApp session is not connected.",
@@ -414,22 +526,28 @@ class WhatsappService {
                   "The WhatsApp session appears to be disconnected. Please check the connection and try again.",
               };
             }
-            errors = 0; // Resetar contador de erros após verificar a conexão
+            Logger.success(`Conexão OK. Continuando...`, "sendMessage");
+            errors = 0;
           }
           responseData.push({
             contact: contact.CONTATO_NUMERO,
             success: false,
             error: error.message,
           });
-          errors++;
           continue;
         }
       }
+
+      Logger.success(
+        `Envio concluído! Sucessos: ${successCount}/${contacts.length}`,
+        "sendMessage",
+      );
       return {
         success: true,
         data: responseData,
       };
     } catch (error) {
+      Logger.error(`Erro fatal no envio`, "sendMessage", error.message);
       return {
         success: false,
         error: error.message,
