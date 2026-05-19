@@ -2,6 +2,7 @@ import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import path from "path";
 import SQLServerDB from "../database/SQLServerDB.js";
+import Utils from "../utils/Utils.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BASE_QUERY = readFileSync(
@@ -16,7 +17,10 @@ const FILTER_MAP = {
     condition: `E.[ENTI_RAZAOSOCIAL] LIKE @name`,
     transform: (v) => `%${v}%`,
   },
-  cnpj: { condition: `E.[ENTI_CNPJCPF] = @cnpj` },
+  cnpj: {
+    condition: `E.[ENTI_CNPJCPF] = @cnpj`,
+    transform: (v) => Utils.normalizeString(String(v)).replace(/\D/g, ""),
+  },
   celphone: {
     condition: `E.[ENTI_CELULAR] LIKE @celphone`,
     transform: (v) => `%${v}%`,

@@ -4,6 +4,7 @@ import path from "path";
 import SQLServerDB from "../database/SQLServerDB.js";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import Utils from "../utils/Utils.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BASE_QUERY = readFileSync(
@@ -18,7 +19,10 @@ const FILTER_PLACEHOLDER = "-- Os filtros serão adicionados aqui pelo Node.js";
 
 const FILTER_MAP = {
   numOrder: { condition: `PO.[ID_NUMPEDORC] = @numOrder` },
-  cnpj: { condition: `E.[ENTI_CNPJCPF] = @cnpj` },
+  cnpj: {
+    condition: `E.[ENTI_CNPJCPF] = @cnpj`,
+    transform: (v) => Utils.normalizeString(String(v)).replace(/\D/g, ""),
+  },
   client: {
     condition: `E.[ENTI_RAZAOSOCIAL] LIKE @client`,
     transform: (v) => `%${v}%`,
