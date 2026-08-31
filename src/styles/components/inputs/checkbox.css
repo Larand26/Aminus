@@ -31,3 +31,9 @@
   color: transparent;
   position: relative;
 }
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

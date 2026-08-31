@@ -90,65 +90,143 @@ class PhotoService {
       newResalePrice,
       newDescription,
       newPhotos: photosToCreate,
-    } = newPhotos;
+      newIsEva = false,
+    } = newPhotos; //[cite: 13]
 
     try {
       const responses = [];
+
+      // Agora importamos o sharp sempre, pois ele será usado para redimensionar todas as fotos
+      const sharp = (await import("sharp")).default; //[cite: 13]
+
+      let svgPath;
+      if (newIsEva) {
+        //[cite: 13]
+        const url = await import("url");
+        const __filename = url.fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
+        svgPath = path.join(__dirname, "../assets/EVA.svg"); //[cite: 13]
+      }
+
       for (const photoData of photosToCreate) {
+        //[cite: 13]
         // Verificar se já existe um produto com a mesma referência, código de cor e/ou nome de cor
         const existingProduct = await MongoDB.findOne(ProductModel, {
+          //[cite: 13]
           referencia: newManufacturerCode,
           $or: [
-            { codigo_cor: photoData.colorCode.toUpperCase() },
-            { nome_cor: photoData.color.toUpperCase() },
+            { codigo_cor: photoData.colorCode.toUpperCase() }, //[cite: 13]
+            { nome_cor: photoData.color.toUpperCase() }, //[cite: 13]
           ],
         });
 
         if (existingProduct) {
+          //[cite: 13]
           responses.push({
+            //[cite: 13]
             success: false,
             error: "Product with the same reference and color already exists.",
-            data: existingProduct,
+            data: existingProduct, //[cite: 13]
           });
-          continue; // Pular para a próxima foto
+          continue; // Pular para a próxima cor/foto[cite: 13]
         }
 
-        // Verifica se o tem outros produtos com a mesma referência para reutilizar essas informações
+        // Verifica se tem outros produtos com a mesma referência para reutilizar essas informações
         const similarProduct = await MongoDB.findOne(ProductModel, {
-          referencia: newManufacturerCode,
+          //[cite: 13]
+          referencia: newManufacturerCode, //[cite: 13]
         });
 
-        // Criar o novo produto com as fotos
+        // Processa as fotos individualmente (Redimensionamento + Marca D'água)
+        const processadas = [];
+        for (let i = 0; i < photoData.photo.length; i++) {
+          //[cite: 13]
+          let buffer = PhotoService.normalizePhotoBuffer(photoData.photo[i]); //[cite: 13]
+
+          if (i === 0) {
+            // 1. Primeira foto: 800x800px, preenchendo com branco
+            buffer = await sharp(buffer)
+              .resize(800, 800, {
+                fit: "contain",
+                background: { r: 255, g: 255, b: 255, alpha: 1 },
+              })
+              .jpeg()
+              .toBuffer();
+
+            // 2. Aplica a marca d'água na primeira foto, se newIsEva for true
+            if (newIsEva) {
+              //[cite: 13]
+              if (fs.existsSync(svgPath)) {
+                //[cite: 13]
+                // Força o SVG a ficar dentro de uma "caixa" de no máximo 320x320, mantendo a proporção.
+                // Isso evita o erro de composite independente do formato do SVG.
+                const resizedSvg = await sharp(svgPath)
+                  .resize({ width: 320, height: 320, fit: "inside" })
+                  .png() // PNG para manter transparência do SVG
+                  .toBuffer();
+
+                buffer = await sharp(buffer)
+                  .composite([{ input: resizedSvg, gravity: "northeast" }])
+                  .jpeg() // Garante a saída em jpeg no final
+                  .toBuffer();
+              } else {
+                console.warn(`Aviso: Arquivo SVG não encontrado em ${svgPath}`);
+              }
+            }
+          } else {
+            // Outras fotos: máximo 800px largura ou altura, mantendo proporção
+            const metadata = await sharp(buffer).metadata();
+            let resizeOptions = {};
+            if (metadata.width > metadata.height) {
+              resizeOptions.width = 800;
+            } else {
+              resizeOptions.height = 800;
+            }
+
+            buffer = await sharp(buffer)
+              .resize(resizeOptions)
+              .jpeg()
+              .toBuffer();
+          }
+
+          processadas.push(buffer);
+        }
+
+        // Criar o novo produto com as fotos processadas e redimensionadas
         const newProduct = {
-          referencia: newManufacturerCode,
-          embalamento: similarProduct?.embalamento || newPackaging,
-          preco_revenda: similarProduct?.preco_revenda || newResalePrice,
+          //[cite: 13]
+          referencia: newManufacturerCode, //[cite: 13]
+          embalamento: similarProduct?.embalamento || newPackaging, //[cite: 13]
+          preco_revenda: similarProduct?.preco_revenda || newResalePrice, //[cite: 13]
           descricao_produto:
-            similarProduct?.descricao_produto || newDescription,
-          codigo_cor: photoData.colorCode.toUpperCase(),
-          nome_cor: photoData.color.toUpperCase(),
-          fotos: photoData.photo.map((photo) =>
-            PhotoService.normalizePhotoBuffer(photo),
-          ),
+            similarProduct?.descricao_produto || newDescription, //[cite: 13]
+          codigo_cor: photoData.colorCode.toUpperCase(), //[cite: 13]
+          nome_cor: photoData.color.toUpperCase(), //[cite: 13]
+          fotos: processadas, //[cite: 13]
         };
-        const createdProduct = await MongoDB.create(ProductModel, newProduct);
+
+        const createdProduct = await MongoDB.create(ProductModel, newProduct); //[cite: 13]
         responses.push({
-          success: true,
-          data: createdProduct,
+          //[cite: 13]
+          success: true, //[cite: 13]
+          data: createdProduct, //[cite: 13]
         });
       }
 
       return {
-        success: true,
-        data: responses,
+        //[cite: 13]
+        success: true, //[cite: 13]
+        data: responses, //[cite: 13]
       };
     } catch (error) {
-      console.log(error);
+      //[cite: 13]
+      console.log(error); //[cite: 13]
 
       return {
-        success: false,
-        error: error.message,
-        message: "An error occurred while creating the photo.",
+        //[cite: 13]
+        success: false, //[cite: 13]
+        error: error.message, //[cite: 13]
+        message: "An error occurred while creating the photo.", //[cite: 13]
       };
     }
   }

@@ -383,6 +383,16 @@ class Photos extends Component {
                     },
                   })
                 }
+                onChangeIsEva={(
+                  e, // Alterado de (value) para (e)
+                ) =>
+                  this.setState({
+                    newPhotos: {
+                      ...this.state.newPhotos,
+                      newIsEva: e.target.checked, // Extrai o booleano correto do checkbox
+                    },
+                  })
+                }
               />
             )}
           </Content>

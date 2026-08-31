@@ -8,6 +8,7 @@ import InputText from "../inputs/InputText";
 import InputPhoto from "../inputs/InputPhoto";
 import Select from "../inputs/Select";
 import TextArea from "../inputs/TextArea";
+import InputCheckBox from "../inputs/InputCheckBox";
 
 // buttons
 import Button from "../buttons/Button";
@@ -32,6 +33,7 @@ class AddPhotos extends Component {
       onChangeResalePrice,
       onChangePackaging,
       onChangeDescription,
+      onChangeIsEva,
       handleAddNewPhotos,
     } = this.props;
     // newPhotos = { newManufacturerCode: "", newPackaging: "", newDescription: "", newPhotos: [{ photo: [Base64], color: "", colorCode: "" }] }
@@ -84,6 +86,12 @@ class AddPhotos extends Component {
               options={packagingOptions}
               value={newPhotos?.newPackaging || ""}
               onChange={onChangePackaging}
+            />
+            <InputCheckBox
+              className="w-full"
+              label="É Eva?"
+              checked={newPhotos?.newIsEva || false}
+              onChange={onChangeIsEva}
             />
             <TextArea
               label="Descrição"
