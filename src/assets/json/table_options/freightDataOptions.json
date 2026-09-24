@@ -2,14 +2,14 @@
   { "key": "SHIP", "name": "Transportadora", "checked": true },
   {
     "key": "PRICE",
-    "name": "Preço",
+    "name": "Preço (peso real)",
     "format": "promo-currency",
     "fields": ["ORIGINAL_PRICE", "PRICE"],
     "checked": true
   },
   {
     "key": "PRICE[20-30-45]",
-    "name": "Preço (20x30x45)",
+    "name": "Preço (peso cubado)",
     "format": "promo-currency",
     "fields": ["ORIGINAL_PRICE[20-30-45]", "PRICE[20-30-45]"],
     "checked": true
