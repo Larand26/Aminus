@@ -6,6 +6,8 @@ import Button from "../buttons/Button";
 import InputText from "../inputs/InputText";
 import InputCheckBox from "../inputs/InputCheckBox";
 
+import PhotoUtil from "../../utils/Photo";
+
 import unknown from "../../assets/img/unknown.jpg";
 
 class Galery extends Component {
@@ -45,27 +47,31 @@ class Galery extends Component {
         </div>
 
         <div className="fotos-container">
-          {filteredProducts.map((product) => (
-            <Card
-              key={`${product.referencia}-${product.codigo_cor}`}
-              photos={product.fotos.length > 0 ? product.fotos : [unknown]}
-              onClick={() => onChangeSelectedForDownload(product)}
-              className={
-                productsSelectedForDownload.includes(product)
-                  ? "hover-card card-selected"
-                  : "hover-card"
-              }
-            >
-              <p className="ref">{product.referencia}</p>
-              <p className="color-name">{product.nome_cor}</p>
-              <p className="color-code">{product.codigo_cor}</p>
-              <ActionButtons
-                onEdit={() => onEdit(product)}
-                onDelete={() => onDelete(product)}
-                onDownload={() => onDownload(product)}
-              />
-            </Card>
-          ))}
+          {filteredProducts.map((product) => {
+            const photoUrls = PhotoUtil.getPhotoUrls(product);
+            return (
+              <Card
+                key={product.id_product}
+                photos={photoUrls.length > 0 ? photoUrls : [unknown]}
+                fallbackPhoto={unknown}
+                onClick={() => onChangeSelectedForDownload(product)}
+                className={
+                  productsSelectedForDownload.includes(product)
+                    ? "hover-card card-selected"
+                    : "hover-card"
+                }
+              >
+                <p className="ref">{product.manufacturer_code}</p>
+                <p className="color-name">{product.color_name}</p>
+                <p className="color-code">{product.color_code}</p>
+                <ActionButtons
+                  onEdit={() => onEdit(product)}
+                  onDelete={() => onDelete(product)}
+                  onDownload={() => onDownload(product)}
+                />
+              </Card>
+            );
+          })}
         </div>
       </>
     );

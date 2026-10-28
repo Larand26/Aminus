@@ -1,22 +1,38 @@
 import Utils from "./Utils";
 
+/**
+ * Produto do banco `catalog` como chega do IPC `get-photos`.
+ * @typedef {Object} CatalogProduct
+ * @property {number} id_product
+ * @property {string} manufacturer_code
+ * @property {string} packing
+ * @property {number} resale_price
+ * @property {string} description
+ * @property {number} id_color
+ * @property {string} color_name
+ * @property {string} color_code
+ * @property {Array<{id_photo: number, url: string, position: number}>} photos
+ */
+
 class Photo {
+  /** @param {CatalogProduct} product */
+  static getPhotoUrls(product) {
+    return (product?.photos || [])
+      .slice()
+      .sort((a, b) => a.position - b.position)
+      .map((photo) => photo.url);
+  }
+
+  /** @returns {Promise<{success: boolean, data?: Array<CatalogProduct>, error?: string, message?: string}>} */
   static async getPhotos(args) {
     const { token, filters } = args;
     try {
       const response = await window.api.getPhotos({ token, filters });
-      if (response.success) {
-        response.data.map((product) => {
-          product.fotos = product.fotos.map((foto) =>
-            Utils.bufferToBase64(foto.buffer),
-          );
-          return product;
-        });
-        return {
-          success: true,
-          data: response.data,
-        };
-      }
+      if (!response.success) return response;
+      return {
+        success: true,
+        data: response.data,
+      };
     } catch (error) {
       return {
         success: false,
@@ -26,60 +42,54 @@ class Photo {
     }
   }
 
+  /**
+   * @param {{token: string, oldProduct: CatalogProduct, newProduct: Object}} args
+   */
   static async updatePhoto(args) {
     const { token, oldProduct, newProduct } = args;
     try {
-      // Função utilitária para comparar campos relevantes
-      function compareFields(objA, objB, fieldPairs) {
-        return fieldPairs.every(([a, b]) => objA[a] === objB[b]);
-      }
+      const newData = {
+        manufacturer_code: newProduct.manufacturer,
+        packing: newProduct.packaging,
+        resale_price: newProduct.resalePrice,
+        description: newProduct.description,
+        color_name: newProduct.colorName,
+        color_code: newProduct.colorCode,
+        photos: newProduct.photos || [],
+      };
 
-      const fieldPairs = [
-        ["description", "descricao_produto"],
-        ["colorName", "nome_cor"],
-        ["colorCode", "codigo_cor"],
-        ["resalePrice", "preco_revenda"],
-        ["manufacturer", "referencia"],
-        ["packaging", "embalamento"],
-        ["videoUrl", "video_url"],
-      ];
-
-      const fieldsEqual = compareFields(newProduct, oldProduct, fieldPairs);
+      const fieldsEqual =
+        newData.manufacturer_code === oldProduct.manufacturer_code &&
+        newData.packing === oldProduct.packing &&
+        String(newData.resale_price) === String(oldProduct.resale_price) &&
+        newData.description === oldProduct.description &&
+        newData.color_name === oldProduct.color_name &&
+        newData.color_code === oldProduct.color_code;
       const photosEqual = Utils.arePhotoArraysEqual(
-        oldProduct.fotos,
-        newProduct.photos,
+        Photo.getPhotoUrls(oldProduct),
+        newData.photos,
       );
 
       if (fieldsEqual && photosEqual) {
         return {
           success: true,
+          unchanged: true,
           message: "No changes detected. The product was not updated.",
         };
       }
 
-      const newData = {
-        descricao_produto: newProduct.description,
-        nome_cor: newProduct.colorName,
-        codigo_cor: newProduct.colorCode,
-        preco_revenda: newProduct.resalePrice,
-        referencia: newProduct.manufacturer,
-        embalamento: newProduct.packaging,
-        video_url: newProduct.videoUrl,
-        fotos: newProduct.photos.map((photo) => photo),
-      };
-
       const response = await window.api.updatePhoto({
         token,
-        id: oldProduct._id,
+        id: oldProduct.id_product,
         newData,
       });
 
-      if (response.success) {
-        return {
-          success: true,
-          message: "Product updated successfully.",
-        };
-      }
+      if (!response.success) return response;
+      return {
+        success: true,
+        data: response.data,
+        message: "Product updated successfully.",
+      };
     } catch (error) {
       return {
         success: false,
@@ -89,19 +99,15 @@ class Photo {
     }
   }
 
+  /** @param {{token: string, products: Array<CatalogProduct>}} args */
   static async downloadPhoto(args) {
     const { token, products } = args;
     try {
       const response = await window.api.downloadPhoto({
         token,
-        products,
+        productIds: products.map((product) => product.id_product),
       });
-      if (response.success) {
-        return {
-          success: true,
-          message: "Photos downloaded successfully.",
-        };
-      }
+      return response;
     } catch (error) {
       return {
         success: false,
@@ -111,19 +117,15 @@ class Photo {
     }
   }
 
+  /** @param {{token: string, productId: number}} args */
   static async deletePhoto(args) {
-    const { token, photoId } = args;
+    const { token, productId } = args;
     try {
       const response = await window.api.deletePhoto({
         token,
-        photoId,
+        productId,
       });
-      if (response.success) {
-        return {
-          success: true,
-          message: "Photo deleted successfully.",
-        };
-      }
+      return response;
     } catch (error) {
       return {
         success: false,
@@ -140,12 +142,7 @@ class Photo {
         token,
         newPhotos,
       });
-      if (response.success) {
-        return {
-          success: true,
-          message: "Photos created successfully.",
-        };
-      }
+      return response;
     } catch (error) {
       return {
         success: false,

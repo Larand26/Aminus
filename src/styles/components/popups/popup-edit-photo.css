@@ -41,8 +41,3 @@
   justify-content: space-around;
 }
 
-.popup-edit-photo .video-container {
-  display: flex;
-  padding: 10px;
-  justify-content: center;
-}

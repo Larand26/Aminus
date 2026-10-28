@@ -9,6 +9,7 @@ class MySQLConfig {
     this.user = process.env.MYSQL_USER;
     this.password = process.env.MYSQL_PASSWORD;
     this.database = process.env.MYSQL_DATABASE;
+    this.catalogDatabase = process.env.MYSQL_CATALOG_DATABASE || "catalog";
   }
 }
 

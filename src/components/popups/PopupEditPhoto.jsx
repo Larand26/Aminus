@@ -7,6 +7,8 @@ import Select from "../inputs/Select";
 import InputPhoto from "../inputs/InputPhoto";
 import TextArea from "../inputs/TextArea";
 
+import PhotoUtil from "../../utils/Photo";
+
 import "../../styles/components/popups/popup-edit-photo.css";
 
 const packagingOptions = [
@@ -25,23 +27,28 @@ class PopupEditPhoto extends Component {
       manufacturer: "",
       photos: null,
       packaging: "",
-      videoUrl: "",
     };
   }
 
   componentDidUpdate(prevProps) {
+    // Rascunho de uma edição que falhou: restaura o que o usuário tinha digitado
+    if (this.props.draft && this.props.draft !== prevProps.draft) {
+      this.setState({ ...this.props.draft });
+      return;
+    }
+
     // Atualiza o estado apenas quando o produto muda
     if (this.props.product !== prevProps.product && this.props.product) {
       const { product } = this.props;
       this.setState({
-        description: product.descricao_produto || "",
-        colorName: product.nome_cor || "",
-        colorCode: product.codigo_cor || "",
-        manufacturer: product.referencia || "",
-        photos: product.fotos || [],
-        packaging: product.embalamento || "",
-        videoUrl: product.video_url || "",
-        resalePrice: product.preco_revenda || "",
+        description: product.description || "",
+        colorName: product.color_name || "",
+        colorCode: product.color_code || "",
+        manufacturer: product.manufacturer_code || "",
+        photos: PhotoUtil.getPhotoUrls(product),
+        packaging: product.packing || "",
+        resalePrice:
+          product.resale_price != null ? String(product.resale_price) : "",
       });
     }
   }
@@ -56,14 +63,12 @@ class PopupEditPhoto extends Component {
         manufacturer: this.state.manufacturer,
         photos: this.state.photos,
         packaging: this.state.packaging,
-        videoUrl: this.state.videoUrl,
       });
     }
   };
 
   render() {
     const { isOpen } = this.props;
-    const videoSrc = this.state.videoUrl?.trim() || undefined;
     return (
       <PopUp
         isOpen={isOpen}
@@ -115,14 +120,6 @@ class PopupEditPhoto extends Component {
                   value={this.state.colorCode}
                   onChange={(colorCode) => this.setState({ colorCode })}
                 />
-                <InputText
-                  label="Url do vídeo"
-                  value={this.state.videoUrl}
-                  onChange={(videoUrl) => this.setState({ videoUrl })}
-                />
-              </div>
-              <div className="video-container">
-                <video src={videoSrc} controls></video>
               </div>
             </div>
           </div>

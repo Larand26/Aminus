@@ -1,41 +1,191 @@
-import MongoDB from "../database/MongoDB.js";
-import ProductModel from "../models/ProductModel.js";
-import Utils from "../utils/Utils.js";
-import { dialog, app } from "electron";
+import MySQLDB from "../database/MySQLDB.js";
+import PhotoRepository from "../repositories/PhotoRepository.js";
+import PhotosApiService from "./PhotosApiService.js";
+import { dialog, session } from "electron";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const EVA_SVG_PATH = path.join(__dirname, "../assets/EVA.svg");
+const PACKING_VALUES = ["f", "c"];
+
+/**
+ * @typedef {import("../repositories/PhotoRepository.js").CatalogProduct} CatalogProduct
+ *
+ * @typedef {Object} UpdateProductData
+ * @property {string} manufacturer_code
+ * @property {string} packing
+ * @property {number|string} resale_price
+ * @property {string} description
+ * @property {string} color_name
+ * @property {string} color_code
+ * @property {Array<string>} photos URLs já gravadas ou data URLs (base64) de fotos novas, na ordem de exibição
+ *
+ * @typedef {Object} NewPhotosPayload
+ * @property {string} newManufacturerCode
+ * @property {string} [newPackaging]
+ * @property {number|string} [newResalePrice]
+ * @property {string} [newDescription]
+ * @property {boolean} [newIsEva]
+ * @property {Array<{photo: Array<string>, color: string, colorCode: string}>} newPhotos
+ */
 
 class PhotoService {
-  static normalizePhotoBuffer(photo) {
-    if (Buffer.isBuffer(photo)) {
-      return photo;
-    }
-
-    if (photo && typeof photo === "object" && photo.buffer) {
-      return Buffer.isBuffer(photo.buffer)
-        ? photo.buffer
-        : Buffer.from(photo.buffer);
-    }
-
-    if (typeof photo === "string") {
-      return Utils.base64ToBuffer(photo);
-    }
-
-    return photo;
+  static isRemoteUrl(value) {
+    return typeof value === "string" && /^https?:\/\//i.test(value);
   }
 
+  static dataUrlToBuffer(dataUrl) {
+    return Buffer.from(dataUrl.replace(/^data:[^;,]+;base64,/, ""), "base64");
+  }
+
+  /** Aceita "24,99", "R$ 24.99" ou número. */
+  static parsePrice(value) {
+    if (typeof value === "number") return Number.isFinite(value) ? value : 0;
+    const normalized = String(value ?? "")
+      .replace(/[^\d,.-]/g, "")
+      .replace(/\.(?=\d{3}(\D|$))/g, "")
+      .replace(",", ".");
+    const parsed = Number.parseFloat(normalized);
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+
+  static normalizeCode(value) {
+    return String(value ?? "").trim().toUpperCase();
+  }
+
+  static assertKeySegment(value, label) {
+    if (!PhotosApiService.isValidKeySegment(value)) {
+      throw new Error(
+        `${label} inválido ("${value}"): use apenas letras, números, "-" e "_".`,
+      );
+    }
+  }
+
+  /**
+   * Primeira foto: 800x800 com fundo branco (e selo EVA, se pedido). Demais: lado maior com 800px.
+   * @returns {Promise<Buffer>}
+   */
+  static async processPhoto(buffer, index, { isEva = false } = {}) {
+    const sharp = (await import("sharp")).default;
+
+    if (index > 0) {
+      const { width = 0, height = 0 } = await sharp(buffer).metadata();
+      const resizeOptions = width > height ? { width: 800 } : { height: 800 };
+      return sharp(buffer).resize(resizeOptions).jpeg().toBuffer();
+    }
+
+    let output = await sharp(buffer)
+      .resize(800, 800, {
+        fit: "contain",
+        background: { r: 255, g: 255, b: 255, alpha: 1 },
+      })
+      .jpeg()
+      .toBuffer();
+
+    if (isEva) {
+      if (fs.existsSync(EVA_SVG_PATH)) {
+        // Limita o SVG a 320x320 para o composite não falhar com SVGs maiores que a foto.
+        const watermark = await sharp(EVA_SVG_PATH)
+          .resize({ width: 320, height: 320, fit: "inside" })
+          .png()
+          .toBuffer();
+        output = await sharp(output)
+          .composite([{ input: watermark, gravity: "northeast" }])
+          .jpeg()
+          .toBuffer();
+      } else {
+        console.warn(`Aviso: Arquivo SVG não encontrado em ${EVA_SVG_PATH}`);
+      }
+    }
+
+    return output;
+  }
+
+  /**
+   * Grava as fotos na photos-api, na ordem recebida, e retorna as URLs finais.
+   * Fotos que já estão na chave da posição de destino não são reenviadas; as demais são baixadas
+   * antes de qualquer upload, porque um upload pode sobrescrever a chave de outra foto da lista.
+   * @param {{manufacturerCode: string, colorCode: string, photos: Array<string>, isEva?: boolean}} args
+   * @returns {Promise<Array<string>>}
+   */
+  static async storePhotos({ manufacturerCode, colorCode, photos, isEva = false }) {
+    const pending = await Promise.all(
+      photos.map(async (photo, index) => {
+        const position = index + 1;
+        const key = PhotosApiService.buildPhotoKey(manufacturerCode, colorCode, position);
+
+        if (PhotoService.isRemoteUrl(photo)) {
+          if (PhotosApiService.urlMatchesKey(photo, key)) return { url: photo };
+          return { position, buffer: await PhotosApiService.fetchPhoto(photo) };
+        }
+
+        const buffer = await PhotoService.processPhoto(
+          PhotoService.dataUrlToBuffer(photo),
+          index,
+          { isEva },
+        );
+        return { position, buffer };
+      }),
+    );
+
+    const urls = [];
+    for (const item of pending) {
+      urls.push(
+        item.url ??
+          (await PhotosApiService.uploadPhoto({
+            manufacturerCode,
+            colorCode,
+            position: item.position,
+            buffer: item.buffer,
+          })),
+      );
+    }
+    return urls;
+  }
+
+  /**
+   * Não pode haver dois produtos com a mesma referência e o mesmo nome de cor; o código de cor
+   * também não pode repetir, porque define a chave das fotos no bucket.
+   * @param {CatalogProduct} conflict
+   */
+  static describeVariantConflict(conflict, { manufacturerCode, colorCode, colorName }) {
+    if (conflict.color_code === colorCode) {
+      return {
+        reason: "duplicate_color_code",
+        error:
+          `A referência ${manufacturerCode} já tem a cor ${colorCode} (${conflict.color_name}) ` +
+          `cadastrada. Para trocar ou adicionar fotos dela, use "Editar" na galeria.`,
+        data: conflict,
+      };
+    }
+    return {
+      reason: "duplicate_color_name",
+      error:
+        `A referência ${manufacturerCode} já tem o nome de cor "${colorName}" ` +
+        `(código ${conflict.color_code}). Altere o nome para "${colorName} (${colorCode})" e salve novamente.`,
+      data: conflict,
+    };
+  }
+
+  // As URLs não mudam quando uma foto é sobrescrita; sem isso o Chromium exibe a versão em cache.
+  static async clearImageCache() {
+    try {
+      await session.defaultSession.clearCache();
+    } catch (error) {
+      console.warn("Não foi possível limpar o cache de imagens:", error.message);
+    }
+  }
+
+  /** @param {{manufacturer?: string, color?: string}} filters */
   static async getPhotosProduct(filters = {}) {
     try {
-      const mongoFilters = {};
-
-      if (filters.manufacturer) mongoFilters.referencia = filters.manufacturer;
-      if (filters.color) mongoFilters.codigo_cor = filters.color;
-
-      const photos = await MongoDB.find(ProductModel, mongoFilters);
-      return {
-        success: true,
-        data: photos,
-      };
+      const products = await PhotoRepository.findProducts({
+        manufacturer: filters.manufacturer?.trim() || undefined,
+        color: filters.color?.trim() || undefined,
+      });
+      return { success: true, data: products };
     } catch (error) {
       return {
         success: false,
@@ -46,249 +196,203 @@ class PhotoService {
   }
 
   /**
-   *
-   * @param {Object<{id:Buffer, newData:Object<{fotos: Array<Base64URLString>}>}>} args
-   * @returns
+   * @param {{id: number, newData: UpdateProductData}} args
    */
   static async updatePhoto(args) {
     const { id, newData } = args;
-    const { codigo_cor, fotos, nome_cor } = newData;
     try {
-      if (fotos) {
-        newData.fotos = fotos.map((photo) =>
-          PhotoService.normalizePhotoBuffer(photo),
-        );
+      const current = await PhotoRepository.findProductById(id);
+      if (!current) {
+        return { success: false, error: "Produto não encontrado." };
       }
-      if (codigo_cor) newData.codigo_cor = codigo_cor.toUpperCase();
-      if (nome_cor) newData.nome_cor = nome_cor.toUpperCase();
 
-      const updatedPhoto = await MongoDB.update(ProductModel, id, newData);
-      return {
-        success: true,
-        data: updatedPhoto,
-      };
+      const manufacturerCode =
+        String(newData.manufacturer_code ?? current.manufacturer_code).trim();
+      const colorCode = PhotoService.normalizeCode(newData.color_code ?? current.color_code);
+      const colorName = PhotoService.normalizeCode(newData.color_name ?? current.color_name);
+      const packing = String(newData.packing ?? current.packing).toLowerCase();
+
+      PhotoService.assertKeySegment(manufacturerCode, "Código do fabricante");
+      PhotoService.assertKeySegment(colorCode, "Código da cor");
+      if (!colorName) throw new Error("O nome da cor é obrigatório.");
+      if (!PACKING_VALUES.includes(packing)) throw new Error(`Embalagem inválida: "${packing}".`);
+
+      // Antes do upload: com o mesmo código de cor, as fotos sobrescreveriam as do outro produto.
+      const conflict = await PhotoRepository.findProductByVariant({
+        manufacturerCode,
+        colorCode,
+        colorName,
+        excludeId: id,
+      });
+      if (conflict) {
+        return {
+          success: false,
+          ...PhotoService.describeVariantConflict(conflict, { manufacturerCode, colorCode, colorName }),
+        };
+      }
+
+      const photoUrls = await PhotoService.storePhotos({
+        manufacturerCode,
+        colorCode,
+        photos: Array.isArray(newData.photos)
+          ? newData.photos
+          : current.photos.map((photo) => photo.url),
+      });
+
+      await MySQLDB.catalogTransaction(async (query) => {
+        await PhotoRepository.upsertManufacturer(
+          {
+            manufacturerCode,
+            resalePrice: PhotoService.parsePrice(newData.resale_price ?? current.resale_price),
+            description: newData.description ?? current.description ?? "",
+          },
+          query,
+        );
+        const idColor = await PhotoRepository.findOrCreateColor({ colorCode, colorName }, query);
+        await PhotoRepository.updateProduct(id, { manufacturerCode, packing, idColor }, query);
+        await PhotoRepository.replacePhotos(id, photoUrls, query);
+      });
+
+      await PhotoService.clearImageCache();
+
+      return { success: true, data: await PhotoRepository.findProductById(id) };
     } catch (error) {
       console.log(error);
-
       return {
         success: false,
-        error: error.message,
+        error:
+          error.code === "ER_DUP_ENTRY"
+            ? "Já existe um produto com essa referência, cor e embalagem."
+            : error.message,
         message: "An error occurred while updating the photo.",
       };
     }
   }
 
   /**
-   * Cria novas fotos para os produtos. O argumento `args` deve conter um array `newPhotos` com as informações das fotos a serem criadas.
-   * @param {Object<{newManufacturerCode: string, newPackaging: string, newDescription: string, newPhotos: { photo: Array<Base64URLString>, color: string, colorCode: string }  }>} newPhotos
-   * @returns
+   * Cria um produto (variação de cor) por item de `newPhotos`, reaproveitando os dados da
+   * referência quando ela já existe.
+   * @param {NewPhotosPayload} payload
    */
-  static async createPhoto(newPhotos) {
+  static async createPhoto(payload) {
     const {
       newManufacturerCode,
       newPackaging,
       newResalePrice,
       newDescription,
-      newPhotos: photosToCreate,
+      newPhotos: photosToCreate = [],
       newIsEva = false,
-    } = newPhotos; //[cite: 13]
+    } = payload;
 
     try {
+      const manufacturerCode = String(newManufacturerCode ?? "").trim();
+      PhotoService.assertKeySegment(manufacturerCode, "Referência");
+
       const responses = [];
 
-      // Agora importamos o sharp sempre, pois ele será usado para redimensionar todas as fotos
-      const sharp = (await import("sharp")).default; //[cite: 13]
-
-      let svgPath;
-      if (newIsEva) {
-        //[cite: 13]
-        const url = await import("url");
-        const __filename = url.fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
-        svgPath = path.join(__dirname, "../assets/EVA.svg"); //[cite: 13]
-      }
-
       for (const photoData of photosToCreate) {
-        //[cite: 13]
-        // Verificar se já existe um produto com a mesma referência, código de cor e/ou nome de cor
-        const existingProduct = await MongoDB.findOne(ProductModel, {
-          //[cite: 13]
-          referencia: newManufacturerCode,
-          $or: [
-            { codigo_cor: photoData.colorCode.toUpperCase() }, //[cite: 13]
-            { nome_cor: photoData.color.toUpperCase() }, //[cite: 13]
-          ],
-        });
+        try {
+          const colorCode = PhotoService.normalizeCode(photoData.colorCode);
+          const colorName = PhotoService.normalizeCode(photoData.color);
+          PhotoService.assertKeySegment(colorCode, "Código da cor");
+          if (!colorName) throw new Error("O nome da cor é obrigatório.");
 
-        if (existingProduct) {
-          //[cite: 13]
-          responses.push({
-            //[cite: 13]
-            success: false,
-            error: "Product with the same reference and color already exists.",
-            data: existingProduct, //[cite: 13]
+          const existingProduct = await PhotoRepository.findProductByVariant({
+            manufacturerCode,
+            colorCode,
+            colorName,
           });
-          continue; // Pular para a próxima cor/foto[cite: 13]
-        }
-
-        // Verifica se tem outros produtos com a mesma referência para reutilizar essas informações
-        const similarProduct = await MongoDB.findOne(ProductModel, {
-          //[cite: 13]
-          referencia: newManufacturerCode, //[cite: 13]
-        });
-
-        // Processa as fotos individualmente (Redimensionamento + Marca D'água)
-        const processadas = [];
-        for (let i = 0; i < photoData.photo.length; i++) {
-          //[cite: 13]
-          let buffer = PhotoService.normalizePhotoBuffer(photoData.photo[i]); //[cite: 13]
-
-          if (i === 0) {
-            // 1. Primeira foto: 800x800px, preenchendo com branco
-            buffer = await sharp(buffer)
-              .resize(800, 800, {
-                fit: "contain",
-                background: { r: 255, g: 255, b: 255, alpha: 1 },
-              })
-              .jpeg()
-              .toBuffer();
-
-            // 2. Aplica a marca d'água na primeira foto, se newIsEva for true
-            if (newIsEva) {
-              //[cite: 13]
-              if (fs.existsSync(svgPath)) {
-                //[cite: 13]
-                // Força o SVG a ficar dentro de uma "caixa" de no máximo 320x320, mantendo a proporção.
-                // Isso evita o erro de composite independente do formato do SVG.
-                const resizedSvg = await sharp(svgPath)
-                  .resize({ width: 320, height: 320, fit: "inside" })
-                  .png() // PNG para manter transparência do SVG
-                  .toBuffer();
-
-                buffer = await sharp(buffer)
-                  .composite([{ input: resizedSvg, gravity: "northeast" }])
-                  .jpeg() // Garante a saída em jpeg no final
-                  .toBuffer();
-              } else {
-                console.warn(`Aviso: Arquivo SVG não encontrado em ${svgPath}`);
-              }
-            }
-          } else {
-            // Outras fotos: máximo 800px largura ou altura, mantendo proporção
-            const metadata = await sharp(buffer).metadata();
-            let resizeOptions = {};
-            if (metadata.width > metadata.height) {
-              resizeOptions.width = 800;
-            } else {
-              resizeOptions.height = 800;
-            }
-
-            buffer = await sharp(buffer)
-              .resize(resizeOptions)
-              .jpeg()
-              .toBuffer();
+          if (existingProduct) {
+            responses.push({
+              success: false,
+              ...PhotoService.describeVariantConflict(existingProduct, {
+                manufacturerCode,
+                colorCode,
+                colorName,
+              }),
+            });
+            continue;
           }
 
-          processadas.push(buffer);
+          const manufacturer = await PhotoRepository.findManufacturer(manufacturerCode);
+          const packing = (
+            (await PhotoRepository.findPackingByManufacturer(manufacturerCode)) ||
+            String(newPackaging ?? "")
+          ).toLowerCase();
+          if (!PACKING_VALUES.includes(packing)) {
+            throw new Error("Selecione a embalagem do produto.");
+          }
+
+          const photoUrls = await PhotoService.storePhotos({
+            manufacturerCode,
+            colorCode,
+            photos: photoData.photo || [],
+            isEva: newIsEva,
+          });
+
+          const idProduct = await MySQLDB.catalogTransaction(async (query) => {
+            await PhotoRepository.insertManufacturerIfMissing(
+              {
+                manufacturerCode,
+                resalePrice: manufacturer
+                  ? Number(manufacturer.resale_price)
+                  : PhotoService.parsePrice(newResalePrice),
+                description: manufacturer?.description ?? newDescription ?? "",
+              },
+              query,
+            );
+            const idColor = await PhotoRepository.findOrCreateColor({ colorCode, colorName }, query);
+            const createdId = await PhotoRepository.insertProduct(
+              { manufacturerCode, packing, idColor },
+              query,
+            );
+            await PhotoRepository.replacePhotos(createdId, photoUrls, query);
+            return createdId;
+          });
+
+          responses.push({
+            success: true,
+            data: await PhotoRepository.findProductById(idProduct),
+          });
+        } catch (error) {
+          console.log(error);
+          responses.push({ success: false, error: error.message });
         }
-
-        // Criar o novo produto com as fotos processadas e redimensionadas
-        const newProduct = {
-          //[cite: 13]
-          referencia: newManufacturerCode, //[cite: 13]
-          embalamento: similarProduct?.embalamento || newPackaging, //[cite: 13]
-          preco_revenda: similarProduct?.preco_revenda || newResalePrice, //[cite: 13]
-          descricao_produto:
-            similarProduct?.descricao_produto || newDescription, //[cite: 13]
-          codigo_cor: photoData.colorCode.toUpperCase(), //[cite: 13]
-          nome_cor: photoData.color.toUpperCase(), //[cite: 13]
-          fotos: processadas, //[cite: 13]
-        };
-
-        const createdProduct = await MongoDB.create(ProductModel, newProduct); //[cite: 13]
-        responses.push({
-          //[cite: 13]
-          success: true, //[cite: 13]
-          data: createdProduct, //[cite: 13]
-        });
       }
 
-      return {
-        //[cite: 13]
-        success: true, //[cite: 13]
-        data: responses, //[cite: 13]
-      };
-    } catch (error) {
-      //[cite: 13]
-      console.log(error); //[cite: 13]
+      await PhotoService.clearImageCache();
 
       return {
-        //[cite: 13]
-        success: false, //[cite: 13]
-        error: error.message, //[cite: 13]
-        message: "An error occurred while creating the photo.", //[cite: 13]
+        success: responses.length > 0 && responses.every((response) => response.success),
+        data: responses,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        error: error.message,
+        message: "An error occurred while creating the photo.",
       };
     }
   }
 
   /**
-   *
-   * @param {Array[Object<{referencia: String, codigo_cor: String, fotos: Array[Base64String]}]>}
-   * @returns {Array[Object<{referencia: String, codigo_cor: String, fotos: Array[Buffer]}]>}
+   * Baixa as fotos dos produtos já redimensionadas.
+   * @param {Array<CatalogProduct>} products
+   * @returns {Promise<{success: boolean, data?: Array<CatalogProduct & {files: Array<Buffer>}>, error?: string}>}
    */
   static async resizePhotos(products) {
     try {
-      const sharp = (await import("sharp")).default;
       const processedProducts = [];
-
       for (const product of products) {
-        const processedFotos = [];
-        for (let i = 0; i < product.fotos.length; i++) {
-          const base64 = product.fotos[i];
-          const buffer = Buffer.isBuffer(base64)
-            ? base64
-            : Buffer.from(
-                base64.replace(/^data:image\/(png|jpeg|jpg);base64,/, ""),
-                "base64",
-              );
-
-          if (i === 0) {
-            // Primeira foto: 800x800px, preenchendo com branco
-            const resized = await sharp(buffer)
-              .resize(800, 800, {
-                fit: "contain",
-                background: { r: 255, g: 255, b: 255, alpha: 1 },
-              })
-              .jpeg()
-              .toBuffer();
-            processedFotos.push({ buffer: resized });
-          } else {
-            // Outras fotos: máximo 800px largura ou altura, mantendo proporção
-            const metadata = await sharp(buffer).metadata();
-            let width = metadata.width;
-            let height = metadata.height;
-            let resizeOptions = {};
-            if (width > height) {
-              resizeOptions.width = 800;
-            } else {
-              resizeOptions.height = 800;
-            }
-            const resized = await sharp(buffer)
-              .resize(resizeOptions)
-              .jpeg()
-              .toBuffer();
-            processedFotos.push({ buffer: resized });
-          }
+        const files = [];
+        for (let i = 0; i < product.photos.length; i++) {
+          const buffer = await PhotosApiService.fetchPhoto(product.photos[i].url);
+          files.push(await PhotoService.processPhoto(buffer, i));
         }
-        processedProducts.push({
-          ...product,
-          fotos: processedFotos,
-        });
+        processedProducts.push({ ...product, files });
       }
-      return {
-        success: true,
-        data: processedProducts,
-      };
+      return { success: true, data: processedProducts };
     } catch (error) {
       return {
         success: false,
@@ -299,14 +403,15 @@ class PhotoService {
   }
 
   /**
-   *
-   * @param {} args
-   * @returns
+   * @param {{productIds: Array<number>}} args
    */
   static async downloadPhoto(args) {
-    const { products } = args; //Array[Object<{referencia: String, codigo_cor: String, fotos: Array[Buffer]}]>]
+    const productIds = (args.productIds || []).map(Number).filter(Number.isInteger);
     try {
-      // 1. Abrir o dialog para o usuário escolher a pasta
+      if (productIds.length === 0) {
+        return { success: false, message: "Nenhum produto selecionado." };
+      }
+
       const result = await dialog.showOpenDialog({
         title: "Escolha a pasta para salvar as fotos",
         properties: ["openDirectory"],
@@ -316,34 +421,28 @@ class PhotoService {
         return { success: false, message: "Operação cancelada pelo usuário." };
       }
 
-      const folderPath = result.filePaths[0];
+      const products = await PhotoRepository.findProducts({ ids: productIds });
+      const resized = await PhotoService.resizePhotos(products);
+      if (!resized.success) return resized;
 
-      // 2. Salvar cada foto na pasta escolhida
-      for (const product of products) {
-        const productDir = path.join(folderPath, `${product.referencia}`);
-        if (!fs.existsSync(productDir)) {
-          fs.mkdirSync(productDir, { recursive: true });
-        }
-        for (let i = 0; i < product.fotos.length; i++) {
-          const photo = product.fotos[i];
-          // photo.buffer deve ser um Buffer ou Uint8Array
+      const folderPath = result.filePaths[0];
+      for (const product of resized.data) {
+        const productDir = path.join(folderPath, product.manufacturer_code);
+        fs.mkdirSync(productDir, { recursive: true });
+        product.files.forEach((file, index) => {
           fs.writeFileSync(
             path.join(
               productDir,
-              `${product.referencia}_${product.codigo_cor}_${i + 1}.jpg`,
+              `${product.manufacturer_code}_${product.color_code}_${index + 1}.jpg`,
             ),
-            photo.buffer,
+            file,
           );
-        }
+        });
       }
 
-      return {
-        success: true,
-        message: "Fotos baixadas com sucesso.",
-      };
+      return { success: true, message: "Fotos baixadas com sucesso." };
     } catch (error) {
       console.log(error);
-
       return {
         success: false,
         error: error.message,
@@ -352,13 +451,12 @@ class PhotoService {
     }
   }
 
-  static async deletePhoto(photoId) {
+  /** Remove o produto e suas fotos do catálogo (os arquivos permanecem no bucket). */
+  static async deletePhoto(productId) {
     try {
-      await MongoDB.delete(ProductModel, photoId);
-      return {
-        success: true,
-        message: "Photo deleted successfully.",
-      };
+      const deleted = await PhotoRepository.deleteProduct(Number(productId));
+      if (!deleted) return { success: false, error: "Produto não encontrado." };
+      return { success: true, message: "Photo deleted successfully." };
     } catch (error) {
       return {
         success: false,

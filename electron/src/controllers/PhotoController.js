@@ -19,7 +19,7 @@ class PhotoController {
 
   /**
    * Cria novas fotos para os produtos. O argumento `args` deve conter um array `newPhotos` com as informações das fotos a serem criadas.
-   * @param {Object<{newManufacturerCode: string, newPackaging: string, newDescription: string, newPhotos: { photo: Array<Buffer>, color: string, colorCode: string }  }>} newPhotos
+   * @param {import("../services/PhotoService.js").NewPhotosPayload} newPhotos
    * @returns
    */
   static async createPhoto(newPhotos) {
@@ -36,17 +36,7 @@ class PhotoController {
 
   static async downloadPhoto(args) {
     try {
-      const resizedFilesData = await PhotoService.resizePhotos(args.products);
-      if (!resizedFilesData.success) {
-        return {
-          success: false,
-          error: resizedFilesData.error,
-          message: "An error occurred while resizing photos.",
-        };
-      }
-      return await PhotoService.downloadPhoto({
-        products: resizedFilesData.data,
-      });
+      return await PhotoService.downloadPhoto({ productIds: args.productIds });
     } catch (error) {
       return {
         success: false,
@@ -56,9 +46,9 @@ class PhotoController {
     }
   }
 
-  static async deletePhoto(photoId) {
+  static async deletePhoto(productId) {
     try {
-      return await PhotoService.deletePhoto(photoId);
+      return await PhotoService.deletePhoto(productId);
     } catch (error) {
       return {
         success: false,

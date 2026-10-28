@@ -38,7 +38,6 @@
     "jspdf": "^3.0.1",
     "jspdf-autotable": "^5.0.2",
     "jszip": "^3.10.1",
-    "mongoose": "^8.15.1",
     "mssql": "^12.2.0",
     "mysql2": "^3.14.1",
     "ospath": "^1.2.2",

@@ -42,6 +42,7 @@ class Photos extends Component {
 
       isEditPopupOpen: false,
       selectedEditProduct: null,
+      editDraft: null,
 
       toastInfo: null,
 
@@ -69,8 +70,6 @@ class Photos extends Component {
   ];
 
   getPhotos = async (manufacturerCode) => {
-    console.log(manufacturerCode);
-
     const filters = {
       manufacturer: manufacturerCode || this.state.manufacturerCode,
       color: this.state.colorCode,
@@ -124,13 +123,20 @@ class Photos extends Component {
       this.setState({
         toastInfo: {
           key: Date.now(),
-          message: "Erro ao atualizar a foto. Tente novamente.",
+          message: response.error
+            ? `Erro ao atualizar a foto: ${response.error}`
+            : "Erro ao atualizar a foto. Tente novamente.",
           type: "falha",
         },
+        // Reabre a edição com o que foi digitado, para corrigir sem perder fotos e campos.
+        isEditPopupOpen: true,
+        selectedEditProduct: oldProduct,
+        editDraft: newProduct,
       });
-      this.getPhotos(oldProduct.referencia);
       return;
     }
+
+    if (response.unchanged) return;
 
     this.setState({
       toastInfo: {
@@ -139,24 +145,18 @@ class Photos extends Component {
         type: "sucesso",
       },
     });
-    this.getPhotos(newProduct.referencia);
+    this.getPhotos(newProduct.manufacturer);
   };
 
   onFilterChange = (value) => {
     this.setState({ filterText: value });
 
-    const filtered = this.state.productsData.filter((product) => {
-      const refMatch = product.referencia
-        .toLowerCase()
-        .includes(value.toLowerCase());
-      const colorNameMatch = product.nome_cor
-        .toLowerCase()
-        .includes(value.toLowerCase());
-      const colorCodeMatch = product.codigo_cor
-        .toLowerCase()
-        .includes(value.toLowerCase());
-      return refMatch || colorNameMatch || colorCodeMatch;
-    });
+    const search = value.toLowerCase();
+    const filtered = this.state.productsData.filter((product) =>
+      [product.manufacturer_code, product.color_name, product.color_code].some(
+        (field) => (field || "").toLowerCase().includes(search),
+      ),
+    );
 
     this.setState({ filteredProducts: filtered });
   };
@@ -190,23 +190,25 @@ class Photos extends Component {
   };
 
   handleDownload = async (product) => {
-    let response;
+    const products = product
+      ? [product]
+      : this.state.productsSelectedForDownload;
+    if (products.length === 0) return;
 
-    if (product) {
-      response = await PhotoUtil.downloadPhoto({
-        token: this.state.token,
-        products: [product],
+    const response = await PhotoUtil.downloadPhoto({
+      token: this.state.token,
+      products,
+    });
+
+    if (!response.success && response.error) {
+      this.setState({
+        toastInfo: {
+          key: Date.now(),
+          message: `Erro ao baixar as fotos: ${response.error}`,
+          type: "falha",
+        },
       });
-      return;
     }
-
-    if (this.state.productsSelectedForDownload.length > 0)
-      response = await PhotoUtil.downloadPhoto({
-        token: this.state.token,
-        products: this.state.productsSelectedForDownload,
-      });
-
-    console.log(response || "Sem resposta");
   };
 
   createEmptyPhotoItem = () => ({ photo: [], color: "", colorCode: "" });
@@ -242,11 +244,11 @@ class Photos extends Component {
   };
 
   handleAddNewPhotos = async () => {
-    const { newPhotos } = this.state;
-    const photosToAdd = newPhotos.newPhotos.filter((photoItem) =>
+    const { newPhotos: formData } = this.state;
+    const photosToAdd = formData.newPhotos.filter((photoItem) =>
       this.isPhotoItemComplete(photoItem),
     );
-    newPhotos.newPhotos = photosToAdd;
+    const newPhotos = { ...formData, newPhotos: photosToAdd };
     const response = await PhotoUtil.createPhoto({
       token: this.state.token,
       newPhotos,
@@ -265,20 +267,35 @@ class Photos extends Component {
       });
       this.getPhotos(newPhotos.newManufacturerCode);
     } else {
+      const firstError =
+        response.error || response.data?.find((item) => !item.success)?.error;
+      // O backend responde um item por cor, na mesma ordem; só as cores que falharam ficam no formulário.
+      const failedItems = Array.isArray(response.data)
+        ? photosToAdd.filter((_, index) => !response.data[index]?.success)
+        : photosToAdd;
       this.setState({
         toastInfo: {
           key: Date.now(),
-          message: "Erro ao criar as fotos. Tente novamente.",
+          message: firstError
+            ? `Erro ao criar as fotos: ${firstError}`
+            : "Erro ao criar as fotos. Tente novamente.",
           type: "falha",
         },
+        newPhotos: {
+          ...formData,
+          newPhotos: [...failedItems, this.createEmptyPhotoItem()],
+        },
       });
+      if (response.data?.some((item) => item.success)) {
+        this.getPhotos(newPhotos.newManufacturerCode);
+      }
     }
   };
 
   handleDeletePhoto = async (product) => {
     const response = await PhotoUtil.deletePhoto({
       token: this.state.token,
-      photoId: product._id,
+      productId: product.id_product,
     });
 
     if (!response.success) {
@@ -289,9 +306,24 @@ class Photos extends Component {
           type: "falha",
         },
       });
-      this.getPhotos(product.referencia);
+      this.getPhotos(product.manufacturer_code);
       return;
     }
+
+    const removeDeleted = (products) =>
+      products.filter((p) => p.id_product !== product.id_product);
+    this.setState((prevState) => ({
+      productsData: removeDeleted(prevState.productsData),
+      filteredProducts: removeDeleted(prevState.filteredProducts),
+      productsSelectedForDownload: removeDeleted(
+        prevState.productsSelectedForDownload,
+      ),
+      toastInfo: {
+        key: Date.now(),
+        message: "Produto removido com sucesso.",
+        type: "sucesso",
+      },
+    }));
   };
 
   render() {
@@ -399,13 +431,17 @@ class Photos extends Component {
           <EditPhotoPopup
             isOpen={this.state.isEditPopupOpen}
             onClose={(data) => {
-              this.updatePhoto(data, this.state.selectedEditProduct);
+              if (this.state.selectedEditProduct) {
+                this.updatePhoto(data, this.state.selectedEditProduct);
+              }
               this.setState({
                 isEditPopupOpen: false,
                 selectedEditProduct: null,
+                editDraft: null,
               });
             }}
             product={this.state.selectedEditProduct}
+            draft={this.state.editDraft}
           />
         </div>
       </>

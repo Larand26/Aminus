@@ -279,7 +279,7 @@ class WebRegistration extends Component {
       return;
     }
 
-    this.setState({ photos: response.data[0].fotos });
+    this.setState({ photos: PhotoUtil.getPhotoUrls(response.data[0]) });
   };
 
   handleSelectionChange = (value, codInterno) => {
