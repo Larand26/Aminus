@@ -21,10 +21,17 @@ class PhotosApiService {
     return `${PhotosApiConfig.baseUrl}/images/${encodedKey}`;
   }
 
-  /** Verifica se a URL já aponta para a chave informada (ignorando query string). */
+  /**
+   * Verifica se a URL já aponta para a chave informada, ignorando query string e extensão
+   * (há fotos migradas gravadas como .png/.webp).
+   */
   static urlMatchesKey(url, key) {
+    const withoutExtension = (pathname) => pathname.replace(/\.[^./]+$/, "");
     try {
-      return new URL(url).pathname === new URL(PhotosApiService.buildImageUrl(key)).pathname;
+      return (
+        withoutExtension(new URL(url).pathname) ===
+        withoutExtension(new URL(PhotosApiService.buildImageUrl(key)).pathname)
+      );
     } catch {
       return false;
     }
@@ -65,7 +72,8 @@ class PhotosApiService {
     }
 
     const { data } = await response.json();
-    return PhotosApiService.buildImageUrl(data?.key || key);
+    // A chave é reaproveitada quando a foto muda de posição; o `v` invalida o cache (max-age de 1 dia).
+    return `${PhotosApiService.buildImageUrl(data?.key || key)}?v=${Date.now()}`;
   }
 
   /**

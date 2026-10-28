@@ -104,6 +104,22 @@ class PhotoService {
   }
 
   /**
+   * O upload sempre declara image/jpeg e a photos-api confere os magic bytes; fotos migradas
+   * em PNG/WebP são convertidas sem redimensionar. JPEG passa direto, sem recompressão.
+   * @returns {Promise<Buffer>}
+   */
+  static async ensureJpeg(buffer) {
+    const isJpeg = buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
+    if (isJpeg) return buffer;
+
+    const sharp = (await import("sharp")).default;
+    return sharp(buffer)
+      .flatten({ background: { r: 255, g: 255, b: 255 } })
+      .jpeg()
+      .toBuffer();
+  }
+
+  /**
    * Grava as fotos na photos-api, na ordem recebida, e retorna as URLs finais.
    * Fotos que já estão na chave da posição de destino não são reenviadas; as demais são baixadas
    * antes de qualquer upload, porque um upload pode sobrescrever a chave de outra foto da lista.
@@ -118,7 +134,8 @@ class PhotoService {
 
         if (PhotoService.isRemoteUrl(photo)) {
           if (PhotosApiService.urlMatchesKey(photo, key)) return { url: photo };
-          return { position, buffer: await PhotosApiService.fetchPhoto(photo) };
+          const buffer = await PhotoService.ensureJpeg(await PhotosApiService.fetchPhoto(photo));
+          return { position, buffer };
         }
 
         const buffer = await PhotoService.processPhoto(

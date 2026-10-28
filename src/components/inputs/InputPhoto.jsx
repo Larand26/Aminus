@@ -38,6 +38,7 @@ class InputPhoto extends Component {
 
   // Muda fotos de posição
   movePhoto = (fromIndex, toIndex) => {
+    if (toIndex < 0 || toIndex >= this.props.photos.length) return;
     const photos = [...this.props.photos];
     const photo = photos.splice(fromIndex, 1)[0];
     photos.splice(toIndex, 0, photo);
