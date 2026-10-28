@@ -7,5 +7,11 @@ export default defineConfig({
   build: {
     outDir: "dist",
   },
+  server: {
+    watch: {
+      // Saídas de build e do electron-forge: arquivos travados ali (ex: .nupkg do Squirrel) derrubam o watcher com EBUSY.
+      ignored: ["**/out/**", "**/dist/**", "**/electron/**"],
+    },
+  },
   plugins: [react()],
 });
