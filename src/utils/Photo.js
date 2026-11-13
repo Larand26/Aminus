@@ -56,6 +56,7 @@ class Photo {
         color_name: newProduct.colorName,
         color_code: newProduct.colorCode,
         photos: newProduct.photos || [],
+        apply_eva: Boolean(newProduct.applyEva),
       };
 
       const fieldsEqual =
@@ -70,7 +71,7 @@ class Photo {
         newData.photos,
       );
 
-      if (fieldsEqual && photosEqual) {
+      if (fieldsEqual && photosEqual && !newData.apply_eva) {
         return {
           success: true,
           unchanged: true,

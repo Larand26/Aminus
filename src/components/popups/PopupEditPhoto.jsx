@@ -6,6 +6,7 @@ import InputText from "../inputs/InputText";
 import Select from "../inputs/Select";
 import InputPhoto from "../inputs/InputPhoto";
 import TextArea from "../inputs/TextArea";
+import InputCheckBox from "../inputs/InputCheckBox";
 
 import PhotoUtil from "../../utils/Photo";
 
@@ -27,6 +28,7 @@ class PopupEditPhoto extends Component {
       manufacturer: "",
       photos: null,
       packaging: "",
+      applyEva: false,
     };
   }
 
@@ -49,6 +51,7 @@ class PopupEditPhoto extends Component {
         packaging: product.packing || "",
         resalePrice:
           product.resale_price != null ? String(product.resale_price) : "",
+        applyEva: false,
       });
     }
   }
@@ -63,6 +66,7 @@ class PopupEditPhoto extends Component {
         manufacturer: this.state.manufacturer,
         photos: this.state.photos,
         packaging: this.state.packaging,
+        applyEva: this.state.applyEva,
       });
     }
   };
@@ -119,6 +123,12 @@ class PopupEditPhoto extends Component {
                   label="Código da cor"
                   value={this.state.colorCode}
                   onChange={(colorCode) => this.setState({ colorCode })}
+                />
+                <InputCheckBox
+                  className="eva-checkbox"
+                  label="Aplicar selo E.V.A na 1ª foto"
+                  checked={this.state.applyEva}
+                  onChange={(e) => this.setState({ applyEva: e.target.checked })}
                 />
               </div>
             </div>

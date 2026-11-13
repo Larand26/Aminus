@@ -41,3 +41,7 @@
   justify-content: space-around;
 }
 
+.popup-edit-photo .eva-checkbox {
+  width: 40%;
+  margin-top: 10px;
+}

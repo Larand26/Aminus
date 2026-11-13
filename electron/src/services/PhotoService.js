@@ -9,6 +9,9 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const EVA_SVG_PATH = path.join(__dirname, "../assets/EVA.svg");
 const PACKING_VALUES = ["f", "c"];
+const PHOTO_SIZE = 1200;
+// Mesma proporção de antes (selo de 320px em fotos de 800px).
+const EVA_SEAL_SIZE = Math.round(PHOTO_SIZE * 0.4);
 
 /**
  * @typedef {import("../repositories/PhotoRepository.js").CatalogProduct} CatalogProduct
@@ -21,6 +24,7 @@ const PACKING_VALUES = ["f", "c"];
  * @property {string} color_name
  * @property {string} color_code
  * @property {Array<string>} photos URLs já gravadas ou data URLs (base64) de fotos novas, na ordem de exibição
+ * @property {boolean} [apply_eva] Aplica o selo E.V.A na 1ª foto (reprocessada em 1200x1200)
  *
  * @typedef {Object} NewPhotosPayload
  * @property {string} newManufacturerCode
@@ -64,7 +68,7 @@ class PhotoService {
   }
 
   /**
-   * Primeira foto: 800x800 com fundo branco (e selo EVA, se pedido). Demais: lado maior com 800px.
+   * Primeira foto: 1200x1200 com fundo branco (e selo EVA, se pedido). Demais: lado maior com 1200px.
    * @returns {Promise<Buffer>}
    */
   static async processPhoto(buffer, index, { isEva = false } = {}) {
@@ -72,12 +76,12 @@ class PhotoService {
 
     if (index > 0) {
       const { width = 0, height = 0 } = await sharp(buffer).metadata();
-      const resizeOptions = width > height ? { width: 800 } : { height: 800 };
+      const resizeOptions = width > height ? { width: PHOTO_SIZE } : { height: PHOTO_SIZE };
       return sharp(buffer).resize(resizeOptions).jpeg().toBuffer();
     }
 
     let output = await sharp(buffer)
-      .resize(800, 800, {
+      .resize(PHOTO_SIZE, PHOTO_SIZE, {
         fit: "contain",
         background: { r: 255, g: 255, b: 255, alpha: 1 },
       })
@@ -86,9 +90,9 @@ class PhotoService {
 
     if (isEva) {
       if (fs.existsSync(EVA_SVG_PATH)) {
-        // Limita o SVG a 320x320 para o composite não falhar com SVGs maiores que a foto.
+        // Limita o SVG a uma caixa menor que a foto para o composite não falhar.
         const watermark = await sharp(EVA_SVG_PATH)
-          .resize({ width: 320, height: 320, fit: "inside" })
+          .resize({ width: EVA_SEAL_SIZE, height: EVA_SEAL_SIZE, fit: "inside" })
           .png()
           .toBuffer();
         output = await sharp(output)
@@ -123,14 +127,29 @@ class PhotoService {
    * Grava as fotos na photos-api, na ordem recebida, e retorna as URLs finais.
    * Fotos que já estão na chave da posição de destino não são reenviadas; as demais são baixadas
    * antes de qualquer upload, porque um upload pode sobrescrever a chave de outra foto da lista.
-   * @param {{manufacturerCode: string, colorCode: string, photos: Array<string>, isEva?: boolean}} args
+   * `applyEvaToFirst` reprocessa a 1ª foto (1200x1200 + selo) mesmo que ela já esteja gravada.
+   * @param {{manufacturerCode: string, colorCode: string, photos: Array<string>, isEva?: boolean, applyEvaToFirst?: boolean}} args
    * @returns {Promise<Array<string>>}
    */
-  static async storePhotos({ manufacturerCode, colorCode, photos, isEva = false }) {
+  static async storePhotos({
+    manufacturerCode,
+    colorCode,
+    photos,
+    isEva = false,
+    applyEvaToFirst = false,
+  }) {
     const pending = await Promise.all(
       photos.map(async (photo, index) => {
         const position = index + 1;
         const key = PhotosApiService.buildPhotoKey(manufacturerCode, colorCode, position);
+
+        if (PhotoService.isRemoteUrl(photo) && applyEvaToFirst && index === 0) {
+          const original = await PhotosApiService.fetchPhoto(photo);
+          return {
+            position,
+            buffer: await PhotoService.processPhoto(original, 0, { isEva: true }),
+          };
+        }
 
         if (PhotoService.isRemoteUrl(photo)) {
           if (PhotosApiService.urlMatchesKey(photo, key)) return { url: photo };
@@ -141,7 +160,7 @@ class PhotoService {
         const buffer = await PhotoService.processPhoto(
           PhotoService.dataUrlToBuffer(photo),
           index,
-          { isEva },
+          { isEva: isEva || (applyEvaToFirst && index === 0) },
         );
         return { position, buffer };
       }),
@@ -248,12 +267,18 @@ class PhotoService {
         };
       }
 
+      const photos = Array.isArray(newData.photos)
+        ? newData.photos
+        : current.photos.map((photo) => photo.url);
+      if (newData.apply_eva && photos.length === 0) {
+        throw new Error("Adicione ao menos uma foto para aplicar o selo E.V.A.");
+      }
+
       const photoUrls = await PhotoService.storePhotos({
         manufacturerCode,
         colorCode,
-        photos: Array.isArray(newData.photos)
-          ? newData.photos
-          : current.photos.map((photo) => photo.url),
+        photos,
+        applyEvaToFirst: Boolean(newData.apply_eva),
       });
 
       await MySQLDB.catalogTransaction(async (query) => {
