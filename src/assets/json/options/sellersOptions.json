@@ -8,12 +8,8 @@
     "label": "ADOLFO"
   },
   {
-    "value": 24,
-    "label": "ANDRE"
-  },
-  {
-    "value": 26,
-    "label": "BEATRIZ"
+    "value": 32,
+    "label": "ALEX"
   },
   {
     "value": 31,
@@ -40,16 +36,16 @@
     "label": "JULIO"
   },
   {
-    "value": 21,
-    "label": "LEONARDO"
-  },
-  {
     "value": 1,
     "label": "PADRAO"
   },
   {
     "value": 30,
     "label": "PLAZA B2B"
+  },
+  {
+    "value": 33,
+    "label": "RUAN"
   },
   {
     "value": 20,
