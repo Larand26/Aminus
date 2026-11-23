@@ -1,0 +1,166 @@
+/* Altura do popup (560px) menos o padding (2 × 10px) */
+.popup-freight {
+  display: flex;
+  flex-direction: column;
+  height: 540px;
+  font-family: var(--fonte-principal);
+  color: var(--cor-texto);
+}
+
+.popup-freight h2 {
+  margin: 0 0 4px;
+}
+
+.popup-freight .loading-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.freight-summary {
+  margin: 0 0 8px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.freight-alert {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  background-color: var(--cor-aviso);
+  color: var(--cor-branco);
+}
+
+.freight-alert.error {
+  background-color: var(--cor-falha);
+}
+
+.freight-table-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  border-radius: 6px;
+  background-color: var(--cor-branco);
+}
+
+.freight-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.freight-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background-color: var(--cor-primaria);
+  color: var(--cor-branco);
+  white-space: nowrap;
+}
+
+.freight-table th,
+.freight-table td {
+  text-align: center;
+}
+
+.freight-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--cor-fundo);
+  vertical-align: middle;
+}
+
+.freight-row.cheapest {
+  background-color: rgba(140, 189, 183, 0.25); /* --cor-azulClaro */
+}
+
+.freight-name {
+  font-weight: 600;
+}
+
+.freight-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  background-color: var(--cor-amarelo);
+  color: var(--cor-branco);
+  cursor: help;
+  white-space: nowrap;
+}
+
+.freight-final .freight-price {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--cor-primaria);
+}
+
+.freight-price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.freight-price-original {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.55;
+}
+
+.freight-source {
+  display: block;
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.freight-tag {
+  display: block;
+  width: fit-content;
+  margin: 3px auto 0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  background-color: var(--cor-selecionado);
+  color: var(--cor-branco);
+}
+
+.freight-time {
+  white-space: nowrap;
+}
+
+.freight-time .freight-tag {
+  background-color: var(--cor-primaria);
+}
+
+.freight-muted {
+  opacity: 0.5;
+}
+
+.freight-row.unavailable {
+  opacity: 0.5;
+}
+
+.freight-error {
+  font-size: 12px;
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 0; /* deixa o ellipsis funcionar dentro do colSpan */
+}
+
+.freight-legend {
+  margin: 8px 0 0;
+  font-size: 12px;
+  opacity: 0.7;
+}

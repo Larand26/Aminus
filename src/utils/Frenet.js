@@ -44,81 +44,169 @@ class Frenet {
     }
   }
 
-  static ajustFreightData(data) {
-    if (!data) return null;
+  /**
+   * Transportadoras com cálculo próprio. A cotação da `source` só vale
+   * para o ServiceCode da chave; para as demais ela é ignorada.
+   */
+  static SPECIAL_RULES = {
+    BRAS_R: {
+      source: "braspress",
+      label: "Volume único",
+      description:
+        "Braspress: peso total do pedido em um único volume 20×30×45",
+    },
+    JAM: {
+      source: "custom",
+      label: "Maior item",
+      description:
+        "JAM: medidas do item mais pesado × quantidade total de caixas",
+    },
+  };
 
-    const ship203045 = data["20-30-45"]?.ShippingSevicesArray || [];
-    const shipCustom = data["custom"]?.ShippingSevicesArray || [];
-    const shipStandard = data["standard"]?.ShippingSevicesArray || [];
-    const shipBraspress = data["braspress"]?.ShippingSevicesArray || [];
+  /**
+   * Transportadoras cotadas por peso real (caixa 20×30×45). Todas as
+   * outras são cotadas por peso cubado (medidas do produto).
+   * Comparação pelo código, transportadora ou descrição do serviço.
+   */
+  static REAL_WEIGHT_CARRIERS = [/braspress/i, /^BRAS_/i, /rodonaves/i];
 
-    // { "SHIP": "ServiceDescription", "PRICE": "ShippingPrice", "PRICE[20-30-45]": "ShippingPrice", "DELIVERY_TIME": "DeliveryTime", "ORIGINAL_DELIVERY_TIME": "OriginalDeliveryTime"}
+  static SOURCE_LABELS = {
+    rule: "regra específica",
+    box: "peso real",
+    product: "peso cubado",
+  };
 
-    if (ship203045.some((item) => item.ServiceCode === "BRAS_R")) {
-      if (shipBraspress.length > 0) {
-        // Acha a posição do item de Braspress em ship203045
-        const braspressIndex = ship203045.findIndex(
-          (item) => item.ServiceCode === "BRAS_R",
-        );
-        if (braspressIndex !== -1) {
-          ship203045[braspressIndex] = shipBraspress[0];
-        }
-      }
-    }
+  static isRealWeight(service, code) {
+    const text = [code, service?.Carrier, service?.ServiceDescription]
+      .filter(Boolean)
+      .join(" ");
+    return this.REAL_WEIGHT_CARRIERS.some((regex) => regex.test(text));
+  }
 
-    const customService = ["JAM"];
+  /**
+   * @typedef {Object} FreightQuote
+   * @property {number|null} price
+   * @property {number|null} originalPrice  preço antes do desconto (se houver)
+   * @property {number|null} deliveryTime   dias úteis
+   * @property {string|null} error          mensagem quando a cotação falhou
+   */
 
-    if (ship203045.some((item) => customService.includes(item.ServiceCode))) {
-      if (
-        shipCustom.length > 0 &&
-        shipCustom.some((item) => customService.includes(item.ServiceCode))
-      ) {
-        // Acha a posição do item custom em ship203045
-        const customIndex = ship203045.findIndex((item) =>
-          customService.includes(item.ServiceCode),
-        );
-        if (customIndex !== -1) {
-          const customItem = shipCustom.find((item) =>
-            customService.includes(item.ServiceCode),
-          );
-          if (customItem) {
-            ship203045[customIndex] = customItem;
-          }
-        }
-      }
-    }
+  /**
+   * @typedef {Object} FreightRow
+   * @property {string} code
+   * @property {string} name
+   * @property {{label: string, description: string}|null} rule
+   * @property {{rule: FreightQuote|null, box: FreightQuote|null, product: FreightQuote|null}} quotes
+   * @property {"real"|"cubado"} weight  tipo de peso da transportadora
+   * @property {"rule"|"box"|"product"|null} source  cotação usada no valor final
+   * @property {FreightQuote|null} final
+   * @property {boolean} available
+   * @property {string} errorMessage
+   * @property {boolean} cheapest
+   * @property {boolean} fastest
+   */
 
+  static #toQuote(service) {
+    if (!service) return null;
     const toNumber = (value) => {
       const parsed = Number(value);
-      return Number.isFinite(parsed) ? parsed : 0;
+      return value !== null && value !== "" && Number.isFinite(parsed)
+        ? parsed
+        : null;
     };
+    const price = toNumber(service.ShippingPrice);
+    const hasError = Boolean(service.Error) || price === null;
+    return {
+      price: hasError ? null : price,
+      originalPrice: toNumber(service.OriginalShippingPrice),
+      deliveryTime: toNumber(service.DeliveryTime),
+      error: hasError ? service.Msg || "Sem cotação" : null,
+    };
+  }
 
-    return ship203045
-      .filter((item) => !item.Error)
-      .map((item) => {
-        const standardItem = shipStandard.find(
-          (standard) => standard.ServiceCode === item.ServiceCode,
-        );
+  /**
+   * Junta as 4 cotações da Frenet em uma linha por transportadora.
+   * Nenhuma transportadora é descartada: as que falharam em todas as
+   * cotações aparecem como indisponíveis, com o motivo.
+   * @param {Object|null} data { standard, custom, "20-30-45", braspress }
+   * @returns {FreightRow[]|null}
+   */
+  static buildFreightRows(data) {
+    if (!data) return null;
 
-        return {
-          SHIP:
-            item.ServiceDescription || item.Carrier || item.ServiceCode || "",
-          PRICE: toNumber(standardItem?.ShippingPrice ?? item.ShippingPrice),
-          ORIGINAL_PRICE: toNumber(
-            standardItem?.OriginalShippingPrice ??
-              standardItem?.ShippingPrice ??
-              item.OriginalShippingPrice ??
-              item.ShippingPrice,
-          ),
-          "PRICE[20-30-45]": toNumber(item.ShippingPrice),
-          "ORIGINAL_PRICE[20-30-45]": toNumber(
-            item.OriginalShippingPrice || item.ShippingPrice,
-          ),
-          DELIVERY_TIME: item.DeliveryTime || "",
-          ORIGINAL_DELIVERY_TIME:
-            item.OriginalDeliveryTime || item.DeliveryTime || "",
-        };
+    const list = (key) => data[key]?.ShippingSevicesArray || [];
+    const byCode = (key) =>
+      new Map(list(key).map((service) => [service.ServiceCode, service]));
+
+    const box = byCode("20-30-45");
+    const product = byCode("standard");
+    const sources = { custom: byCode("custom"), braspress: byCode("braspress") };
+
+    // Ordem: 20-30-45, depois o que só veio nas outras cotações
+    const codes = new Set([...box.keys(), ...product.keys()]);
+    Object.entries(this.SPECIAL_RULES).forEach(([code, rule]) => {
+      if (sources[rule.source].has(code)) codes.add(code);
+    });
+
+    const rows = [...codes].map((code) => {
+      const rule = this.SPECIAL_RULES[code] || null;
+      const reference =
+        box.get(code) ||
+        product.get(code) ||
+        (rule && sources[rule.source].get(code));
+
+      const quotes = {
+        rule: rule ? this.#toQuote(sources[rule.source].get(code)) : null,
+        box: this.#toQuote(box.get(code)),
+        product: this.#toQuote(product.get(code)),
+      };
+
+      // Peso real (Braspress, Rodonaves) usa a caixa 20×30×45;
+      // as demais usam as medidas do produto (peso cubado).
+      const realWeight = this.isRealWeight(reference, code);
+      const weightSource = realWeight ? "box" : "product";
+      const candidates = rule ? ["rule", weightSource] : [weightSource];
+
+      const source = candidates.find((key) => quotes[key]?.price != null);
+      const errorMessage =
+        candidates.map((key) => quotes[key]).find((q) => q?.error)?.error ||
+        "Sem cotação";
+
+      return {
+        code,
+        name:
+          reference?.ServiceDescription || reference?.Carrier || code || "",
+        carrier: reference?.Carrier || "",
+        rule: rule ? { label: rule.label, description: rule.description } : null,
+        quotes,
+        weight: realWeight ? "real" : "cubado",
+        source: source || null,
+        final: source ? quotes[source] : null,
+        available: Boolean(source),
+        errorMessage: source ? "" : errorMessage,
+        cheapest: false,
+        fastest: false,
+      };
+    });
+
+    const available = rows.filter((row) => row.available);
+    if (available.length > 0) {
+      const minPrice = Math.min(...available.map((row) => row.final.price));
+      const times = available
+        .map((row) => row.final.deliveryTime)
+        .filter((time) => time != null);
+      const minTime = times.length > 0 ? Math.min(...times) : null;
+      available.forEach((row) => {
+        row.cheapest = row.final.price === minPrice;
+        row.fastest = minTime != null && row.final.deliveryTime === minTime;
       });
+    }
+
+    // Disponíveis do mais barato ao mais caro; indisponíveis no fim
+    return [
+      ...available.sort((a, b) => a.final.price - b.final.price),
+      ...rows.filter((row) => !row.available),
+    ];
   }
 }
 

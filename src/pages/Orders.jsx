@@ -57,6 +57,8 @@ class Orders extends Component {
 
       isFreightPopupOpen: false,
       freightData: null,
+      freightWarnings: null,
+      freightError: null,
 
       toastInfo: null,
     };
@@ -137,7 +139,15 @@ class Orders extends Component {
     });
 
     if (response.success) {
-      this.setState({ freightData: response.data });
+      this.setState({
+        freightData: response.data,
+        freightWarnings: response.errors || null,
+      });
+    } else {
+      this.setState({
+        freightError:
+          response.message || response.error || "Erro ao calcular o frete.",
+      });
     }
   }
 
@@ -269,10 +279,16 @@ class Orders extends Component {
           <PopUpFreight
             isOpen={this.state.isFreightPopupOpen}
             onClose={() => {
-              this.setState({ isFreightPopupOpen: false });
-              this.setState({ freightData: null });
+              this.setState({
+                isFreightPopupOpen: false,
+                freightData: null,
+                freightWarnings: null,
+                freightError: null,
+              });
             }}
             data={this.state.freightData}
+            warnings={this.state.freightWarnings}
+            error={this.state.freightError}
           />
         </div>
       </>

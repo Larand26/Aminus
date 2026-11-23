@@ -124,33 +124,43 @@ class FrenetService {
         braspressBody,
       } = this.#buildRequestBodies(shipping);
 
-      const [
-        standardResponse,
-        customResponse,
-        response203045,
-        braspressResponse,
-      ] = await Promise.all([
-        axios.post(this.url, standardBody, { headers: this.headers }),
-        axios.post(this.url, customBody, {
-          headers: this.headers,
-        }),
-        axios.post(this.url, standardDimensions203045Body, {
-          headers: this.headers,
-        }),
-        axios.post(this.url, braspressBody, {
-          headers: this.headers,
-        }),
-      ]);
-
-      return {
-        success: true,
-        data: {
-          standard: standardResponse.data,
-          custom: customResponse.data,
-          "20-30-45": response203045.data,
-          braspress: braspressResponse.data,
-        },
+      const requests = {
+        standard: standardBody,
+        custom: customBody,
+        "20-30-45": standardDimensions203045Body,
+        braspress: braspressBody,
       };
+
+      // allSettled: se uma cotação falhar, as outras continuam aparecendo
+      const keys = Object.keys(requests);
+      const results = await Promise.allSettled(
+        keys.map((key) =>
+          axios.post(this.url, requests[key], { headers: this.headers }),
+        ),
+      );
+
+      const data = {};
+      const errors = {};
+      results.forEach((result, index) => {
+        const key = keys[index];
+        if (result.status === "fulfilled") {
+          data[key] = result.value.data;
+        } else {
+          console.error(`Error calculating freight (${key}):`, result.reason);
+          data[key] = null;
+          errors[key] = result.reason?.message || "Erro desconhecido";
+        }
+      });
+
+      if (Object.keys(errors).length === keys.length) {
+        return {
+          success: false,
+          error: Object.values(errors).join(" | "),
+          message: "Não foi possível calcular o frete.",
+        };
+      }
+
+      return { success: true, data, errors };
     } catch (error) {
       console.error("Error calculating freight:", error);
       return {
