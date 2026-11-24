@@ -27,9 +27,9 @@ class OrderController {
     }
   }
 
-  static async generateCubagePDF(itens) {
+  static async generateCubagePDF(itens, order = null) {
     try {
-      return await OrderService.generateCubagePDF(itens);
+      return await OrderService.generateCubagePDF(itens, order);
     } catch (error) {
       console.log(error);
       return {

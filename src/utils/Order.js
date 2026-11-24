@@ -26,9 +26,13 @@ class Order {
   }
 
   static async generateCubagePDF(args) {
-    const { token, selectedOrderData } = args;
+    const { token, selectedOrderData, selectedOrder } = args;
     try {
-      return await window.api.generateCubagePDF({ token, selectedOrderData });
+      return await window.api.generateCubagePDF({
+        token,
+        selectedOrderData,
+        selectedOrder,
+      });
     } catch (error) {
       return {
         success: false,

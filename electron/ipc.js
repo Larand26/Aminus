@@ -114,7 +114,10 @@ ipcMain.handle("calculate-freight", async (event, args) => {
 ipcMain.handle("generate-cubage-pdf", async (event, args) => {
   const decodedToken = await MiddlewaresToken.decodeToken(args.token);
   if (!decodedToken) return { success: false, error: "Invalid token" };
-  return await OrderController.generateCubagePDF(args.selectedOrderData);
+  return await OrderController.generateCubagePDF(
+    args.selectedOrderData,
+    args.selectedOrder,
+  );
 });
 
 ipcMain.handle("open-file", async (event, filePath) => {

@@ -155,6 +155,7 @@ class Orders extends Component {
     const response = await OrderUtil.generateCubagePDF({
       token: this.state.token,
       selectedOrderData: this.state.selectedOrderData,
+      selectedOrder: this.state.selectedOrder,
     });
     console.log(response);
 
