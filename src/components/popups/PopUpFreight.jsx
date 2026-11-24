@@ -13,22 +13,13 @@ const formatDays = (days) => {
   return `${days} ${days === 1 ? "dia útil" : "dias úteis"}`;
 };
 
-/** Valor com o preço "de" riscado quando a Frenet aplicou desconto */
+/** Valor real do frete (sem o desconto/frete grátis da Frenet) */
 const Price = ({ quote }) => {
   if (!quote || quote.price == null) {
     return <span className="freight-muted">—</span>;
   }
-  const hasDiscount =
-    quote.originalPrice != null && quote.originalPrice > quote.price;
   return (
-    <span className="freight-price">
-      {hasDiscount && (
-        <s className="freight-price-original">
-          {Utils.formatCurrency(quote.originalPrice)}
-        </s>
-      )}
-      {Utils.formatCurrency(quote.price)}
-    </span>
+    <span className="freight-price">{Utils.formatCurrency(quote.price)}</span>
   );
 };
 

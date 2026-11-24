@@ -114,11 +114,19 @@ class Frenet {
         ? parsed
         : null;
     };
-    const price = toNumber(service.ShippingPrice);
+    // Com frete grátis/desconto (ex.: pedido acima de R$ 3.000) a Frenet
+    // devolve ShippingPrice 0 e o valor real em OriginalShippingPrice.
+    // Mostramos sempre o valor real.
+    const shippingPrice = toNumber(service.ShippingPrice);
+    const originalPrice = toNumber(service.OriginalShippingPrice);
+    const price =
+      shippingPrice !== null && originalPrice !== null
+        ? Math.max(shippingPrice, originalPrice)
+        : shippingPrice;
     const hasError = Boolean(service.Error) || price === null;
     return {
       price: hasError ? null : price,
-      originalPrice: toNumber(service.OriginalShippingPrice),
+      originalPrice,
       deliveryTime: toNumber(service.DeliveryTime),
       error: hasError ? service.Msg || "Sem cotação" : null,
     };
